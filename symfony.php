@@ -10,13 +10,56 @@ Pour les commandes dans Visual Studio, installer PowerShell
 Requires curl (extension pour interagir avec des url) dans l'installation > php.ini puis activer l'extension curl
 "coud not find the driver" : activer pdo_mysql dans le php.ini
 Extensions : PowerShell, Twig Language, PHP Intelephense, PHP Namespace Resolver
-pb de timezone : modifier le timezone du php.ini 
+pb de timezone : modifier le timezone du php.ini
+Commits : si fichier github ailleurs que le fichier source, créer deux fichiers vides var et vendor
+(en plus du README), et ne jamais copier les fichiers var et vendor
+Créer un .env.dist pour le repository 
+Créer le .htaccess = https://symfony.com/doc/current/setup/web_server_configuration.html#adding-rewrite-rules
+Déploiement sur FileZilla : tout envoyer, avec le var/ vide, le .htaccess créé, .env sur prod, debug=0 et database online, index.php debug =  false
+Sur FileZilla, clic droit sur var/ => droits d'accès => 777 (pour que Symfony puisse écrire dedans)
+Sur Filezilla, doctrine.yaml enlever ('resolve') de url: '%env(resolve:DATABASE_URL)%'
+Mot de passe sans espaces et avec urlencode() si caractères spéciaux !
+Déploiement SF 4 : faire diriger le site vers le dossier projet/public
+
+php bin/console server:run 
+php bin/console cache:clear
 
 Considérations
+    • Versions : une grosse version tous les 2 ans (S3, S4, S5) qui intègre beaucoup de changements
+        Une version mineure tous les 6 mois (4.3, 4.4, ect.)
+    • Versions majeures de Symfony : .4 = 3.4, 4.4
+        Objectif = se mettre sur une LTS (Long Term Support, maintenue 4 ans) = .4 (composer update)
     • nom de classes, de tables au singulier (ex. la table article crée une classe Article)
     • new \PDO, new \DateTime : pour les classes qui se trouvent à la racine (dans le namespace global), pas besoin d'utiliser un use pour indiquer où se situe la classe dans le namespace
     • Article::class : évite de réécrire le chemin du use précédemment renseigné (i.e. App\Entity\Article)
     • injection de dépendances : ex. function get(classe1 $variable1, class2 $variable2) : intégrer des instanciations de classes automatiquement dans le processus, dans les constructeurs, méthodes, ect.
+    • ajouter une valeur par défaut : private $step = 1;
+    • fetch="EAGER" = la relation doit être chargée en même temps que l'entité qui la porte
+    • dd($variable) = var_dump + die()
+    • redirectToRoute('name_route')
+    • concaténation Twig = id={{ "card-" ~ card.id }}
+    • Rajout d'une table liée à une Entité : toujours faire le lien dans la table prioritaire + accepter les valeurs null dans un premier temps
+    • changer le nom d'une propriété : changer le nom + setters/getters + migration
+    • changer une classe = vérifier avant la migration, éventuellement accepter les valeurs nulles
+    • À tout prix éviter les propriétés qui ont le même nom que leur table
+    • Contraintes => maxlength = 180 (juste milieu)
+    • persist() ne doit être appelé que lors de la création d'un NOUVEL objet. Ex. $manager->persist($article);
+    • sprintf($format, $arg) renvoie une chaîne formatée. ex. sprintf('nombre = %s', 10) renvoie 'nombre = 10'.
+    • supprimer le cache = var/cache => supprimer
+    • "UPDATE daily_count SET count = 0 WHERE user_id = $id" pour une requête sans erreur, malgré un champ qui s'appelle count
+    • Twig : possible de créer ses propres filtres (ex.htmlspecialchars_decode())
+    • Repo Github : copier/coller le .env, le nommer .env.dist, rajouter le .env dans le .gitignore
+    • Préférer EntityManager $manager (doctrine) à ObjectManager $manager
+    • Un fichier CSS/page
+    • dump(Request) : + = attributs publics
+                      # = protected
+                      - = private
+    • Ordre d'apparition des use : ordre alphabétique (PCR1)
+
+Bundles
+    • Admin : easy admin bundle
+    • Security : security bundle
+    
 
 I) INSTALLER SYMFONY 
 
@@ -1530,7 +1573,7 @@ class SecurityController extends AbstractController
         // à quel objet on relie les champs du formulaire
         $user = new User();
 
-        // instaciation du formulaire
+        // instanciation du formulaire
         $form = $this->createForm(RegistrationType::class, $user); // la classe qui permet de construire le formulaire + l'objet qui va interférer avec (les deux champs sont "bindés", reliés)
 
         return $this->render('security/registration.html.twig', [
@@ -2073,6 +2116,19 @@ https://symfony.com/doc/current/security/form_login.html#redirecting-after-succe
 🔗 Comment gérer les accès dans le controller : https://symfony.com/doc/current/secur... 
 🔗 Comment rediriger là où on veut après le login : https://symfony.com/doc/current/secur...
 🔗 Comment utiliser les annotations pour sécuriser les controllers : https://symfony.com/doc/master/bundle...
+
+
+◘ EASY ADMIN BUNDLE
+
+Travailler avec des relations ManyToMany : utiliser le type_option by_reference
+Ex. form:
+        fields: 
+            - { property: 'recto', label: 'Recto' }
+            - { property: 'verso', label: 'Verso' }
+            - { property: 'datePublication', label: 'Prochaine révision' }
+            - { property: 'tags', label: 'Marqueurs', type_options: { 'by_reference': false } }
+If you're using the CollectionType field where your underlying collection data is an object (like with Doctrine's ArrayCollection), 
+then by_reference must be set to false if you need the adder and remover (e.g. addAuthor() and removeAuthor()) to be called.
 
 
     
