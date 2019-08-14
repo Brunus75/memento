@@ -42,6 +42,7 @@ CONSIDERATIONS :
 
 VISUAL STUDIO :
 	• Ctrl + D : sélectionner des groupes de mots semblables
+  • Ctrl + alt + i : récupérer le namespace de la classe sélectionnée
 	• PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
 
 I) Créer une variable
