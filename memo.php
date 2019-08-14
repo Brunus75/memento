@@ -43,7 +43,12 @@ CONSIDERATIONS :
 VISUAL STUDIO :
 	• Ctrl + D : sélectionner des groupes de mots semblables
   • Ctrl + alt + i : récupérer le namespace de la classe sélectionnée
-	• PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
+  • PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
+  • Extensions : Auto Close Tag, Beautify, canvas-snippets, HTML CSS Support,
+  Javascript (ES6) code snippets, jQuery Code snippets, PHP Getters & Setters,
+  PHP Intelephense, PHP Namespace Resolver, PowerShell,
+  Sublime Text Keymap and Settings Importer, Twig Language
+
 
 I) Créer une variable
 
