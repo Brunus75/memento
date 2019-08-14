@@ -1,0 +1,182 @@
+body {
+	margin-left: 50px;
+}
+
+
+p
+{
+	font-size: 1em;
+	font-family: Verdana, Arial, "Trebuchet MS", Georgia, sans-serif;
+}
+
+h1
+{
+	font-size: 1.4em;
+	font-family: Verdana, Arial, "Trebuchet MS", Georgia, sans-serif;
+}
+
+h2
+{
+	font-size: 1.2em;
+	font-family: Verdana, Arial, "Trebuchet MS", Georgia, sans-serif;
+}
+
+ul
+{
+	font-size: 1em;
+	font-family: Verdana, Arial, "Trebuchet MS", Georgia, sans-serif;
+}
+
+.mini_cv
+{
+	float: left;
+}
+
+.clear_both
+{
+	clear: both;
+}
+
+
+.commentaires_css
+{
+	color: silver;
+}
+
+
+#solid
+{
+	border: 2px fuchsia solid;
+}
+
+#dotted
+{
+	border: 2px fuchsia dotted;
+}
+
+#dashed
+{
+	border: 2px fuchsia dashed;
+}
+
+#double
+{
+	border: 6px fuchsia double;
+}
+
+#groove
+{
+	border: 6px fuchsia groove;
+}
+
+#ridge
+{
+	border: 6px fuchsia ridge;
+}
+
+#inset
+{
+	border: 6px fuchsia inset;
+}
+
+#outset
+{
+	border: 6px fuchsia outset;
+}
+
+#box_shadow
+{
+	border: 6px fuchsia solid;
+	box-shadow: 6px 6px 6px black;
+}
+
+#shadow_inset
+{
+	border: 6px fuchsia solid;
+	box-shadow: 6px 6px 6px black inset;
+}
+
+#text_shadow
+{
+	text-shadow: 6px 6px 6px black;
+}
+
+.id_color
+{
+	color: lime;
+}
+
+.class_color
+{
+	color: red;
+}
+
+#align-content
+{
+	width: 70%;
+}
+
+#float_left
+{
+	width: 30%;
+}
+
+#inline_block
+{
+	width: 30%;
+}
+
+#fusion_row
+{
+	width: 60%;
+}
+
+.rowspan
+{
+	color: red;
+}
+
+#fusion_col
+{
+	width: 65%;
+}
+
+.green
+{
+	color: green;
+}
+
+#fieldset
+{
+	width: 800px;
+}
+
+#key_peele
+{
+	width: 650px;
+}
+
+.fuchsia
+{
+	color: rgb(192,50,74);
+}
+
+.blue
+{
+	color: rgb(29,161,242);
+	font-weight: bold;
+}
+
+a:visited {
+	color: blue;
+}
+
+#poo-class-fight
+{
+	width: 1000px;
+}
+
+.space {
+	display: inline-block;
+	width: 50px;
+}
