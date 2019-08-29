@@ -23,6 +23,7 @@ Déploiement SF 4 : faire diriger le site vers le dossier projet/public
 
 php bin/console server:run 
 php bin/console cache:clear
+php bin/console make:form
 
 Considérations
     • Versions : une grosse version tous les 2 ans (S3, S4, S5) qui intègre beaucoup de changements
