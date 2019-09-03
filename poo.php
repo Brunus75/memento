@@ -3302,3 +3302,1278 @@ foreach ($classe as $attribut => $valeur)
   // $attribut2 = 'Deuxième attribut public';
 }
 ?>
+
+
+X) LES INTERFACES
+
+◘ Présentation et création d'interfaces 
+
+• Rôle d'une interface 
+
+Une interface est une classe entièrement abstraite. Son rôle est de décrire un comportement à notre objet.
+Ex. : une voiture et un personnage peuvent tous les deux se déplacer,
+donc une interface représentant ce point commun pourra être créée.
+
+• Créer une interface 
+
+<?php
+interface Movable
+{
+  public function move($dest); // Toutes les méthodes sont publiques
+  // Pas de méthodes abstraites ou finales
+  // Doit avoir un nom unique (ne peut avoir le même nom qu'une classe)
+}
+?>
+
+• Implémenter une interface 
+
+<?php
+class Personnage implements Movable
+{
+  public function move($dest) // on implémente également la méthode
+  {
+    // Une interface vous oblige à écrire toutes ses méthodes
+  }
+}
+?>
+
+Si vous héritez une classe et que vous implémentez une interface, alors vous devez d'abord spécifier la classe
+à hériter avec le mot-clé <?= extends ?> puis les interfaces à implémenter avec le mot-clé <?= implements ?>.
+
+Vous pouvez très bien implémenter plus d'une interface par classe,
+à condition que celles-ci n'aient aucune méthode portant le même nom ! Exemple :
+<?php
+interface iA
+{
+  public function test1();
+}
+
+interface iB
+{
+  public function test2();
+}
+
+class A implements iA, iB
+{
+  // Pour ne générer aucune erreur, il va falloir écrire les méthodes de iA et de iB.
+  
+  public function test1()
+  {
+  
+  }
+  
+  public function test2()
+  {
+  
+  }
+}
+?>
+
+• Les CONSTANTES d'interface 
+
+Les constantes d'interfaces fonctionnent exactement comme les constantes de classes.
+Elles ne peuvent être écrasées par des classes qui implémentent l'interface. Exemple :
+<?php
+interface iInterface
+{
+  const MA_CONSTANTE = 'Hello !';
+}
+
+echo iInterface::MA_CONSTANTE; // Affiche Hello !
+
+class MaClasse implements iInterface
+{
+
+}
+
+echo MaClasse::MA_CONSTANTE; // Affiche Hello !
+?>
+
+◘ Hériter ses interfaces 
+
+Comme pour les classes, vous pouvez hériter vos interfaces grâce à l'opérateur <?= extends ?>. 
+Vous ne pouvez réécrire ni une méthode ni une constante qui a déjà été listée dans l'interface parente. 
+Exemple :
+<?php
+interface iA
+{
+  public function test1();
+}
+
+interface iB extends iA
+{
+  public function test1 ($param1, $param2); // Erreur fatale : impossible de réécrire cette méthode.
+}
+
+interface iC extends iA
+{
+  public function test2();
+}
+
+class MaClasse implements iC
+{
+  // Pour ne générer aucune erreur, on doit écrire les méthodes de iC et aussi de iA.
+  
+  public function test1()
+  {
+  
+  }
+  
+  public function test2()
+  {
+  
+  }
+}
+?>
+
+Contrairement aux classes, les interfaces peuvent hériter de plusieurs interfaces à la fois.
+Il vous suffit de séparer leur nom par une virgule. Exemple :
+<?php
+interface iA
+{
+  public function test1();
+}
+
+interface iB
+{
+  public function test2();
+}
+
+interface iC extends iA, iB
+{
+  public function test3();
+}
+?>
+
+◘ Les interfaces prédéfinies
+
+• Un itérateur
+
+Un itérateur est un objet capable de parcourir un autre objet.
+Bien entendu, cet objet à parcourir doit pouvoir être parcouru (on dit alors qu'il doit être itératif).
+Ce comportement à imposer se fera par le biais d'interfaces !
+L'interface la plus basique pour rendre un objet itératif est Iterator.
+
+• L'interface Iterator 
+
+Cette interface comporte 5 méthodes :
+
+  •  current: renvoie l'élément courant ;
+  •  key: retourne la clé de l'élément courant ;
+  •  next: déplace le pointeur sur l'élément suivant ;
+  •  rewind: remet le pointeur sur le premier élément ;
+  •  valid: vérifie si la position courante est valide.
+
+En écrivant ces méthodes, on pourra renvoyer la valeur qu'on veut, et pas forcément la valeur de l'attribut actuellement lu.
+Imaginons qu'on ait un attribut qui soit un tableau.
+On pourrait très bien créer un petit script qui, au lieu de parcourir l'objet, parcourt le tableau !
+
+<?php
+class MaClasse implements Iterator
+{
+  private $position = 0;
+  private $tableau = ['Premier élément', 'Deuxième élément', 'Troisième élément', 'Quatrième élément', 'Cinquième élément'];
+  
+  /**
+   * Retourne l'élément courant du tableau.
+   */
+  public function current()
+  {
+    return $this->tableau[$this->position];
+  }
+  
+  /**
+   * Retourne la clé actuelle (c'est la même que la position dans notre cas).
+   */
+  public function key()
+  {
+    return $this->position;
+  }
+  
+  /**
+   * Déplace le curseur vers l'élément suivant.
+   */
+  public function next()
+  {
+    $this->position++;
+  }
+  
+  /**
+   * Remet la position du curseur à 0.
+   */
+  public function rewind()
+  {
+    $this->position = 0;
+  }
+  
+  /**
+   * Permet de tester si la position actuelle est valide.
+   */
+  public function valid()
+  {
+    return isset($this->tableau[$this->position]);
+  }
+}
+
+$objet = new MaClasse;
+
+foreach ($objet as $key => $value)
+{
+  echo $key, ' => ', $value, '<br />'; // 0 => Premier élément
+  // 1 => Deuxième élément
+  // etc.
+}
+?>
+
+• L'interface SeekableIterator
+
+Cette interface hérite de l'interface Iterator, on n'aura donc pas besoin d'implémenter les deux à notre classe.
+Puis elle ajoute la méthode seek(). Cette méthode permet de placer le curseur interne à une position précise.
+Elle demande donc un argument : la position du curseur à laquelle il faut le placer. 
+<?php
+class MaClasse implements SeekableIterator
+{
+  private $position = 0;
+  private $tableau = ['Premier élément', 'Deuxième élément', 'Troisième élément', 'Quatrième élément', 'Cinquième élément'];
+  
+  /**
+   * Retourne l'élément courant du tableau.
+   */
+  public function current()
+  {
+    return $this->tableau[$this->position];
+  }
+  
+  /**
+   * Retourne la clé actuelle (c'est la même que la position dans notre cas).
+   */
+  public function key()
+  {
+    return $this->position;
+  }
+  
+  /**
+   * Déplace le curseur vers l'élément suivant.
+   */
+  public function next()
+  {
+    $this->position++;
+  }
+  
+  /**
+   * Remet la position du curseur à 0.
+   */
+  public function rewind()
+  {
+    $this->position = 0;
+  }
+  
+  /**
+   * Déplace le curseur interne.
+   */
+  public function seek($position)
+  {
+    $anciennePosition = $this->position;
+    $this->position = $position;
+    
+    if (!$this->valid())
+    {
+      trigger_error('La position spécifiée n\'est pas valide', E_USER_WARNING);
+      $this->position = $anciennePosition;
+    }
+  }
+  
+  /**
+   * Permet de tester si la position actuelle est valide.
+   */
+  public function valid()
+  {
+    return isset($this->tableau[$this->position]);
+  }
+}
+
+$objet = new MaClasse;
+
+foreach ($objet as $key => $value)
+{
+  echo $key, ' => ', $value, '<br />';
+}
+
+$objet->seek(2);
+echo '<br />', $objet->current(); // Troisième élément
+?>
+
+• L'interfaceArrayAccess
+
+Grâce à cette interface, nous allons pouvoir placer des crochets à la suite de notre objet avec la clé à laquelle accéder,
+comme sur un vrai tableau !
+L'interfaceArrayAccessliste quatre méthodes :
+
+  • offsetExists: méthode qui vérifiera l'existence de la clé entre crochets lorsque l'objet est passé à la fonction isset ou empty(cette valeur entre crochet est passée à la méthode en paramètre) ;
+  • offsetGet: méthode appelée lorsqu'on fait un simple $obj['clé']. La valeur 'clé' est donc passée à la méthode offsetGet;
+  • offsetSet: méthode appelée lorsqu'on assigne une valeur à une entrée. Cette méthode reçoit donc deux arguments, la valeur de la clé et la valeur qu'on veut lui assigner.
+  • offsetUnset: méthode appelée lorsqu'on appelle la fonction unset sur l'objet avec une valeur entre crochets. Cette méthode reçoit un argument, la valeur qui est mise entre les crochets.
+
+<?php
+class MaClasse implements SeekableIterator, ArrayAccess
+{
+  private $position = 0;
+  private $tableau = ['Premier élément', 'Deuxième élément', 'Troisième élément', 'Quatrième élément', 'Cinquième élément'];
+  
+  
+  /* MÉTHODES DE L'INTERFACE SeekableIterator */
+  
+  
+  /**
+   * Retourne l'élément courant du tableau.
+   */
+  public function current()
+  {
+    return $this->tableau[$this->position];
+  }
+  
+  /**
+   * Retourne la clé actuelle (c'est la même que la position dans notre cas).
+   */
+  public function key()
+  {
+    return $this->position;
+  }
+  
+  /**
+   * Déplace le curseur vers l'élément suivant.
+   */
+  public function next()
+  {
+    $this->position++;
+  }
+  
+  /**
+   * Remet la position du curseur à 0.
+   */
+  public function rewind()
+  {
+    $this->position = 0;
+  }
+  
+  /**
+   * Déplace le curseur interne.
+   */
+  public function seek($position)
+  {
+    $anciennePosition = $this->position;
+    $this->position = $position;
+    
+    if (!$this->valid())
+    {
+      trigger_error('La position spécifiée n\'est pas valide', E_USER_WARNING);
+      $this->position = $anciennePosition;
+    }
+  }
+  
+  /**
+   * Permet de tester si la position actuelle est valide.
+   */
+  public function valid()
+  {
+    return isset($this->tableau[$this->position]);
+  }
+  
+  
+  /* MÉTHODES DE L'INTERFACE ArrayAccess */
+  
+  
+  /**
+   * Vérifie si la clé existe.
+   */
+  public function offsetExists($key)
+  {
+    return isset($this->tableau[$key]);
+  }
+  
+  /**
+   * Retourne la valeur de la clé demandée.
+   * Une notice sera émise si la clé n'existe pas, comme pour les vrais tableaux.
+   */
+  public function offsetGet($key)
+  {
+    return $this->tableau[$key];
+  }
+  
+  /**
+   * Assigne une valeur à une entrée.
+   */
+  public function offsetSet($key, $value)
+  {
+    $this->tableau[$key] = $value;
+  }
+  
+  /**
+   * Supprime une entrée et émettra une erreur si elle n'existe pas, comme pour les vrais tableaux.
+   */
+  public function offsetUnset($key)
+  {
+    unset($this->tableau[$key]);
+  }
+}
+
+$objet = new MaClasse;
+
+echo 'Parcours de l\'objet...<br />';
+foreach ($objet as $key => $value)
+{
+  echo $key, ' => ', $value, '<br />';
+}
+
+echo '<br />Remise du curseur en troisième position...<br />';
+$objet->seek(2);
+echo 'Élément courant : ', $objet->current(), '<br />'; // Troisième élément
+
+echo '<br />Affichage du troisième élément : ', $objet[2], '<br />'; // Troisième élément
+echo 'Modification du troisième élément... ';
+$objet[2] = 'Hello world !';
+echo 'Nouvelle valeur : ', $objet[2], '<br /><br />'; // Hello world !
+
+echo 'Destruction du quatrième élément...<br />';
+unset($objet[3]);
+
+if (isset($objet[3]))
+{
+  echo '$objet[3] existe toujours... Bizarre...';
+}
+else
+{
+  echo 'Tout se passe bien, $objet[3] n\'existe plus !'; // Tout se passe bien, $objet[3] n'existe plus !
+}
+?>
+
+• L'interface Countable
+
+Elle contient une méthode : la méthode count. 
+Celle-ci doit obligatoirement renvoyer un entier qui sera la valeur renvoyée par la fonction count appelée sur notre objet.
+<?php
+class MaClasse implements SeekableIterator, ArrayAccess, Countable
+{
+  private $position = 0;
+  private $tableau = ['Premier élément', 'Deuxième élément', 'Troisième élément', 'Quatrième élément', 'Cinquième élément'];
+  
+  
+  /* MÉTHODES DE L'INTERFACE SeekableIterator */
+  
+  
+  /**
+   * Retourne l'élément courant du tableau.
+   */
+  public function current()
+  {
+    return $this->tableau[$this->position];
+  }
+  
+  /**
+   * Retourne la clé actuelle (c'est la même que la position dans notre cas).
+   */
+  public function key()
+  {
+    return $this->position;
+  }
+  
+  /**
+   * Déplace le curseur vers l'élément suivant.
+   */
+  public function next()
+  {
+    $this->position++;
+  }
+  
+  /**
+   * Remet la position du curseur à 0.
+   */
+  public function rewind()
+  {
+    $this->position = 0;
+  }
+  
+  /**
+   * Déplace le curseur interne.
+   */
+  public function seek($position)
+  {
+    $anciennePosition = $this->position;
+    $this->position = $position;
+    
+    if (!$this->valid())
+    {
+      trigger_error('La position spécifiée n\'est pas valide', E_USER_WARNING);
+      $this->position = $anciennePosition;
+    }
+  }
+  
+  /**
+   * Permet de tester si la position actuelle est valide.
+   */
+  public function valid()
+  {
+    return isset($this->tableau[$this->position]);
+  }
+  
+  
+  /* MÉTHODES DE L'INTERFACE ArrayAccess */
+  
+  
+  /**
+   * Vérifie si la clé existe.
+   */
+  public function offsetExists($key)
+  {
+    return isset($this->tableau[$key]);
+  }
+  
+  /**
+   * Retourne la valeur de la clé demandée.
+   * Une notice sera émise si la clé n'existe pas, comme pour les vrais tableaux.
+   */
+  public function offsetGet($key)
+  {
+    return $this->tableau[$key];
+  }
+  
+  /**
+   * Assigne une valeur à une entrée.
+   */
+  public function offsetSet($key, $value)
+  {
+    $this->tableau[$key] = $value;
+  }
+  
+  /**
+   * Supprime une entrée et émettra une erreur si elle n'existe pas, comme pour les vrais tableaux.
+   */
+  public function offsetUnset($key)
+  {
+    unset($this->tableau[$key]);
+  }
+  
+  
+  /* MÉTHODES DE L'INTERFACE Countable */
+  
+  
+  /**
+   * Retourne le nombre d'entrées de notre tableau.
+   */
+  public function count()
+  {
+    return count($this->tableau);
+  }
+}
+
+$objet = new MaClasse;
+
+echo 'Parcours de l\'objet...<br />';
+foreach ($objet as $key => $value)
+{
+  echo $key, ' => ', $value, '<br />';
+}
+
+echo '<br />Remise du curseur en troisième position...<br />';
+$objet->seek(2);
+echo 'Élément courant : ', $objet->current(), '<br />';
+
+echo '<br />Affichage du troisième élément : ', $objet[2], '<br />';
+echo 'Modification du troisième élément... ';
+$objet[2] = 'Hello world !';
+echo 'Nouvelle valeur : ', $objet[2], '<br /><br />';
+
+echo 'Actuellement, mon tableau comporte ', count($objet), ' entrées<br /><br />';
+
+echo 'Destruction du quatrième élément...<br />';
+unset($objet[3]);
+
+if (isset($objet[3]))
+{
+  echo '$objet[3] existe toujours... Bizarre...';
+}
+else
+{
+  echo 'Tout se passe bien, $objet[3] n\'existe plus !';
+}
+
+echo '<br /><br />Maintenant, il n\'en comporte plus que ', count($objet), ' !'; // 4
+?>
+
+• Bonus : la classe ArrayIterator
+
+La classe que nous venons de créer pour pouvoir créer des « objets-tableaux » existe déjà.
+En effet, PHP possède nativement une classe nommée ArrayIterator.
+Comme notre précédente classe, celle-ci implémente les quatre interfaces qu'on a vues.
+Elle possède les mêmes méthodes, à une différence près :
+cette classe implémente un constructeur qui accepte un tableau en guise d'argument.
+Comme vous l'aurez deviné, c'est ce tableau qui sera « transformé » en objet.
+Ainsi, si vous faites un echo $monInstanceArrayIterator['cle'],
+alors à l'écran s'affichera l'entrée qui a pour clé cle du tableau passé en paramètre.
+
+
+XI) LES EXCEPTIONS
+
+◘ Une différente gestion des erreurs
+
+• Lancer une exception 
+
+Quand on lance une exception, on doit, en gros, lancer une instance de la classe Exception.
+Le constructeur de la classe Exception demande en paramètre le message d'erreur, son code et l'exception précédente.
+Ces trois paramètres sont facultatifs.
+<?php
+function additionner($a, $b)
+{
+  if (!is_numeric($a) || !is_numeric($b))
+  {
+    // On lance une nouvelle exception grâce à throw et on instancie directement un objet de la classe Exception.
+    throw new Exception('Les deux paramètres doivent être des nombres');
+  }
+  
+  return $a + $b;
+}
+
+echo additionner(12, 3), '<br />';
+echo additionner('azerty', 54), '<br />'; // Uncaught exception 'Exception' with message 'Les deux paramètres doivent être des nombres' in... 
+echo additionner(4, 8);
+?>
+
+(!) Ne lancez jamais d'exception dans un destructeur !
+
+• Attraper une exception 
+
+Si une exception est lancée, alors on attrapera celle-ci afin qu'aucune erreur fatale ne soit lancée
+et que de tels messages ne s'affichent plus.
+Nous allons placer nos instructions dans un bloc try.
+Qui dit bloc try dit aussi bloc catch car l'un ne va pas sans l'autre.
+
+<?php
+function additionner($a, $b)
+{
+  if (!is_numeric($a) || !is_numeric($b))
+  {
+    throw new Exception('Les deux paramètres doivent être des nombres');
+  }
+  
+  return $a + $b;
+}
+
+try // Nous allons essayer d'effectuer les instructions situées dans ce bloc.
+{
+  echo additionner(12, 3), '<br />'; // 15 
+  echo additionner('azerty', 54), '<br />'; // absent
+  echo additionner(4, 8); // absent
+}
+
+catch (Exception $e) // On va attraper les exceptions "Exception" s'il y en a une qui est levée
+{
+  echo 'Une exception a été lancée. Message d\'erreur : ', $e->getMessage(); // getCode() pour récupérer le code
+  // Une exception a été lancée. Message d'erreur : Les deux paramètres doivent être des nombres
+  // interrompt la lecture du bloc (pas de troisième message)
+}
+
+echo 'Fin du script'; // Ce message s'affiche, ça prouve bien que le script est exécuté jusqu'au bout.
+?>
+
+◘ Des exceptions spécialisées 
+
+• Hériter la classe Exception 
+
+PHP nous offre la possibilité d'hériter la classe Exception afin de personnaliser nos exceptions.
+Par exemple, nous pouvons créer une classe MonException qui réécrira des méthodes de la classe Exception
+ou en créera de nouvelles qui lui seront propres.
+
+Voici la liste des attributs et méthodes de la classe Exception tirée de la documentation (https://www.php.net/manual/fr/language.exceptions.extending.php) :
+<?php
+class Exception
+{
+  protected $message = 'exception inconnu'; // Message de l'exception.
+  protected $code = 0; // Code de l'exception défini par l'utilisateur.
+  protected $file; // Nom du fichier source de l'exception.
+  protected $line; // Ligne de la source de l'exception.
+  
+  final function getMessage(); // Message de l'exception.
+  final function getCode(); // Code de l'exception.
+  final function getFile(); // Nom du fichier source.
+  final function getLine(); // Ligne du fichier source.
+  final function getTrace(); // Un tableau de backtrace().
+  final function getTraceAsString(); // Chaîne formattée de trace.
+  
+  /* Remplacable */
+  function __construct ($message = NULL, $code = 0);
+  function __toString(); // Chaîne formatée pour l'affichage.
+}
+?>
+
+Nous allons donc créer notre classe MonException qui, par exemple,
+réécrira le constructeur en rendant obligatoire le premier argument ainsi que la méthode
+__toString pour n'afficher que le message d'erreur (c'est uniquement ça qui nous intéresse).
+<?php
+class MonException extends Exception
+{
+  public function __construct($message, $code = 0)
+  {
+    parent::__construct($message, $code);
+  }
+  
+  public function __toString()
+  {
+    return $this->message;
+  }
+}
+?>
+
+Maintenant nous lancerons une exception de type MonException :
+<?php
+class MonException extends Exception
+{
+  public function __construct($message, $code = 0)
+  {
+    parent::__construct($message, $code);
+  }
+  
+  public function __toString()
+  {
+    return $this->message;
+  }
+}
+
+function additionner($a, $b)
+{
+  if (!is_numeric($a) || !is_numeric($b))
+  {
+    throw new MonException('Les deux paramètres doivent être des nombres'); // On lance une exception "MonException".
+  }
+  
+  return $a + $b;
+}
+
+try // Nous allons essayer d'effectuer les instructions situées dans ce bloc.
+{
+  echo additionner(12, 3), '<br />';
+  echo additionner('azerty', 54), '<br />';
+  echo additionner(4, 8);
+}
+
+catch (MonException $e) // Nous allons attraper les exceptions "MonException" s'il y en a une qui est levée.
+{
+  echo $e; // On affiche le message d'erreur grâce à la méthode __toString que l'on a écrite.
+}
+
+echo '<br />Fin du script'; // Ce message s'affiche, ça prouve bien que le script est exécuté jusqu'au bout.
+?>
+
+• Emboîter plusieurs blocs catch 
+
+<?php
+class MonException extends Exception
+{
+  public function __construct($message, $code = 0)
+  {
+    parent::__construct($message, $code);
+  }
+  
+  public function __toString()
+  {
+    return $this->message;
+  }
+}
+
+function additionner($a, $b)
+{
+  if (!is_numeric($a) || !is_numeric($b))
+  {
+    throw new MonException('Les deux paramètres doivent être des nombres'); // On lance une exception "MonException".
+  }
+  
+  if (func_num_args() > 2)
+  {
+    throw new Exception('Pas plus de deux arguments ne doivent être passés à la fonction'); // Cette fois-ci, on lance une exception "Exception".
+  }
+  
+  return $a + $b;
+}
+
+try // Nous allons essayer d'effectuer les instructions situées dans ce bloc.
+{
+  echo additionner(12, 3), '<br />';
+  echo additionner(15, 54, 45), '<br />';
+}
+
+catch (MonException $e) // Nous allons attraper les exceptions "MonException" s'il y en a une qui est levée.
+{
+  echo '[MonException] : ', $e; // On affiche le message d'erreur grâce à la méthode __toString que l'on a écrite.
+  // pas exécuté
+}
+
+catch (Exception $e) // Si l'exception n'est toujours pas attrapée, alors nous allons essayer d'attraper l'exception "Exception".
+{
+  echo '[Exception] : ', $e->getMessage(); // La méthode __toString() nous affiche trop d'informations, nous voulons juste le message d'erreur.
+  // exécuté
+}
+
+echo '<br />Fin du script'; // Ce message s'affiche, cela prouve bien que le script est exécuté jusqu'au bout.
+?>
+
+• Exemple concret : la classe PDOException
+
+PDO a sa classe d'exception : PDOException. Celle-ci n'hérite pas directement de la classe Exception mais de RuntimeException. 
+Il s'agit juste d'une classe qui est instanciée pour émettre une exception lors de l'exécution du script.
+Il existe une classe pour chaque circonstance dans laquelle l'exception est lancée : https://www.php.net/manual/fr/spl.exceptions.php
+<?php
+try
+{
+  $db = new PDO('mysql:host=localhost;dbname=tests', 'root', ''); // Tentative de connexion.
+  echo 'Connexion réussie !'; // Si la connexion a réussi, alors cette instruction sera exécutée.
+}
+
+catch (PDOException $e) // On attrape les exceptions PDOException.
+{
+  echo 'La connexion a échoué.<br />';
+  echo 'Informations : [', $e->getCode(), '] ', $e->getMessage(); // On affiche le n° de l'erreur ainsi que le message.
+}
+?>
+
+• Exceptions pré-définies
+
+https://www.php.net/manual/fr/spl.exceptions.php
+
+Au lieu de lancer tout le temps une exception en instanciant Exception,
+il est préférable d'instancier la classe adaptée à la situation.
+Par exemple, reprenons le code proposé en début de chapitre :
+<?php
+function additionner($a, $b)
+{
+  if (!is_numeric($a) || !is_numeric($b))
+  {
+    throw new InvalidArgumentException('Les deux paramètres doivent être des nombres'); // remplace Exception
+    // La classe à instancier ici est celle qui doit l'être lorsqu'un paramètre est invalide
+  }
+  
+  return $a + $b;
+}
+
+echo additionner(12, 3), '<br />';
+echo additionner('azerty', 54), '<br />';
+echo additionner(4, 8);
+?>
+
+• Exécuter un code même si l'exception n'est pas attrapée
+
+Si jamais une exception est lancée dans un bloc try mais non attrapée dans un bloc catch,
+alors une erreur fatale sera levée car l'exception ne sera pas attrapée.
+Il existe une façon d'exécuter du code avant de lever l'erreur fatale grâce au bloc finally. 
+<?php
+$db = new PDO('mysql:host=localhost;dbname=tests', 'root', '');
+
+try
+{
+  // Quelques opérations sur la base de données
+}
+finally
+{
+  echo 'Action effectuée quoi qu\'il arrive';
+  // fermeture d'un fichier, d'une connexion, etc.
+  // permet de s'assurer que le script se terminera plus ou moins comme il faut.
+}
+?>
+
+
+XII) LES TRAITS
+
+◘ Le principe des traits 
+
+• Le problème de la duplication
+
+Soit 2 classes qui doivent formater (à chaque fois) le texte en HTML :
+<?php
+class Writer
+{
+  public function write($text)
+  {
+    $text = '<p>Date : '.date('d/m/Y').'</p>'."\n".
+            '<p>'.nl2br($text).'</p>';
+    file_put_contents('fichier.txt', $text);
+  }
+}
+
+class Mailer
+{
+  public function send($text)
+  {
+    $text = '<p>Date : '.date('d/m/Y').'</p>'."\n".
+            '<p>'.nl2br($text).'</p>';
+    mail('login@fai.tld', 'Test avec les traits', $text);
+  }
+}
+?>
+
+• Résoudre le problème grâce aux traits
+
+○ Syntaxe de base
+Les traits définissent des méthodes que les classes peuvent utiliser.
+les traits servent à isoler des méthodes afin de pouvoir les utiliser dans deux classes totalement indépendantes.
+Un trait est une mini-classe.
+<?php
+trait MonTrait
+{
+  public function hello()
+  {
+    echo 'Hello world !';
+  }
+}
+
+class A
+{
+  use MonTrait; // toutes les méthodes du trait vont être importées dans la classe
+}
+
+class B
+{
+  use MonTrait;
+}
+
+$a = new A;
+$a->hello(); // Affiche « Hello world ! ».
+
+$b = new b;
+$b->hello(); // Affiche aussi « Hello world ! ».
+?>
+
+○ Retour sur notre formateur 
+<?php
+trait HTMLFormater
+{
+  public function format($text)
+  {
+    return '<p>Date : '.date('d/m/Y').'</p>'."\n".
+           '<p>'.nl2br($text).'</p>';
+  }
+}
+
+class Writer
+{
+  use HTMLFormater;
+  
+  public function write($text)
+  {
+    file_put_contents('fichier.txt', $this->format($text));
+  }
+}
+
+class Mailer
+{
+  use HTMLFormater;
+  
+  public function send($text)
+  {
+    mail('login@fai.tld', 'Test avec les traits', $this->format($text));
+  }
+}
+
+$w = new Writer;
+$w->write('Hello world!');
+
+$m = new Mailer;
+$m->send('Hello world!');
+?>
+
+• Utiliser plusieurs traits 
+
+○ Syntaxe
+Pour utiliser plusieurs traits, il suffit de lister tous les traits à utiliser séparés par des virgules :
+<?php
+trait HTMLFormater
+{
+  public function formatHTML($text)
+  {
+    return '<p>Date : '.date('d/m/Y').'</p>'."\n".
+           '<p>'.nl2br($text).'</p>';
+  }
+}
+
+trait TextFormater
+{
+  public function formatText($text)
+  {
+    return 'Date : '.date('d/m/Y')."\n".$text;
+  }
+}
+
+class Writer
+{
+  use HTMLFormater, TextFormater;
+  
+  public function write($text)
+  {
+    file_put_contents('fichier.txt', $this->formatHTML($text));
+  }
+}
+?>
+
+• Résolution des conflits 
+
+Nous pouvons donner une priorité à une méthode d'un trait afin de lui permettre d'écraser
+la méthode de l'autre trait si il y en a une identique.
+Par exemple, si dans notre classe Writer nous voulions formater notre message en HTML, nous pourrions faire :
+<?php
+class Writer
+{
+  use HTMLFormater, TextFormater
+  {
+    HTMLFormater::format insteadof TextFormater; // La méthode format() du trait HTMLFormater écrasera la méthode du même nom
+    // du trait TextFormater (si elle y est définie).
+  }
+  
+  public function write($text)
+  {
+    file_put_contents('fichier.txt', $this->format($text));
+  }
+}
+?>
+
+• Méthodes de traits vs. méthodes de classes
+
+○ La classe plus forte que le trait
+Si une classe déclare une méthode et qu'elle utilise un trait possédant cette même méthode,
+alors la méthode déclarée dans la classe l'emportera sur la méthode déclarée dans le trait. Exemple :
+<?php
+trait MonTrait
+{
+  public function sayHello()
+  {
+    echo 'Hello !';
+  }
+}
+
+class MaClasse
+{
+  use MonTrait;
+  
+  public function sayHello()
+  {
+    echo 'Bonjour !';
+  }
+}
+
+$objet = new MaClasse;
+$objet->sayHello(); // Affiche « Bonjour ! ».
+?>
+
+○ Le trait plus fort que la mère
+À l'inverse, si une classe utilise un trait possédant une méthode déjà implémentée dans la classe mère
+de la classe utilisant le trait, alors ce sera la méthode du trait qui sera utilisée
+(la méthode du trait écrasera celle de la méthode de la classe mère). Exemple :
+<?php
+trait MonTrait
+{
+  public function speak()
+  {
+    echo 'Je suis un trait !';
+  }
+}
+
+class Mere
+{
+  public function speak()
+  {
+    echo 'Je suis une classe mère !';
+  }
+}
+
+class Fille extends Mere
+{
+  use MonTrait;
+}
+
+$fille = new Fille;
+$fille->speak(); // Affiche « Je suis un trait ! »
+?>
+
+◘ Plus loin avec les traits 
+
+• Définition d'attributs 
+
+○ Syntaxe
+<?php
+trait MonTrait
+{
+  protected $attr = 'Hello !';
+  
+  public function showAttr()
+  {
+    echo $this->attr;
+  }
+}
+
+class MaClasse
+{
+  use MonTrait;
+}
+
+$fille = new MaClasse;
+$fille->showAttr();
+?>
+
+○ Conflits entre attributs
+Si un attribut est défini dans un trait,
+alors la classe utilisant le trait ne peut pas définir d'attribut possédant le même nom.
+Il est impossible, comme nous l'avons fait avec les méthodes,
+de définir des attributs prioritaires. Veillez donc bien à ne pas utiliser ce genre de code :
+<?php
+trait MonTrait
+{
+  protected $attr = 'Hello !';
+}
+
+class MaClasse
+{
+  use MonTrait;
+  
+  protected $attr = 'Hello !'; // Lèvera une erreur stricte.
+  protected $attr = 'Bonjour !'; // Lèvera une erreur fatale.
+  private $attr = 'Hello !'; // Lèvera une erreur fatale.
+}
+?>
+
+• Traits composés d'autres traits 
+
+La façon de procéder est la même qu'avec les classes,
+tout comme la gestion des conflits entre méthodes. Voici un exemple :
+<?php
+trait A
+{
+  public function saySomething()
+  {
+    echo 'Je suis le trait A !';
+  }
+}
+
+trait B
+{
+  use A;
+  
+  public function saySomethingElse()
+  {
+    echo 'Je suis le trait B !';
+  }
+}
+
+class MaClasse
+{
+  use B;
+}
+
+$o = new MaClasse;
+$o->saySomething(); // Affiche « Je suis le trait A ! »
+$o->saySomethingElse(); // Affiche « Je suis le trait B ! »
+?>
+
+• Changer la visibilité et le nom des méthodes
+
+Si un trait implémente une méthode,
+toute classe utilisant ce trait a la capacité de changer sa visibilité,
+c'est-à-dire la passer en privé, protégé ou public.
+<?php
+trait A
+{
+  public function saySomething()
+  {
+    echo 'Je suis le trait A !';
+  }
+}
+
+class MaClasse
+{
+  use A
+  {
+    saySomething as protected;
+  }
+}
+
+$o = new MaClasse;
+$o->saySomething(); // Lèvera une erreur fatale car on tente d'accéder à une méthode protégée.
+?>
+
+<?php
+trait A
+{
+  public function saySomething()
+  {
+    echo 'Je suis le trait A !';
+  }
+}
+
+class MaClasse
+{
+  use A
+  {
+    saySomething as sayWhoYouAre;
+  }
+}
+
+$o = new MaClasse;
+$o->sayWhoYouAre(); // Affichera « Je suis le trait A ! »
+$o->saySomething(); // Affichera « Je suis le trait A ! »
+?>
+
+<?php
+trait A
+{
+  public function saySomething()
+  {
+    echo 'Je suis le trait A !';
+  }
+}
+
+class MaClasse
+{
+  use A
+  {
+    saySomething as protected sayWhoYouAre;
+  }
+}
+
+$o = new MaClasse;
+$o->saySomething(); // Affichera « Je suis le trait A ! ».
+$o->sayWhoYouAre(); // Lèvera une erreur fatale, car l'alias créé est une méthode protégée.
+?>
+
+• Méthodes abstraites dans les traits 
+
+On peut forcer la classe utilisant le trait à implémenter certaines méthodes au moyen de méthodes abstraites.
+Ainsi, ce code lèvera une erreur fatale :
+<?php
+trait A
+{
+  abstract public function saySomething();
+}
+
+class MaClasse
+{
+  use A;
+}
+?>
+
+Cependant, si la classe utilisant le trait déclarant une méthode abstraite est elle aussi abstraite,
+alors ce sera à ses classes filles d'implémenter les méthodes abstraites du trait
+(elle peut le faire, mais elle n'est pas obligée). Exemple :
+
+<?php
+trait A
+{
+  abstract public function saySomething();
+}
+
+abstract class Mere
+{
+  use A;
+}
+
+// Jusque-là, aucune erreur n'est levée.
+
+class Fille extends Mere
+{
+  // Par contre, une erreur fatale est ici levée, car la méthode saySomething() n'a pas été implémentée.
+}
+?>
