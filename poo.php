@@ -4577,3 +4577,705 @@ class Fille extends Mere
   // Par contre, une erreur fatale est ici levée, car la méthode saySomething() n'a pas été implémentée.
 }
 ?>
+
+
+XIII) L'API DE RÉFLEXIVITÉ
+
+L'API de réflexivité va nous permettre d'obtenir des informations sur nos classes, attributs et méthodes.
+
+◘ Obtenir des informations sur ses classes 
+
+Nous allons instancier une classe qui nous fournira des informations sur telle classe.
+Dans cette section, il s'agit de la classe ReflectionClass.
+<?php
+$classeMagicien = new ReflectionClass('Magicien'); // Le nom de la classe doit être entre apostrophes ou guillemets.
+// la classe ReflectionClass possède énormément de méthodes
+?>
+
+Il est également possible d'obtenir des informations sur une classe grâce à un objet.
+Nous allons pour cela instancier la classe ReflectionObject en fournissant l'instance en guise d'argument.
+<?php
+$magicien = new Magicien(['nom' => 'vyk12', 'type' => 'magicien']);
+$classeMagicien = new ReflectionObject($magicien);
+?>
+
+• Informations propres à la classe
+
+○ Les attributs
+Pour savoir si la classe possède tel attribut, tournons-nous vers ReflectionClass::hasProperty($atrributeName).
+Cette méthode retourne vrai si l'attribut passé en paramètre existe et faux s'il n'existe pas. Exemple :
+<?php
+if ($classeMagicien->hasProperty('magie'))
+{
+  echo 'La classe Magicien possède un attribut $magie';
+}
+else
+{
+  echo 'La classe Magicien ne possède pas d\'attribut $magie';
+}
+?>
+
+○ Les méthodes
+Si vous voulez savoir si la classe implémente telle méthode, alors il va falloir regarder du côté de ReflectionClass::hasMethod($methodName).
+Celle-ci retourne vrai si la méthode est implémentée ou faux si elle ne l'est pas. Exemple :
+<?php
+if ($classeMagicien->hasMethod('lancerUnSort'))
+{
+  echo 'La classe Magicien implémente une méthode lancerUnSort()';
+}
+else
+{
+  echo 'La classe Magicien n\'implémente pas de méthode lancerUnSort()';
+}
+?>
+
+○ Les CONSTANTES 
+Il est possible de savoir si telle classe possède telle constante.
+Ceci grâce à la méthodeReflectionClass::hasConstant($constName).
+Vous pouvez aussi récupérer la valeur de la constante grâce à ReflectionClass::getConstant($constName). 
+Exemple :
+<?php
+if ($classePersonnage->hasConstant('NOUVEAU'))
+{
+  echo 'La classe Personnage possède une constante NOUVEAU (celle ci vaut ', 
+  $classePersonnage->getConstant('NOUVEAU'), ')';
+}
+else
+{
+  echo 'La classe Personnage ne possède pas de constante NOUVEAU';
+}
+?>
+Nous pouvons également retrouver la liste complète des constantes d'une classe
+sous forme de tableau grâce à ReflectionClass::getConstants() :
+<?php
+echo '<pre>', print_r($classePersonnage->getConstants(), true), '</pre>';
+?>
+
+• Les relations entre les classes 
+
+○ L'héritage
+Pour récupérer la classe parente de notre classe => ReflectionClass::getParentClass().
+Cette méthode nous renvoie la classe parente s'il y en a une : la valeur de retour sera
+une instance de la classe ReflectionClass qui représentera la classe parente !
+Si la classe ne possède pas de parent, alors la valeur de retour sera false.
+<?php
+$classeMagicien = new ReflectionClass('Magicien');
+
+if ($parent = $classeMagicien->getParentClass())
+{
+  echo 'La classe Magicien a un parent : il s\'agit de la classe ', $parent->getName();
+  // getName() renvoie le nom de la classe
+}
+else
+{
+  echo 'La classe Magicien n\'a pas de parent';
+}
+?>
+
+Nous pouvons également citer ReflectionClass::isSubclassOf($className). 
+Cette méthode nous renvoie vrai si la classe spécifiée en paramètre est le parent de notre classe. Exemple :
+<?php
+if ($classeMagicien->isSubclassOf('Personnage'))
+{
+  echo 'La classe Magicien a pour parent la classe Personnage';
+}
+else
+{
+  echo 'La classe Magicien n\'a la classe Personnage pour parent';
+}
+?>
+
+Pour savoir si la classe est abstraite ou finale => ReflectionClass::isAbstract() et ReflectionClass::isFinal().
+Notre classe Personnage est abstraite, vérifions donc cela :
+<?php
+$classePersonnage = new ReflectionClass('Personnage');
+
+// Est-elle abstraite ?
+if ($classePersonnage->isAbstract())
+{
+  echo 'La classe Personnage est abstraite';
+}
+else
+{
+  echo 'La classe Personnage n\'est pas abstraite';
+}
+
+// Est-elle finale ?
+if ($classePersonnage->isFinal())
+{
+  echo 'La classe Personnage est finale';
+}
+else
+{
+  echo 'La classe Personnage n\'est pas finale';
+}
+?>
+
+ReflectionClass::isInstantiable() permet également de savoir si notre classe est instanciable.
+Comme la classePersonnage est abstraite, elle ne peut pas l'être. Vérifions cela :
+<?php
+if ($classePersonnage->isInstantiable())
+{
+  echo 'La classe Personnage est instanciable';
+}
+else
+{
+  echo 'La classe personnage n\'est pas instanciable';
+}
+?>
+
+○ Les interfaces 
+Une interface => classe entièrement abstraite :
+nous pouvons donc instancier la classe ReflectionClass en spécifiant une interface en paramètre
+et vérifier si celle-ci est bien une interface grâce à la méthode ReflectionClass::isInterface().
+<?php
+$classeIMagicien = new ReflectionClass('iMagicien');
+
+if ($classeIMagicien->isInterface())
+{
+   echo 'La classe iMagicien est une interface';
+}
+else
+{
+  echo 'La classe iMagicien n\'est pas une interface';
+}
+?>
+
+Vous pouvez aussi savoir si telle classe implémente telle interface
+grâce à la méthode ReflectionClass::implementsInterface($interfaceName) :
+<?php
+if ($classeMagicien->implementsInterface('iMagicien'))
+{
+  echo 'La classe Magicien implémente l\'interface iMagicien';
+}
+else
+{
+  echo 'La classe Magicien n\'implémente pas l\'interface iMagicien';
+}
+?>
+
+Il est aussi possible de récupérer toutes les interfaces implémentées, interfaces contenues dans un tableau.
+Pour cela, deux méthodes sont à votre disposition :
+ReflectionClass::getInterfaces() et ReflectionClass::getInterfaceNames(). 
+
+◘ Obtenir des informations sur les attributs de ses classes
+
+La classe qui va nous permettre d'en savoir plus sur les attributs est ReflectionProperty.
+Il y a deux moyens d'utiliser cette classe : l'instancier directement ou utiliser une méthode
+de ReflectionClass qui nous renverra une instance de ReflectionProperty.
+
+• Instanciation directe
+
+<?php
+$attributMagie = new ReflectionProperty('Magicien', 'magie'); // nom de classe + nom d'attribut
+?>
+
+• Récupération d'attribut d'une classe 
+
+○ Récupérer un attribut
+<?php
+$classeMagicien = new ReflectionClass('Magicien'); // ReflectionClass
+$attributMagie = $classeMagicien->getProperty('magie'); // + getProperty
+?>
+
+○ Récupérer tous les attributs 
+<?php
+$classePersonnage = new ReflectionClass('Personnage');
+$attributsPersonnage = $classePersonnage->getProperties(); // tableau contenant
+// autant d'instances de ReflectionProperty que d'attributs
+?>
+
+• Le nom et la valeur des attributs
+
+Récupérer le nom de l'attribut => ReflectionProperty::getName();
+Récupérer la valeur de celui-ci => ReflectionProperty::getValue($object);
+<?php
+$classeMagicien = new ReflectionClass('Magicien');
+$magicien = new Magicien(['nom' => 'vyk12', 'type' => 'magicien']);
+
+foreach ($classeMagicien->getProperties() as $attribut)
+{
+  $attribut->setAccessible(true); // rend l'attribut public et donc accessible
+  echo $attribut->getName(), ' => ', $attribut->getValue($magicien);
+  $attribut->setAccessible(false); // rend l'attribut de nouveau privé (sécurité)
+}
+?>
+
+• Portée de l'attribut
+
+Savoir si un attribut est privé, protégé, public, statique =>
+ReflectionProperty::isPrivate(),
+ReflectionProperty::isProtected(),
+ReflectionProperty::isPublic(),
+ReflectionProperty::isStatic().
+<?php
+$uneClasse = new ReflectionClass('MaClasse');
+
+foreach ($uneClasse->getProperties() as $attribut)
+{
+  echo $attribut->getName(), ' => attribut ';
+  
+  if ($attribut->isPublic())
+  {
+    echo 'public';
+  }
+  elseif ($attribut->isProtected())
+  {
+    echo 'protégé';
+  }
+  else
+  {
+    echo 'privé';
+  }
+  
+  if ($attribut->isStatic())
+  {
+    echo ' (attribut statique)';
+  }
+}
+?>
+
+• Les attributs statiques
+
+Le traitement d'attributs statiques diffère un peu :
+ce n'est pas un attribut d'une instance mais un attribut de la classe.
+Ainsi, vous n'êtes pas obligés de spécifier d'instance lors de l'appel de ReflectionProperty::getValue()
+car un attribut statique n'appartient à aucune instance.
+
+Vous pouvez directement appeler ReflectionClass::getStaticPropertyValue($attr),
+où $attr est le nom de l'attribut.
+Et appeler ReflectionClass::setStaticPropertyValue($attr, $value)
+où $value est la nouvelle valeur de l'attribut.
+
+<?php
+class A
+{
+  public static $attr = 'Hello world !';
+}
+
+$classeA = new ReflectionClass('A');
+echo $classeA->getStaticPropertyValue('attr'); // Affiche Hello world !
+
+$classeA->setStaticPropertyValue('attr', 'Bonjour le monde !');
+echo $classeA->getStaticPropertyValue('attr'); // Affiche Bonjour le monde !
+?>
+
+Obtenir tous les attributs statiques => ReflectionClass::getStaticProperties() 
+=> tableau de valeurs de chaque attribut;
+<?php
+class A
+{
+  public static $attr1 = 'Hello world !';
+  public static $attr2 = 'Bonjour le monde !';
+}
+
+$classeA = new ReflectionClass('A');
+
+foreach ($classeA->getStaticProperties() as $attr)
+{
+  echo $attr;
+}
+
+// À l'écran s'affichera Hello world ! Bonjour le monde !
+?>
+
+◘ Obtenir des informations sur les méthodes de ses classes
+
+Obtenir des informations concernant une méthode => ReflectionMethod()
+
+• Création d'une instance de ReflectionMethod()
+
+○ Instanciation directe
+<?php
+class A
+{
+  public function hello($arg1, $arg2, $arg3 = 1, $arg4 = 'Hello world !')
+  {
+    echo 'Hello world !';
+  }
+}
+
+$methode = new ReflectionMethod('A', 'hello'); // nom de la classe, nom de la métode
+?>
+
+○ Récupération d'une méthode d'une classe
+Récupérer la méthode de la classe grâce à ReflectionClass::getMethod($name).
+Celle-ci renvoie une instance de ReflectionMethod représentant la méthode.
+<?php
+class A
+{
+  public function hello($arg1, $arg2, $arg3 = 1, $arg4 = 'Hello world !')
+  {
+    echo 'Hello world !';
+  }
+}
+
+$classeA = new ReflectionClass('A');
+$methode = $classeA->getMethod('hello');
+?>
+
+• Publique, protégée ou privée ?
+
+ReflectionMethod::isPublic(), ReflectionMethod::isProtected() et ReflectionMethod::isPrivate();
+ReflectionMethod::isStatic()
+<?php
+$classeA = new ReflectionClass('A');
+$methode = $classeA->getMethod('hello');
+
+echo 'La méthode ', $methode->getName(), ' est ';
+
+if ($methode->isPublic())
+{
+  echo 'publique';
+}
+elseif ($methode->isProtected())
+{
+  echo 'protégée';
+}
+else
+{
+  echo 'privée';
+}
+
+if ($methode->isStatic())
+{
+  echo ' (en plus elle est statique)';
+}
+?>
+
+• Abstraite ? Finale ?
+
+ReflectionMethod::isAbstract() et ReflectionMethod::isFinal().
+<?php
+$classeA = new ReflectionClass('A');
+$methode = $classeA->getMethod('hello');
+
+echo 'La méthode ', $methode->getName(), ' est ';
+
+if ($methode->isAbstract())
+{
+  echo 'abstraite';
+}
+elseif ($methode->isFinal())
+{
+  echo 'finale';
+}
+else
+{
+  echo '« normale »';
+}
+?>
+
+• Constructeur ? Destructeur ?
+
+ReflectionMethod::isConstructor() et ReflectionMethod::isDestructor().;
+<?php
+$classeA = new ReflectionClass('A');
+$methode = $classeA->getMethod('hello');
+
+if ($methode->isConstructor())
+{
+  echo 'La méthode ', $methode->getName(), ' est le constructeur'; // autre que __construct possible (PHP 4)
+  //  si la méthode a le même nom que la classe, celle-ci est considérée comme le constructeur de la classe (PHP 4)
+}
+elseif ($methode->isDestructor())
+{
+  echo 'La méthode ', $methode->getName(), ' est le destructeur';
+}
+?>
+
+• Appeler la méthode sur un objet
+
+ReflectionMethod::invoke($object, $args);
+<?php
+class A
+{
+  public function hello($arg1, $arg2, $arg3 = 1, $arg4 = 'Hello world !')
+  {
+    var_dump($arg1, $arg2, $arg3, $arg4);
+  }
+}
+
+$a = new A;
+$hello = new ReflectionMethod('A', 'hello');
+
+$hello->invoke($a, 'test', 'autre test'); // On ne va passer que deux arguments à notre méthode.
+
+// A l'écran s'affichera donc :
+// string(4) "test" string(10) "autre test" int(1) string(13) "Hello world !"
+?>
+
+Une méthode semblable à ReflectionMethod::invoke($object, $args) existe :
+il s'agit de ReflectionMethod::invokeArgs($object, $args).
+La différence entre ces deux méthodes est que la seconde demandera les arguments listés dans un tableau
+au lieu de les lister en paramètres.
+L'équivalent du code précédent avecReflection::invokeArgs()serait donc le suivant :
+<?php
+class A
+{
+  public function hello($arg1, $arg2, $arg3 = 1, $arg4 = 'Hello world !')
+  {
+    var_dump($arg1, $arg2, $arg3, $arg4);
+  }
+}
+
+$a = new A;
+$hello = new ReflectionMethod('A', 'hello');
+
+$hello->invokeArgs($a, ['test', 'autre test']); // Les deux arguments sont cette fois-ci contenus dans un tableau.
+
+// Le résultat affiché est exactement le même.
+?>
+
+(!) Si vous n'avez pas accès à la méthode à cause de sa portée restreinte,
+vous pouvez la rendre accessible comme les attributs,
+grâce à la méthode <?= ReflectionMethod::setAccessible($bool) ?>.
+Si $bool vaut <?= true ?>, alors la méthode sera accessible, sinon elle ne le sera pas.
+
+◘ Utiliser des annotations
+
+Les annotations sont des méta-données relatives à la classe, méthode ou attribut,
+qui apportent des informations sur l'entité souhaitée.
+Elles sont insérées dans des commentaires utilisant le syntaxe doc block, comme ceci :
+<?php
+/**
+ * @version 2.0
+ */
+class Personnage
+{
+  // ...
+}
+?>
+Les annotations s'insèrent à peu près de la même façon, mais la syntaxe est un peu différente.
+
+• Présentation d'addendum
+
+Cette section aura pour but de présenter les annotations par le biais de la bibliothèque addendum
+qui parsera les codes pour en extraire les informations.
+https://code.google.com/archive/p/addendum/downloads (et décompressez l'archive dans le dossier contenant votre projet.)
+
+Avec addendum, toutes les annotations sont des classes héritant d'une classe de base : Annotation.
+Si nous voulons ajouter une annotation, Table par exemple, à notre classe pour spécifier à quelle table
+un objet Personnage correspond, alors il faudra au préalable créer une classe Table.
+<?php
+class Table extends Annotation {}
+?>
+À toute annotation correspond une valeur, valeur à spécifier lors de la déclaration de l'annotation :
+<?php
+/**
+ * @Table("personnages")
+ */
+class Personnage
+{
+
+}
+?>
+
+Les annotations sont surtout utilisées par les frameworks, comme PHPUnit (framework de tests unitaires)
+ou Zend Framework par exemple, ou bien les ORM tel que Doctrine, qui apportent ici des informations
+pour le mapping des classes.
+
+• Récupérer une annotation
+
+Récupérer la classe via la bibliothèque en créant une instance de ReflectionAnnotatedClass :
+<?php
+// On commence par inclure les fichiers nécessaires.
+require 'addendum/annotations.php';
+require 'MyAnnotations.php';
+require 'Personnage.class.php';
+
+$reflectedClass = new ReflectionAnnotatedClass('Personnage');
+?>
+
+Récupérer l'annotation grâce à la méthode getAnnotation => instance de Annotation
+La valeur de l'annotation est contenue dans l'attribut value,
+attribut public disponible dans toutes les classes filles de Annotation:
+<?php
+// On commence par inclure les fichiers nécessaires.
+require 'addendum/annotations.php';
+require 'MyAnnotations.php';
+require 'Personnage.class.php';
+
+$reflectedClass = new ReflectionAnnotatedClass('Personnage');
+
+echo 'La valeur de l\'annotation <strong>Table</strong> est <strong>', $reflectedClass->getAnnotation('Table')->value, '</strong>';
+?>
+
+Il est aussi possible, pour une annotation, d'avoir un tableau comme valeur.
+Il faut mettre la valeur de l'annotation entre accolades et séparer les valeurs du tableau par des virgules :
+<?php
+/**
+ * @Type({'brute', 'guerrier', 'magicien'})
+ */
+class Personnage
+{
+
+}
+?>
+<?php
+print_r($reflectedClass->getAnnotation('Type')->value); // Affiche le détail du tableau.
+?>
+
+Vous pouvez aussi spécifier des clés pour les valeurs comme ceci :
+<?php
+/**
+ * @Type({meilleur = 'magicien', 'moins bon' = 'brute', neutre = 'guerrier'})
+ */
+class Personnage
+{
+  // 'moins bon' car espaces
+}
+?>
+
+Pour placer un tableau dans un autre, il suffit d'ouvrir une nouvelle paire d'accolades :
+<?php
+/**
+ * @UneAnnotation({uneCle = 1337, {uneCle2 = true, uneCle3 = 'une valeur'}})
+ */
+?>
+
+• Savoir si une classe possède telle annotation
+
+Savoir si une classe possède telle annotation => hasAnnotation() :
+<?php
+require 'addendum/annotations.php';
+require 'MyAnnotations.php';
+require 'Personnage.class.php';
+
+$reflectedClass = new ReflectionAnnotatedClass('Personnage');
+
+$ann = 'Table';
+if ($reflectedClass->hasAnnotation($ann))
+{
+  echo 'La classe possède une annotation <strong>', $ann, '</strong> dont la valeur est <strong>', $reflectedClass->getAnnotation($ann)->value, '</strong><br />';
+}
+?>
+
+• Une annotation à multiples valeurs 
+
+Par défaut, une annotation ne contient qu'un attribut ($value) qui est la valeur de l'annotation.
+Pour pouvoir assigner plusieurs valeurs à une annotation, il va donc falloir ajouter des attributs à notre classe.
+<?php
+class ClassInfos extends Annotation
+{
+  public $author; // Il est important ici que les attributs soient publics
+  public $version; // pour que le code extérieur à la classe puisse modifier leur valeur
+}
+?>
+
+Pour assigner les valeurs souhaitées aux attributs, il suffit d'écrire ces valeurs précédées du nom de l'attribut.
+<?php
+/**
+ * @ClassInfos(author = "vyk12", version = "1.0")
+ */
+class Personnage
+{
+
+}
+?>
+
+Pour accéder aux valeurs des attributs, il faut récupérer l'annotation, 
+comme nous l'avons fait précédemment, et récupérer l'attribut.
+<?php
+$classInfos = $reflectedClass->getAnnotation('ClassInfos');
+
+echo $classInfos->author;
+echo $classInfos->version;
+?>
+
+Mais nous ne pouvons pas être sûrs que les valeurs assignées soient correctes
+Solution => réécrire la méthode checkConstraints() (déclarée dans sa classe mère Annotation)
+<?php
+class ClassInfos extends Annotation
+{
+  public $author;
+  public $version;
+  
+  public function checkConstraints($target)
+  {
+    if (!is_string($this->author))
+    {
+      throw new Exception('L\'auteur doit être une chaîne de caractères');
+    }
+    
+    if (!is_numeric($this->version))
+    {
+      throw new Exception('Le numéro de version doit être un nombre valide');
+    }
+  }
+}
+?>
+
+• Des annotations pour les attributs et méthodes
+
+<?php
+/**
+ * @Table("Personnages")
+ * @ClassInfos(author = "vyk12", version = "1.0")
+ */
+class Personnage
+{
+  /**
+   * @AttrInfos(description = 'Contient la force du personnage, de 0 à 100', type = 'int')
+  */
+  protected $force;
+  
+  /**
+   * @ParamInfo(name = 'destination', description = 'La destination du personnage')
+   * @ParamInfo(name = 'vitesse', description = 'La vitesse à laquelle se déplace le personnage')
+   * @MethodInfos(description = 'Déplace le personnage à un autre endroit', return = true, returnDescription = 'Retourne true si le personnage peut se déplacer')
+  */
+  public function deplacer($destination, $vitesse)
+  {
+    // ...
+  }
+}
+?>
+
+Pour récupérer une de ces annotations => ReflectionAnnotatedProperty
+et ReflectionAnnotatedMethod.
+<?php
+$reflectedAttr = new ReflectionAnnotatedProperty('Personnage', 'force');
+$reflectedMethod = new ReflectionAnnotatedMethod('Personnage', 'deplacer');
+
+echo 'Infos concernant l\'attribut :';
+var_dump($reflectedAttr->getAnnotation('AttrInfos'));
+
+echo 'Infos concernant les paramètres de la méthode :';
+var_dump($reflectedMethod->getAllAnnotations('ParamInfo'));
+// permet de récupérer toutes les annotations d'une entité correspondant au nom donné en argument
+
+echo 'Infos concernant la méthode :';
+var_dump($reflectedMethod->getAnnotation('MethodInfos'));
+?>
+
+• Contraindre une annotation à une cible précise
+
+Nos annotations pouvaient être utilisées aussi bien par des classes que par des attributs ou des méthodes.
+Pour dire à cette annotation qu'elle ne peut être utilisée que sur des classes,
+il faut utiliser l'annotation spéciale @Target :
+<?php
+/** @Target("class") */
+class ClassInfos extends Annotation
+{
+  public $author;
+  public $version;
+}
+?>
+
+Cette annotation peut aussi prendre pour valeur property, method ou nesty.;
+https://code.google.com/archive/p/addendum/
+https://github.com/jsuchal/addendum
+
+(!) La classe ReflectionParameter permet d'obtenir des informations sur les paramètres de vos méthodes.
+
+
+XIV) UML : présentation (1/2)
+
+◘ UML : présentation
+
+UML : méthodologie pour mieux visualiser notre application,
+sous forme de diagrammes (et des conventions)
+- Avoir une vue d'ensemble
+- Une meilleure conception de l'orienté objet
+- Un rôle de documentation
