@@ -5279,3 +5279,870 @@ sous forme de diagrammes (et des conventions)
 - Avoir une vue d'ensemble
 - Une meilleure conception de l'orienté objet
 - Un rôle de documentation
+
+◘ Modéliser une classe
+
+• Première approche 
+
+                  ------------ 
+nom classe        News
+                  ------------ 
+attribut          #id: int      [attribut de nombre entier]
+                  ------------ 
+méthodes          +__construct(donnees:array): void [type de valeur de retour]
+                  +hydrate(donnees:array): void [car renvoie rien]
+                  [paramètres ou arguments : $donnees, de type array]
+                  ------------ 
+
+• Le signe + : l'élément suivi de ce signe est public.
+• Le signe # : l'élément suivi de ce signe est protégé.
+• Le signe - : l'élément suivi de ce signe est privé.
+
+• Méthode qui ne renvoie rien : void 
+• Méthode qui renvoie plusieurs types de valeurs : mixed 
+• méthode(attribut:type) => méthode(attribut:mixed), méthode(object NomClasse)
+• Méthode en écrite normale : normale (ni abstraite, ni finale)
+• Méthode en italique : abstraite 
+• <<leaf>> méthode finale
+  
+• Attribut/méthode souligné : statique 
+• constante : attribut public, statique, de type const et en MAJUSCULE
+  ex. +VALEUR_CONSTANTE: const = 42
+
+◘ Modéliser les interactions
+
+• Héritage 
+
+L'héritage est symbolisé par une simple flèche :
+
+--------                          ------------ 
+Mere                                 Fille
+--------                          ------------ 
+#attribut1: int     <----------   #attribut3: float
+#attribut2: array                 ------------ 
+--------                          +__set(nom:string,valeur:mixed): void
++methode(): void                  ------------
+--------
+
+Ce diagramme équivaut au code suivant :
+<?php
+class Mere
+{
+  protected $attribut1;
+  protected $attribut2;
+  
+  public function methode()
+  {
+  
+  }
+}
+
+class Fille extends Mere
+{
+  protected $attribut3;
+  
+  public function __set($nom, $valeur)
+  {
+  
+  }
+}
+?>
+
+• Les interfaces 
+
+--------                          ------------ 
+MaClasse        ------------->    <<interface>>
+--------                            iMaClasse
+                                  ------------ 
+#attribut: string                 +methode1(): int
+--------                          +methode2(): array
++methode(): void                  ------------
+--------
+
+Une interface n'est rien d'autre qu'une classe entièrement abstraite.
+Si une classe doit implémenter une interface, alors on utilisera la flèche en pointillés.
+
+<?php
+interface iMaClasse
+{
+  public function methode1();
+  public function methode2();
+}
+
+class MaClasse implements iMaClasse
+{
+  protected $attribut;
+  
+  public function methode()
+  {
+  
+  }
+  
+  // Ne pas oublier d'implémenter les méthodes de l'interface !
+  
+  public function methode1()
+  {
+  
+  }
+  
+  public function methode2()
+  {
+  
+  }
+}
+?>
+
+• L'association 
+
+2 classes sont associées lorsqu'une instance des deux classes est amenée à interagir avec l'autre instance.
+
+--------         1   gère ►   *   ------------ 
+NewsManager ----------------------    News
+--------                          ------------ 
+#attribut: string                 +methode1(): int
+--------                          +methode2(): array
++methode(): void                  ------------
+--------
+
+Le mot écrit au centre, au-dessus de la ligne est la définition de la relation.
+Il est suivi d'un petit symbole indiquant le sens de l'association.
+Ainsi, on peut lire facilement « NewsManager gère News ».
+
+Ensuite, vous voyez le chiffre 1 écrit à gauche et une astérisque à droite. Ce sont les cardinalités.
+Ces cardinalités présentent le nombre d'instances qui participent à l'interaction.
+Nous voyons donc qu'il y a 1 manager pour une infinité de news.
+On peut désormais lire facilement « 1 NewsManager gère une infinité de News ».
+Les cardinalités peuvent être écrites sous différentes formes :
+  ○  x (nombre entier) : tout simplement la valeur exacte de x.
+  ○  x..y : de x à y (exemple : 1..5).
+  ○  * : une infinité.
+  ○  x..* : x ou plus (exemple : 5..*).
+
+• L'agrégation 
+
+On parlera d'agrégation entre deux classes
+lorsque l'une d'entre elles contiendra au moins une instance de l'autre classe. 
+
+--------                          ------------ 
+NewsCollection                        News
+--------             organise   * ------------ 
+#liste: array  <>-----------------#id: int
+--------                          ------------
++sort(): array                    +hydrate(donnees:array): void
+--------                          ------------
+
+Vous pouvez remarquer qu'il n'y a pas de cardinalité du côté du losange.
+En effet, le côté ayant le losange signifie qu'il y a obligatoirement
+une et une seule instance de la classe par relation (ici la classe est NewsCollection).
+
+• La composition 
+
+La composition est une agrégation particulière.
+Imaginons que nous ayons une classe A qui contient une ou plusieurs instance(s) de B. 
+On parlera de composition si, lorsque l'instance de A sera supprimée,
+toutes les instances de B contenues dans l'instance de A sont elles aussi supprimées
+(ce qui n'était pas le cas avec l'agrégation).
+
+--------                          ------------ 
+NewsCollection                        News
+--------             organise   * ------------ 
+#liste: array  ◄►-----------------#id: int
+--------                          ------------
++__destruct(): void               +hydrate(donnees:array): void
++sort(): array                    ------------
+--------
+
+Notez la présence de la méthode __destruct() qui sera chargée de détruire les instances de la classe News. 
+Cependant, celle-ci n'est pas obligatoire : vous pouvez très bien, dans l'une de vos méthodes,
+placer un $this->liste[] = new News, 
+et l'instance créée puis stockée dans l'attribut $liste sera donc automatiquement détruit.
+
+
+XV) UML : modélisons nos classes (2/2)
+
+Un logiciel de modélisation de diagrammes UML => Dia 
+Une extension qui permet de convertir les diagrammes UML en code PHP a été développée pour ce logiciel,
+le tout commenté avec une phpdoc
+Télécharger Dia => http://dia-installer.de/
+Installation de l'extension uml2php5 => 
+https://openclassrooms.com/fr/courses/1665806-programmez-en-oriente-objet-en-php/1667950-uml-modelisons-nos-classes-2-2
+valeur : valeur par défaut 
+case Visibilité de la classe : attribut/méthode statique
+une constante se déclare comme un attribut sur un diagramme, mais respecte plusieurs contraintes :
+• Elle doit être écrite en majuscules et les espaces sont remplacées par des underscores (comme dans votre script PHP).
+• Elle doit avoir une visibilité publique.
+• Elle doit être de type const.
+• Elle doit être statique.
+• Elle doit posséder une valeur.
+Le type de la méthode est le type de la valeur renvoyée par celle-ci
+Stéréotype = utile pour afficher une caractéristique de la méthode.
+Par exemple, si une méthode est finale, on mettra leaf dans ce champ.
+Type d'héritage qui est une liste déroulante présentant trois options :
+• Abstraite : à sélectionner si la méthode est abstraite.
+• Polymorphe (virtuelle) : cela ne nous concerne pas (nous travaillons avec PHP qui n'implémente pas le concept de méthode virtuelle).
+• Feuille (finale) : à sélectionner si la méthode n'est ni abstraite, ni finale (contrairement à ce qui est indiqué, cela ne veut pas dire que la méthode est finale !).
+Requête : si vous cochez cette case, cela veut dire que la méthode ne modifiera aucun attribut de la classe.
+Par exemple, vos accesseurs (les méthodes étant chargées de renvoyer la valeur d'attributs privés ou protégés) sont considérés comme de simples requêtes afin d'accéder à ces valeurs.
+Elles pourront donc avoir cette case de cochée.
+Modifier les styles pour différencier les visibilités
+Création de liaisons :
+les deux points doivent être rouges (reliés à une classe)
+Exporter => créer un dossier à la racine de C: (ex. diasaves)
+
+
+XVI) LES DESIGN PATTERNS
+
+◘ Laisser une classe créant les objets : le pattern Factory
+
+• Le problème 
+
+On veut modifier un petit morceau de code afin d'ajouter une fonctionnalité à l'application.
+Problème : étant donné que la plupart de vos classes sont plus ou moins liées,
+il va falloir modifier un tas de chose !
+Solution : pattern Factory => une classe usine va instancier la classe de base (plus besoin de new)
+Cette classe aura pour rôle de charger les classes que vous lui passez en argument.
+Ainsi, quand vous modifierez votre code,
+vous n'aurez qu'à modifier le masque d'usine pour que la plupart des modifications prennent effet.
+Une classe implémentant le pattern Factory :
+<?php
+class DBFactory
+{
+  public static function load($sgbdr)
+  {
+    $classe = 'SGBDR_' . $sgbdr;
+    
+    if (file_exists($chemin = $classe . '.class.php'))
+    {
+      require $chemin;
+      return new $classe;
+    }
+    else
+    {
+      throw new RuntimeException('La classe <strong>' . $classe . '</strong> n\'a pu être trouvée !');
+    }
+  }
+}
+?>
+Dans votre script, vous pourrez donc faire quelque chose de ce genre :
+<?php
+try
+{
+  $mysql = DBFactory::load('MySQL');
+}
+catch (RuntimeException $e)
+{
+  echo $e->getMessage();
+}
+?>
+
+Exemple concret
+
+Le but est de créer une classe qui nous distribuera les objets PDO plus facilement.
+Nous allons partir du principe que vous avez plusieurs BDD qui utilisent des identifiants différents.
+Nous allons tout centraliser dans une classe.
+<?php
+class PDOFactory
+{
+  public static function getMysqlConnexion()
+  {
+    $db = new PDO('mysql:host=localhost;dbname=tests', 'root', '');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    return $db;
+  }
+  
+  public static function getPgsqlConnexion()
+  {
+    $db = new PDO('pgsql:host=localhost;dbname=tests', 'root', '');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    return $db;
+  }
+}
+?>
+
+Ceci vous simplifiera énormément la tâche.
+Si vous avez besoin de modifier vos identifiants de connexion,
+vous n'aurez pas à aller chercher dans tous vos scripts : tout sera placé dans notre factory !
+
+◘ Écouter ses objets : le pattern Observer
+
+• Le problème 
+
+Le principe est simple : vous avez un objet observé et un ou plusieurs autre(s) objet(s) qui l'observe(nt). 
+Lorsque telle action survient, vous allez prévenir tous les objets qui l'observent.
+Nous allons, pour une raison d'homogénéité, utiliser les interfaces prédéfinies de la SPL (fournies avec PHP).
+
+La première interface, SplSubject, est l'interface implémentée par la classe dont l'objet observé est issu.
+Elle contient trois méthodes :
+• attach(SplObserver $observer): méthode appelée pour ajouter un objet observateur à notre objet observé.
+• detach(SplObserver $observer): méthode appelée pour supprimer un objet observateur.
+• notify(): méthode appelée lorsque l'on aura besoin de prévenir tous les objets observateurs que quelque chose s'est produit.
+
+L'interface SplObserver est l'interface implémentée par les différents observateurs.
+Elle ne contient qu'une seule méthode qui est celle appelée par l'objet observé dans la méthode notify() :
+il s'agit de update(SplSubject $subject).
+
+Commençons par la classe dont seront issus les objets observés :
+<?php
+class Observee implements SplSubject
+{
+  // Ceci est le tableau qui va contenir tous les objets qui nous observent.
+  protected $observers = [];
+  
+  // Dès que cet attribut changera on notifiera les classes observatrices.
+  protected $nom;
+  
+  public function attach(SplObserver $observer) // cet argument doit implémenter l'interface spécifiée
+  {
+    $this->observers[] = $observer;
+  }
+  
+  public function detach(SplObserver $observer) // cet argument doit implémenter l'interface spécifiée
+  {
+    if (is_int($key = array_search($observer, $this->observers, true)))
+    {
+      unset($this->observers[$key]);
+    }
+  }
+  
+  public function notify()
+  {
+    foreach ($this->observers as $observer)
+    {
+      $observer->update($this);
+    }
+  }
+  
+  public function getNom()
+  {
+    return $this->nom;
+  }
+  
+  public function setNom($nom)
+  {
+    $this->nom = $nom;
+    $this->notify();
+  }
+}
+?>
+
+Voici deux classes dont les objets issus seront observateurs :
+<?php
+class Observer1 implements SplObserver
+{
+  public function update(SplSubject $obj)
+  {
+    echo 'Observer1 a été notifié ! Nouvelle valeur de l\'attribut <strong>nom</strong> : ', $obj->getNom();
+  }
+}
+
+class Observer2 implements SplObserver
+{
+  public function update(SplSubject $obj)
+  {
+    echo 'Observer2 a été notifié ! Nouvelle valeur de l\'attribut <strong>nom</strong> : ', $obj->getNom();
+  }
+}
+?>
+
+Pour tester nos classes, vous pouvez utiliser ce bout de code :
+<?php
+$o = new Observee;
+$o->attach(new Observer1); // Ajout d'un observateur.
+$o->attach(new Observer2); // Ajout d'un autre observateur.
+$o->setNom('Victor'); // On modifie le nom pour voir si les classes observatrices ont bien été notifiées.
+?>
+
+Vous pouvez constater qu'ajouter des objets observateurs de cette façon peut être assez long si on en a cinq ou six.
+Il y a une petite technique qui consiste à pouvoir obtenir ce genre de code :
+<?php
+$o = new Observee;
+
+$o->attach(new Observer1)
+  ->attach(new Observer2)
+  ->attach(new Observer3)
+  ->attach(new Observer4)
+  ->attach(new Observer5);
+
+$o->setNom('Victor'); // On modifie le nom pour voir si les classes observatrices ont bien été notifiées.
+?>
+
+• Exemple concret 
+
+Nous allons imaginer que vous avez, dans votre script, une classe gérant les erreurs générées par PHP.
+Lorsqu'une erreur est générée, vous aimeriez qu'il se passe deux choses :
+• Que l'erreur soit enregistrée en BDD.
+• Que l'erreur vous soit envoyée par mail.
+Le rôle de votre classe est d'intercepter les erreurs, et non de les gérer !
+Ce sera à d'autres classes de s'en occuper :
+ces classes donneront naissance à des objets qui vont observer l'objet gérant l'erreur et une fois notifiés,
+ils vont effectuer l'action pour laquelle ils ont été conçus.
+Rappel : pour intercepter les erreurs, il vous faut utiliserset_error_handler().
+
+○ ErrorHandler : classe gérant les erreurs
+<?php
+class ErrorHandler implements SplSubject
+{
+  // Ceci est le tableau qui va contenir tous les objets qui nous observent.
+  protected $observers = [];
+  
+  // Attribut qui va contenir notre erreur formatée.
+  protected $formatedError;
+  
+  public function attach(SplObserver $observer)
+  {
+    $this->observers[] = $observer;
+    return $this;
+  }
+  
+  public function detach(SplObserver $observer)
+  {
+    if (is_int($key = array_search($observer, $this->observers, true)))
+    {
+      unset($this->observers[$key]);
+    }
+  }
+  
+  public function getFormatedError()
+  {
+    return $this->formatedError;
+  }
+  
+  public function notify()
+  {
+    foreach ($this->observers as $observer)
+    {
+      $observer->update($this);
+    }
+  }
+  
+  public function error($errno, $errstr, $errfile, $errline)
+  {
+    $this->formatedError = '[' . $errno . '] ' . $errstr . "\n" . 'Fichier : ' . $errfile . ' (ligne ' . $errline . ')';
+    $this->notify();
+  }
+}
+?>
+
+○ MailSender : classe s'occupant d'envoyer les mails
+<?php
+class MailSender implements SplObserver
+{
+  protected $mail;
+  
+  public function __construct($mail)
+  {
+    if (preg_match('`^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$`', $mail))
+    {
+      $this->mail = $mail;
+    }
+  }
+  
+  public function update(SplSubject $obj)
+  {
+    mail($this->mail, 'Erreur détectée !', 'Une erreur a été détectée sur le site. Voici les informations de celle-ci : ' . "\n" . $obj->getFormatedError());
+  }
+}
+?>
+
+○ BDDWriter : classe s'occupant de l'enregistrement en BDD
+<?php
+class BDDWriter implements SplObserver
+{
+  protected $db;
+  
+  public function __construct(PDO $db)
+  {
+    $this->db = $db;
+  }
+  
+  public function update(SplSubject $obj)
+  {
+    $q = $this->db->prepare('INSERT INTO erreurs SET erreur = :erreur');
+    $q->bindValue(':erreur', $obj->getFormatedError());
+    $q->execute();
+  }
+}
+?>
+
+○ Testons notre code ! 
+<?php
+$o = new ErrorHandler; // Nous créons un nouveau gestionnaire d'erreur.
+$db = PDOFactory::getMysqlConnexion();
+
+$o->attach(new MailSender('login@fai.tld'))
+  ->attach(new BDDWriter($db));
+
+set_error_handler([$o, 'error']); // Ce sera par la méthode error() de la classe ErrorHandler que les erreurs doivent être traitées.
+
+5 / 0; // Générons une erreur
+?>
+
+• Des classes anonymes pour nos observateurs
+
+Une classe anonyme est une classe ne possédant pas de nom.
+Vous serez amenés à en utiliser lorsque la classe que vous écrivez n'est clairement destinée
+qu'à une seule utilisation précise ou qu'elle n'a pas besoin d'être documentée.
+Dans ces cas-là, il n'est pas utile de déclarer cette classe dans un fichier dédié
+(ça en vient même à alourdir inutilement le code).
+<?php
+$monObjet = new class
+{
+  public function sayHello()
+  {
+    echo 'Hello world!';
+  }
+};
+
+$monObjet->sayHello();
+?>
+
+Une classe anonyme suit les mêmes règles que les classes normales :
+il est possible de procéder à des héritages, d'implémenter des interfaces, d'utiliser des traits, etc.
+Si un argument doit être passé au constructeur, cela se fera juste après le mot-clé class.
+
+Nous allons ici remplacer nos 2 observateurs par 2 classes anonymes. Voici une solution possible :
+<?php
+$mailSender = new class('login@fai.tld') implements SplObserver
+{
+  protected $mail;
+  
+  public function __construct($mail)
+  {
+    if (preg_match('`^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$`', $mail))
+    {
+      $this->mail = $mail;
+    }
+  }
+  
+  public function update(SplSubject $obj)
+  {
+    mail($this->mail, 'Erreur détectée !', 'Une erreur a été détectée sur le site. Voici les informations de celle-ci : ' . "\n" . $obj->getFormatedError());
+  }
+};
+
+$db = PDOFactory::getMysqlConnexion();
+$dbWriter = new class($db) implements SplObserver
+{
+  protected $db;
+  
+  public function __construct(PDO $db)
+  {
+    $this->db = $db;
+  }
+  
+  public function update(SplSubject $obj)
+  {
+    $q = $this->db->prepare('INSERT INTO erreurs SET erreur = :erreur');
+    $q->bindValue(':erreur', $obj->getFormatedError());
+    $q->execute();
+  }
+};
+
+$o = new ErrorHandler; // Nous créons un nouveau gestionnaire d'erreur.
+
+$o->attach($mailSender)
+  ->attach($dbWriter);
+
+set_error_handler([$o, 'error']); // Ce sera par la méthode error() de la classe ErrorHandler que les erreurs doivent être traitées.
+
+5 / 0; // Générons une erreur
+?>
+
+◘ Séparer ses algorithmes : le pattern Strategy
+
+• Le problème
+
+Beaucoup de classes demandées pour envoyer un texte formaté selon plusieurs langages 
+pour plusieurs applications (envoyer du texte dans un fichier ou une BDD)
+
+• Mise en application
+
+Commençons par l'interface. Rien de bien compliqué, elle ne contient qu'une seule méthode :
+<?php
+interface Formater
+{
+  public function format($text);
+}
+?>
+Ensuite vient la classe abstraite Writer que voici :
+<?php
+abstract class Writer
+{
+  // Attribut contenant l'instance du formateur que l'on veut utiliser.
+  protected $formater;
+  
+  abstract public function write($text);
+  
+  // Nous voulons une instance d'une classe implémentant Formater en paramètre.
+  public function __construct(Formater $formater)
+  {
+    $this->formater = $formater;
+  }
+}
+?>
+Nous allons maintenant créer deux classes héritant de Writer : FileWriter et DBWriter
+<?php
+class DBWriter extends Writer
+{
+  protected $db;
+  
+  public function __construct(Formater $formater, PDO $db)
+  {
+    parent::__construct($formater);
+    $this->db = $db;
+  }
+  
+  public function write ($text)
+  {
+    $q = $this->db->prepare('INSERT INTO lorem_ipsum SET text = :text');
+    $q->bindValue(':text', $this->formater->format($text));
+    $q->execute();
+  }
+}
+
+class FileWriter extends Writer
+{
+  // Attribut stockant le chemin du fichier.
+  protected $file;
+  
+  public function __construct(Formater $formater, $file)
+  {
+    parent::__construct($formater);
+    $this->file = $file;
+  }
+  
+  public function write($text)
+  {
+    $f = fopen($this->file, 'w');
+    fwrite($f, $this->formater->format($text));
+    fclose($f);
+  }
+}
+?>
+Enfin, nous avons nos trois formateurs.
+L'un ne fait rien de particulier (TextFormater),
+et les deux autres formatent le texte en deux langages différents (HTMLFormater et XMLFormater).
+<?php
+class TextFormater implements Formater
+{
+  public function format($text)
+  {
+    return 'Date : ' . time() . "\n" . 'Texte : ' . $text;
+  }
+}
+
+class HTMLFormater implements Formater
+{
+  public function format($text)
+  {
+    return '<p>Date : ' . time() . '<br />' ."\n". 'Texte : ' . $text . '</p>';
+  }
+}
+
+class XMLFormater implements Formater
+{
+  public function format($text)
+  {
+    return '<?xml version="1.0" encoding="ISO-8859-1"?>' ."\n".
+           '<message>' ."\n".
+           "\t". '<date>' . time() . '</date>' ."\n".
+           "\t". '<texte>' . $text . '</texte>' ."\n".
+           '</message>';
+  }
+}
+?>
+Et testons enfin notre code :
+<?php
+function autoload($class)
+{
+  if (file_exists($path = $class . '.php'))
+  {
+    require $path;
+  }
+}
+
+spl_autoload_register('autoload');
+
+$writer = new FileWriter(new HTMLFormater, 'file.html');
+$writer->write('Hello world !');
+?>
+
+• Allégeons notre code avec les classes anonymes
+
+Ici, ce sont les formateurs (c'est-à-dire les classes TextFormater, HTMLFormater et XMLFormater)
+qui ne méritent pas une classe dédiée.
+
+<?php
+$textFormater = new class implements Formater
+{
+  public function format($text)
+  {
+    return 'Date : ' . time() . "\n" . 'Texte : ' . $text;
+  }
+};
+
+$htmlFormater = new class implements Formater
+{
+  public function format($text)
+  {
+    return '<p>Date : ' . time() . '<br />' ."\n". 'Texte : ' . $text . '</p>';
+  }
+};
+
+$xmlFormater = new class implements Formater
+{
+  public function format($text)
+  {
+    return '<?xml version="1.0" encoding="ISO-8859-1"?>' ."\n".
+           '<message>' ."\n".
+           "\t". '<date>' . time() . '</date>' ."\n".
+           "\t". '<texte>' . $text . '</texte>' ."\n".
+           '</message>';
+  }
+};
+
+function autoload($class)
+{
+  if (file_exists($path = $class . '.php'))
+  {
+    require $path;
+  }
+}
+
+spl_autoload_register('autoload');
+
+$writer = new FileWriter($htmlFormater, 'file.html');
+$writer->write('Hello world !');
+?>
+
+◘ Une classe, une instance : le pattern Singleton
+
+• Le problème 
+
+Nous avons une classe qui ne doit être instanciée qu'une seule fois.
+Pour empêcher la création d'une instance de cette façon, c'est très simple : 
+il suffit de mettre le constructeur de la classe en privé ou en protégé !
+Nous allons créer une instance de notre classe à l'intérieur d'elle-même !
+Ainsi, une classe implémentant le pattern Singleton ressemblerait à ceci :
+<?php
+class MonSingleton
+{
+  protected static $instance; // Contiendra l'instance de notre classe.
+  
+  protected function __construct() { } // Constructeur en privé.
+  protected function __clone() { } // Méthode de clonage en privé aussi, pour éviter tout clonage.
+  
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) // Si on n'a pas encore instancié notre classe.
+    {
+      self::$instance = new self; // On s'instancie nous-mêmes. :)
+    }
+    
+    return self::$instance;
+  }
+}
+?>
+Voici donc une utilisation de la classe :
+<?php
+$obj = MonSingleton::getInstance(); // Premier appel : instance créée.
+$obj->methode1();
+?>
+Ce pattern doit être employé uniquement si plusieurs instanciations de la classe provoquaient un dysfonctionnement.
+
+◘ L'injection de dépendances
+
+L'injection de dépendances consiste à découpler nos classes.
+Il faut imposer un comportement spécifique à notre objet en l'obligeant à implémenter certaines méthodes.
+Les interfaces sont là pour ça.
+<?php
+interface iDB
+{
+  public function query($query);
+}
+
+interface iResult
+{
+  public function fetchAssoc();
+}
+
+class MyPDO extends PDO implements iDB
+{
+  public function query($query)
+  {
+    return new MyPDOStatement(parent::query($query));
+  }
+}
+
+class MyPDOStatement implements iResult
+{
+  protected $st;
+
+  public function __construct(PDOStatement $st)
+  {
+    $this->st = $st;
+  }
+
+  public function fetchAssoc()
+  {
+    return $this->st->fetch(PDO::FETCH_ASSOC);
+  }
+}
+
+class MyMySQLi extends MySQLi implements iDB
+{
+  public function query($query)
+  {
+    return new MyMySQLiResult(parent::query($query));
+  }
+}
+
+class MyMySQLiResult implements iResult
+{
+  protected $st;
+
+  public function __construct(MySQLi_Result $st)
+  {
+    $this->st = $st;
+  }
+
+  public function fetchAssoc()
+  {
+    return $this->st->fetch_assoc();
+  }
+}
+
+class NewsManager
+{
+  protected $dao;
+
+  // On souhaite un objet instanciant une classe qui implémente iDB.
+  public function __construct(iDB $dao)
+  {
+    $this->dao = $dao;
+  }
+
+  public function get($id)
+  {
+    $q = $this->dao->query('SELECT id, auteur, titre, contenu FROM news WHERE id = ' . (int) $id);
+
+    // On vérifie que le résultat implémente bien iResult.
+    if (!$q instanceof iResult) {
+      throw new Exception('Le résultat d\'une requête doit être un objet implémentant iResult');
+    }
+
+    return $q->fetchAssoc();
+  }
+}
+
+$dao = new MyPDO('mysql:host=localhost;dbname=news', 'root', '');
+// $dao = new MyMySQLi('localhost', 'root', '', 'news');
+
+// nous avons bel et bien découplé nos classes !
+// Il n'y a ainsi plus aucune dépendance entre notre classe NewsManager et une quelconque autre classe.
+
+$manager = new NewsManager($dao);
+print_r($manager->get(2));
+?>
