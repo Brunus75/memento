@@ -30,7 +30,7 @@ $('lien ~ .visite'); // sélectionne les éléments .visite directement précéd
 • jQuery a mis en place des :filtres pour faciliter les sélections;
 $('p:first'); // sélectionne le premier paragraphe trouvé
 $('a:last'); // sélectionne le dernier lien sur la page
-$('p:eq(2)'); // sélectionne les troisième paragraphe avec :eq(index)
+$('p:eq(2)'); // sélectionne le troisième paragraphe avec :eq(index)
 
 • Sélection par attributs
 $('p[id]'); // retourne seulement les paragraphes ayant un identifiant
@@ -172,11 +172,11 @@ $('p').off(); // supprime tous les gestionnaires de tous les événements
 
 • Annuler la délégation :
 
-$('body').on('click', function () {
+$('body').on('click', 'p', function () {
     // code
 });
-$('body').on('click', 'p'); // supprime tous les gestionnaires d'événements délégués sur les p
-$('body').on('click', '**'); // supprimer tous les gestionnaires d'événements délégués
+$('body').off('click', 'p'); // supprime tous les gestionnaires d'événements délégués sur les p
+$('body').off('click', '**'); // supprimer tous les gestionnaires d'événements délégués
 
 
 III) MANIPULER LE CODE CSS AVEC JQUERY
@@ -196,4 +196,319 @@ $('p').css({
 });
 
 ◘ POSITIONNER DES ELEMENTS
+
+$('p').offset().left;
+// retourne la valeur "left" de l'élément (position absolue : position sur le document)
+$('p').position().top;
+// retourne la valeur "top" de l'élément (position relative : par rapport à son parent)
+
+• Modifier la position d'un élément 
+
+$('p').offset({
+    left: 30,
+    top: 200
+});
+
+$('p').position({
+    left: 200
+});
+
+◘ GERER LES DIMENSIONS
+
+$('p').height(); // retourne la hauteur stricte du paragraphe
+$('p').width();
+
+$('p').innerWidth(); // retourne la largeur (avec marges intérieures) du paragraphe
+$('p').innerHeight();
+
+$('p').outerWidth(); // retourne la largeur (avec marges intérieures + bordures) du paragraphe
+$('p').outerHeight();
+
+$('p').outerHeight(true); // retourne la hauteur (avec marges intérieures + bordures + marges extérieures) du paragraphe
+
+
+IV) LES EFFETS JQUERY
+
+◘ ANIMER LES ELEMENTS 
+
+• Animations personnalisées avec animate()
+
+$('p').animate({
+    width: '150px',
+    fontSize: '35px', // ne pas oublier la syntaxe de l'identifiant !
+    marginTop: '50px'
+});
+// Lors du lancement de cette animation, mon paragraphe s'élargira,
+// se déplacera par rapport à la hauteur du document, et verra sa taille de police se fixer à 35px
+
+○ duration : le temps de déroulement 
+
+$('p').animate({
+    width: '150px'
+}, 'fast'); // premier exemple avec la valeur fast (200ms)
+// aussi 'slow' ou 'normal'
+
+$('p').animate({
+    width: '150px'
+}, 1000); // second exemple avec 1000ms (= 1s)
+
+○ easing : évolution de l'animation 
+
+$('p').animate({
+    width: '150px'
+}, 'linear'); // l'animation se déroulera de façon linéaire
+// aussi 'swing' => de plus en plus vite au cours du temps, et ralentit à la fin
+
+○ complete : la fonction de retour (callback)
+
+$('p').animate({
+    width: '150px'
+}, function () { // fonction anonyme lancée l'animation terminée
+    alert('Animation terminée !');
+});
+
+• Deux arguments supplémentaires : step() et queue()
+
+○ Passer un objet comme second argument 
+
+$('p').animate({
+    width: '150px'
+}, 1000, 'linear', function () {
+    alert('Animation terminée !');
+});
+
+// ce code est égal à celui-ci :
+
+$('p').animate({
+    width: '150px'
+}, {
+    duration: 1000,
+    easing: 'linear',
+    complete: function () {
+        alert('Animation terminée !');
+    }
+});
+
+// Ainsi, vous pourrez aussi agir sur les deux arguments step() et queue() :
+• step() lancera une fonction à chaque étape de l'animation, cad à chaque propriété CSS traitée;
+• queue() déterminera si une animation doit se terminer avant d'en lancer une seconde,
+et prendra un booléen en tant que valeur
+
+$('p')
+    .animate({
+        width: '150px'
+    }, {
+        duration: 1000,
+        queue: false // pas de file d'attente
+    })
+    .animate({
+        fontSize: '35px'
+    }, 1000);
+// les deux animations se lanceront en même temps
+
+• Définition directe d'attributs
+
+// attribuer une accélération différente à chaque propriété CSS animée
+
+// Première méthode : tableau
+$('p').animate({
+    fontSize: ['50px', 'linear'], // cette propriété s'animera de façon linéaire
+    width: '200px' // les autres s'animeront de la façon définie ensuite : swing
+}, 'swing');
+
+// Seconde méthode : objet
+$('p').animate({
+    fontSize: '50px',
+    width: '200px'
+},
+{
+    easing: 'swing'
+    specialEasing: { // on définit la propriété
+        fontSize: 'linear' // puis on liste toutes les propriétés CSS dans un objet en donnant leur évolution
+    }
+});
+
+• Astuces et cas spéciaux 
+
+○ Animer les couleurs
+
+https://github.com/jquery/jquery-color (fichier jquery.color.js à inclure dans la page)
+
+$('p').animate({
+    color: 'red',
+    backgroundColor: 'green'
+});
+
+○ Ajout de valeurs 
+
+$('p').animate({
+    width: '+=50px', // ajoute 50px à la largeur
+    height: '-=20px' // enlève 20px à la hauteur
+});
+
+○ Animer les barres de défilement 
+
+'scrollTop' // agit sur la barre de défilement verticale;
+'scrollLeft' // qui agit sur la barre horizontale (si elle existe)
+
+○ Les trois états additionnels
+
+'show' // affiche la propriété;
+'hide' // se charge de la cacher;
+'toggle' // fait la navette entre les deux: si la propriété est cachée, il l'affiche, et vice versa
+
+$('p').animate({
+    width: 'show' // anime la largeur pour afficher le paragraphe
+});
+
+$('p').animate({
+    width: 'hide' // anime la largeur pour cacher le paragraphe
+});
+
+$('p').animate({
+    width: 'toggle' // anime la largeur pour cacher ou afficher le paragraphe
+});
+
+◘ LES EFFETS NATIFS
+
+• Les trois états 
+
+show();
+hide();
+toggle();
+
+$('p').hide('slow'); // cache le paragraphe en 600ms
+
+$('p').show('fast', function () {
+    alert('Paragraphe affiché !');
+}); // affiche le paragraphe en 200ms, et lance une alerte à la fin de l'animation
+
+• Le cas de toggle()
+
+s'il est caché, elle l'affiche, s'il est affiché, elle le cache
+accepte un argument de condition: si on lui indique true, elle affichera l'élément, 
+si on lui indique false, elle fera l'inverse
+
+$('p').toggle(true); // aura le même rôle que show()
+
+$('p').toggle(false); // aura le même rôle que hide()
+
+• Des méthodes plus esthétiques
+
+○ Dérouler/Enrouler
+
+slideDown() // déroule l'élément pour l'afficher;
+slideUp() // enroule l'élément pour le cacher ;
+slideToggle() // enroule ou déroule selon l'état courant de l'élément.
+
+○ Apparition/Disparition
+
+fadeIn() // affiche l'élément progressivement ;
+fadeOut() // cache l'élément, en ajustant l'opacité également.
+fadeToggle() // affiche ou cache l'élément, grâce à l'opacité.
+
+$('p').fadeTo('normal', 0.5); // ajuste l'opacité et la fixe à 0.5
+
+◘ REPRENDRE LE CONTRÔLE DES EFFETS
+
+• Le concept de file d'attente 
+
+queue : file d'attente des animations (respecte un ordre chronologique);
+
+○ Manipuler le tableau des fonctions (queue)
+
+$('p').fadeOut();
+$('p').fadeIn();
+$('p').slideUp();
+$('p').slideDown();
+
+let fileAttente = $('p').queue('fx'); // je stocke la file d'attente, le tableau, dans une variable
+
+alert(fileAttente.length); // renvoie 4
+
+Pour rajouter une fonction dans la file d'attente, il suffit de passer ladite fonction en tant qu'argument :
+
+$('p').fadeOut();
+$('p').fadeIn();
+$('p').slideUp();
+$('p').slideDown();
+
+$('p').queue(function () {
+    alert('Nouvelle fonction dans la file !'); // alerte s'affichant à la fin de la file
+});
+
+Aussi possible à faire : remplacer le tableau par un nouveau, que vous aurez créé directement :
+
+$('p').fadeOut();
+$('p').fadeIn();
+$('p').slideUp();
+$('p').slideDown();
+
+$('p').queue('fx', []); // fait disparaître le paragraphe, puis vide la file d'attente
+
+○ Ordonner la file d'attente 
+
+dequeue() // stoppe l'animation en cours de la file d'attente, et passe à la suivante
+
+$('p')
+    .animate({
+        fontSize: '+=100px'
+    })
+    .queue(function () {
+        alert('Bonjour !');
+        $(this).dequeue();
+    })
+    .animate({
+        fontSize: '-=50px'
+    })
+    .queue(function () {
+        alert('Au revoir !');
+        $(this).dequeue();
+    });
+
+1.la taille de la police augmente de 100 pixels,
+2.une nouvelle fonction est ajoutée à la file,
+3.une alerte affiche « Bonjour! »,
+4.la méthode dequeue() permet de lancer l'animation suivante ;
+5.la taille de la police baisse de 50 pixels,
+6.une nouvelle fonction est ajoutée à la file,
+7.une alerte affiche « Au revoir! »,
+8.la méthode dequeue() permet de ne pas entraver les futures animations sur l'élément.
+
+○ Suppression de fonctions non exécutées
+
+clearQueue() // supprime toutes les fonctions de la file d'attente qui n'ont pas encore été exécutées
+
+$('p').animate({
+    fontSize: '100px'
+})
+.queue(function () { // on ajoute une fonction à la file d'attente
+    alert('Bonjour !');
+})
+.clearQueue(); // empêche l'alerte de s'afficher
+
+• Arrêter les animations 
+
+stop() // stoppe une animation
+// On l'utilisera le plus souvent pour éviter
+// de lancer le même effet plusieurs fois de suite sans pouvoir l'arrêter
+// ex. un utilisateur qui appuie plusieurs fois sur le bouton sans attendre la fin de l'animation
+// (qui s'execute autant de fois que le bouton est appuyé)
+Arrêter une animation est donc une sécurité,
+l'assurance qu'elle ne se lancera pas des dizaines et des dizaines de fois sans pouvoir rien y faire.
+
+// Le sélecteur :animated cible tous les objets jQuery actuellement animés
+
+$('p:animated').stop(); // arrête l'animation courante
+
+$('p:animated').stop(true) // annule toutes les animations suivantes, dont l'animation courante
+
+$('p:animated').stop(false, true) // arrête l'animation courante, mais laisse l'élément aller à son état final
+
+$('p:animated').stop(true, true) // annule toutes les animations suivantes, mais laisse l'élément courant aller à son état final.
+
+○ Désactivation
+
+une propriété permet de désactiver toutes les animations de la page
+jQuery.fx.off = true;
 

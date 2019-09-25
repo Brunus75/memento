@@ -297,7 +297,42 @@ V) LES FONCTIONS
 		return $volume;
 	};
 	$volume = VolumeCone(3,1);
-	echo 'Le volume d\'un cône de rayon 3 et de hauteur 1 est de ' . $volume; 
+	echo 'Le volume d\'un cône de rayon 3 et de hauteur 1 est de ' . $volume;
+
+	// FONCTIONS COMPLEXES
+	
+	// Modulo %
+	'résultat % chiffre qui va se multiplier pour arriver au + proche du résultat = reste';
+	1 % 3; // = 1
+	2 % 3; // = 2
+	3 % 3; // = 0
+	4 % 3; // = 1
+	5 % 3; // = 2
+	6 % 3; // = 0
+	7 % 3; // = 1
+	8 % 3; // = 2
+	9 % 3; // = 0
+	10 % 3; // = 1
+	11 % 3; // = 2
+	6 % 1000; // 6 parceque pour arriver à 6, 1000 doit se multiplier par 0, puis ajouter 6;
+	if (($a % 2) == 1) {
+		echo "$a is odd.";
+	} elseif (($a % 2) == 0) {
+		echo "$a is even.";
+	}
+
+	// array_map
+	// Notre fonction accepte 1 argument : le nombre actuellement traité par array_map
+	$additionneur = function($nbr)
+	{
+	return $nbr + 5;
+	};
+
+	$listeNbr = [1, 2, 3, 4, 5];
+
+	$listeNbr = array_map($additionneur, $listeNbr); // permet d'appeler la fonction qu'on lui passe en premier argument
+	// sur chaque élément du tableau passé en deuxième argument
+	// Nous obtenons alors le tableau [6, 7, 8, 9, 10]
 ?>
 
 VI) LA GESTION DES ERREURS

@@ -5678,7 +5678,7 @@ Le rôle de votre classe est d'intercepter les erreurs, et non de les gérer !
 Ce sera à d'autres classes de s'en occuper :
 ces classes donneront naissance à des objets qui vont observer l'objet gérant l'erreur et une fois notifiés,
 ils vont effectuer l'action pour laquelle ils ont été conçus.
-Rappel : pour intercepter les erreurs, il vous faut utiliserset_error_handler().
+Rappel : pour intercepter les erreurs, il vous faut utiliser set_error_handler().
 
 ○ ErrorHandler : classe gérant les erreurs
 <?php
@@ -6146,3 +6146,528 @@ $dao = new MyPDO('mysql:host=localhost;dbname=news', 'root', '');
 $manager = new NewsManager($dao);
 print_r($manager->get(2));
 ?>
+
+
+XVII) L'OPERATEUR INSTANCEOF
+
+◘ INSTANCEOF
+
+permet de vérifier si tel objet est une instance de telle classe;
+s'utilise dans une condition;
+<?php
+class A { }
+class B { }
+
+$monObjet = new A;
+
+if ($monObjet instanceof A) // Si $monObjet est une instance de A.
+{
+  echo '$monObjet est une instance de A';
+}
+else
+{
+  echo '$monObjet n\'est pas une instance de A';
+}
+
+if ($monObjet instanceof B) // Si $monObjet est une instance de B.
+{
+  echo '$monObjet est une instance de B';
+}
+else
+{
+  echo '$monObjet n\'est pas une instance de B';
+}
+?>
+
+Il y a cependant plusieurs façons de procéder et quelques astuces :
+
+1° = placer le nom de la classe pour laquelle on veut vérifier que tel objet est une instance
+dans une variable sous forme de chaîne de caractères
+<?php
+class A { }
+class B { }
+
+$monObjet = new A;
+
+$classeA = 'A';
+$classeB = 'B';
+
+if ($monObjet instanceof $classeA)
+{
+  echo '$monObjet est une instance de ', $classeA;
+}
+else
+{
+  echo '$monObjet n\'est pas une instance de ', $classeA;
+}
+
+if ($monObjet instanceof $classeB)
+{
+  echo '$monObjet est une instance de ', $classeB;
+}
+else
+{
+  echo '$monObjet n\'est pas une instance de ', $classeB;
+}
+?>
+
+2° = spécifier un autre objet à la place du nom de la classe,
+renvoie true si les deux objets sont des instances de la même classe :
+<?php
+class A { }
+class B { }
+
+$a = new A;
+$b = new A;
+$c = new B;
+
+if ($a instanceof $b)
+{
+  echo '$a et $b sont des instances de la même classe';
+}
+else
+{
+  echo '$a et $b ne sont pas des instances de la même classe';
+}
+
+if ($a instanceof $c)
+{
+  echo '$a et $c sont des instances de la même classe';
+}
+else
+{
+  echo '$a et $c ne sont pas des instances de la même classe';
+}
+?>
+
+◘ INSTANCEOF et l'HERITAGE 
+
+instanceof renvoie true si la classe spécifiée est une classe parente
+de la classe instanciée par l'objet spécifié.
+<?php
+class A { }
+class B extends A { }
+class C extends B { }
+
+$b = new B;
+
+if ($b instanceof A)
+{
+  echo '$b est une instance de A ou $b instancie une classe qui est une fille de A';
+}
+else
+{
+  echo '$b n\'est pas une instance de A et $b instancie une classe qui n\'est pas une fille de A';
+}
+
+if ($b instanceof C)
+{
+  echo '$b est une instance de C ou $b instancie une classe qui est une fille de C';
+}
+else
+{
+  echo '$b n\'est pas une instance de C et $b instancie une classe qui n\'est pas une fille de C';
+}
+?>
+
+◘ INSTANCEOF ET LES INTERFACES 
+
+Il est impossible de créer une instance d'une interface
+(au même titre que de créer une instance d'une classe abstraite, ce qu'est à peu près une interface).
+L'opérateur va donc renvoyer true si tel objet instancie une classe implémentant telle interface.
+<?php
+interface iA { }
+class A implements iA { }
+class B { }
+
+$a = new A;
+$b = new B;
+
+if ($a instanceof iA)
+{
+  echo 'Si iA est une classe, alors $a est une instance de iA ou $a instancie une classe qui est une fille de iA. Sinon, $a instancie une classe qui implémente iA.';
+}
+else
+{
+  echo 'Si iA est une classe, alors $a n\'est pas une instance de iA et $a n\'instancie aucune classe qui est une fille de iA. Sinon, $a instancie une classe qui n\'implémente pas iA.';
+}
+
+if ($b instanceof iA)
+{
+  echo 'Si iA est une classe, alors $b est une instance de iA ou $b instancie une classe qui est une fille de iA. Sinon, $b instancie une classe qui implémente iA.';
+}
+else
+{
+  echo 'Si iA est une classe, alors $b n\'est pas une instance de iA et $b n\'instancie aucune classe qui est une fille de iA. Sinon, $b instancie une classe qui n\'implémente pas iA.';
+}
+?>
+<?php
+interface iParent { }
+interface iFille extends iParent { }
+class A implements iFille { }
+
+$a = new A;
+
+if ($a instanceof iParent)
+{
+  echo 'Si iParent est une classe, alors $a est une instance de iParent ou $a instancie une classe qui est une fille de iParent. Sinon, $a instancie une classe qui implémente iParent ou une fille de iParent.';
+}
+else
+{
+  echo 'Si iParent est une classe, alors $a n\'est pas une instance de iParent et $a n\'instancie aucune classe qui est une fille de iParent. Sinon, $a instancie une classe qui n\'implémente ni iParent, ni une de ses filles.';
+}
+?>
+
+En résumé :
+• L'opérateur instanceof permet de vérifier la nature de la classe dont l'objet testé est une instance.
+• Cet opérateur permet de vérifier qu'un certain objet est bien une instance d'une classe fille de telle classe.
+• Cet opérateur permet de vérifier qu'un certain objet est une instance d'une classe implémentant telle interface, ou que l'une de ses classes mère l'implémente.
+
+
+XVIII) LES CLOSURES (FONCTIONS ANONYMES)
+
+◘ CREATION DE CLOSURES 
+
+fonction particulière qui n'est pas nommée :
+<?php
+function()
+{
+  echo 'Hello world !';
+};
+?>
+cette fonction est un objet instancié de la classe Closure
+Cette classe Closure possède une méthode magique : __invoke,
+invoquée lorsque l'on se sert de notre objet comme une fonction.
+si l'on se sert de notre objet comme fonction, alors la fonction que l'on vient de déclarer sera invoquée.
+<?php
+$maFonction = function()
+{
+  echo 'Hello world !';
+};
+
+$maFonction(); // Affiche « Hello world ! »
+?>
+
+• Exemple concret 
+
+Les closures sont principalement utilisées en tant que fonctions de rappels.
+Les fonctions de rappels sont des fonctions demandées par d'autres fonctions pour effectuer des tâches spécifiques.
+<?php
+// Notre fonction accepte 1 argument : le nombre actuellement traité par array_map
+$additionneur = function($nbr)
+{
+  return $nbr + 5;
+};
+
+$listeNbr = [1, 2, 3, 4, 5];
+
+$listeNbr = array_map($additionneur, $listeNbr); // permet d'appeler la fonction qu'on lui passe en premier argument
+// sur chaque élément du tableau passé en deuxième argument
+// Nous obtenons alors le tableau [6, 7, 8, 9, 10]
+?>
+
+• Utilisation de variables extérieures
+
+Actuellement, notre additionneur est assez limité. 
+Il serait donc intéressant de rendre variable le nombre ajouté (ici, 5). 
+Pour cela, nous avons le mot-clé use qui permet d'importer au sein de notre fonction une variable extérieure.
+<?php
+$quantite = 5;
+$additionneur = function($nbr) use($quantite)
+{
+  return $nbr + $quantite;
+};
+
+$listeNbr = [1, 2, 3, 4, 5];
+
+$listeNbr = array_map($additionneur, $listeNbr);
+
+var_dump($listeNbr);
+// On obtient là aussi le tableau [6, 7, 8, 9, 10]
+?>
+
+Un problème se pose maintenant : la quantité que nous avons fixée à 5 ne peut être changée,
+car cette variable a été importée dans notre closure dès la création de cette dernière.
+<?php
+function creerAdditionneur($quantite)
+{
+  return function($nbr) use($quantite)
+  {
+    return $nbr + $quantite;
+  };
+}
+
+$listeNbr = [1, 2, 3, 4, 5];
+
+$listeNbr = array_map(creerAdditionneur(5), $listeNbr); // additionneur est créé lorsque l'on appelle
+// creerAdditionneur avec la quantité à additionner
+var_dump($listeNbr);
+// On a : $listeNbr = [6, 7, 8, 9, 10]
+
+$listeNbr = array_map(creerAdditionneur(4), $listeNbr);
+var_dump($listeNbr);
+// Cette fois-ci, on a bien : $listeNbr = [10, 11, 12, 13, 14]
+?>
+
+◘ LIER UNE CLOSURE
+
+• Lier une closure à un objet 
+
+modifions l'additionneur pour qu'il ajoute 5 à un attribut d'un objet :
+<?php
+$additionneur = function()
+{
+  $this->_nbr += 5;
+};
+
+class MaClasse
+{
+  private $_nbr = 0;
+
+  public function nbr()
+  {
+    return $this->_nbr;
+  }
+}
+
+$obj = new MaClasse;
+?>
+Le but = ajouter cette fonction à notre objet $obj afin de pouvoir modifier ce nombre.
+Pour cela, nous allons nous servir de la méthode <? bindTo() ?> de la classeClosure.
+Cette méthode accepte 2 arguments. Le premier est l'objet auquel on veut lier notre closure (ici, ce sera donc $obj).
+Le deuxième argument est le contexte dans lequel la méthode sera invoquée.
+<?php
+$additionneur = function()
+{
+  $this->_nbr += 5;
+};
+
+class MaClasse
+{
+  private $_nbr = 0;
+
+  public function nbr()
+  {
+    return $this->_nbr;
+  }
+}
+
+$obj = new MaClasse;
+
+// On obtient une copie de notre closure qui sera liée à notre objet $obj
+// Cette nouvelle closure sera appelée en tant que méthode de MaClasse
+// On aurait tout aussi bien pu passer $obj en second argument
+$additionneur = $additionneur->bindTo($obj, 'MaClasse');
+$additionneur();
+
+echo $obj->nbr(); // Affiche bien 5
+?>
+
+• Lier temporairement une closure à un objet 
+
+Depuis la version 7 de PHP, il est possible de lier la closure à un objet le temps d'un appel.
+<?php
+
+class Nombre
+{
+  private $_nbr;
+  
+  public function __construct($nbr)
+  {
+    $this->_nbr = $nbr;
+  }
+}
+
+$closure = function() {
+  var_dump($this->_nbr + 5);
+};
+
+$two = new Nombre(2);
+$three = new Nombre(3);
+
+$closure->call($two); // 7
+$closure->call($three); // 8
+?>
+
+• Lier une closure à une classe 
+
+Il est ainsi possible de lier une closure statique à une classe
+<?php
+// Nous déclarons ici une closure statique
+$additionneur = static function()
+{
+  self::$_nbr += 5;
+};
+
+class MaClasse
+{
+  private static $_nbr = 0;
+
+  public static function nbr()
+  {
+    return self::$_nbr;
+  }
+}
+
+$additionneur = $additionneur->bindTo(null, 'MaClasse'); // null car nous ne souhaitons pas lier notre closure à un objet
+$additionneur();
+
+echo MaClasse::nbr(); // 5
+?>
+
+• Les liaisons automatiques
+
+Si vous déclarez une closure à l'intérieur d'une méthode,
+cette closure adoptera le contexte dans lequel a été appelée cette méthode,
+et sera directement liée à l'objet concerné si la méthode n'est pas statique
+<?php
+class MaClasse
+{
+  private $_nbr = 0;
+
+  public function getAdditionneur()
+  {
+    return function()
+    {
+      $this->_nbr += 5;
+    };
+  }
+
+  public function nbr()
+  {
+    return $this->_nbr;
+  }
+}
+
+$obj = new MaClasse;
+
+$additionneur = $obj->getAdditionneur();
+$additionneur();
+
+echo $obj->nbr();
+// Affiche bien 5 car notre closure est bien liée à $obj depuis MaClasse
+?>
+
+Le principe reste exactement le même pour un contexte statique :
+
+<?php
+class MaClasse
+{
+  private static $_nbr = 0;
+
+  public static function getAdditionneur()
+  {
+    return function()
+    {
+      self::$_nbr += 5;
+    };
+  }
+
+  public static function nbr()
+  {
+    return self::$_nbr;
+  }
+}
+
+$additionneur = MaClasse::getAdditionneur();
+$additionneur();
+
+echo MaClasse::nbr(); // Affiche bien 5
+?>
+
+• Implémentation du pattern Observer à l'aide de closures 
+
+Pour rappel, nous avions une classe observée qui implémentait l'interface SplSubject.
+Pour l'exemple, nous allons nous appuyer sur celle-ci :
+<?php
+class Observed implements SplSubject
+{
+  protected $name;
+  protected $observers = [];
+
+  public function attach(SplObserver $observer)
+  {
+    $this->observers[] = $observer;
+    return $this;
+  }
+
+  public function detach(SplObserver $observer)
+  {
+    if (is_int($key = array_search($observer, $this->observers, true)))
+    {
+	  unset($this->observers[$key]);
+	}
+  }
+
+  public function notify()
+  {
+    foreach ($this->observers as $observer)
+    {
+      $observer->update($this);
+    }
+  }
+
+  public function name()
+  {
+  	return $this->name;
+  }
+
+  public function setName($name)
+  {
+  	$this->name = $name;
+  	$this->notify();
+  }
+}
+?>
+Notre code était un peu lourd dans la mesure où la seule partie qui changeait était le contenu de la méthode update,
+alors que nous créâmes une classe à chaque fois. 
+Le but ici est de faire en sorte de n'avoir à créer qu'une classe générique
+implémentant l'interfaceSplObserver et à laquelle nous donnerons la closure à notifier.
+<?php
+class Observer implements SplObserver
+{
+  protected $name;
+  protected $closure;
+
+  public function __construct(Closure $closure, $name)
+  {
+    // On lie la closure à l'objet actuel et on lui spécifie le contexte à utiliser
+    // (Ici, il s'agit du même contexte que $this)
+    $this->closure = $closure->bindTo($this, $this);
+    $this->name = $name;
+  }
+
+  public function update(SplSubject $subject)
+  {
+    // En cas de notification, on récupère la closure et on l'appelle
+    $closure = $this->closure;
+    $closure($subject);
+  }
+}
+?>
+<?php
+$o = new Observed;
+
+$observer1 = function(SplSubject $subject)
+{
+  echo $this->name, ' a été notifié ! Nouvelle valeur de name : ', $subject->name(), "\n";
+};
+
+$observer2 = function(SplSubject $subject)
+{
+  echo $this->name, ' a été notifié ! Nouvelle valeur de name : ', $subject->name(), "\n";
+};
+
+$o->attach(new Observer($observer1, 'Observer1'))
+  ->attach(new Observer($observer2, 'Observer2'));
+
+$o->setName('Victor');
+// Ce qui affiche :
+// Observer1 a été notifié ! Nouvelle valeur de name : Victor
+// Observer2 a été notifié ! Nouvelle valeur de name : Victor
+?>
+
+En résumé
+• Les closures permettent de représenter des fonctions anonymes.
+• Les closures sont souvent utilisées en tant que fonctions de rappels.
+• Il est possible de lier une closure à un objet ou à une classe grâce à bindTo.
