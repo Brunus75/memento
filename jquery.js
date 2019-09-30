@@ -512,3 +512,141 @@ $('p:animated').stop(true, true) // annule toutes les animations suivantes, mais
 une propriété permet de désactiver toutes les animations de la page
 jQuery.fx.off = true;
 
+
+V) MANIER LES ATTRIBUTS
+
+◘ GESTION GENERALE DES ATTRIBUTS 
+
+attributs = les options des balises, les complétent pour donner des informations supplémentaires
+méthode : attr();
+
+let cheminImage = $('img').attr('src'); // rentre le contenu de l'attribut src dans une variable
+$('img').attr('src', 'nouveauChemin/photo.png'); // change l'attribut src en écrasant l'ancienne valeur
+$('img').attr('title', 'Nouvelle photo'); // créé l'attribut title dans l'élément s'il n'existe pas
+
+Par souci de performance,
+on préféra passer par un objet si l'on a plusieurs attributs à influencer en même temps.
+$('img').attr('src', 'nouveauChemin/photo.png');
+$('img').attr('alt', 'Nouvelle photo');
+$('img').attr('title', 'Nouvelle photo');
+// mauvaise méthode
+
+$('img').attr({
+    src: 'nouveauChemin/photo.png',
+    alt: 'Nouvelle photo',
+    title: 'Nouvelle photo'
+});
+// bonne méthode
+
+• Utilisation d'une fonction anonyme 
+
+Une fonction anonyme peut être déclarée en tant que valeur de l'attribut, cad en second argument.
+$('img').attr('alt', function (index, valeur) {
+    return index + 'ème élément - ' + valeur;
+});
+
+• Supprimer un attribut 
+
+$('img').removeAttr('title'); // supprime l'attribut title des images
+
+◘ GERER LES CLASSES PROPREMENT
+
+• Ajouter une classe 
+
+$('.vert').attr('class', 'rouge'); // cet élément aura la classe .rouge
+$('.vert').addClass('rouge'); // cet élément aura les classes .vert et .rouge
+$('.vert').addClass('rouge bleu jaune'); // cet élément aura les classes .vert, .rouge, .bleu et .jaune
+
+• Supprimer une classe 
+
+$('p').removeClass('vert'); // supprime la classe .vert de l'élément
+$('p').removeClass('vert rouge bleu'); // supprimer les classes .vert, .rouge et .bleu
+
+• Présence d'une classe 
+
+if ($('p').hasClass('vert')) { // si l'élément possède la classe .vert
+    alert('Ce paragraphe est vert !'); // on affiche une alerte
+}
+
+• Switcher une classe 
+
+$('p').toggleClass('vert'); // ajoute la classe .vert si elle n'existe pas, sinon, la supprime
+
+// ces deux codes sont équivalents :
+$('p').addClass('vert');
+$('p').toggleClass('vert', true);
+
+// ces deux codes sont équivalents :
+$('p').removeClass('vert');
+$('p').toggleClass('vert', false);
+
+
+VI) PARCOURIR LES ELEMENTS DU DOM
+
+◘ NAVIGUER DANS LE DOM
+
+DOM = 'interface' de programmation, qui représente le HTML en orienté objet;
+
+◘ LA DESCENDANCE
+
+• Parents, enfants, et ancêtres
+
+parent(); // accéder au bloc parent de l'élément actuellement ciblé
+$('a').css('color', 'blue'); // rend le lien ciblé seulement de couleur bleue
+$('a').parent().css('color', 'blue');
+// ici, c'est le parent de l'enfant (un paragraphe, si l'on respecte la sémantique) qui verra son texte devenir bleu
+$('a').parent('.texte'); // retourne seulement l'ensemble des blocs parents ayant la classe .texte
+
+$('div').children(); // cible l'élément enfant direct du bloc div ( > )
+$('div').children('p'); // cible seulement l'ensemble des paragraphes enfants du bloc div
+
+// pour chercher parmi TOUS les enfants
+$('body').find('p'); // cible l'ensemble des paragraphes contenus dans le corps du document, quelle que soit leur position !
+
+// pour chercher parmi TOUS les parents (ancêtres)
+$('a').parents(); // cible tous les éléments ancêtres du lien : paragraphe, bloc(s), balise <body>...
+
+• La fraternité d'éléments 
+
+prev() // qui sélectionne l'élément frère précédant directement l'objet ciblé;
+next() // qui sélectionne l'élément frère suivant directement l'objet ciblé;
+prevAll() // qui sélectionne tous les éléments frères précédant l'objet ciblé ;
+nextAll() // qui sélectionne tous les éléments frères suivant l'objet ciblé.
+
+◘ FILTRER ET BOUCLER LES ELEMENTS
+
+• Filtrer les élements
+
+○ Filtre par sélecteur 
+
+$('p').filter('.texte'); // supprime de la sélection tous les paragraphes n'ayant pas la classe .texte
+$('p').filter('.texte, #description');
+// supprime de la sélection tous les paragraphes n'ayant pas la classe .texte ou l'identifiant #description
+$('p').not('.texte'); // supprime de la sélection tous les paragraphes avec la classe .texte
+
+○ Filtre par index 
+
+$('p').eq(2); // cible le troisième paragraphe trouvé (l'index commence à 0)
+Vous pouvez spécifier un nombre négatif: jQuery commencera alors à compter à partir du dernier index.
+Si vous possédez quatre paragraphes et que vous donnez la valeur - 1 à la méthode, 
+alors votre objet sera le quatrième paragraphe.
+$('div').slice(1, 3); // garde seulement les blocs div ayant l'index 1 ou 2
+// slice(position 1er element, position dernier element non pris en compte)
+
+○ Vérifier le 'type' d'un élément 
+
+let vrai = $('div').is('div');
+let faux = $('div').is('p');
+
+console.log(vrai); // affiche true
+console.log(faux); // affiche false
+
+• Boucler les éléments 
+
+Rôle : traiter chaque occurrence trouvée et exécuter une fonction définie dessus.
+$('p').each( function(){
+    alert( $(this).text() ); // $(this) représente l'objet courant
+} );
+Si la fonction retourne false, alors la boucle s'arrête brutalement.
+Si au contraire elle retourne true, alors la boucle passe directement à l'élément suivant.
+
