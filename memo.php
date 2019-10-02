@@ -2726,3 +2726,19 @@ else // On n'a pas encore rempli le formulaire
 VIII) Mémento des expressions régulières
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918834-memento-des-expressions-regulieres
+
+
+// ---------- MISE A JOUR WAMP ---------- //
+
+Avec ton ancien Wamp :
+1. Tu fais une copie de ton dossier www
+2. Tu fais une copie de ton php.ini (si tu l'as modifié)
+3. Tu fais une copie de ton httpd.conf (si tu l'as modifié)
+4. Tu fais un export de toutes tes bases SQL
+
+Avec ton nouveau Wamp :
+1. Tu remets ton dossier www
+2. Tu remets ton php.ini (si tu l'as modifié)
+3. Tu remets ton httpd.conf (si tu l'as modifié)
+4. Tu fais un import de toutes tes bases SQL
+5. Tu vérifies les mots de passe SQL etc. 
