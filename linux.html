@@ -1,5 +1,9 @@
 ----------** MEMENTO LINUX **----------
 
+.. signifie « dossier précédent »
+. signifie « dossier dans lequel je me trouve »
+Tab pour l'autocomplétion ! 
+
 I) LA COMMANDE
 
 Mode (vraie) Console = ctrl+alt+f2 = ouvrir / ctrl+alt+f1 = sortir
@@ -188,3 +192,184 @@ Comment lire la suite ?
 Expressions régulières acceptées.
 ○ n : après avoir fait une recherche avec/, la touche n vous permet d'aller à la prochaine occurrence de votre recherche. 
 ○ N : pareil que n, mais pour revenir en arrière.
+
+◘ head & tail : afficher le début et la fin d'un fichier
+
+• head : afficher le début du fichier
+La commande head affiche seulement les premières lignes du fichier. Elle ne permet pas de se déplacer dans le fichier comme less, mais juste de récupérer les premières lignes.
+
+mateo21@mateo21-desktop:/var/log$ head syslog
+Nov 14 00:44:23 mateo21-desktop syslogd 1.4.1#21ubuntu3: restart.
+
+Paramètres : -n, suivi d'un nombre. Il permet d'afficher le nombre de lignes que vous voulez. Par exemple, si vous ne voulez que les trois premières lignes, tapez :
+mateo21@mateo21-desktop:/var/log$ head -n 3 syslog
+Nov 14 00:44:23 mateo21-desktop syslogd 1.4.1#21ubuntu3: restart.
+Nov 14 00:44:23 mateo21-desktop anacron[6725]: Job `cron.daily' terminated
+Nov 14 00:44:23 mateo21-desktop anacron[6725]: Normal exit (1 job 
+
+• tail : afficher la fin du fichier
+la commande tail vous renvoie la fin du fichier, donc les dernières lignes.
+mateo21@mateo21-desktop:/var/log$ tail syslog
+On peut là encore utiliser -n suivi d'un nombre pour afficher les $x$ dernières lignes :
+mateo21@mateo21-desktop:/var/log$ tail -n 3 syslog
+Autre paramètre : -f
+Ce paramètre magique ordonne à tail de « suivre » la fin du fichier au fur et à mesure de son évolution.
+Ctrl + C pour arrêter la commande tail
+
+(!) Ctrl + C est utilisable dans la plupart des programmes console pour demander leur arrêt.
+
+Par défaut, tail -f recherche les nouveaux changements dans le fichier toutes les secondes. Si vous voulez, vous pouvez rajouter le paramètre -s suivi d'un nombre. Par exemple,tail -f -s 3 syslog recherchera les changements toutes les trois secondes (plutôt que toutes les secondes)
+
+◘ touch & mkdir : créer des fichiers et dossiers
+
+• touch : créer un fichier
+La commande attend un paramètre : le nom du fichier à créer.
+mateo21@mateo21-desktop:/var/log$ cd
+mateo21@mateo21-desktop:~$
+mateo21@mateo21-desktop:~$ touch fichierbidon
+mateo21@mateo21-desktop:~$ ls -F
+Desktop/    Examples@     images/  log/      Musique/  tutos/
+Documents/  fichierbidon  Images/  Modèles/  Public/   Vidéos/
+Vous pouvez créer un fichier de l'extension que vous voulez :
+mateo21@mateo21-desktop:~$ touch autrefichierbidon.txt
+Vous pouvez créer plusieurs fichiers en une seule commande :
+touch fichierbidon autrefichierbidon.txt
+Et si je veux que mon fichier contienne un espace, je fais comment ?
+touch "Fichier bidon"
+
+• mkdir : créer un dossier
+mkdir mondossier autredossier
+Il y a un paramètre utile avec mkdir : -p. Il sert à créer tous les dossiers intermédiaires. 
+mkdir -p animaux/vertebres/chat
+… créera le dossier animaux, puis à l'intérieur le sous-dossier vertebres, puis à l'intérieur encore le sous-dossier chat !
+
+◘ cp & mv : copier et déplacer un fichier
+
+• cp : copier un fichier
+cp fichierbidon fichiercopie
+Le premier paramètre est le nom du fichier à copier, le second le nom de la copie du fichier à créer.
+En faisant cela, on aura donc deux fichiers identiques dans le même répertoire : fichierbidon et fichiercopie.
+
+○ Copier dans un autre dossier :
+si je veux copier fichierbidon dans le sous-dossier mondossier que j'ai créé tout à l'heure :
+cp fichierbidon mondossier/
+Le fichier fichierbidon sera copié dans mondossier sous le même nom
+Si vous voulez copier fichierbidon dans mondossier sous un autre nom, faites comme ceci :
+cp fichierbidon mondossier/fichiercopie
+cp fichierbidon /var/log/
+… copierafichierbidondans le dossier/var/log.
+
+○ Copier des dossiers :
+Avec l'option-R, vous pouvez copier un dossier, ainsi que tous les sous-dossiers et fichiers qu'il
+contient !
+cp -R animaux autresanimaux
+… cela aura pour effet de copier animaux ainsi que tous ses sous-dossiers sous le nom autresanimaux.
+
+○ Utiliser le joker*
+Le symbole * est appelé joker, ou encore wildcard en anglais sous Linux.
+Il vous permet de copier par exemple tous les fichiers image .jpg dans un sous-dossier :
+cp *.jpg mondossier/
+Pour copier tous les fichiers dont le nom commence par « so » :
+cp so* mondossier/
+
+• mv : déplacer un fichier
+2 utilités :
+- déplacer un fichier (ou un dossier) ;
+- renommer un fichier (ou un dossier).
+
+○ Déplacer un fichier 
+mv fichierbidon mondossier/
+Vous pouvez déplacer des dossiers aussi simplement :
+mv animaux/ mondossier/
+Vous pouvez aussi utiliser les jokers :
+mv *.jpg mondossier/
+
+○ Renommer un fichier 
+mv fichierbidon superfichier
+… renommera fichierbidon en superfichier. Après cette commande, fichierbidon n'existe plus, il a été renommé.
+
+○ Déplacer et renommer un fichier à la fois
+Vous pouvez aussi déplacer fichierbidon dans mondossier tout en lui affectant un nouveau nom :
+mv fichierbidon mondossier/superfichier
+
+◘ rm : supprimer des fichiers et dossiers
+
+(!) il n'existe pas de corbeille dans la console de Linux :
+le fichier est directement supprimé sans possibilité de récupération !
+
+• rm : supprimer un fichier
+rm fichierbidon
+rm fichierbidon fichiercopie
+
+○ -i : demander confirmation
+mateo21@mateo21-desktop:~$ rm -i fichierbidon
+rm: détruire fichier régulier vide `fichierbidon'?
+o/y ou n + Entrée
+
+○ -f : forcer la suppression, quoi qu'il arrive (à utiliser le plus rarement possible)
+rm -f fichierbidon
+
+○ -v : dis-moi ce que tu fais, petit cachotier
+Le paramètre -v (Verbose, verbeux en anglais, c'est-à-dire « parler beaucoup »)
+est un paramètre que l'on retrouve dans beaucoup de commandes sous Linux.
+Il permet de demander à la commande de dire ce qu'elle est en train de faire.
+mateo21@mateo21-desktop:~$ rm -v fichierbidon fichiercopie
+détruit `fichierbidon'
+détruit `fichiercopie'
+
+○ -r : supprimer un dossier et son contenu
+rm -r animaux/
+… supprime le dossier animaux ainsi que tout ce qu'il contenait (sous-dossiers vertebres et chat)
+Aussi : rmdir. La grosse différence avec rm -r, c'est que rmdir ne peut supprimer un dossier que s'il est vide
+
+○ rm et le joker de la mort (qui tue)
+NON NON NON NE FAITES JAMAIS CA !!! => rm -rf /*
+rm : commande la suppression ;
+-r : supprime de manière récursive tous les fichiers et dossiers ;
+-f : force la suppression sans demander la moindre confirmation ;
+/* : supprime tous les fichiers et dossiers qui se trouvent à la racine (/) quel que soit leur nom (joker *)
+
+◘ ln : créer des liens entre fichiers
+
+Elle permet de créer des raccourcis. On peut créer deux types de liens :
+- des liens physiques ;
+- des liens symboliques.
+
+○ Créer des liens physiques 
+Plus rarement utilisé que le lien symbolique
+Un lien physique permet d'avoir deux noms de fichiers qui partagent exactement le même contenu,
+c'est-à-dire le même inode
+Ainsi, que vous passiez par fichier1 ou par fichier2, vous modifiez exactement le même contenu.
+mkdir tests
+cd tests
+touch fichier1
+ln fichier1 fichier2
+mateo21@mateo21-desktop:~/tests$ ls -l
+total 0
+-rw-r--r-- 2 mateo21 mateo21 0 2008-07-31 13:55 fichier1
+-rw-r--r-- 2 mateo21 mateo21 0 2008-07-31 13:55 fichier2
+La seconde colonne de la liste (qui indique « 2 » pour chacun des fichiers) correspond au nombre de fichiers qui
+partagent le même inode.
+Le seul moyen de vérifier que ces fichiers partagent le même contenu, c'est de faire ls -i pour afficher les numéros
+d'inode correspondants et de vérifier que ces deux fichiers sont associés au même inode.
+
+○ Créer des liens symboliques 
+Le principe du lien symbolique est que l'on crée un lien vers un autre nom de fichier. 
+Cette fois, on pointe vers le nom de fichier et non vers l'inode directement (figure suivante).
+rm fichier2
+Créons maintenant un nouveau fichier2, cette fois sous forme de lien symbolique.
+On utilise là encore la commande ln, mais avec le paramètre -s (s comme symbolique) :
+ln -s fichier1 fichier2
+mateo21@mateo21-desktop:~/tests$ ls -l
+total 0
+-rw-r--r-- 1 mateo21 mateo21 0 2008-07-31 13:55 fichier1
+lrwxrwxrwx 1 mateo21 mateo21 8 2008-07-31 14:15 fichier2 -> fichier1
+-> la toute première lettre de la seconde ligne est un l (comme link, c'est-à-dire lien) ;
+-> tout à la fin de la seconde ligne, une flèche montre clairement que fichier2 pointe vers fichier1.
+
+Si vous supprimez fichier2, il ne se passe rien de mal. 
+Par contre, si vous supprimez fichier1, fichier2 pointera vers un
+fichier qui n'existe plus. 
+Le lien symbolique sera cassé et ne servira donc plus à rien. On parle de « lien mort » ;
+D'autre part, l'avantage des liens symboliques est qu'ils fonctionnent aussi sur des répertoires,
+contrairement aux liens physiques.
