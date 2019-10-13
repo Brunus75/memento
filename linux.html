@@ -373,3 +373,489 @@ fichier qui n'existe plus.
 Le lien symbolique sera cassé et ne servira donc plus à rien. On parle de « lien mort » ;
 D'autre part, l'avantage des liens symboliques est qu'ils fonctionnent aussi sur des répertoires,
 contrairement aux liens physiques.
+
+
+IV) UTILISATEURS & DROITS
+
+Linux est un système multi-utilisateurs. 
+Cela signifie que plusieurs personnes peuvent travailler simultanément sur le même OS, 
+en s'y connectant à distance notamment.
+
+◘ sudo: exécuter une commande en root
+
+Il y a un utilisateur « spécial », root, aussi appelé superutilisateur. 
+Celui-ci a tous les droits sur la machine.
+
+• sudo : devenir root un instant
+Cette commande signifie « Faire en se substituant à l'utilisateur » : Substitute User DO.
+sudo commande
+mateo21@mateo21-desktop:/home$ sudo ls
+[sudo] password for mateo21:
+autredossier Desktop Examples Images Modèles Musique tutos
+autresanimaux Documents images log mondossier Public Vidéos
+
+• sudo su : devenir root et le rester
+mateo21@mateo21-desktop:/home$ sudo su
+[sudo] password for mateo21:
+root@mateo21-desktop:/home#
+Le symbole # à la fin de l'invite de commandes vous indique que vous êtes devenus superutilisateur.
+Pour quitter le « mode root », tapez exit (ou faites la combinaison Ctrl + D).
+root@mateo21-desktop:/home/mateo21# exit
+exit
+mateo21@mateo21-desktop:~$
+
+◘ adduser : gestion des utilisateurs
+
+• adduser : ajouter un utilisateur
+Vous devez au minimum fournir un paramètre : le nom de l'utilisateur à créer.
+root@mateo21-desktop:/home# adduser patrick
+Ajout de l'utilisateur « patrick »...
+Ajout du nouveau groupe « patrick » (1001)...
+Ajout du nouvel utilisateur « patrick » (1001) avec le groupe « patrick »...
+Création du répertoire personnel « /home/patrick »...
+Copie des fichiers depuis « /etc/skel »...
+Rajouter un sudo devant la commande si vous n'êtes pas déjà root ; pour cela, tapez sudo adduser patrick
+Le répertoire personnel de patrick est automatiquement créé (/home/patrick) et son compte est préconfiguré.
+On vous demande ensuite de taper son mot de passe :
+Entrez le nouveau mot de passe UNIX :
+Retapez le nouveau mot de passe UNIX :
+passwd : le mot de passe a été mis à jour avec succès
+
+• passwd : changer le mot de passe
+S'il était nécessaire de changer le mot de passe de patrick par la suite,
+utilisez la commande passwd en indiquant en paramètre le nom du compte à modifier.
+root@mateo21-desktop:/home# passwd patrick
+Entrez le nouveau mot de passe UNIX :
+Retapez le nouveau mot de passe UNIX :
+passwd : le mot de passe a été mis à jour avec succès
+(!) sans compte en paramètre, vous modifiez le password du compte connecté (peut-être root)
+
+• deluser : supprimer un compte
+deluser patrick
+(!) Ne jamais supprimer son compte utilisateur 
+Si vous voulez supprimer aussi son home et tous ses fichiers personnels, utilisez le paramètre --remove-home :
+deluser --remove-home patrick
+
+◘ addgroup : gestion des groupes
+
+Si vous ne définissez rien, un groupe du même nom que l'utilisateur sera automatiquement créé :
+ainsi, mateo21 appartient au groupe mateo21 et patrick au groupe patrick.
+root@mateo21-desktop:~# cd /home
+root@mateo21-desktop:/home# ls -l
+total 24
+drwx------ 2 root root 16384 2007-09-19 18:22 lost+found
+drwxr-xr-x 65 mateo21 mateo21 4096 2007-11-15 22:40 mateo21
+drwxr-xr-x 2 patrick patrick 4096 2007-11-15 23:00 patrick
+=> la 3ème colonne indique le propriétaire du fichier ou dossier ;
+=> la 4ème indique le groupe qui possède ce fichier ou dossier.
+
+• addgroup : créer un groupe
+Vous avez juste besoin de spécifier le nom de celui-ci en paramètre :
+root@mateo21-desktop:/home# addgroup amis
+Ajout du groupe « amis » (identifiant 1002)...
+Terminé.
+
+• usermod : modifier un utilisateur
+Possède plusieurs paramètres, dont :
+-l : renomme l'utilisateur (le nom de son répertoire personnel ne sera pas changé par contre) ;
+-g : change de groupe.
+Si je veux mettre patrick dans le groupe amis, je ferai donc comme ceci :
+usermod -g amis patrick
+Et pour remettre patrick dans le groupe patrick comme il l'était avant :
+usermod -g patrick patrick
+(!) Il est aussi possible de faire en sorte qu'un utilisateur appartienne à plusieurs groupes. 
+Pour ce faire, utilisez le paramètre -G (majuscule).
+Exemple : usermod -G amis,paris,collegues patrick.
+Séparez les noms des groupes par une virgule, sans espace entre chaque nom de groupe.
+(!!) Lorsque vous avez recours à -G, l'utilisateur change de groupe et ce peu importe les groupes auxquels il
+appartenait auparavant.
+Si vous voulez ajouter des groupes à un utilisateur (sans perdre les groupes auxquels il appartenait avant cela),
+utilisez -a :
+usermod -aG amis patrick
+
+• delgroup : supprimer un groupe
+Si vous voulez supprimer un groupe, c'est tout simple :
+delgroup amis
+
+◘ chown : : gestion des propriétaires d'un fichier
+
+Seul l'utilisateur root peut changer le propriétaire d'un fichier.
+mateo21@mateo21-desktop:~$ ls -l rapport.txt (fichier à donner à Patrick)
+-rw-r--r-- 1 mateo21 mateo21 0 2007-11-15 23:14 rapport.txt
+(!) ls -l +fichier n'affiche que le fichier (ls -l *.jpg afficherait uniquement les images JPEG contenues dans ce
+dossier)
+
+• chown : changer le propriétaire d'un fichier
+La commande chown, qui doit être utilisée en tant que root, attend deux paramètres au moins :
+le nom du nouveau propriétaire ;
+le nom du fichier à modifier.
+chown patrick rapport.txt
+On peut voir ensuite que patrick est bien le nouveau propriétaire du fichier :
+root@mateo21-desktop:/home/mateo21# ls -l rapport.txt
+-rw-r--r-- 1 patrick mateo21 0 2007-11-15 23:14 rapport.txt
+Seulement… il appartient toujours au groupe mateo21 !
+
+• chgrp : changer le groupe propriétaire d'un fichier
+chgrp s'utilise exactement de la même manière que chown à la différence près qu'il affecte cette fois le groupe
+propriétaire d'un fichier.
+chgrp amis rapport.txt
+root@mateo21-desktop:/home/mateo21# ls -l rapport.txt
+-rw-r--r-- 1 patrick amis 0 2007-11-15 23:14 rapport.txt
+
+• chown peut aussi changer le groupe propriétaire d'un fichier !
+chown patrick:amis rapport.txt
+Cela affectera le fichier à l'utilisateur patrick et au groupe amis.
+Il suffit de séparer par un symbole deux points (« : ») le nom du nouvel utilisateur (à gauche)
+et le nom du nouveau groupe (à droite).
+
+• -R : affecter récursivement les sous-dossiers
+L'option -R de chown modifie tous les sous-dossiers et fichiers contenus dans un dossier pour y affecter un nouvel
+utilisateur (et un nouveau groupe si on utilise la technique du deux points que l'on vient de voir).
+Par exemple, si je veux donner tout le contenu du dossier personnel de patrick à mateo21 (et au
+groupe mateo21), c'est très simple :
+chown -R mateo21:mateo21 /home/patrick/
+
+◘ chmod : modifier les droits d'accès
+
+• Le fonctionnement des droits 
+1ère colonne :
+drwxr-xr-x 2 mateo21 mateo21 4096 2007-11-13 21:53 Desktop
+On peut voir cinq lettres différentes. Voici leur signification :
+- d (Directory) : indique si l'élément est un dossier ;
+- l (Link) : indique si l'élément est un lien (raccourci) ;
+- r (Read) : indique si on peut lire l'élément ;
+- w (Write) : indique si on peut modifier l'élément ;
+- x (eXecute) : si c'est un fichier, « x » indique qu'on peut l'exécuter. 
+Ce n'est utile que pour les fichiers exécutables (programmes et scripts).
+Si c'est un dossier, « x » indique qu'on peut le « traverser », c'est-à-dire qu'on peut voir les sous-dossiers qu'il
+contient si on a le droit de lecture dessus.
+Si la lettre apparaît, c'est que le droit existe. S'il y a un tiret à la place, c'est qu'il n'y a aucun droit.
+Le premier élément d mis à part, on constate que r, w et x sont répétés trois fois en fonction des utilisateurs :
+- le premier triplet rwx indique les droits que possède le propriétaire du fichier sur ce dernier ;
+- le second triplet rwx indique les droits que possèdent les autres membres du groupe sur ce fichier ;
+- enfin, le dernier triplet rwx indique les droits que possèdent tous les autres utilisateurs de la machine sur le
+fichier.
+
+• chmod : modifier les droits d'accès
+Vous n'avez pas besoin d'être root pour utiliser chmod. 
+Vous devez juste être propriétaires du fichier dont vous voulez modifier les droits d'accès.
+
+• Attribuer des droits avec des chiffres (chmod absolu)
+on attribue un chiffre à chaque droit :
+Droit Chiffre
+r        4
+w        2
+x        1
+Si vous voulez combiner ces droits, il va falloir additionner les chiffres correspondants.
+Ainsi, pour attribuer le droit de lecture et de modification, il faut additionner $4+2$, ce qui donne 6.
+Le chiffre 6 signifie donc « Droit de lecture et d'écriture ».
+Droit  Chiffre     Calcul
+---       0      0 + 0 + 0
+-w-       2      0 + 2 + 0
+rwx       7      4 + 2 + 1
+Avec ça, on peut calculer la valeur d'un triplet de droits. Il faut faire le même calcul pour les droits que l'on veut
+attribuer au propriétaire, au groupe et aux autres.
+Par exemple, « 640 » indique les droits du propriétaire, du groupe et des autres (dans l'ordre).
+6 : droit de lecture et d'écriture pour le propriétaire.
+4 : droit de lecture pour le groupe.
+0 : aucun droit pour les autres.
+Le droit maximal que l'on puisse donner à tout le monde est 777 : droit de lecture, d'écriture et d'exécution pour le
+propriétaire, pour son groupe et pour tous les autres.
+Au contraire, avec un droit de 000, personne ne peut rien faire… à part root, bien sûr.
+Pour changer les droits sur le fichier rapport.txt, et être le seul autorisé à le lire et l'éditer, je dois exécuter
+cette commande :
+chmod 600 rapport.txt
+
+• Attribuer des droits avec des lettres (chmod relatif)
+Dans ce mode, il faut savoir que :
+u = user (propriétaire) ;
+g = group (groupe) ;
+o = other (autres).
+… et que :
++ signifie : « Ajouter le droit » ;
+- signifie : « Supprimer le droit » ;
+= signifie : « Affecter le droit ».
+
+chmod g+w rapport.txt
+Signification : « Ajouter le droit d'écriture au groupe ».
+
+chmod o-r rapport.txt
+Signification : « Enlever le droit de lecture aux autres ».
+
+chmod u+rx rapport.txt
+Signification : « Ajouter les droits de lecture et d'exécution au propriétaire ».
+
+chmod g+w,o-w rapport.txt
+Signification : « Ajouter le droit d'écriture au groupe et l'enlever aux autres ».
+
+chmod go-r rapport.txt
+Signification : « Enlever le droit de lecture au groupe et aux autres ».
+
+chmod +x rapport.txt
+Signification : « Ajouter le droit d'exécution à tout le monde ».
+
+chmod u=rwx,g=r,o=- rapport.txt
+Signification : « Affecter tous les droits au propriétaire, juste la lecture au groupe, rien aux autres ».
+
+• Et toujours… -R pour affecter récursivement
+Le paramètre -R existe aussi pour chmod. Si vous affectez des droits sur un dossier avec -R, tous ses fichiers et
+sous-dossiers récupèreront le même droit.
+Si je veux être le seul à pouvoir lire, éditer et exécuter les fichiers de mon répertoire personnel et de tous ses
+fichiers, j'ai juste besoin d'écrire :
+chmod -R 700 /home/mateo21
+
+
+V) Nano, l'éditeur de texte du débutant
+
+Parmi les plus célèbres éditeurs de texte console de Linux, il faut connaître : Nano, Vim et Emacs.
+
+◘ Premiers pas avec Nano
+
+Pour démarrer le logiciel, il vous suffit simplement de taper nano dans la console :
+nano
+Le symbole ^ signifie Ctrl. Ainsi, pour quitter Nano, il suffit de taper Ctrl + X.
+Ctrl + G : afficher l'aide ;
+Ctrl + K : couper la ligne de texte (et la mettre dans le presse-papier) ;
+Ctrl + U : coller la ligne de texte que vous venez de couper ;
+Ctrl + C : afficher à quel endroit du fichier votre curseur est positionné (numéro de ligne…) ;
+Ctrl + W : rechercher dans le fichier ;
+Ctrl + O : enregistrer le fichier (écrire) ;
+Ctrl + X : quitter Nano.
+Si vous voulez sortir du mode recherche, tapez Ctrl + C (Annuler).
+
+Si vous souhaitez aller au résultat suivant (au « deux » suivant), faites à nouveau Ctrl + W
+pour lancer une recherche.
+La recherche précédente est sauvegardée et apparaît entre crochets. 
+Si vous voulez rechercher le même mot (et donc aller au résultat suivant),
+tapez juste Entrée sans écrire de mot à rechercher (figure suivante).
+
+Pour enregistrer à tout moment, faites Ctrl + O
+Tapez juste le nom du fichier que vous voulez créer puis pressez Entrée.
+
+• Les paramètres de la commande Nano
+Le plus courant est d'indiquer en paramètre le nom du fichier qu'on veut ouvrir. Ainsi :
+nano salut.txt
+… ouvrira le fichier salut.txt.
+○ -m : autorise l'utilisation de la souris sous Nano. 
+○ -i : indentation automatique.
+○ -A : active le retour intelligent au début de la ligne.
+Si je veux lancer Nano avec toutes ces options à la fois, je peux donc écrire :
+nano -miA salut.txt
+
+◘ Configurer Nano avec .nanorc
+
+Il existe un fichier de configuration de Nano qui indique toutes vos préférences. Celui-ci s'appelle .nanorc.
+
+• Pourquoi .nanorc ?
+La plupart des fichiers de configuration commencent par un point.
+Cela permet de « cacher » le fichier quand on fait un ls (sauf ls -a)
+il se peut que le fichier .nanorc n'existe pas chez home. 
+Si tel est le cas, Nano sera chargé avec les options par défaut.
+
+• Création du .nanorc
+Pas de .nanorc ? Pas de problème, il suffit de le créer. On peut par exemple faire ceci :
+nano .nanorc
+Dans ce fichier, vous devez écrire une commande par ligne.
+Chaque commande commence par un set (pour activer) ou un unset (pour désactiver) suivi de l'option qui vous intéresse.
+Par exemple, pour activer la souris, écrivez :
+set mouse
+On peut faire de même pour éviter d'avoir à taper à chaque fois les paramètres-iet-Aavec d'autres séries deset. Au
+final, on écrira ceci :
+set mouse
+set autoindent
+set smarthome
+Enregistrez le fichier avec Ctrl + O. Comme vous avez déjà mentionné le nom du fichier en paramètre lors de l'ouverture
+de Nano, celui-ci sera automatiquement écrit pour vous. 
+Vous pouvez ensuite faire Ctrl + X pour quitter Nano. Démarrer une nouvelle session Nano pour que
+les changements soient pris en compte. 
+
+• Le nanorc global et la coloration syntaxique
+Il existe un fichier nanorc « global » qui est pris en compte pour tout le monde. Celui-ci est situé
+dans/etc/nanorc (attention : il n'y a pas de point devant, cette fois.)
+Ce fichier ne peut être modifié que par root. Je vous conseille donc de l'ouvrir avec un sudo
+(ou dans une console en root si vous avez fait sudo su avant) :
+sudo nano /etc/nanorc
+# set autoindent
+Supprimez juste le # pour décommenter la ligne
+et donc pour activer l'indentation automatique pour tous les utilisateurs.
+Vers la fin, vous verrez une section appelée « color setup », qui commence par ces lignes-là :
+## Nanorc files
+# include "/usr/share/nano/nanorc.nanorc"
+## C/C++
+# include "/usr/share/nano/c.nanorc"
+## HTML
+# include "/usr/share/nano/html.nanorc"
+Décommenter toutes les lignes d'include. Cela permettra d'activer la coloration « intelligente » de vos
+fichiers selon leur type. Vous pourrez ainsi avoir des fichiers HTML colorés, des fichiers C colorés, des
+fichiers nanorc colorés, etc.
+
+◘ Configurer sa console avec .bashrc
+
+il existe un fichier de configuration de l'ensemble de la console : le.bashrc. Il se situe dans votre répertoire
+personnel et celui-ci existe déjà normalement.
+mateo21@mateo21-desktop:/usr/share/nano$ cd
+mateo21@mateo21-desktop:~$ nano .bashrc
+
+• Édition du .bashrc personnel
+○ Personnaliser l'invite de commandes
+Rendez-vous plus bas dans le fichier, jusqu'à ce que vous tombiez sur ces lignes :
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+xterm-color)
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+;;
+*)
+PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+;;
+esac
+# Comment in the above and uncomment this below for a color prompt
+# PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033
+Décommenter pour activer l'invite de commandes colorée + Enregistrer (ctrl + o)
+
+○ Créer des alias 
+alias = commandes que vous créez et qui sont automatiquement transformées en d'autres commandes
+Descendez un peu plus bas dans le fichier, vous trouverez des lignes commentées commençant par « alias ».
+Je vous invite à les personnaliser comme moi pour commencer :
+# enable color support of ls and also add handy aliases
+if [ "$TERM" != "dumb" ]; then
+eval "`dircolors -b`"
+alias ls='ls --color=auto'
+#alias dir='ls --color=auto --format=vertical'
+#alias vdir='ls --color=auto --format=long'
+fi
+# some more ls aliases
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+alias ls='ls --color=auto'
+Celui-ci active la coloration des résultats d'un ls à chaque fois que vous tapez ls.
+En fait, ls est systématiquement et automatiquement transformé par la console en ls --color=auto
+
+Compléter l'alias ll pour utiliser plus d'options à la fois :
+alias ll='ls -lArth'
+… signifie que la commande ll fera appel à ls avec les options qui permettent d'afficher le détail de chaque fichier,
+d'afficher les fichiers cachés, d'afficher les fichiers dans l'ordre inverse de dernière modification (le fichier le
+plus récent sera en bas) et d'afficher des tailles de fichiers lisibles pour un humain (-h)
+
+La commandelsappellera automatiquement l'alias ls --color=auto, ce qui fait qu'un ll sera aussi coloré.
+Bref, c'est un peu un alias en chaîne.
+
+(!) Pour voir tous les alias : alias dans la console 
+
+Pour créer son propre alias : alias nom='commande'
+Ex. : sécuriser nos rm pour éviter que l'on puisse supprimer tout le système depuis la racine /.
+Il y a en effet un paramètre de sécurité disponible avec rm:--preserve-root.
+En définissant un alias surrm, vous ne pourrez pas oublier :
+alias rm='rm --preserve-root'
+
+• Édition du bashrc global
+Si vous voulez définir des alias ou modifier l'invite de commandes pour tous vos utilisateurs,
+vous pouvez le faire en une seule fois en éditant le fichier bashrc global situé dans : /etc/bash.bashrc
+Ce bashrc doit être édité en root.
+(!) Les éléments du bashrc personnel ont la priorité sur ceux du bashrc global.
+Si un même alias est défini dans les deux, c'est celui du bashrc personnel qui sera pris en compte.
+
+• Et aussi… le .profile
+Il existe un ~/.profile et un /etc/profile. Quelle est la différence ?
+En gros, le .profile est lu à chaque nouvelle console dans laquelle vous vous loggez.
+C'est le cas des consoles que vous ouvrez avec Ctrl + Alt + F1 à F6 (tty1 à tty6).
+Le .bashrc est lu lorsque vous ouvrez une console dans laquelle vous ne vous loggez pas.
+C'est le cas des consoles que vous ouvrez en mode graphique (Terminal sous Unity, Konsole sous KDE)
+Dans la pratique, le .profile fait par défaut appel au .bashrc… 
+Donc il suffit d'éditer votre.bashrcet vous modifierez ainsi les options de toutes vos consoles :
+celles avec et sans login.
+
+(!) Le shell est le programme qui interprète les commandes que vous tapez (synonyme de « console »)
+
+
+VI) Installer des programmes avec apt-get
+
+◘ Les dépôts 
+
+L'endroit où tous les paquets se trouvent est appelé dépôt (repository en anglais).
+En France, par défaut, Ubuntu utilise le dépôt fr.archive.ubuntu.com.
+Ce n'est pas toujours une bonne idée de garder le dépôt par défaut car en cas de nouvelle version d'Ubuntu
+et de ses logiciels, celui-ci est surchargé et devient alors très lent.
+Si vous êtes chez Wanadoo / Orange, je vous recommande d'utiliser le dépôt Oleane (appartenant à Orange).
+
+• Gérer ses dépôts
+la liste des dépôts que votre ordinateur utilise est stockée dans un fichier.
+Pour éditer ce fichier, il faut utiliser un éditeur de texte comme… Nano
+sudo nano /etc/apt/sources.list
+chaque ligne du fichier commence par une de ces deux directives :
+○ deb : pour télécharger la version compilée (binaire) des programmes. C'est ce que vous voudrez faire dans la plupart des
+cas car c'est la version « prête à l'emploi » ;
+○ deb-src : permet de récupérer le code source du programme. Généralement, vous n'en avez pas besoin, sauf si vous êtes
+curieux et que vous voulez voir la source d'un programme. C'est l'avantage des logiciels libres de pouvoir consulter la
+source des programmes !
+Voici une ligne « type » :
+deb http://fr.archive.ubuntu.com/ubuntu/ hardy universe
+En premier paramètre, on a l'adresse du dépôt. Ici, le dépôt français par défaut est
+http://fr.archive.ubuntu.com/ubuntu/.
+Ensuite, on a le nom de la version de la distribution qu'on utilise, « hardy » dans ce cas.
+Enfin, le dernier paramètre (et tous les paramètres suivants s'il y en a) correspond à la « section » du dépôt dans
+laquelle vous voulez regarder.
+la seule chose que vous devriez avoir à faire, c'est remplacer toutes les adresses (http…) par celle du nouveau dépôt
+que vous voulez utiliser.
+
+• Utiliser l'outil graphique
+
+Ubuntu : allez dans Système → Administration → Sources de logiciels ;
+2019 : Application Logiciels et mises à jour 
+Télécharger depuis : Autre → choisir son dépôt (avant : cliquer sir Sélectionner le meilleur serveur)
+Cliquez sur « Actualiser » pour mettre à jour la liste des logiciels disponibles
+
+◘ Les outils de gestion des paquets
+
+○ paquet : c'est un programme « prêt à l'emploi », l'équivalent des programmes d'installation sous Windows;
+○ dépendance : un paquet peut avoir besoin de plusieurs autres paquets pour fonctionner, on dit qu'il a des
+    dépendances ;
+○ dépôt : c'est le serveur sur lequel on va télécharger nos paquets.
+
+Nous devons généralement suivre trois étapes pour télécharger un paquet :
+○ apt-get update (optionnel) : pour mettre notre cache à jour si ce n'est pas déjà fait ;
+○ apt-cache search monpaquet (optionnel) : pour rechercher le paquet que nous voulons télécharger si nous ne connaissons
+pas son nom exact ;
+○ apt-get install monpaquet : pour télécharger et installer notre paquet.
+
+◘ apt-get update : mettre à jour le cache des paquets
+
+Il y a deux cas où vous avez besoin de le mettre à jour :
+○ quand vous changez ou ajoutez un dépôt à votre liste de dépôts ;
+○ quand vous n'avez pas mis à jour votre cache depuis un moment (quelques semaines).
+sudo apt-get update
+
+◘ apt-cache search : rechercher un paquet
+
+On utilise pour cela la commande suivante :
+sudo apt-cache search votrerecherche
+(!) Si vous voulez une plus ample description d'un paquet, utilisez apt-cache show nomdupaquet. Exemple :
+apt-cache show lbreakout2.
+
+◘ apt-get install : installer un paquet
+
+sudo apt-get install lbreakout2
+Répondez par un « O » majuscule (comme « Oui ») et tapez Entrée pour que l'installation se poursuive.
+(!) Astuce : vous pouvez installer plusieurs paquets d'un coup en les listant un à un :
+apt-get install paquet1 paquet2 paquet3
+
+◘ apt-get autoremove : supprimer un paquet
+
+sudo apt-get remove lbreakout2
+Toutefois, cela ne supprime pas les dépendances du paquet devenues inutiles.
+Pour demander à apt-get de supprimer aussi les dépendances inutiles, on utilise autoremove :
+apt-get autoremove lbreakout2
+
+◘ apt-get upgrade : mettre à jour tous les paquets
+
+sudo apt-get upgrade
+(!) Pensez à faire un apt-get update pour mettre à jour le cache des paquets
+sur votre machine avant de lancer un upgrade.
+(!!) Il est conseillé de faire un apt-get upgrade régulièrement pour avoir le système le plus à jour possible. 
+Cela vous permet de bénéficier des dernières fonctionnalités des logiciels, 
+mais cela corrige aussi les failles de sécurité qui auraient pu être découvertes dans les programmes
+(et on en trouve tous les jours, même dans les logiciels libres !).
+
+
+VII) RTFM : lisez le manuel !
