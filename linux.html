@@ -859,3 +859,248 @@ mais cela corrige aussi les failles de sécurité qui auraient pu être découve
 
 
 VII) RTFM : lisez le manuel !
+
+◘ man : afficher le manuel d'une commande
+
+La commande man (manual) s'utilise très simplement : elle prend en paramètre 
+le nom de la commande dont vous voulez lire la doc
+man mkdir
+
+• Se déplacer dans le manuel :
+- Utilisez les touches fléchées du clavier pour vous déplacer ligne par ligne.
+- les touches Page Up et Page Down (ou Espace) pour vous déplacer de page en page.
+- la touche Home (aussi appelée Origine) pour revenir au début du manuel, et sur Fin pour aller à la fin.
+- la touche / (slash) pour effectuer une recherche ; Tapez ensuite le mot que vous
+recherchez dans le manuel puis appuyez sur Entrée. 
+Pour passer au résultat suivant, tapez à nouveau / puis directement sur Entrée (sans
+retaper votre recherche).
+- la touche Q pour quitter le manuel à tout moment, comme vous le faisiez avec less.
+
+• Les principales sections du manuel
+- NAME : le nom de la commande + courte description 
+- SYNOPSIS : c'est la liste de toutes les façons d'utiliser la commande. 
+- DESCRIPTION : une description plus approfondie de ce que fait la commande + liste des paramètres et
+leur signification. 
+- AUTHOR : l'auteur du programme. 
+- REPORTING BUGS : si vous rencontrez un bug dans le logiciel, on vous donne l'adresse de la personne à contacter pour le
+rapporter.
+- COPYRIGHT : le copyright, c'est-à-dire la licence d'utilisation de la commande. 
+- SEE ALSO : cette section vous propose de « voir aussi » d'autres commandes en rapport avec celle que vous êtes en train
+de regarder. C'est une section parfois intéressante.
+
+◘ Comprendre le SYNOPSIS
+
+rôle = lister toutes les façons possibles d'utiliser la commande
+
+• Exemple de man mkdir 
+SYNOPSIS
+mkdir [OPTION] DIRECTORY... 
+pour utiliser mkdir :
+mkdir [option entre crochet] nom du repertoire à créer (plusieurs repertoires possibles : ...)
+Les mots du SYNOPSIS écrits en gras sont des mots à taper tels quels. 
+Les mots soulignés, eux, doivent être remplacés par le nom approprié.
+
+• Autres exemples 
+mkdir images videos musiques
+… ce qui aura pour effet de créer trois dossiers : images, videos et musiques
+
+DESCRIPTION
+Create the DIRECTORY(ies), if they do not already exist.
+Mandatory arguments to long options are mandatory for short options
+too.
+-v, --verbose
+print a message for each created directory
+
+mkdir -v images videos musiques
+
+Résultat :
+mateo21@mateo21-desktop:~/tests$ mkdir -v images videos musiques
+mkdir: création du répertoire `images'
+mkdir: création du répertoire `videos'
+mkdir: création du répertoire `musiques'
+
+• man cp 
+SYNOPSIS (plusieurs choix)
+    cp [OPTION]… [-T] SOURCE DEST
+La seule chose obligatoire ici ce sont les paramètres SOURCE (le nom du fichier à copier) et DEST
+(le nom de la copie à créer).
+Ces fichiers peuvent être précédés d'une ou plusieurs options (remarquez les points de suspension) 
+ainsi que de l'option -T
+    cp [OPTION]… SOURCE… DIRECTORY
+on peut copier un ou plusieurs fichiers (SOURCE…) vers un répertoire (DIRECTORY).
+Tout cela peut encore une fois être précédé d'une ou plusieurs options.
+    cp [OPTION]… -t DIRECTORY SOURCE…
+on peut aussi écrire le répertoire (DIRECTORY) dans un premier temps,
+suivi d'un ou plusieurs fichiers (SOURCE…).
+Attention, il est obligatoire d'utiliser le paramètre -t qui n'est plus entre crochets.
+
+• Exemples d'utilisation 
+Si on se base sur la première ligne, on peut juste écrire :
+cp photo.jpg photo_copie.jpg
+… ce qui aura pour effet de créer la copie photo_copie.jpg
+Pour connaître toutes les options disponibles, vous devrez lire la section DESCRIPTION. 
+On retrouve notre mode -v (verbeux) qui demande à la commande de détailler ce qu'elle fait. 
+On pourrait aussi ajouter -i qui demande confirmation si le fichier de destination existe déjà.
+On peut donc faire :
+cp -vi photo.jpg photo_copie.jpg
+Essayons un peu ce que propose la seconde ligne : copier un ou plusieurs fichiers dans un dossier.
+cp photo.jpg photo_copie.jpg images/
+
+• man apt-get 
+SYNOPSIS très long, avec beaucoup d'options, parmi elles : 
+{[update] | [upgrade] | [dselect-upgrade] | [install paquet…] | [remove paquet…] | [source paquet…] | [build-dep
+paquet…] | [check] | [clean] | [autoclean]}
+Ces barres verticales signifient « OU » , 
+ce qui veut dire que vous devez mettre une et une seule option issue de la liste entre accolades.
+update : met à jour le cache des paquets disponibles sur votre ordinateur ;
+upgrade : met à jour tous les paquets installés si une nouvelle version est disponible ;
+install paquet… : installe le ou les paquets demandés.
+On peut donc écrire :
+apt-get install monpaquet
+Ou encore :
+apt-get update
+Ou encore :
+apt-get autoclean
+
+• Résumé de la syntaxe du SYNOPSIS
+    ○ gras : tapez le mot exactement comme indiqué ;
+    ○ souligne : remplacez le mot souligné par la valeur qui convient dans votre cas ;
+    ○ [-hvc] : toutes les options -h, -v et -c sont facultatives ;
+    ○ a|b : vous pouvez écrire l'option « a » OU « b », mais pas les deux à la fois ;
+    ○ option… : les points de suspension indiquent que l'option peut être répétée autant de fois que vous voulez.
+
+◘ apropos : trouver une commande
+
+Vous lui donnez en paramètre un mot clé et elle va le rechercher dans les descriptions 
+de toutes les pages du manuel.
+La commande apropos est donc un peu l'inverse de man : elle vous permet de retrouver une commande.
+Ex. Vous recherchez une commande en rapport avec le son :
+Vous pouvez taper :
+apropos sound
+… ce qui va rechercher toutes les commandes qui parlent de son (sound) dans leur page du manuel.
+man alsamixer
+
+◘ D'autres façons de lire le manuel
+
+• Le paramètre -h (et --help)
+Par exemple :
+apt-get 
+(!) Parfois, il n'y a pas de page de manuel pour une commande (man ne fonctionne pas pour cette dernière)
+mais le -h ou le --help fonctionne.
+
+• La commande whatis
+La commande whatis est une sorte de man très allégé.
+whatis mkdir
+mkdir (1) - make directories
+
+• Rechercher man sur le web 
+vous pouvez taper la recherche : man mkdir.
+
+
+VIII) Rechercher des fichiers 
+
+◘ locate : une recherche rapide
+
+• Utiliser locate
+il suffit d'indiquer le nom du fichier que vous voulez retrouver :
+mateo21@mateo21-desktop:~$ locate notes.txt
+/home/mateo21/notes.txt
+mateo21@mateo21-desktop:/var/log$ locate australie
+/home/mateo21/photos/australie1.jpg
+/home/mateo21/photos/australie2.jpg
+/home/mateo21/photos/australie3.jpg
+
+• La base de données des fichiers
+la commande ne fait pas la recherche sur votre disque dur entier, 
+mais seulement sur une base de données de vos fichiers
+Une fois par jour, votre système mettra à jour la base de données, avec les nouveaux fichiers 
+Vous pouvez forcer la commande locate à reconstruire la base de données des fichiers du disque dur. 
+Cela se fait avec la commande updatedb, à exécuter en root (avec sudo) :
+sudo updatedb
+Cependant, locate donne parfois trop de résultats car elle recherche dans tous les répertoires du disque dur, 
+elle n'est donc pas très précise.
+
+◘ find : une recherche approfondie
+
+• find recherche les fichiers actuellement présents
+• Fonctionnement de la commande find
+find « où » « quoi (obligatoire) » « que faire avec »
+○ Où : c'est le nom du dossier dans lequel la commande va faire la recherche.
+Par défaut, la recherche s'effectuera dans le dossier courant et ses sous-dossiers.
+○ Quoi : c'est le fichier à rechercher.
+○ Que faire avec : il est possible d'effectuer des actions automatiquement sur chacun des fichiers trouvés
+(on parle de « post-traitement »)
+
+• Utilisation basique de la commande find
+○ Recherche à partir du nom
+find -name "logo.png" (pour retrouver un fichier qui s'appelle très exactement logo.png.)
+si je veux retrouver tous les fichiers qui s'appellent syslog situés dans/var/log (et ses sous-répertoires) :
+find /var/log/ -name "syslog"
+(!) contrairement à locate, find récupère uniquement la liste des fichiers qui s'appellent exactement comme demandé. 
+Ainsi, s'il existe un fichier nommé syslog2, il ne sera pas listé dans les résultats.
+Pour qu'il le soit, il faut utiliser le joker : l'étoile « * » !
+(!!) Si on avait voulu avoir la liste des fichiers qui se terminent par « syslog », on aurait écrit "*syslog".
+find / -name "syslog" (recherche sur tout le disque dur)
+(!!!) En général, à moins d'être très patient (ou désespéré), on ne fait pas de recherche depuis la racine
+
+○ Recherche à partir de la taille 
+mateo21@mateo21-desktop:/var$ find ~ -size +10M
+/home/mateo21/souvenirs.avi
+/home/mateo21/backups/backup_mai.gz
+/home/mateo21/backups/backup_juin.gz
+(!) Rappel : le tilde « ~ » signifie « rechercher dans mon home »
+Vous pouvez aussi utiliser un moins « - » à la place du « + » pour les fichiers de moins de 10 Mo.
+Et sans « + », la commande cherchera des fichiers de 10 Mo exactement
+
+○ Recherche à partir de la date de dernier accès
+Avec -atime, vous pouvez indiquer le nombre de jours qui vous séparent du dernier accès à un fichier.
+mateo21@mateo21-desktop:~$ find -name "*.odt" -atime 6
+/home/mateo21/ecriture/resume_infos_juin.odt
+J'utilise ici 6 et non 7 car la numérotation commence à 0 ! 
+Ainsi, si nous sommes le mardi 29 août, j'écrirais :
+Hier, le lundi 28 août, il y a 1 jour → 0 ;
+Avant-hier, le 27 août, il y a 2 jours → 1.
+
+○ Rechercher uniquement des répertoires ou des fichiers
+    -type d : pour rechercher uniquement des répertoires (directories) ;
+    -type f : pour rechercher uniquement des fichiers (files)
+Par défaut, find cherche des répertoires ET des fichiers.
+Pour obtenir uniquement les répertoires qui s'appellentsyslog(et non pas les fichiers), tapez donc :
+find /var/log -name "syslog" -type d
+
+• Utilisation avancée avec manipulation des résultats
+
+find -name "*.jpg"
+… est équivalent à :
+find -name "*.jpg" -print
+-print signifie « afficher les résultats trouvés ».
+Si le -print n'est pas écrit, la commande comprend toute seule qu'elle doit afficher la liste des fichiers.
+
+○ Afficher les fichiers de façon formatée
+Par défaut, on liste juste les noms des fichiers trouvés.
+On peut cependant avec l'option -printf, manipuler un peu ce qui est affiché.
+mateo21@mateo21-desktop:~$ find . -name "*.jpg" -printf "%p - %u\n"
+./photos/australie1.jpg - mateo21
+./photos/australie2.jpg - mateo21
+./photos/australie3.jpg - mateo21
+Ici, j'affiche le nom du fichier, un tiret et le nom du propriétaire de ce fichier. 
+Le \n permet d'aller à la ligne.
+man find pour avoir tous les paramètres 
+
+○ Supprimer les fichiers trouvés
+Pour faire le ménage dans mon home et par exemple supprimer tous mes fichiers « jpg », je vais écrire ceci :
+find -name "*.jpg" -delete
+(!) pas de confirmation, tout est effacé ! 
+
+○ Appeler une commande
+Avec -exec, vous pouvez appeler une commande qui effectuera une action sur chacun des fichiers trouvés.
+Je souhaite mettre un chmod à 600 pour chacun de mes fichiers « jpg », pour que je sois le seul à pouvoir
+les lire :
+find -name "*.jpg" -exec chmod 600 {} \;
+Pour chaque fichier .jpg trouvé, on exécute la commande qui suit -exec :
+    - cette commande ne doit PAS être entre guillemets ;
+    - les accolades {} seront remplacées par le nom du fichier ;
+    - la commande doit finir par un \; obligatoirement.
+(!) Si le fait que la commande ne vous demande pas de confirmation vous ennuie, 
+vous pouvez utiliser -ok à la place de -exec. 
+Le principe est le même, mais on vous demandera une confirmation pour chaque fichier rencontré.
