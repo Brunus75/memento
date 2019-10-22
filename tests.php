@@ -1,4 +1,6 @@
 <?php
+
+// THE MOUNTAINS
 /**
  * The while loop represents the game.
  * Each iteration represents a turn of the game
@@ -30,4 +32,91 @@ while (TRUE)
 
     echo("$topMountain\n"); // The index of the mountain to fire on.
 }
-?>
+
+// THOR AND THE COORDINATES
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ * ---
+ * Hint: You can use the debug stream to print initialTX and initialTY, if Thor seems not follow your orders.
+ **/
+
+fscanf(STDIN, "%d %d %d %d",
+    $lightX, // the X position of the light of power
+    $lightY, // the Y position of the light of power
+    $initialTx, // Thor's starting X position
+    $initialTy // Thor's starting Y position
+);
+
+// game loop
+while (TRUE)
+{
+    fscanf(STDIN, "%d",
+        $remainingTurns // The remaining amount of turns Thor can move. Do not remove this line.
+    );
+    
+    $directionY; // horizontal direction
+    $directionX; // vertical direction
+    
+    for ($i = 0; $i <= $remainingTurns; $i++) {
+            
+        if ($lightY < $initialTy) {
+            $directionY = "N";
+            $initialTy--; // change Y coordinates
+        } elseif ($lightY > $initialTy) {
+            $directionY = "S";
+            $initialTy++; // change Y coordinates
+        } elseif ($initialTy >= 17 || $lightY == $initialTy) {
+            $directionY = "";
+        }
+        
+        if ($lightX > $initialTx) {
+            $directionX = "E";
+            $initialTx++; // change X coordinates
+        } elseif ($lightX < $initialTx) {
+            $directionX = "W";
+            $initialTx--; // change X coordinates
+        } elseif ($lightX == $initialTx || $initialTx >= 39) {
+            $directionX = "";
+        }
+    
+        // Write an action using echo(). DON'T FORGET THE TRAILING \n
+        // To debug (equivalent to var_dump): error_log(var_export($var, true));
+    
+        // A single line providing the move to be made: N NE E SE S SW W or NW
+        echo($directionY . $directionX . "\n");
+    }
+}
+
+/**
+ * Duplicate Encoder
+ * 
+ * @description Converts a string to a new string where each character in 
+ *              the new string is "(" if that character appears only once 
+ *              in the original string, or ")" if that character appears 
+ *              more than once in the original string.
+ */
+
+function duplicate_encode($word){
+
+  $convertedWord = ""; 
+  
+  $arrayWord = str_split(strtolower($word)); // word converted to lower array
+    
+  foreach ($arrayWord as $key1 => $value1) { // first loop on array
+      
+    $letter = "("; // by default, the letter is unique
+      
+    foreach ($arrayWord as $key2 => $value2) { // second loop, check all letters
+      
+      if ($value1 == $value2 && $key1 !== $key2) {
+          $letter = ")"; // the letter is not unique
+      }
+      
+    }
+    
+    $convertedWord .= $letter; // add each letter to the converted word
+  }
+  
+  return $convertedWord;
+}

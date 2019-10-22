@@ -1104,3 +1104,261 @@ Pour chaque fichier .jpg trouvé, on exécute la commande qui suit -exec :
 (!) Si le fait que la commande ne vous demande pas de confirmation vous ennuie, 
 vous pouvez utiliser -ok à la place de -exec. 
 Le principe est le même, mais on vous demandera une confirmation pour chaque fichier rencontré.
+
+
+IX) Extraire, trier et filtrer des données
+
+◘ grep : filtrer des données
+
+rechercher un mot dans un fichier et d'afficher les lignes dans lesquelles ce mot a été trouvé
+
+• Utiliser grep simplement
+grep texte nomfichier
+grep alias .bashrc
+grep est davantage un outil de filtre qu'un outil de recherche.
+Son objectif est de vous afficher uniquement les lignes qui contiennent le mot que vous avez demandé
+mettre des guillemets autour du mot à trouver si vous recherchez une suite de plusieurs mots séparés par des
+espaces :
+grep "Site du Zéro" monfichier
+○ -i : ne pas tenir compte de la casse (majuscules / minuscules)
+$ grep -i alias .bashrc
+○ -n : connaître les numéros des lignes
+$ grep -n alias .bashrc
+○ -v : inverser la recherche : ignorer un mot
+$ grep -v alias .bashrc
+○ -r : rechercher dans tous les fichiers et sous-dossiers
+il faudra indiquer en dernier paramètre le nom du répertoire dans lequel la recherche doit être faite
+grep -r "Site du Zéro" code/
+… recherchera la chaîne « Site du Zéro » dans tous les fichiers du répertoirecode,
+y compris dans les sous-dossiers.
+
+• Utiliser grep avec des expressions régulières
+Caractère spécial       Signification
+.                       Caractère quelconque
+^                       Début de ligne
+$                       Fin de ligne
+[]                      Un des caractères entre les crochets
+?                       L'élément précédent est optionnel (peut être présent 0 ou 1 fois)
+*                       L'élément précédent peut être présent 0, 1 ou plusieurs fois
++                       L'élément précédent doit être présent 1 ou plusieurs fois
+|                       Ou
+()                      Groupement d'expressions
+on doit utiliser l'option -E pour faire comprendre à grep que l'on utilise une expression régulière.
+$ grep -E Alias .bashrc
+# Alias definitions.
+demande de rechercher le mot « Alias » (avec un A majuscule)
+précéder « Alias » d'un accent circonflexe qui signifie que le mot doit être placé au début de la ligne :
+$ grep -E ^Alias .bashrc
+grep -E [Aa]lias .bashrc
+… renvoie toutes les lignes qui contiennent « alias » ou « Alias ».
+grep -E [0-4] .bashrc
+… renvoie toutes les lignes qui contiennent un nombre compris entre 0 et 4.
+grep -E [a-zA-Z] .bashrc
+… renvoie toutes les lignes qui contiennent un caractère alphabétique compris entre « a » et « z » 
+ou entre « A » et « Z ».
+
+◘ sort : trier les lignes
+
+$ sort noms.txt
+
+Albert
+François
+Jean
+jonathan
+Marcel
+patrice
+Stéphane
+Vincent
+
+Le contenu du fichier est trié alphabétiquement et le résultat est affiché dans la console.
+sort ne fait pas attention à la casse (majuscules / minuscules).
+○ -o : écrire le résultat dans un fichier
+faire en sorte que le fichier soit modifié en précisant un nom de fichier avec l'option -o :
+sort -o noms_tries.txt noms.txt
+… écrira la liste de noms triés dans noms_tries.txt.
+○ -r : trier en ordre inverse
+L'option -r permet d'inverser le tri
+○ -R : trier aléatoirement
+$ sort -R noms.txt
+-n : trier des nombres
+$ sort -n nombres.txt
+16
+27
+36
+42
+129
+364
+
+◘ wc (word count) : compter le nombre de lignes
+
+$ wc noms.txt
+8 (nb lignes) 8 (nb mots) 64 (nb octets) noms.txt
+○ -l : compter le nombre de lignes
+$ wc -l noms.txt
+8 noms.txt
+○ -w : compter le nombre de mots
+$ wc -w noms.txt
+8 noms.txt
+○ -c : compter le nombre d'octets
+$ wc -c noms.txt
+64 noms.txt
+○ -m : compter le nombre de caractères
+$ wc -m noms.txt
+62 noms.txt
+
+◘ uniq : supprimer les doublons
+
+Nous devons travailler sur un fichier trié.
+La commande uniq ne repère que les lignes successives qui sont identiques.
+Albert
+François
+François
+François
+Jean
+jonathan
+Marcel
+Marcel
+patrice
+Stéphane
+Vincent
+
+$ uniq doublons.txt
+
+Albert
+François
+Jean
+jonathan
+Marcel
+patrice
+Stéphane
+Vincent
+
+La liste de noms sans les doublons s'affiche alors dans la console !
+
+demander à ce que sort + uniq soit pris en compte dans le même fichier :
+sort -u -o file file
+demander à ce que le résultat sans doublons soit écrit dans un autre fichier :
+uniq doublons.txt sans_doublons.txt
+○ -c : compter le nombre d'occurrences
+$ uniq -c doublons.txt
+1 Albert
+3 François
+... 
+○ -d : afficher uniquement les lignes présentes en double
+$ uniq -d doublons.txt
+François
+Marcel
+man uniq pour le reste des options 
+
+◘ cut : couper une partie du fichier
+
+• Couper selon le nombre de caractères
+conserver uniquement les caractères 2 à 5 de chaque ligne du fichier :
+$ cut -c 2-5 noms.txt
+ran
+arce
+lber
+Pour conserver du 1er au 3ème caractère :
+$ cut -c -3 noms.txt
+Fra
+Mar
+Alb
+De même, pour conserver du 3ème au dernier caractère :
+$ cut -c 3- noms.txt
+ançois
+rcel
+bert
+
+• Couper selon un délimiteur
+un joli tableur et enregistré le document au format CSV.
+Le fichier de base :
+Fabrice,18 / 20,Excellent travail
+Mathieu,3 / 20,Nul comme d'hab
+Sophie,14 / 20,En nette progression
+... 
+Comme le nom CSV l'indique, les virgules servent à séparer les colonnes. 
+Ces dernières contiennent, dans l'ordre :
+le prénom ;
+la note ;
+un commentaire.
+Pour extraire la liste des prénoms, on a besoin d'utiliser deux paramètres :
+-d : indique quel est le délimiteur dans le fichier ;
+-f : indique le numéro du ou des champs à couper.
+Dans notre cas, le délimiteur qui sépare les champs est la virgule.
+Le numéro du champ à couper est 1 (c'est le premier).
+$ cut -d , -f 1 notes.csv
+Fabrice
+Vincent
+Sophie
+Si nous voulons juste les commentaires :
+$ cut -d , -f 3 notes.csv
+Excellent travail
+Nul comme d'hab
+En nette progression
+Pour avoir les champs n°1 et n°3 (le prénom et le commentaire) :
+$ cut -d , -f 1,3 notes.csv
+Fabrice,Excellent travail
+Vincent,Nul comme d'hab
+Sophie,En nette progression
+(!) il est possible de conserver toute une série de champs avec le tiret :
+cut -d , -f 2-4 notes.csv
+a pour effet de conserver les champs n°2, 3 et 4
+(!!) cut -d , -f 3- notes.csv conserve les champs du n°3 jusqu'à la fin
+
+
+X) Les flux de direction 
+
+◘ > et >> : rediriger le résultat dans un fichier
+
+permet d'écrire le résultat d'une commande dans un fichier
+
+• > : rediriger dans un nouveau fichier
+Ce symbole permet de rediriger le résultat de la commande dans le fichier de votre choix.
+cut -d , -f 1 notes.csv > eleves.txt
+Comme vous pouvez le voir, un fichier vient bien d'être créé !
+Vous pouvez l'ouvrir avec Nano ou encore l'afficher dans la console avec la commande cat 
+(pour afficher tout d'un coup s'il est court) ou less (pour afficher page par page s'il est long).
+(!) si le fichier existait déjà il sera écrasé sans demande de confirmation !
+(!!) Vous ne voulez ni voir le résultat d'une commande ni le stocker dans un fichier. 
+Dans ce cas, l'astuce consiste à rediriger le résultat dans /dev/null. 
+C'est un peu le « trou noir » de Linux : tout ce qui va là-dedans disparaît immédiatement.
+Par exemple : commande_bavarde > /dev/null
+
+• >> : rediriger à la fin d'un fichier
+Avantage : vous ne risquez pas d'écraser le fichier s'il existe déjà. 
+Si le fichier n'existe pas, il sera créé automatiquement.
+cut -d , -f 1 notes.csv >> eleves.txt
+… les noms seront ajoutés à la fin du fichier, sans écraser le résultat précédent.
+
+◘ 2>, 2>> et 2>&1 : rediriger les erreurs
+
+Par défaut, tout s'affiche dans la console : la sortie standard comme la sortie d'erreurs.
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt
+cut: fichier_inexistant.csv: Aucun fichier ou répertoire de ce type
+Le fichier fichier_inexistant.csv n'existe pas (comme son nom l'indique).
+L'erreur s'est affichée dans la console au lieu d'avoir été envoyée dans eleves.txt.
+
+• Rediriger les erreurs dans un fichier à part
+Pour cela, on utilise l'opérateur 2>
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt 2> erreurs.log
+(!) il est aussi possible d'utiliser 2>>
+pour ajouter les erreurs à la fin du fichier
+
+• Fusionner les sorties 
+il est possible de fusionner les sorties dans un seul et même fichier. Comment ?
+Il faut utiliser le code suivant : 2>&1
+Cela a pour effet de rediriger toute la sortie d'erreurs dans la sortie standard. 
+Traduction pour l'ordinateur : « envoie les erreurs au même endroit que le reste ».
+cut -d , -f 1 fichier_inexistant.csv > eleves.txt 2>&1
+Tout ira désormais dans eleves.txt : le résultat (si cela a fonctionné),
+de même que les erreurs (s'il y a eu un problème).
+(!) il n'est pas possible d'écrire 2>>&1
+(!!) le symbole 2>&1 va envoyer les erreurs dans le même fichier et de la même façon que la sortie standard.
+Donc, si vous écrivez :
+cut -d , -f 1 fichier_inexistant.csv >> eleves.txt 2>&1
+… les erreurs seront ajoutées à la fin du fichier eleves.txt comme le reste des messages.
+
+• Résumé
+    ○ 2> : redirige les erreurs dans un fichier (s'il existe déjà, il sera écrasé) ;
+    ○ 2>> : redirige les erreurs à la fin d'un fichier (s'il n'existe pas, il sera créé) ;
+    ○ 2>&1 : redirige les erreurs au même endroit et de la même façon que la sortie standard.
