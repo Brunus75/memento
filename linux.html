@@ -3,6 +3,7 @@
 .. signifie « dossier précédent »
 . signifie « dossier dans lequel je me trouve »
 Tab pour l'autocomplétion ! 
+remonter un résultat : maj + pageUp
 
 I) LA COMMANDE
 
@@ -1362,3 +1363,179 @@ cut -d , -f 1 fichier_inexistant.csv >> eleves.txt 2>&1
     ○ 2> : redirige les erreurs dans un fichier (s'il existe déjà, il sera écrasé) ;
     ○ 2>> : redirige les erreurs à la fin d'un fichier (s'il n'existe pas, il sera créé) ;
     ○ 2>&1 : redirige les erreurs au même endroit et de la même façon que la sortie standard.
+
+◘ < et << : lire depuis un fichier ou le clavier
+
+• < : lire depuis un fichier
+cat < notes.csv
+Cela aura pour effet d'afficher le contenu du fichier envoyé en entrée : 
+$ cat < notes.csv
+Fabrice,18 / 20,Excellent travail
+○ Si vous écrivez cat notes.csv, la commande cat reçoit en entrée le NOM du fichier notes.csv
+qu'elle doit ensuite se charger d'ouvrir pour afficher son contenu.
+○ Si vous écrivez cat < notes.csv, la commande cat reçoit le CONTENU de notes.csv
+qu'elle se contente simplement d'afficher dans la console.
+C'est le shell (le programme qui gère la console) qui se charge d'envoyer le contenu
+de notes.csv à la commande cat.
+
+• << : lire depuis le clavier progressivement
+permet d'envoyer un contenu à une commande avec votre clavier
+sort -n << FIN
+La console vous propose alors de taper du texte. 
+$ sort -n << FIN
+>
+sort -n sert à trier des nombres, on va écrire des nombres, un par ligne
+(en appuyant sur la touche Entrée à chaque fois).
+$ sort -n << FIN
+> 13
+> 132
+> 10
+> 131
+> FIN
+Tout le texte que vous avez écrit est alors envoyé à la commande (ici sort)
+qui traite cela en entrée. La commande sort nous trie nos nombres !
+Exemple 2 :
+$ wc -m << FIN
+> Combien de caractères dans cette phrase ?
+> FIN
+42
+Exemple 3 :
+$ wc -m << STOP
+> Combien de caractères dans cette phrase ?
+> STOP
+42
+
+On peut combiner ces symboles avec ceux vus précédemment. Par exemple :
+$ sort -n << FIN > nombres_tries.txt 2>&1
+> 18
+> 27
+> 1
+> FIN
+Les nombres saisis au clavier seront envoyés à nombres_tries.txt, de même que les erreurs éventuelles.
+
+◘ | (le pipe) : chaîner les commandes
+
+En gros, tout ce qui sort de la commande1 est immédiatement envoyé à la commande2
+
+• Trier les élèves par nom 
+Fabrice,18 / 20,Excellent travail
+Mathieu,3 / 20,Nul comme d'hab'
+Sophie,14 / 20,En nette progression
+etc.
+Avec cut, on peut récupérer les noms.
+Avec sort, on peut les trier par ordre alphabétique.
+Idée : connecter cut à sort pour avoir la liste des noms triés :
+$ cut -d , -f 1 notes.csv | sort
+Albert
+Benoît
+Corentin
+On peut même aller plus loin et écrire cette liste triée dans un fichier :
+cut -d , -f 1 notes.csv | sort > noms_tries.txt
+
+• Trier les répertoires par taille
+La commande du permet d'obtenir la taille de chacun des sous-répertoires du répertoire courant
+on aimerait avoir cette même liste dans l'ordre décroissant
+Pour avoir cette liste du plus grand au plus petit, il nous suffit d'écrire :
+du | sort -nr
+Problème : comme les plus gros répertoires ont été affichés en premier,
+je dois remonter très haut dans la console pour retrouver les plus gros d'entre eux.
+Idée : connecter cette sortie à head. 
+Cette commande permet de filtrer uniquement les premières lignes qu'elle reçoit :
+$ du | sort -nr | head
+...et on peut paramétrer le nombre de résultats affichés avec l'option -n de head
+Pour naviguer à travers tous les résultats, vous pouvez connecter la sortie à less.
+Cette commande permet d'afficher des résultats page par page ;
+ça nous est justement utile dans le cas présent où nous avons beaucoup de résultats !
+du | sort -nr | less
+
+• Lister les fichiers contenant un mot
+Avec grep, on peut connaître la liste des fichiers contenant un mot dans tout un répertoire (option -r). 
+Le problème est que cette sortie est un peu trop verbeuse :
+/var/log/installer/syslog:Apr 6 15:14:43 ubuntu NetworkManager: <debug> [1207494883.004888]
+Heureusement, le nom du fichier et le contenu de la ligne sont séparés par un deux-points.
+On connaît cut, qui permet de récupérer uniquement une partie de la ligne. 
+Il nous permettrait de conserver uniquement le nom du fichier.
+Problème : si le même mot a été trouvé plusieurs fois dans un fichier, le fichier apparaîtra en double ! 
+Pour supprimer les doublons, on peut utiliser uniq, à condition d'avoir bien trié les lignes avec sort auparavant.
+Ex : rechercher les fichiers qui contiennent le mot « log » dans le dossier /var/log. 
+Notez qu'il faudra passer root avec sudo pour avoir accès à tout le contenu de ce répertoire.
+La commande :
+sudo grep log -Ir /var/log | cut -d : -f 1 | sort | uniq
+Que fait cette commande ?
+- Elle liste tous les fichiers contenant le mot « log » dans /var/log (-I permettant d'exclure les fichiers binaires).
+- Elle extrait de ce résultat uniquement les noms des fichiers.
+- Elle trie ces noms de fichiers.
+- Elle supprime les doublons.
+
+
+XI) Surveiller l'activité du système
+
+◘ w : qui fait quoi ?
+
+$ w
+ 16:50:30 up  8:50,  2 users,  load average: 0,08, 0,34, 0,31
+USER     TTY      FROM            LOGIN@   IDLE   JCPU   PCPU WHAT
+mateo21  :0       -              19Apr08 ?xdm?   3:38m  1.18s /usr/bin/gnome-
+mateo21  pts/0    :0.0           16:49    0.00s  0.33s  0.03s w
+
+• L'heure (aussi accessible via date)
+$ date
+samedi 16 octobre 2010, 17:26:27 (UTC+0200)
+
+• L'uptime (aussi accessible via uptime)
+la durée de fonctionnement de l'ordinateur
+
+• La charge (aussi accessible via uptime et tload)
+indice de l'activité de l'ordinateur. Il y a trois valeurs :
+la première correspond à la charge moyenne depuis 1 minute (0,08) ;
+la seconde à la charge moyenne depuis 5 minutes (0,34) ;
+la dernière à la charge moyenne depuis 15 minutes (0,31).
+lorsqu'il dépasse 1 (si vous avez un processeur), 2 ou 4, alors votre ordinateur est surchargé
+
+• La liste des connectés (aussi accessible via who)
+USER (UTIL.) : le nom de l'utilisateur (son login) ;
+TTY : le nom de la console dans laquelle se trouve l'utilisateur.
+FROM (DE) : c'est l'adresse IP (ou le nom d'hôte) depuis laquelle il se connecte.
+LOGIN@ : l'heure à laquelle cet utilisateur s'est connecté ;
+IDLE : depuis combien de temps cet utilisateur est inactif
+WHAT : la commande qu'il est en train d'exécuter en ce moment.
+
+◘ ps & top : lister les processus (Ctl Alt Supr de WS)
+
+un processus est un programme qui tourne en mémoire
+La plupart des programmes ne font tourner qu'un processus en mémoire (une seule version d'eux-mêmes). 
+C'est le cas d'OpenOffice par exemple. D'autres lancent des copies d'eux-mêmes, 
+c'est le cas du navigateur Google Chrome qui crée autant de processus en mémoire que d'onglets ouverts.
+
+• ps : liste statique des processus
+$ ps
+PID TTY TIME CMD
+23720 pts/0 00:00:01 bash
+29941 pts/0 00:00:00 ps
+PID : c'est le numéro d'identification du processus.
+TTY : c'est le nom de la console depuis laquelle a été lancé le processus.
+TIME : la durée d'exécution du processus.
+CMD : le programme qui a généré ce processus. Si vous voyez plusieurs fois le même programme, 
+c'est que celui-ci s'est dupliqué en plusieurs processus (c'est le cas de MySQL, par exemple).
+quand on utilise ps sans argument comme on vient de le faire, il affiche seulement les processus lancés par le même
+utilisateur (ici « mateo21 ») dans la même console (ici « pts/0 »)
+
+○ ps -ef : lister tous les processus
+○ ps -ejH : afficher les processus en arbre
+regrouper les processus sous forme d'arborescence
+○ ps -u UTILISATEUR : lister les processus lancés par un utilisateur
+
+• top : liste dynamique des processus
+Les processus en haut de cette liste sont donc actuellement les plus gourmands en processeur. 
+Ce sont peut-être eux que vous devriez cibler en premier si vous sentez que votre système est surchargé.
+○ q : ferme top ;
+○ h : affiche l'aide, et donc la liste des touches utilisables.
+○ B : met en gras certains éléments.
+○ f : ajoute ou supprime des colonnes dans la liste.
+○ F : change la colonne selon laquelle les processus sont triés. En général, laisser le tri par défaut en fonction de
+    %CPU est suffisant.
+○ u : filtre en fonction de l'utilisateur que vous voulez.
+○ k : tue un processus, c'est-à-dire arrête ce processus. On vous demandera le numéro (PID) du processus que vous voulez tuer. Nous reviendrons sur l'arrêt des processus
+    un peu plus loin.
+○ s : change l'intervalle de temps entre chaque rafraîchissement de la liste (par défaut, c'est toutes les trois
+    secondes).

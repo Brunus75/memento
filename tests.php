@@ -120,3 +120,34 @@ function duplicate_encode($word){
   
   return $convertedWord;
 }
+
+/**
+ * Highest and Lowest
+ * 
+ * @description You are given a string of space separated numbers, 
+ *              and have to return the highest and lowest number
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testSampleTests()
+    {
+        $this->assertEquals("42 -9", highAndLow("8 3 -5 42 -1 0 0 -9 4 7 4 -4"));
+    }
+}
+
+function highAndLow($numbers)
+{
+  $arrayNumbers = explode(" ", $numbers); // create array without spaces
+  $maxAndMin = ""; // result to return (ex. "42 -9")
+  $maxAndMin .= max($arrayNumbers) . " "; // add max of array to result
+  $maxAndMin .= min($arrayNumbers); // add min of array to result
+  return $maxAndMin;
+}
+
+// variante plus courte
+function highAndLow($numbers)
+{
+    $a = explode(' ', $numbers);
+    return max($a) . " " . min($a);
+}
