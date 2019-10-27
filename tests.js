@@ -1,3 +1,4 @@
+/* ---------- SMALLEST INTEGER ---------- */
 // Given an array of integers your solution should find the smallest integer. 
 class SmallestIntegerFinder {
   findSmallestInt(args) {
@@ -6,7 +7,7 @@ class SmallestIntegerFinder {
   }
 }
 
-/* FIND EVEN INDEX */
+/* ---------- FIND EVEN INDEX ---------- */
 // You are going to be given an array of integers. ex. [1,2,3,4,3,2,1]
 // Your job is to take that array and find an index N where the sum of the integers 
 // to the left of N is equal to the sum of the integers to the right of N. 
@@ -32,3 +33,39 @@ function findEvenIndex(arr) {
     }
     return index;
 }
+
+/* ---------- Disemvowel Trolls ---------- */
+// Your task is to write a function that takes a string 
+// and return a new string with all vowels removed.
+// "This website is for losers LOL!" would become "Ths wbst s fr lsrs LL!".
+
+function disemvowel(str) {
+
+  let result = [];
+
+  let array = [...str]; // str to [a, r, r, a, y]
+
+  // loop on each letter of the array
+  for (let i = 0; i < array.length; i++) {
+
+    if (array[i].toLowerCase() == "a" || array[i].toLowerCase() == "e" ||
+      array[i].toLowerCase() == "i" || array[i].toLowerCase() == "o" ||
+      array[i].toLowerCase() == "u") {
+
+      array[i] = "";
+    }
+
+    result.push(array[i]); // add each letter to the new array
+  }
+  return result.join(''); // [a, r, r, a, y] to 'String'
+}
+
+// best solution :
+function disemvowel(str) {
+  return str.replace(/[aeiou]/gi, '');
+}
+// g tells to find all matches, not just the first.
+// i tells to be case insensitive.
+// What goes inside the // is the pattern.
+// [] tells to match any character in a set.
+// aeiou are the characters in the set.

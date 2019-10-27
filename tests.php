@@ -151,3 +151,41 @@ function highAndLow($numbers)
     $a = explode(' ', $numbers);
     return max($a) . " " . min($a);
 }
+
+
+/**
+ * Roman Numerals Encoder
+ * 
+ * @description Create a function taking a positive integer as its parameter 
+ *              and returning a string containing the Roman Numeral
+ *              representation of that integer.
+ */
+class MyTestCases extends TestCase
+{
+    public function test_static_operations()
+    {
+        $this->assertEquals("M", solution(1000));
+        $this->assertEquals("IV", solution(4));
+        $this->assertEquals("I", solution(1));
+        $this->assertEquals("MCMXC", solution(1990));
+        $this->assertEquals("MMVIII", solution(2008));
+    }
+}
+
+function solution($number)
+{
+    $decimal = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+    $roman = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
+
+    $result = "";
+
+    foreach ($decimal as $key => $value) { // compare number with each decimal (value)
+
+        while ($number % $value < $number) { // while $value <= $number
+            $result .= $roman[$key];
+            $number -= $value;
+        }
+    }
+
+    return $result;
+}
