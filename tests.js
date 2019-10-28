@@ -69,3 +69,84 @@ function disemvowel(str) {
 // What goes inside the // is the pattern.
 // [] tells to match any character in a set.
 // aeiou are the characters in the set.
+
+
+/* ---------- FIND NUMBER CLOSEST TO ZERO ---------- */
+// one array => find the closest number to zero
+// if two numbers are close (2 et -2) return the positive one
+
+let array = [-18, 7, 24, 2, -3, -7, -2, 6, 3];
+
+function findValueCloseToZero(array) {
+
+  array.sort(function (a, b) { return a - b }); // sort array
+
+  let gap; // gap between number and zero
+  let closestNumber = array[0]; // 1st number of array by default
+
+  if (array[0] > 0) { // if 1st number = postive
+    gap = array[0];
+  } else { // if 1rst number = negative
+    gap = array[0] * - 1;
+  }
+
+  for (let i = 0; i < array.length; i++) { // loop on array
+
+    if ((array[i] > 0) && (array[i] < gap)) {
+      closestNumber = array[i];
+      gap = array[i];
+    } else if ((array[i] < 0) && ((array[i] * - 1) < gap)) {
+      closestNumber = array[i];
+      gap = array[i] * - 1;
+    }
+  }
+
+  return Math.abs(closestNumber); // return absolute number
+}
+
+console.log(findValueCloseToZero(array));
+
+
+/* ---------- FIND LOWER INTERVAL BETWEEN NUMBERS ---------- */
+// one array => find the lower interval between numbers
+
+let array = [-18, 7, 24, 2, -3, -7, -2, 6, 3];
+
+function findLowerInterval(array) {
+
+  array.sort(function (a, b) { return a - b }); // sort array
+
+  let interval;
+  let firstNumber = array[0]; // 1st number of array by default
+  let secondNumber = array[1];
+
+  if (array[1] < 0) { // negative numbers
+    interval = Math.abs(array[0]) - Math.abs(array[1]);
+  } else if (array[0] < 0 && array[1] > 0) { // negative and positive numbers
+    interval = Math.abs(array[0]) + array[1];
+  } else if (array[0] > 0) { // postive numbers
+    interval = array[1] - array[0];
+  }
+
+  for (let i = 0; i < array.length; i++) { // loop on array
+
+    if ((array[i + 1] < 0) && (Math.abs(array[i]) - Math.abs(array[i + 1]) < interval)) { // negative numbers
+      firstNumber = array[i];
+      secondNumber = array[i + 1];
+      interval = Math.abs(array[i]) - Math.abs(array[i + 1]);
+    } else if (array[i] < 0 && array[i + 1] > 0 && Math.abs(array[i]) + array[i + 1] < interval) { // negative and postive numbers
+      firstNumber = array[i];
+      secondNumber = array[i + 1];
+      interval = Math.abs(array[i]) + array[i + 1];
+    } else if ((array[i] > 0) && (array[i + 1] - array[i]) < interval) { // positive numbers
+      firstNumber = array[i];
+      secondNumber = array[i + 1]
+      interval = array[i + 1] - array[i];
+    }
+  }
+
+  return "Le nombre " + firstNumber + " a un intervalle de " + interval + " avec le nombre " + secondNumber;
+}
+
+console.log(findLowerInterval(array));
+// 'Le nombre -3 a un intervalle de 1 avec le nombre -2'
