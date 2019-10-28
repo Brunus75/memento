@@ -189,3 +189,28 @@ function solution($number)
 
     return $result;
 }
+
+
+/**
+ * Discount on highest price
+ * 
+ * @description Apply a discount on highest price of products 
+ *              and return the total price with discount
+ */
+
+$array = array(9, 8, 6, -4, 12, 33, 20, 7); // exemple
+$discount = 20;
+
+sort($array);
+
+echo $totalPrice = array_sum($array); // 91 (total price of products)
+
+$highestNumber = $array[count($array) - 1]; // last value of array
+
+$highestNumberDiscount = $highestNumber - ($highestNumber * $discount / 100);
+
+$array[count($array) - 1] = (int) $highestNumberDiscount; // new value (integer)
+
+$totalPriceDiscount = array_sum($array);
+
+echo $totalPriceDiscount; // 84 (new total price after discount)
