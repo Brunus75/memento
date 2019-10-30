@@ -1539,3 +1539,391 @@ Ce sont peut-être eux que vous devriez cibler en premier si vous sentez que vot
     un peu plus loin.
 ○ s : change l'intervalle de temps entre chaque rafraîchissement de la liste (par défaut, c'est toutes les trois
     secondes).
+
+◘ Ctrl + C & kill : arrêter un processus
+
+• Ctrl + C : arrêter un processus lancé en console
+demande (en console) l'arrêt du programme console en cours d'exécution à l'écran
+Prenez une commande qui n'en finit plus, comme par exemple un find sur l'ensemble du disque.
+Si vous trouvez cela trop long et que vous voulez arrêter le programme en cours de route,
+il vous suffit de taper Ctrl + C :
+
+• kill : tuer un processus
+Ctrl + C ne fonctionne que sur un programme actuellement ouvert dans la console.
+De nombreux programmes tournent pourtant en arrière-plan : utilisation de "kill"
+il faudra auparavant récupérer le PID du ou des processus que vous voulez tuer. 
+Pour cela, deux solutions :
+ps ou top
+$ ps -u mateo21
+PID TTY TIME CMD
+5012 ? 00:00:01 gnome-session
+Supposons qu'on souhaite arrêter Firefox.
+On peut filtrer cette longue liste avec grep et un pipe :
+$ ps -u mateo21 | grep firefox
+32678 ? 00:00:03 firefox-bin
+Il ne nous reste plus qu'à le tuer, avec la commande suivante :
+kill 32678
+Pour tuer plusieurs processus d'un seul coup : en indiquant plusieurs PID à la suite :
+kill 32678 2768 33071
+Vous voulez tuer un processus sans lui laisser le choix ?
+à n'utiliser que dans le cas d'un programme complètement planté que vous voulez
+vraiment arrêter !
+kill -9 32678
+
+• killall : tuer plusieurs processus
+Contrairement à kill, killall attend le nom du processus à tuer et non son PID
+nous ayons trois processus find en cours d'exécution que nous souhaitions arrêter.
+$ ps -u mateo21 | grep find
+675 pts/1 00:00:01 find
+678 pts/2 00:00:00 find
+679 pts/3 00:00:01 find
+Pour tous les tuer, il faudra donc taper :
+$ killall find
+
+◘ halt & reboot : arrêter et redémarrer l'ordinateur
+
+• halt : arrêter l'ordinateur
+$ sudo halt
+
+• reboot : redémarrer l'ordinateur
+$ sudo reboot
+
+
+XII) Exécuter des programmes en arrière-plan
+
+◘ "&" & nohup : lancer un processus en arrière-plan
+
+plusieurs programmes peuvent tourner en même temps au sein d'une même console
+
+• & : lancer un processus en arrière-plan
+rajouter le petit symbole & à la fin de la commande que vous voulez envoyer en arrière-plan
+(!) Le symbole & s'appelle le « et commercial » ou encore l'« esperluette »
+copier un gros fichier vidéo (ce qui prend en général du temps) :
+$ cp video.avi copie_video.avi &
+[1] (numéro du processus en arrière-plan dans cette console) 16504 (numéro d'identification général du processus)
+Si vous essayez de faire la même chose avec d'autres commandes, par exemple sur un find,
+vous risquez d'être surpris : les messages renvoyés par la commande s'affichent toujours dans la console !
+solution : rediriger la sortie pour ne pas être importuné :
+$ find / -name "*log" > sortiefind &
+[1] 18191
+pour ne pas être dérangés du tout, vous devrez aussi rediriger les erreurs (par exemple avec 2>&1), 
+ce qui donne :
+$ find / -name "*log" > sortiefind 2>&1 &
+[1] 18231
+
+• nohup : détacher le processus de la console
+L'option & a ce défaut non négligeable : le processus reste attaché à la console, ce
+qui veut dire que si la console est fermée ou que l'utilisateur se déconnecte, 
+le processus sera automatiquement arrêté.
+solution : il faut lancer la commande via nohup
+Par exemple, voici ce que ça donne si on lance la copie via unnohup :
+$ nohup cp video.avi copie_video.avi
+nohup: ajout à la sortie de `nohup.out'
+
+◘ Ctrl + Z, jobs, bg & fg : passer un processus en arrière-plan
+
+vous avez lancé la commande sans penser à rajouter un petit & à la fin
+
+• Ctrl + Z : mettre en pause l'exécution du programme
+Tapez Ctrl + Z pendant l'exécution du programme. 
+Celui-ci va s'arrêter et vous allez immédiatement reprendre la
+main sur l'invite de commandes.
+Le processus est maintenant dans un état de pause. 
+Il ne s'exécute pas mais reste en mémoire.
+
+• bg : passer le processus en arrière-plan (background)
+Maintenant que le processus est en « pause » et qu'on a récupéré l'invite de commandes, 
+tapez :
+$ bg
+[1]+ top &
+commande la reprise du processus, mais cette fois en arrière-plan
+
+• en résumé, si on a lancé une commande par erreur en avant-plan et 
+que l'on souhaite récupérer l'invite de commandes :
+    ○ Ctrl + Z : pour mettre en pause le programme et récupérer l'invite de commandes ;
+    ○ bg : pour que le processus continue à tourner mais en arrière-plan
+
+• jobs : connaître les processus qui tournent en arrière-plan
+$ jobs
+[1]- Stopped top
+[2]+ Stopped find / -name "*log*" > sortiefind 2>&1
+
+• fg : reprendre un processus au premier plan (foreground)
+Si vous avez plusieurs processus en arrière-plan, il faudra préciser lequel vous voulez
+récupérer. Par exemple, voici comment reprendre le find qui était le job n° 2 :
+$ fg %2
+
+◘ screen : plusieurs consoles en une
+
+Si vous êtes les maîtres de la machine (ce qui est votre cas si vous avez installé Linux chez vous),
+je peux vous recommander d'installer le programme screen.
+$ sudo apt-get install screen
+screen est un multiplicateur de terminal : 
+programme capable de gérer plusieurs consoles au sein d'une seule, un peu
+comme si chaque console était une fenêtre
+programme qui permet entre autres de faire une mise en veille prolongée de votre console
+$ screen
+nous nous trouvons dans une console « émulée », non pas dans la « vraie » console où nous étions tout à l'heure. 
+Vous pouvez en sortir en tapant Ctrl + D ou exit, comme si vous quittiez une console normalement
+
+sous screen, tout se fait à partir de combinaisons de touches de la forme suivante :
+Ctrl + a + autre touche.
+En fait, vous devez taper Ctrl + a, relâcher ces touches (lever les mains du clavier) 
+et ensuite appuyer sur une autre touche.
+
+• Ctrl + a puis ? : afficher l'aide
+Toutes les touches que vous voyez là doivent impérativement être précédées d'un Ctrl + a.
+Notez par ailleurs que l'accent circonflexe ^ signifie ici Ctrl
+
+• Les principales commandes de screen
+
+    ○ Ctrl + a puis c : créer une nouvelle « fenêtre ».
+
+    ○ Ctrl + a puis w : afficher la liste des « fenêtres » actuellement ouvertes. 
+    En bas de l'écran vous verrez par exemple apparaître : 0-$ bash 1*$ bash. 
+    Cela signifie que vous avez deux fenêtres ouvertes, l'une numérotée 0, l'autre 1. 
+    Celle sur laquelle vous vous trouvez actuellement contient une étoile * (on se trouve donc ici dans la fenêtre n° 1).
+
+    Ctrl + a puis A : renommer la fenêtre actuelle. 
+    Ce nom apparaît lorsque vous affichez la liste des fenêtres avec Ctrl + a puis w.
+
+    Ctrl + a puis n : passer à la fenêtre suivante (next).
+
+    Ctrl + a puis p : passer à la fenêtre précédente (previous).
+
+    Ctrl + a puis Ctrl + a : revenir à la dernière fenêtre utilisée.
+
+    Ctrl + a puis un chiffre de 0 à 9 : passer à la fenêtre n° X.
+
+    Ctrl + a puis " : choisir la fenêtre dans laquelle on veut aller.
+
+    Ctrl + a puis k : fermer la fenêtre actuelle (kill)
+
+• Ctrl + a puis S : découper screen en plusieurs parties (split)
+Il est possible de répéter l'opération plusieurs fois pour couper en trois, quatre, ou plus 
+(dans la mesure du possible, parce qu'après les consoles sont toutes petites).
+Pour passer d'une fenêtre à une autre, faites Ctrl + a puis Tab
+Une fois le curseur placé dans la fenêtre du bas, 
+vous pouvez soit créer une nouvelle fenêtre (Ctrl + a puis c) soit
+appeler une autre fenêtre que vous avez déjà ouverte (avec Ctrl + a puis un chiffre, par exemple)
+pour fermer une fenêtre que vous avez splittée, il faudra taper Ctrl + a puis X
+
+Pour écrire dans une deuxième console :
+CTRL+a, | # create a new pane
+CTRL+a, <TAB> # goto the new pane
+CTRL+a, c # start a new shell in the pane
+
+• Ctrl + a puis d : détacher screen
+permet de retrouver l'invite de commandes « normale » sans arrêter screen
+L'information [detached] apparaît pour signaler que screen tourne toujours 
+et qu'il est détaché de la console actuelle.
+Il continuera donc à tourner quoi qu'il arrive, 
+même si vous fermez la console dans laquelle vous vous trouvez
+
+screense comporte comme un nohup. 
+La différence est qu'une session screen vous permet d'ouvrir plusieurs fenêtres de
+console à la fois, contrairement à nohup qui ne peut lancer qu'un programme à la fois.
+
+Vous pouvez donc partir, quitter la console et revenir récupérer votre session screen plus tard. 
+Il faudra simplement taper :
+$ screen -r
+… pour retrouver votre session screen dans l'état où vous l'avez laissée
+(si plusieurs sessions) Pour récupérer la session n° 20930, tapez simplement :
+$ screen -r 20930
+
+screen -ls affiche la liste des screens actuellement ouverts
+
+• Un fichier personnalisé de configuration de screen
+il est possible de personnaliser screen avec un fichier de configuration,
+comme la plupart des autres programmes sous Linux
+Ce fichier s'appelle .screenrc et doit être placé dans votre home (/home/mateo21par exemple)
+fichier recommandé > www.siteduzero.com/codeweb/901904
+
+
+XIII) Exécuter un programme à une heure différée
+
+◘ date : régler l'heure
+
+• Personnaliser l'affichage de la date
+Pour spécifier un affichage personnalisé, vous devez utiliser un symbole + 
+suivi d'une série de symboles qui indiquent l'information que vous désirez.
+Je vous recommande de mettre le tout entre guillemets.
+Prenons quelques exemples pour bien comprendre :
+$ date "+%H"
+12
+%H signifie « le numéro de l'heure actuelle »
+$ date "+%H:%M:%S"
+12:36:15
+$ date "+%Hh%Mm%Ss"
+12h41m01s
+Seule la lettre qui suit le % est interprétée
+$ date "+Bienvenue en %Y"
+Bienvenue en 2010
+man date pour l'ensemble des options 
+
+• Modifier la date 
+(!) il faudra être root pour faire cela
+Il faut préciser les informations sous la forme suivante : MMDDhhmmYYYY
+    MM : mois ;
+    DD : jour ;
+    hh : heure ;
+    mm : minutes ;
+    YYYY : année ;
+Notez qu'il n'est pas obligatoire de préciser l'année. On peut donc écrire :
+$ sudo date 11101250
+mercredi 10 novembre 2010, 12:50:00 (UTC+0100)
+La nouvelle date s'affiche automatiquement et elle est mise à jour sur le système.
+Attention à bien respecter l'ordre des nombres : Mois - Jour - Heure - Minutes.
+
+◘ at : exécuter une commande plus tard
+
+(!) avec at, le programme ne sera exécuté qu'une seule fois
+
+• Exécuter une commande à une heure précise
+Il faut donc d'abord indiquer à quelle heure vous voulez exécuter votre commande, 
+sous la forme HH:MM :
+$ at 14:17
+nous allons demander de créer un fichier à 14 h 17 :
+$ at 14:17
+warning: commands will be executed using /bin/sh
+at> touch fichier.txt
+at> <EOT>
+job 5 at Mon Nov 10 14:17:00 2010
+Après avoir écrit la commande touch, at affiche à nouveau un prompt et vous demande une autre commande. 
+Vous pouvez indiquer une autre commande à exécuter à la même heure… ou bien arrêter là.
+Dans ce cas, tapez Ctrl + D (comme si vous cherchiez à sortir d'un terminal)
+Et si je veux exécuter la commande demain à 14 h 17 et non pas aujourd'hui ?
+$ at 14:17 tomorrow
+Et si je veux exécuter la commande le 15 novembre à 14 h 17 ?
+$ at 14:17 11/15/10 (date américaine : MM/JJ/YY)
+
+• Exécuter une commande après un certain délai
+pour exécuter la commande dans 5 minutes :
+$ at now +5 minutes
+Les mots-clés utilisables sont les suivants :
+minutes ;
+hours (heures) ;
+days (jours) ;
+weeks (semaines) ;
+months (mois) ;
+years (années) ;
+$ at now +2 weeks
+
+• atq et atrm : lister et supprimer les jobs en attente
+Il est possible d'avoir la liste des jobs en attente avec la commande atq :
+$ atq
+13 Mon Nov 10 14:44:00 2010 a mateo21
+12 Mon Nov 10 14:42:00 2010 a mateo21
+Pour supprimer le job n° 13, utilisez atrm :
+$ atrm 13
+
+◘ sleep : faire une pause
+
+Il est possible d'enchaîner plusieurs commandes en les séparant par des points-virgules :
+$ touch fichier.txt; rm fichier.txt
+touch est d'abord exécuté, puis une fois qu'il a fini ce sera le tour de rm (qui supprimera le fichier que nous venons
+de créer)
+
+sleep : cette commande permet de faire une pause.
+$ touch fichier.txt; sleep 10; rm fichier.txt
+Cette fois, il va se passer les choses suivantes :
+fichier.txt est créé ;
+sleep fait une pause de 10 secondes (secondes par défaut) ;
+rm supprime ensuite le fichier.
+Il est aussi possible d'utiliser d'autres symboles pour changer l'unité :
+m : minutes ;
+h : heures ;
+d : jours.
+Pour faire une pause d'une minute :
+$ touch fichier.txt; sleep 1m; rm fichier.txt
+il est parfois bien pratique de faire une pause,
+par exemple pour s'assurer que la première commande a bien eu le temps de se terminer
+
+(!) On peut aussi remplacer les points-virgules par des &&, comme ceci :
+touch fichier.txt && sleep 10 && rm fichier.txt
+Dans ce cas, les instructions ne s'enchaîneront que si elles se sont correctement exécutées.
+Par exemple, si touch renvoie une erreur, 
+les commandes qui suivent (sleep, rm) ne seront pas exécutées
+
+◘ crontab : exécuter une commande régulièrement
+
+Contrairement à at qui n'exécutera le programme qu'une seule fois, 
+crontab permet de faire en sorte que l'exécution soit répétée : 
+toutes les heures, toutes les minutes, tous les jours, tous les trois jours, etc.
+
+• Un peu de configuration…
+nous devons modifier notre configuration (notre fichier .bashrc)
+pour demander à ce que Nano soit l'éditeur par défaut.
+rajoutez la ligne suivante à la fin de votre fichier .bashrc :
+export EDITOR=nano
+Fermez ensuite votre console et 
+rouvrez-la pour que cette nouvelle configuration soit bien prise en compte.
+
+• La « crontab », qu'est-ce que c'est ?
+crontab = commande qui permet de lire et de modifier un fichier appelé la « crontab »
+Ce fichier contient la liste des programmes que vous souhaitez exécuter régulièrement, 
+et à quelle heure vous souhaitez qu'ils soient exécutés.
+(!) crontab permet donc de changer la liste des programmes régulièrement exécutés. 
+C'est toutefois le programme cron qui se charge d'exécuter ces programmes aux heures demandées
+Il y a trois paramètres différents à connaître :
+-e : modifier la crontab ;
+-l : afficher la crontab actuelle ;
+-r : supprimer votre crontab. Attention, la suppression est immédiate et sans confirmation !
+
+$ crontab -l
+no crontab for mateo21
+modification de la crontab :
+$ crontab -e
+
+• Modifier la crontab
+
+○ Les champs
+Le fichier ne contient qu'une seule ligne :
+# m h dom mon dow command
+m : minutes (0 - 59) ;
+h : heures (0 - 23) ;
+dom (day of month) : jour du mois (1 - 31) ;
+mon (month) : mois (1 - 12) ;
+dow (day of week) : jour de la semaine (0 - 6, 0 étant le dimanche) ;
+command : c'est la commande à exécuter ;
+* : tous les nombres possibles
+exécuter une commande tous les jours à 15 h 47 :
+47 15 * * * touch /home/mateo21/fichier.txt
+Seules les deux premières valeurs sont précisées : les minutes et les heures. 
+Chaque fois qu'il est 15 h 47, la commande indiquée à la fin sera exécutée.
+(!) vous ne pouvez pas être sûrs que le cron s'exécutera dans le répertoire que vous voulez. 
+Il est donc toujours préférable d'écrire le chemin du fichier en absolu
+
+Crontab                 Signification
+47 * * * * commande     Toutes les heures à 47 minutes exactement.> & Donc à 00 h 47, 01 h 47, 02 h 47, etc.
+0 0 * * 1 commande      Tous les lundis à minuit (dans la nuit de dimanche à lundi).
+0 4 1 * * commande      Tous les premiers du mois à 4 h du matin
+0 4 * 12 * commande     Tous les jours du mois de décembre à 4 h du matin.
+0 * 4 12 * commande     Toutes les heures les 4 décembre
+* * * * * commande      Toutes les minutes !
+
+○ Les différentes notations possibles
+Pour chaque champ, on a le droit à différentes notations :
+5 (un nombre) : exécuté lorsque le champ prend la valeur 5 ;
+* : exécuté tout le temps (toutes les valeurs sont bonnes) ;
+3,5,10 : exécuté lorsque le champ prend la valeur 3, 5 ou 10. Ne pas mettre d'espace après la virgule ;
+3-7 : exécuté pour les valeurs 3 à 7 ;
+*/3 : exécuté tous les multiples de 3 (par exemple à 0 h, 3 h, 6 h, 9 h…).
+
+Crontab                     Signification
+30 5 1-15 * * commande      À 5 h 30 du matin du 1er au 15 de chaque mois
+0 0 * * 1,3,4 commande      À minuit le lundi, le mercredi et le jeudi
+0 */2 * * * commande        Toutes les 2 heures (00 h 00, 02 h 00, 04 h 00…)
+*/10 * * * 1-5 commande     Toutes les 10 minutes du lundi au vendredi.
+
+○ Rediriger la sortie
+si la commande renvoie un message, le résultat de la commande vous est envoyé par e-mail
+rediriger une sortie, avec les erreurs :
+47 15 * * * touch /home/mateo21/fichier.txt >> /home/mateo21/cron.log 2>&1
+si je ne veux pas du tout récupérer ce qui est affiché :
+Il suffit de rediriger dans /dev/null (le fameux « trou noir » du système).
+Tout ce qui est envoyé là-dedans est immédiatement supprimé
+47 15 * * * touch /home/mateo21/fichier.txt > /dev/null 2>&1
+
+Je souhaite exécuter une commande toutes les 5 minutes le week-end :
+*/5 * * * 0,6 commande

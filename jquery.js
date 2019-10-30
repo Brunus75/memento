@@ -650,3 +650,124 @@ $('p').each( function(){
 Si la fonction retourne false, alors la boucle s'arrête brutalement.
 Si au contraire elle retourne true, alors la boucle passe directement à l'élément suivant.
 
+
+VII) Manipuler le code HTML avec jQuery
+
+◘ Insertion de contenu
+
+insérer quoi que ce soit dans un document = "créer du contenu à la volée";
+
+• Le contenu textuel
+
+$('p').text(); // renvoie le texte contenu à l'intérieur du paragraphe
+// la fonction s'arrête à la première occurrence trouvée
+$('p').text('Nouveau contenu !'); // remplace le contenu actuel du paragraphe par "Nouveau contenu !"
+
+• Le contenu HTML
+
+$('div').html(); // renvoie le code HTML contenu dans ce bloc div
+// la méthode s'arrête, comme pour text(), à la première occurrence trouvée
+$('div').html('<p>Nouveau <strong>code</strong> !</p>'); // remplace le code HTML actuel par celui-ci
+
+$('p').prepend('<strong>Texte inséré avant le contenu actuel.</strong> ');
+$('p').prepend($('h1')); // récupére l'élément indiqué et de l'insére directement à l'intérieur
+$('p').append(' <strong>Texte inséré après le contenu actuel.</strong>');
+$('p').append($('h1'));
+
+$('p').append($('h1'));
+// ici, on ajoute le contenu du titre après avoir sélectionné notre élément
+$('h1').appendTo($('p'));
+/* alors qu'ici, on sélectionne d'abord le contenu du titre,
+et on le déplace après le contenu actuel de notre élément receveur */
+
+$('p').prepend($('.description'));
+// on ajoute le contenu de .description avant le contenu de notre paragraphe
+$('.description').prependTo('p');
+// on peut spécifier directement l'élément, sans passer par un objet
+
+// before() et after() permettent d'ajouter du contenu HTML avant et après l'élément ciblé
+$('p').before('<p>Paragraphe précédent</p>');
+$('p').after('<p>Paragraphe suivant</p>');
+
+$('h1').insertBefore('p'); // insère un titre H1 et son contenu avant un paragraphe
+$('.description').insertAfter('h1'); // insère un élément .description et son contenu après un titre H1
+
+• Le contenu des éléments de formulaire
+
+$('input').val(); // retourne le contenu de l'élément input
+$('input').val('Nouvelle valeur !'); // modifie le contenu actuel de l'élément (écrase puis écrit)
+
+◘ Manipulation des éléments HTML
+
+• Cloner des éléments 
+
+let $clone = $('.objet').clone(); // on clone notre élément
+$('body').append($clone); // puis on l'ajoute à la fin de notre document !
+
+// on peut également tout écrire sur une seule ligne grâce au chaînage de méthode :
+$('.objet').clone().appendTo('body');
+// Pour cloner également l'évènement éventuellement associé, il suffit de passer true en argument à la méthode
+
+• Vider et/ou supprimer un élément
+
+$('p').empty(); // vide l'élément, seules subsisteront les balises <p></p> et leurs attributs
+$('p').remove(); // supprime l'élément, avec son contenu, rien n'en restera
+$('div').remove('.suppression'); // supprime les éléments portant la classe .suppression parmi les blocs div trouvés
+
+• Remplacer les éléments
+
+$('.pomme').replaceWith('<p>Cet élément a été remplacé !</p>');
+// on remplace l'élément .pomme par un nouvel élément créé pour l'occasion
+
+$('.pomme').replaceWith($('.poire'));
+// ici, l'élément .pomme est remplacé par l'élément .poire, ce dernier va se déplacer
+
+$('.poire').replaceAll('.pomme');
+// inversement, on ordonne aux éléments .poire de remplacer tous les éléments .pomme trouvés
+
+• Envelopper/déballer des éléments
+
+$('strong').wrap('<p />'); // entoure les balises <strong></strong> de balises de paragraphe
+
+$('span').wrap('<p class="description" />'); // il est possible de donner des attributs au nouveau parent
+
+$('span').unwrap(); // détruit le parent de tous les span
+
+$('li').wrapAll('<ul />'); // entoure tous les <li></li> d'un seul parent commun
+
+$('p').wrapInner('<strong />'); // entoure le contenu de balises <strong></strong>
+
+◘ Créer des éléments à la volée
+
+• Créer des éléments, une histoire de balises
+
+$('<div />').appendTo('body'); // créé un nouveau bloc div, et le place à la fin du corps du document
+
+let $lien = $('<a href="http://www.siteduzero.com/">Le Site du Zéro !</a>');
+// la variable contiendra l'élément lui-même, ainsi que son contenu
+// il faudra placer l'élément ensuite
+
+• Passer des attributs proprement
+
+$('<div />', {
+    id: "bloc", // identifiant de l'élément
+    css: { // style css de l'élément
+        color: "red",
+        fontSize: "30px"
+    }
+    // etc...
+});
+
+• L'attribut class
+
+Pour définir la classe d'un élément, 
+il vous faudra mettre le nom de cette propriété entre "guillemets" ou 'apostrophes'
+pour ne pas entrer en conflit avec JavaScript (langage orienté objet qui utilise le concept de class)
+
+
+
+
+
+
+
+
