@@ -97,8 +97,9 @@ while (TRUE)
  *              more than once in the original string.
  */
 
-function duplicate_encode($word){
-
+function duplicate_encode($word)
+{
+    
   $convertedWord = ""; 
   
   $arrayWord = str_split(strtolower($word)); // word converted to lower array
@@ -214,3 +215,56 @@ $array[count($array) - 1] = (int) $highestNumberDiscount; // new value (integer)
 $totalPriceDiscount = array_sum($array);
 
 echo $totalPriceDiscount; // 84 (new total price after discount)
+
+
+/**
+ * Highest Scoring Word
+ * 
+ * @description Given a string of words, you need to find the highest scoring word 
+ *              Each letter of a word scores points according to its position 
+ *              in the alphabet: a = 1, b = 2, c = 3 etc.
+ *              You need to return the highest scoring word as a string.
+ *              If two words score the same, return the word that appears earliest in the original string
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testSampleTests()
+    {
+        $this->assertEquals('taxi', high('man i need a taxi up to ubud'));
+        $this->assertEquals('volcano', high('what time are we climbing up the volcano'));
+        $this->assertEquals('semynak', high('take me to semynak'));
+    }
+}
+
+function high($x)
+{
+    $words = explode(" ", $x); // each word in array ['man', 'i', 'need', ...]
+    $alphabet = range('a', 'z'); // ['a', 'b', 'c', ... , 'z']
+    $highestCount = 0;
+
+    foreach ($words as $key => $value) {
+
+        $wordCount = 0;
+        $letters = str_split($value); // word become array of letters
+
+        foreach ($letters as $key2 => $value2) {
+
+            $letterCount = (array_search($value2, $alphabet) + 1); // array begin to 0
+            $wordCount += $letterCount;
+        }
+
+        if ($wordCount > $highestCount) {
+
+            $highestWord = $value;
+            $highestCount = $wordCount;
+
+        } else if ($wordCount == $highestCount) { // if two words score the same
+
+            $highestCount = $highestCount; // priority to the word that appears earliest
+
+        }
+    }
+
+    return $highestWord;
+} 
