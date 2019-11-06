@@ -267,4 +267,74 @@ function high($x)
     }
 
     return $highestWord;
-} 
+}
+
+
+
+/**
+ * Sum of numbers from 0 to N
+ * 
+ * @description We want to generate a function that computes the series starting from 0 
+ *              and ending until the given number following the sequence:
+ *              0 1 3 6 10 15 21 28 36 45 55 ....
+*               Input: 6
+*               Output: "0+1+2+3+4+5+6 = 21"
+*               Input: -15
+*               Output: "-15<0"
+*               Input: 0
+*               Output: "0=0"
+*/
+
+class BrokenGreetingsTestCases extends TestCase
+{
+    public function testShowSequence()
+    {
+        $sum = new SequenceSum();
+
+        $this->assertEquals("0+1+2+3+4+5+6 = 21", $sum->showSequence(6));
+        $this->assertEquals("0=0", $sum->showSequence(0));
+        $this->assertEquals("-15<0", $sum->showSequence(-15));
+    }
+}
+
+class SequenceSum
+{
+    public function showSequence($count)
+    {
+
+        $answer = $count; // ex. -15
+        $equal = "<"; // -15<
+        $sum = 0; // -15<0 (message by default for negative numbers)
+
+        for ($i = 0; $i <= $count; $i++) { // if count = 0
+
+            $equal = "=";
+            $answer = "0";
+
+            while ($i > 0 && $i <= $count) { // if count > 0
+                $answer .= "+" . $i;
+                $sum += $i;
+                $equal = " = ";
+                $i++;
+            }
+        }
+
+        return $answer .= $equal . $sum;
+    }
+}
+
+// bonne astuce :
+class SequenceSum
+{
+    public function showSequence($count)
+    {
+        if ($count == 0) {
+            return "0=0";
+        }
+        if ($count < 0) {
+            return "$count<0";
+        }
+        $r = range(0, $count);
+        return implode("+", $r) . " = " . array_sum($r);
+    }
+}

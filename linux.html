@@ -1927,3 +1927,142 @@ Tout ce qui est envoyé là-dedans est immédiatement supprimé
 
 Je souhaite exécuter une commande toutes les 5 minutes le week-end :
 */5 * * * 0,6 commande
+
+
+XIV) ARCHIVER ET COMPRESSER
+
+.zip et .rar = alternatives libres (et souvent plus puissantes) gzip et le bzip2. 
+gzip et le bzip2 ne sont capables de compresser qu'un seul fichier à la fois
+solution = tar 
+
+◘ tar : assembler des fichiers dans une archive
+
+Sous Linux, on a depuis longtemps pris l'habitude de procéder en deux étapes :
+ - réunir les fichiers dans un seul gros fichier appelé archive. 
+On utilise pour cela le programme tar ;
+ - compresser le gros fichier ainsi obtenu à l'aide de gzip ou de bzip2
+
+• Regrouper d'abord les fichiers dans un même dossier
+Mes fichiers .tuto que je souhaite archiver sont pour le moment placés en vrac dans mon home :
+$ ls
+Bureau Images l-heritage.tuto Public
+Documents la-surcharge-d-operateurs.tuto Modèles Vidéos
+Examples les-principaux-widgets.tuto Musique
+
+Il est recommandé de placer d'abord les fichiers à archiver dans un seul et même dossier. 
+Créons-le et déplaçons-y tous nos .tuto :
+$ mkdir tutoriels
+$ mv *.tuto tutoriels/
+$ ls
+Bureau Examples Modèles Public Vidéos
+Documents Images Musique tutoriels
+
+• -cvf : créer une archive tar
+Nous allons maintenant créer une archive tar de ce dossier et de ses fichiers. 
+La procédure à suivre pour créer une archive est :
+tar -cvf nom_archive.tar nom_dossier/
+-c : signifie créer une archive tar ;
+-v : signifie afficher le détail des opérations ;
+-f : signifie assembler l'archive dans un fichier.
+$ tar -cvf tutoriels.tar tutoriels/
+tutoriels/
+tutoriels/les-principaux-widgets.tuto
+tutoriels/la-surcharge-d-operateurs.tuto
+tutoriels/l-heritage.tuto
+
+• -tf : afficher le contenu de l'archive sans l'extraire
+$ tar -tf tutoriels.tar
+tutoriels/
+tutoriels/les-principaux-widgets.tuto
+tutoriels/la-surcharge-d-operateurs.tuto
+tutoriels/l-heritage.tuto
+
+• -rvf : ajouter un fichier
+$ tar -rvf tutoriels.tar fichier_supplementaire.tuto
+tutoriels/fichier_supplementaire.tuto
+
+• -xvf : extraire les fichiers de l'archive
+$ tar -xvf tutoriels.tar
+tutoriels/
+tutoriels/les-principaux-widgets.tuto
+tutoriels/la-surcharge-d-operateurs.tuto
+tutoriels/l-heritage.tuto
+Les fichiers s'extraient dans le répertoire dans lequel vous vous trouvez
+(!) Bien vérifier auparavant avec -tf si tous les fichiers sont dans un même dossier 
+
+◘ gzip & bzip2 : compresser une archive
+
+gzip : c'est le plus connu et le plus utilisé ;
+bzip2 : il est un peu moins fréquemment utilisé. 
+Il compresse mieux mais plus lentement que gzip
+ils ajoutent un suffixe pour indiquer que l'archive a été compressée :
+.tar.gz : si l'archive a été compressée avec gzip ;
+.tar.bz2 : si l'archive a été compressée avec bzip2
+
+• gzip : la compression la plus courante
+gzip tutoriels.tar
+L'archive est compressée et gagne ensuite le suffixe .gz
+Pour décompresser l'archive ensuite, il suffit d'utiliser gunzip :
+gunzip tutoriels.tar.gz
+L'archive retrouve son état non compressé en .tar. 
+Pour  extraire les fichiers de l'archive : tar -xvf
+
+• bzip2 : la compression la plus puissante
+bzip2 tutoriels.tar
+Une archive compressée tutoriels.tar.bz2 sera alors créée. Pour la décompresser :
+bunzip2 tutoriels.tar.bz2
+Vous retrouvez un .tar que vous pouvez extraire avec tar -xvf
+
+• Archiver et compresser en même temps avec tar
+
+le programme tar est capable d'appeler lui-même 
+gzip ou bzip2 si vous lui donnez les bons paramètres
+
+• -zcvf : archiver et compresser en gzip
+tar -zcvf tutoriels.tar.gz tutoriels/
+Pour décompresser, le -c est remplacé par un -x :
+tar -zxvf tutoriels.tar.gz
+
+• -jcvf : archiver et compresser en bzip2
+tar -jcvf tutoriels.tar.bz2 tutoriels/
+Et pour extraire :
+tar -jxvf tutoriels.tar.bz2 tutoriels/
+
+(!) Vous pouvez toujours analyser le contenu de l'archive avant de la décompresser. 
+Avec -ztf, vous regarderez à l'intérieur d'une archive « gzippée » 
+et avec -jtf, vous regarderez à l'intérieur d'une archive « bzippée-deux »
+
+• zcat, zmore & zless : afficher directement un fichier compressé
+Parfois, on compresse directement un fichier.
+Par exemple, je peux compresser un fichier .tuto directement :
+gzip l-heritage.tuto (devient l-heritage.tuto.gz)
+zcat : équivalent de cat, capable de lire un fichier compressé (gzippé).
+zmore : équivalent de more, capable de lire un fichier compressé (gzippé).
+zless : équivalent de less, capable de lire un fichier compressé (gzippé)
+$ zcat l-heritage.tuto.gz
+
+◘ unzip & unrar : décompresser les .zip et .rar
+
+• unzip : décompresser un .zip
+(si non installé) sudo apt-get install unzip
+unzip archive.zip
+Les fichiers vont s'extraire dans le dossier dans lequel vous vous trouvez 
+Le problème est le même qu'avec les .tar.gz et .tar.bz2. 
+Avant de décompresser, vérifiez si les fichiers sont réunis dans un même dossier
+Pour voir le contenu d'une archive zip sans l'extraire, utilisez -l :
+$ unzip -l tutoriels.zip
+Pour créer un zip, installez le programme zip puis basez-vous sur la commande suivante :
+zip -r tutoriels.zip tutoriels/
+Le -r demande à compresser tous les fichiers contenus dans le dossier tutoriels 
+(sans ce paramètre, seul le dossier, vide, sera compressé !)
+
+• unrar : décompresser un .rar
+sudo apt-get install unrar
+Ensuite, pour extraire :
+unrar e tutoriels.rar
+Pour lister le contenu avant décompression, utilisez l'option l :
+$ unrar l tutoriels.rar
+
+
+XV) La connexion sécurisée à distance avec SSH
+
