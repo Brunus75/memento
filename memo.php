@@ -54,7 +54,7 @@ CONSIDERATIONS :
   • Ordre d'apparition des use : ordre alphabétique (PCR1)
 
 VISUAL STUDIO :
-	• Ctrl + D : sélectionner des groupes de mots semblables
+  • Ctrl + D : sélectionner des groupes de mots semblables
   • Ctrl + alt + i : récupérer le namespace de la classe sélectionnée
   • PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
   • Extensions : Auto Close Tag, Beautify, canvas-snippets, HTML CSS Support,
@@ -100,6 +100,17 @@ $truthiness = $this_one and $that; // return TRUE (not false);
 $truthiness = $this_one && $that; // return FALSE (logic);
 Why ? = has a higher precedence (priority) than and --> ($truthiness = $this_one) and $that;
 And parentheses have higher precedence than = : $truthiness = ($this_one and $that);
+
+ It is important to remember that the following values are considered false in PHP:
+	• Boolean false;
+    • Integer 0;
+    • Float 0.0;
+    • String '0' or "0";
+    • An empty string (i.e. '' or "");
+    • An empty array (i.e. [] or array());
+    • null;
+    • SimpleXML objects created from empty tags.
+
 
 <?php
 	$age = 8;
@@ -175,7 +186,44 @@ And parentheses have higher precedence than = : $truthiness = ($this_one and $th
 // CONDITIONS TERNAIRES. Ex : $majeur = true si + de 18 ans
 	$age = 24;
 	$majeur = ($age >= 18) ? true : false;
-	// $variable = (condition à vérifier) ? valeur1 (attribuée à $variable si condition vraie) : valeur2 (si condition fausse);
+// $variable = (condition à vérifier) ? valeur1 (attribuée à $variable si condition vraie) : valeur2 (si condition fausse);
+	
+	$action = (empty($_POST['action'])) ? 'default' : $_POST['action'];
+	// La ligne ci-dessus est identique à la condition suivante :
+	if (empty($_POST['action'])) {
+		$action = 'default';
+	} else {
+		$action = $_POST['action'];
+	}
+
+// USING THE ELVIS OPERATOR
+	expr1 ?: expr2;
+	// using the ternary operator
+	expr1 ? expr1 : expr2;
+	// using if/else
+	if (expr1) {
+		return expr1;
+	} else {
+		return expr2;
+	}
+
+	// The ternaries can be chained (i.e. it returns the first truthy value it encounters), for example:
+	echo 0 ?: 1 ?: 2 ?: 3; // output: 1 (if true)
+
+
+// Opérateur de fusion Null
+
+	// Exemple #5 Assigner une valeur par défaut
+	$action = $_POST['action'] ?? 'default';
+	// le code ci-dessus est équivalent à cette structure if/else 
+	if (isset($_POST['action'])) {
+		$action = $_POST['action'];
+	} else {
+		$action = 'default';
+	}
+?>
+
+
 ?>
 
 III) LES BOUCLES
@@ -246,6 +294,15 @@ IV) LES TABLEAUX (ARRAY)
 	// Récupérer la clé d'une valeur dans l'array : array_search
 	$position = array_search('Poire', $fruits); // renvoie le chiffre de la clé ou la clé correspondante
 	echo 'La valeur "Poire" se trouve en ' . $position . 'ème position dans le tableau';
+
+	// AJOUTER UNE VALEUR AU TABLEAU
+	// no key
+	array_push($array, $value);
+	// same as:
+	$array[] = $value;
+
+	// key already known
+	$array[$key] = $value;
 ?>
 
 V) LES FONCTIONS

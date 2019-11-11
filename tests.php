@@ -338,3 +338,86 @@ class SequenceSum
         return implode("+", $r) . " = " . array_sum($r);
     }
 }
+
+/**
+ * Two to One
+ * 
+ * @description Take 2 strings s1 and s2 including only letters from a to z. 
+ *              Return a new sorted string, the longest possible, containing distinct letters
+ *              a = "xyaabbbccccdefww"
+ *              b = "xxxxyyyyabklmopq"
+ *              longest(a, b) -> "abcdefklmopqwxy"
+ */
+
+class LongestTestCases extends TestCase
+{
+    private function revTest($actual, $expected)
+    {
+        $this->assertEquals($expected, $actual);
+    }
+    public function testBasics()
+    {
+        $this->revTest(longest("aretheyhere", "yestheyarehere"), "aehrsty");
+        $this->revTest(longest("loopingisfunbutdangerous", "lessdangerousthancoding"), "abcdefghilnoprstu");
+        $this->revTest(longest("inmanylanguages", "theresapairoffunctions"), "acefghilmnoprstuy");
+        $this->revTest(longest("lordsofthefallen", "gamekult"), "adefghklmnorstu");
+    }
+}
+
+function longest($a, $b)
+{
+    $array = str_split($a . $b); // a+b in array
+    sort($array); // [a, a, b, b, b, c, ...]
+    return implode("", array_unique($array)); // "a, b, c,..."
+}
+
+
+/**
+ * Fix string case
+ * 
+ * @description you will be given a string 
+ *              that may have mixed uppercase and lowercase letters 
+ *              and your task is to convert that string to either lowercase 
+ *              only or uppercase only based on :
+ *              • make as few changes as possible
+ *              • if the string contains equal number of uppercase and lowercase letters, 
+ *              convert the string to lowercase
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testSampleTests()
+    {
+        $this->assertEquals("code", solve("code"));
+        $this->assertEquals("CODE", solve("CODe"));
+        $this->assertEquals("code", solve("COde"));
+        $this->assertEquals("code", solve("Code"));
+    }
+}
+
+function solve($s)
+{
+    $array = str_split($s);
+    $lowerLetters = 0;
+    $count = count($array); // number of values in array
+
+    foreach ($array as $value) {
+        if (ctype_lower($value)) {
+            $lowerLetters++;
+        }
+    }
+
+    if ($lowerLetters >= ($count / 2)) {
+        return strtolower($s);
+    } else {
+        return strtoupper($s);
+    }
+}
+
+// aussi :
+function solve($s)
+{
+    $upper = preg_match_all("/[A-Z]/", $s);
+    $lower = preg_match_all("/[a-z]/", $s);
+    return ($upper > $lower) ? strtoupper($s) : strtolower($s);
+}
