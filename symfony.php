@@ -11,6 +11,7 @@ Requires curl (extension pour interagir avec des url) dans l'installation > php.
 "coud not find the driver" : activer pdo_mysql dans le php.ini
 Extensions : PowerShell, Twig Language, PHP Intelephense, PHP Namespace Resolver
 pb de timezone : modifier le timezone du php.ini
+date.timezone = Europe/Paris
 Commits : si fichier github ailleurs que le fichier source, créer deux fichiers vides var et vendor
 (en plus du README), et ne jamais copier les fichiers var et vendor
 Créer un .env.dist pour le repository 
@@ -21,7 +22,7 @@ Sur Filezilla, doctrine.yaml enlever ('resolve') de url: '%env(resolve:DATABASE_
 Mot de passe sans espaces et avec urlencode() si caractères spéciaux !
 Déploiement SF 4 : faire diriger le site vers le dossier projet/public
 
-php bin/console server:run 
+php bin/console server:run (php bin/console s:r)
 php bin/console cache:clear
 php bin/console make:form
 
@@ -56,6 +57,7 @@ Considérations
                       # = protected
                       - = private
     • Ordre d'apparition des use : ordre alphabétique (PCR1)
+    • Ajouter un rôle à un User => aller dans la BDD, mettre ["ROLE_ADMIN"] dans la colonne roles
 
 Bundles
     • Admin : easy admin bundle

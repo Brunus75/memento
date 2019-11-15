@@ -421,3 +421,93 @@ function solve($s)
     $lower = preg_match_all("/[a-z]/", $s);
     return ($upper > $lower) ? strtoupper($s) : strtolower($s);
 }
+
+
+/**
+ * Statistics for an Athletic Association
+ * 
+ * @description Each time you get a string of all race results of every team who has run. 
+ *              For example here is a string showing the individual results of a team of 5 runners:
+ *              "01|15|59, 1|47|6, 01|17|20, 1|32|34, 2|3|17" 
+ *              To compare the results of the teams you are asked for giving three statistics; 
+ *              range (difference between the lowest and highest values), 
+ *              average (all of the numbers divided the sum by the total count of numbers)
+ *              and median (number separating the higher half of a data sample from the lower half).
+ *              If there is an even number of observations, then there is no single middle value; 
+ *              the median is then defined to be the mean of the two middle values 
+ *              (the median of {3, 5, 6, 9} is (5 + 6) / 2 = 5.5).
+ *              For the example given above, the string result will be
+ *              "Range: 00|47|18 Average: 01|35|15 Median: 01|32|34"
+ */
+
+class StatAssocTestCases extends TestCase
+{
+    private function dotest($actual, $expected)
+    {
+        $this->assertEquals($expected, $actual);
+    }
+    public function testrankBasics()
+    {
+        $this->dotest(
+            statAssoc("01|15|59, 1|47|16, 01|17|20, 1|32|34, 2|17|17"),
+            "Range: 01|01|18 Average: 01|38|05 Median: 01|32|34"
+        );
+        $this->dotest(
+            statAssoc("02|15|59, 2|47|16, 02|17|20, 2|32|34, 2|17|17, 2|22|00, 2|31|41"),
+            "Range: 00|31|17 Average: 02|26|18 Median: 02|22|00"
+        );
+    }
+}
+
+function statAssoc($strg)
+{
+
+    if (empty($strg)) {
+        return '';
+    }
+
+    $i = $max = $median = $sum = 0;
+    $min = 24 * 60 * 60; // min chrono is set to 24 hours
+
+    $arrayResults = explode(",", $strg); // array with each chrono
+    $arrayDetailedResults = []; // array with arrays of h, m, s
+
+    foreach ($arrayResults as $result) { // chrono is ex. " 01|15|59"
+
+        $arrayDetailedResults[] = explode("|", str_replace(" ", "", $result));
+
+        $timeSeconds = (int) ($arrayDetailedResults[$i][0] * 60 * 60)
+            + (int) ($arrayDetailedResults[$i][1] * 60)
+            + (int) $arrayDetailedResults[$i][2];
+
+        if ($timeSeconds > $max) {
+            $max = $timeSeconds;
+        }
+        if ($timeSeconds < $min) {
+            $min = $timeSeconds;
+        }
+
+        $i++;
+        $sum += $timeSeconds;
+    }
+
+    sort($arrayDetailedResults);
+
+    if (count($arrayDetailedResults) % 2 > 0) { // if the number of chronos is odd
+        $median = (int) ($arrayDetailedResults[ceil(count($arrayDetailedResults)) / 2][0] * 60 * 60)
+            + (int) ($arrayDetailedResults[ceil(count($arrayDetailedResults)) / 2][1] * 60)
+            + (int) $arrayDetailedResults[ceil(count($arrayDetailedResults)) / 2][2];
+    } else {
+        $median1 = (int) ($arrayDetailedResults[(count($arrayDetailedResults) / 2) - 1][0] * 60 * 60)
+            + (int) ($arrayDetailedResults[(count($arrayDetailedResults) / 2) - 1][1] * 60)
+            + (int) $arrayDetailedResults[(count($arrayDetailedResults) / 2) - 1][2];
+        $median2 = (int) ($arrayDetailedResults[(count($arrayDetailedResults) / 2)][0] * 60 * 60)
+            + (int) ($arrayDetailedResults[(count($arrayDetailedResults) / 2)][1] * 60)
+            + (int) $arrayDetailedResults[(count($arrayDetailedResults) / 2)][2];
+        $median = ($median1 + $median2) / 2;
+    }
+
+    return "Range: " . gmdate("H|i|s", ($max - $min)) .
+        " Average: " . gmdate("H|i|s", ($sum / count($arrayResults))) .
+        " Median: " . gmdate("H|i|s", $median);
+}
