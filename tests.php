@@ -511,3 +511,80 @@ function statAssoc($strg)
         " Average: " . gmdate("H|i|s", ($sum / count($arrayResults))) .
         " Median: " . gmdate("H|i|s", $median);
 }
+
+/**
+ * Row Weights
+ * 
+ * @description Several people are standing in a row divided into two teams.
+ *              The first person goes into team 1, the second goes into team 2, the third goes into team 1, 
+ *              and so on.. 
+ *              rowWeights([50, 60, 70, 80])  ==>  return (120, 140)
+ *              Explanation:
+ *              The first element 120 is the total weight of team 1, 
+ *              and the second element 140 is the total weight of team 2.
+ *              rowWeights([80])  ==>  return (80, 0)
+ *              Explanation:
+ *              The first element 80 is the total weight of team 1, 
+ *              and the second element 0 is the total weight of team 2.
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testFixedTests()
+    {
+        $this->assertEquals([80, 0], rowWeights([80]));
+        $this->assertEquals([100, 50], rowWeights([100, 50]));
+        $this->assertEquals([120, 140], rowWeights([50, 60, 70, 80]));
+        $this->assertEquals([62, 27], rowWeights([13, 27, 49]));
+        $this->assertEquals([236, 92], rowWeights([70, 58, 75, 34, 91]));
+        $this->assertEquals([211, 164], rowWeights([29, 83, 67, 53, 19, 28, 96]));
+        $this->assertEquals([0, 0], rowWeights([0]));
+        $this->assertEquals([150, 151], rowWeights([100, 51, 50, 100]));
+        $this->assertEquals([207, 235], rowWeights([39, 84, 74, 18, 59, 72, 35, 61]));
+        $this->assertEquals([0, 1], rowWeights([0, 1, 0]));
+    }
+}
+
+function rowWeights($arr)
+{
+    $team1 = $team2 = 0;
+
+    foreach ($arr as $key => $value) {
+        if ($key % 2 == 0) {
+            $team1 += (int) $value;
+        } else {
+            $team2 += (int) $value;
+        }
+    }
+
+    $arrayFinal = [];
+    $arrayFinal[] = $team1;
+    $arrayFinal[] = $team2;
+
+    return $arrayFinal;
+}
+
+
+/* ---------- FIND THE TWIN ---------- */
+// two words, find if they are twins (same letters in the first name)
+
+function is_twin($a, $b)
+{
+    $arrayA = str_split(strtolower($a)); // strtolower pour que les lettres se placent dans l'ordre
+    sort($arrayA);
+    $wordA = implode($arrayA);
+
+    $arrayB = str_split(strtolower($b)); // sinon, les MAJUSCULES sont placées au début
+    sort($arrayB);
+    $wordB = implode($arrayB);
+
+    if ($wordA == $wordB) {
+        return true;
+    }
+
+    return false;
+}
+
+var_dump((is_twin("Hello", "world"))); // false
+var_dump((is_twin("abc", "bca"))); // true
+var_dump((is_twin("Lookout", "Outlook"))); // true

@@ -150,3 +150,34 @@ function findLowerInterval(array) {
 
 console.log(findLowerInterval(array));
 // 'Le nombre -3 a un intervalle de 1 avec le nombre -2'
+
+
+/* ---------- Descending Order ---------- */
+// Your task is to make a function that can take any non-negative integer 
+// as a argument and return it with its digits in descending order
+// Input: 1254859723 Output: 9875543221
+
+function descendingOrder(n) {
+  let array = Array.from(String(n), Number); // number to array of n,u,m,b,e,r
+  array.sort().reverse(); // 987654321, .sort() then .reverse()
+  return Number(array.join('')); // array to number
+}
+
+// meilleure solution :
+function descendingOrder(n) {
+  return parseInt(String(n).split('').sort().reverse().join(''))
+}
+
+
+/* ---------- FIND SUM OF VALUES IN ARRAY BETWEEN TWO INDEX ---------- */
+// one array, number1, number2 (> number1) => find the sum of values between numbers
+
+function sumIndexs(array, n1, n2) {
+  let sum = 0; 
+  for (i = n1; i <= n2; i++) { // for strict values (in interval), i = (n1 + 1); n < 2
+    sum += array[i];
+  } 
+  return sum;
+}
+console.log(sumIndexs([1, 2, 3, 4, 5], 0, 3)); // 10
+
