@@ -181,3 +181,27 @@ function sumIndexs(array, n1, n2) {
 }
 console.log(sumIndexs([1, 2, 3, 4, 5], 0, 3)); // 10
 
+
+/* ---------- COUNT PAIRS OF PLAYERS ---------- */
+// one number of players (ex. 4) => find all the possible duo (ex.6)
+// with A, B, C, D (4) we can get 6 pairs : AB, AC, AD + BC, BD + CD (6)
+
+function count(n) {
+  
+  let pairs = 0; // number of pairs
+
+  for (let i = 1; i <= n; i++) { // first player, ex. A, then B, ect.
+
+    let j = i++; // second player, ex. B, then C, ect.
+    
+    for (j; j <= n; j++) { // what comes next the first player, ex. B, C, D, then C, D, ect.
+      pairs++;
+    }
+  }
+  return pairs;
+}
+
+console.log(count(4)); // 6
+console.log(count(20000));
+
+
