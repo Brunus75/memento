@@ -588,3 +588,76 @@ function is_twin($a, $b)
 var_dump((is_twin("Hello", "world"))); // false
 var_dump((is_twin("abc", "bca"))); // true
 var_dump((is_twin("Lookout", "Outlook"))); // true
+
+
+/* ---------- CHILDREN ALLOWED [BATTLEDEV] ---------- */
+// array of data
+// first line : number of children
+// second line : age of children
+// return the number of children allowed (age >= 5 && age <= 9)
+
+do{
+    $f = stream_get_line(STDIN, 10000, PHP_EOL); // data
+    fwrite(STDERR, $f . PHP_EOL); // what it looks like
+    if($f!==false){
+        $input[] = $f; // array of data
+    }
+}while($f!==false);
+
+error_log(print_r($input, true) . PHP_EOL); // what it looks like in details
+
+$total = $input[0]; // total of children (not necessary)
+$ages = explode(' ', $input[1]); // string of ages => array of ages
+$allowed = 0; // children allowed
+
+foreach ($ages as $value) {
+    if ($value >= 5 && $value <= 9) {
+        $allowed++;
+    }
+}
+
+echo $allowed;
+
+
+/* ---------- HOW MANY RIDES [BATTLEDEV] ---------- */
+// array of data
+// first line : number of boats to rescue
+// second line : number of people to rescue for boat 1
+// third line : number of people to rescue for boat 2
+// ect.
+// you can deal with ONE boat at the time and rescue 10 people at the time
+// return the number of rides
+
+do {
+    $f = stream_get_line(STDIN, 10000, PHP_EOL);
+    fwrite(STDERR, $f . PHP_EOL);
+    if ($f !== false) {
+        $input[] = $f;
+    }
+} while ($f !== false);
+
+$boats = $input[0]; // number of boats to rescue
+$ride = 0; // number of rides
+
+$boat = []; // array with each number of people to rescue
+for ($i = 1; $i <= $boats; $i++) {
+    $boat[] = $input[$i];
+}
+
+foreach ($boat as $people) {
+    while ($people > 0) {
+        $people -= 10;
+        $ride++;
+    }
+}
+
+echo $ride;
+
+
+// official answer
+unset($input[0]);
+$total = 0;
+foreach ($input as $value) {
+    $total += ceil($value / 10);
+}
+echo $total;
