@@ -661,3 +661,46 @@ foreach ($input as $value) {
     $total += ceil($value / 10);
 }
 echo $total;
+
+
+/* ---------- SUM UP TO TEN ---------- */
+// A number is considered perfect if its digits sum up to exactly 10.
+// Given a positive integer n, return the n-th perfect number.
+// For example, given 1, you should return 19. Given 2, you should return 28.
+
+function sumUpToTen($n) 
+{
+    return $n . (10 - $n) . "\n";
+}
+
+echo sumUpToTen(1); // 19
+echo sumUpToTen(2); // 28
+
+
+
+/* ---------- LARGEST PRODUCT OF THREE ---------- */
+// Given a list of integers, return the largest product that can be made by multiplying any three integers
+// For example, if the list is [-10, -10, 5, 2], we should return 500, since that's -10 * -10 * 5
+
+function largestProduct($array)
+{
+    sort($array); // [-10, -10, 2, 5]
+    $arrayFinal = array();
+
+    while (count($arrayFinal) < 3) { // while the array of three numbers is not full
+
+        if (max($array) > (min($array) * -1)) {
+            $arrayFinal[] = max($array);
+            $key = array_search(max($array), $array);
+            unset($array[$key]);
+        } else {
+            $arrayFinal[] = min($array);
+            $key = array_search(min($array), $array);
+            unset($array[$key]);
+        }
+    }
+
+    return $arrayFinal[0] * $arrayFinal[1] * $arrayFinal[2];
+}
+
+echo largestProduct([-10, -10, 5, 2]); // 500 (-10 * -10 * 5)

@@ -2066,3 +2066,273 @@ $ unrar l tutoriels.rar
 
 XV) La connexion sécurisée à distance avec SSH
 
+◘ Comment sont chiffrés les échanges avec SSH ?
+
+SSH utilise les deux chiffrements : asymétrique et symétrique. Cela fonctionne dans cet ordre.
+    1. On utilise d'abord le chiffrement asymétrique pour s'échanger discrètement 
+    une clé secrète de chiffrement symétrique.
+    2. Ensuite, on utilise tout le temps la clé de chiffrement symétrique pour chiffrer les échanges.
+Le chiffrement asymétrique est donc utilisé seulement au début de la communication, 
+afin que les ordinateurs s'échangent la clé de chiffrement symétrique de manière sécurisée. 
+Ensuite, ils ne communiquent que par chiffrement symétrique.
+
+◘ Se connecter avec SSH et PuTTY
+
+• Transformer sa machine en serveur
+
+Si vous voulez accéder à votre PC depuis un autre lieu, vous devez le transformer en serveur au préalable.
+Il faut tout simplement installer le paquet openssh-server :
+sudo apt-get install openssh-server
+RSA et DSA sont deux algorithmes de chiffrement asymétrique.
+Normalement, le serveur SSH sera lancé à chaque démarrage. 
+Si ce n'est pas le cas, vous pouvez le lancer à tout moment avec la commande suivante :
+sudo /etc/init.d/ssh start
+Et vous pouvez l'arrêter avec cette commande :
+sudo /etc/init.d/ssh stop
+le fichier de configuration se trouve dans/etc/ssh/ssh_config. 
+Il faudra recharger SSH avec la commande sudo /etc/init.d/ssh reload 
+pour que les changements soient pris en compte
+
+• Se connecter via SSH à partir d'une machine Linux
+Ouvrez une console sur le second PC et utilisez la commande ssh comme ceci :
+ssh login@ip
+Il faut remplacer login par votre login (mateo21, dans mon cas) et ip par l'adresse IP de votre ordinateur.
+Si je suis chez un ami et que l'IP internet de mon ordinateur est 87.112.13.165, je vais taper :
+ssh mateo21@87.112.13.165
+Si, faute de mieux, vous voulez tester en vous connectant chez vous depuis chez vous, vous pouvez taper :
+ssh mateo21@localhost
+Si aucune erreur ne s'affiche, c'est que vous êtes bien connectés et que vous travaillez 
+désormais à distance sur votre machine ! 
+Vous pouvez effectuer toutes les opérations que vous voulez comme si vous étiez chez vous.
+Pour vous déconnecter, tapez logout ou son équivalent : la combinaison de touches Ctrl+D.
+
+• Se connecter via SSH à partir d'une machine Windows
+Le plus connu d'entre eux s'appelle PuTTY
+https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+vous avez juste besoin de remplir le champ en haut « Host Name (or IP address) ». 
+Entrez-y l'adresse IP de votre ordinateur sous Linux.
+Vous pouvez changer le numéro du port si ce n'est pas 22, mais normalement c'est 22 par défaut.
+Cliquer sur "Open".
+Pour vous déconnecter, tapez logout ou son équivalent, la combinaison de touches Ctrl+D.
+
+◘ L'identification automatique par clé
+
+Il y a plusieurs façons de s'authentifier sur le serveur, pour qu'il sache que c'est bien vous. Les deux plus utilisées
+sont :
+* l'authentification par mot de passe ;
+* l'authentification par clés publique et privée du client. (+ complexe a mettre en place, mais + pratique)
+Avec cette nouvelle méthode d'authentification, 
+c'est le client qui va générer une clé publique et une clé privée.
+Les rôles sont un peu inversés.
+L'avantage, c'est que l'on ne vous demandera pas votre mot de passe à chaque fois pour vous connecter.
+
+• Authentification par clé depuis Linux
+https://openclassrooms.com/fr/courses/43538-reprenez-le-controle-a-laide-de-linux/41773-la-connexion-securisee-a-distance-avec-ssh#/id/r-2282999
+
+
+XVI) Transférer des fichiers 
+
+◘ wget : téléchargement de fichiers
+
+permet de télécharger des fichiers directement depuis la console.
+Il suffit d'indiquer l’adresse HTTP ou FTP d'un fichier à télécharger :
+$ wget http://cdimage.debian.org/debian-cd/4.0_r5/i386/iso-cd/ debian-40r5-i386-businesscard.iso
+Vous pouvez arrêter le téléchargement à tout moment en utilisant la combinaison Ctrl + C
+Pour récupérer l'adresse du fichier à télécharger : faire un clic droit sur le lien du fichier, 
+pour enfin sélectionner « Copier l'adresse du lien »
+Notez qu'il existe aussi des navigateurs en console tels que lynx(plutôt basique) et
+links (assez complet)
+
+• Reprendre un téléchargement arrêté avec -c
+$ wget -c http://cdimage.debian.org/debian-cd/4.0_r5/i386/iso-cd/ debian-40r5-i386-businesscard.iso
+
+• Lancer un téléchargement en tâche de fond avec --background 
+$ wget --background -c http://cdimage.debian.org/debian-cd/4.0_r5/ i386/iso-cd/debian-40r5-i386-businesscard.iso
+Poursuite à l'arrière plan, pid 8422.
+La sortie sera écrite vers « wget-log ».
+man wget pour en savoir plus 
+
+◘ scp : copier des fichiers sur le réseau
+
+permet de copier des fichiers d'un ordinateur à un autre à travers le réseau
+scp s'utilise quasiment comme ssh
+scp fichier_origine copie_destination
+Chacun de ces éléments peut s'écrire sous la forme suivante : login@ip:nom_fichier. 
+Le login et l'IP sont facultatifs.
+Si vous n'écrivez ni login ni IP, scp considérera que le fichier se trouve sur votre ordinateur.
+
+• Copier un fichier de votre ordinateur vers un autre
+scp image.png mateo21@85.123.10.201:/home/mateo21/images/
+Sur cet autre ordinateur, le fichier image.png sera placé dans le dossier/home/mateo21/images/
+alternative simplifée :
+scp image.png mateo21@lisa.simple-it.fr:~/images/
+
+• Copier un fichier d'un autre ordinateur vers le vôtre
+scp mateo21@85.123.10.201:image.png copie_image_sur_mon_pc.png
+Je copie le fichier image.png qui se trouve sur le serveur dont l'IP est85.123.10.201 
+et place cette copie sur mon propre ordinateur sous le nomcopie_image_sur_mon_pc.png
+Si je veux, je peux aussi copier le fichier sans en changer le nom :
+scp mateo21@85.123.10.201:image.png .
+Notez le point à la fin. Il signifie « copier dans le répertoire dans lequel je me trouve ».
+
+• Le piège du port
+Si le serveur SSH auquel vous essayez de vous connecter n'est pas sur le port standard (22),
+il faudra indiquer le numéro du port avec l'option -P :
+scp -P 16296 mateo21@85.123.10.201:image.png .
+
+◘ ftp & sftp : transférer des fichiers
+
+• Connexion à un serveur FTP
+Essayons de nous connecter au serveur FTP de Debian, accessible à l'adresse suivante :ftp://ftp.debian.org.
+$ ftp ftp.debian.org
+Pour les serveurs FTP publics, le login à utiliser est toujours anonymous et mdp : peu importe 
+
+• Se déplacer au sein du serveur FTP
+les commandes que vous pouvez utiliser sont pour la plupart les mêmes que celles connues 
+    ○ ls : affiche le contenu du répertoire actuel ;
+    ○ pwd : affiche le chemin du répertoire actuel ;
+    ○ cd : change de répertoire.
+ftp> ls
+ftp> cd debian
+250 Directory successfully changed.
+
+• Le transfert de fichiers
+    ○ put : envoie un fichier vers le serveur (impossible pour les serveurs FTP publics) ;
+    ○ get : télécharge un fichier depuis le serveur.
+ftp> get README
+Pour savoir dans quel dossier vous êtes chez vous, tapez !pwd :
+ftp> !pwd
+/home/mateo21
+Si vous voulez changer de dossier chez vous, utilisez !cd.
+Pour lister les fichiers chez vous, utilisez !ls
+
+man ftp pour obtenir un aperçu des commandes disponibles
+quitter : Ctrl + D ou exit 
+
+• sftp : un FTP sécurisé (données cryptées)
+sftp repose sur SSH pour sécuriser la connexion :
+sftp login@ip
+Par exemple :
+sftp mateo21@lisa.simple-it.fr
+le manuel pour plus d'informations : man sftp
+Pour se connecter en SFTP, on utilise le même port que SSH (soit 22 par défaut).
+Si votre serveur SSH fonctionne sur un autre port, vous devrez le préciser comme ceci :
+sftp -oPort=27401 mateo21@serveur
+
+◘ rsync : synchroniser des fichiers pour une sauvegarde
+
+effectuer une synchronisation entre deux répertoires, 
+que ce soit sur le même PC ou entre deux ordinateurs reliés en réseau
+C'est une sorte de scp intelligent : il compare et analyse les différences entre deux dossiers 
+puis copie uniquement les changements. C'est ce que veut dire le mot « incrémentiel »
+rsync peut être utilisé pour effectuer une sauvegarde entre deux dossiers sur le même ordinateur 
+ou bien entre deux dossiers sur deux ordinateurs différents
+
+• Sauvegarder dans un autre dossier du même ordinateur
+on souhaite sauvegarder le dossier Imagesdans un dossier backups
+$ rsync -arv Images/ backups/
+sending incremental file list
+created directory backups
+./
+espagne1.jpg
+italie1.jpg
+italie2.jpg
+italie3.jpg
+    -a : conserve toutes les informations sur les fichiers, comme les droits (chmod), la date de modification, etc. ;
+    -r : sauvegarde aussi tous les sous-dossiers qui se trouvent dans le dossier à sauvegarder ;
+    -v : mode verbeux, affiche des informations détaillées sur la copie en cours.
+On lance la commande une 2ème fois : aucun fichier n'a été envoyé
+Testons un peu ce qui se passe si l'on ajoute un fichier :
+$ touch Images/espagne2.jpg
+$ rsync -arv Images/ backups/
+sending incremental file list
+./
+espagne2.jpg => Le nouveau fichier espagne2.jpg a bien été copié
+
+• Supprimer les fichiers
+Par défaut, rsync ne supprime pas les fichiers dans le répertoire de copie. 
+Si vous voulez lui demander de le faire, pour que le contenu soit strictement identique, rajoutez --delete.
+Par exemple, si je supprime le fichier italie3.jpg :
+$ rm Images/italie3.jpg
+$ rsync -arv --delete Images/ backups/
+sending incremental file list
+deleting italie3.jpg => supprime mon fichier italie3.jpg
+
+• Sauvegarder les fichiers supprimés
+il est possible de garder de côté les fichiers que l'on a supprimés avec --backup
+Vous pouvez aussi, pour éviter que ça ne fasse désordre, déplacer les fichiers supprimés 
+dans un dossier qui leur est dédié. Rajoutez --backup-dir=/chemin/vers/le/repertoire (chemin absolu)
+$ rsync -arv --delete --backup --backup-dir=/home/mateo21/backups_supprimes Images/ backups/
+exclure un dossier de la sauvegarde (option --exclude)
+
+• Sauvegarder sur un autre ordinateur
+$ rsync -arv --delete --backup --backup-dir=/home/mateo21/fichiers_supprimes Images/ mateo21@IP_du_serveur:mes_backups/
+Si votre serveur SSH écoute sur un autre port que celui par défaut, il faudra rajouter-e "ssh -p port" :
+$ rsync -arv --delete --backup --backup-dir=/home/mateo21/fichiers_supprimes Images/ mateo21@IP_du_serveur:mes_backups/
+-e "ssh -p 12473"
+
+
+XVII) Analyser le réseau et filtrer le trafic avec un pare-feu
+
+XVIII) Compiler un programme depuis les sources
+
+il arrive parfois qu'il soit nécessaire d'installer un programme manuellement car il n'apparaît pas dans apt-get. 
+Dans ce cas, il faut récupérer les sources du programme et les compiler soi-même pour créer un exécutable
+
+◘ Essayez d'abord de trouver un paquet .deb
+
+certains programmes récents, peu connus ou encore en développement ne sont pas disponibles via apt-get
+Quand apt-get ne propose pas le programme que l'on recherche, 
+il est parfois possible de trouver sur le site web du logiciel un paquetage .deb
+équivalent du programme d'installation, spécifique à Debian et à ses distributions dérivées (dont fait
+partie Ubuntu)
+téléchargez-le et double-cliquez dessus
+
+◘ Quand il n'y a pas d'autre solution : la compilation
+
+la compilation permet de transformer le code source d'un programme en un exécutable que l'on peut utiliser
+
+• Compilation d'un programme pas à pas
+installer les outils de compilation
+sudo apt-get install build-essential
+Ex. : compiler un petit programme assez simple : htop
+La première étape consiste à se rendre sur le site web du logiciel htop
+Recherchez sur le site la section « Downloads », puis, sur la page des téléchargements, recherchez les sources
+télécharger les dernières sources du programme
+Vous allez télécharger une archive compressée .tar.gz
+tar zxvf htop-0.8.3.tar.gz
+On peut maintenant se rendre dans le dossier où les fichiers sources ont été décompressés :
+cd htop-0.8.3
+un seul programme nous intéresse : configure. Exécutez-le comme suit :
+./configure
+configure est un programme qui analyse votre ordinateur et 
+qui vérifie si tous les outils nécessaires à la compilation du logiciel que vous souhaitez installer 
+sont bien présents
+Malheureusement, il arrivera fréquemment que configure affiche une erreur en raison d’un manque de dépendances.
+Dans notre cas, il devrait afficher une erreur comme celle-ci :
+checking curses.h usability... no
+checking curses.h presence... no
+checking for curses.h... no
+configure: error: missing headers: curses.h
+il faut installer l'élément manquant, en l'occurrence ces fameux headers de curses.h
+La technique la plus efficace consiste à effectuer une recherche de la ligne d’erreur sur le web,
+accompagnée de préférence du mot-clé « ubuntu »
+« configure: error: missing headers: curses.h ubuntu »
+L'information à chercher est le nom du paquet manquant que vous devez installer.
+En lisant les forums, vous devriez finir par trouver le nom du paquet que vous recherchez : libncurses5-dev.
+En l'occurrence, il suffit d'installer ce paquet via apt-get pour ne plus avoir l'erreur indiquée dans configure.
+sudo apt-get install libncurses5-dev
+(peut-être qu'il faut redémarrer pour que les changements soient pris en compte)
+(pour mon cas, j'ai tapé, comme conseillé : ./configure --disable-unicode)
+Le programme est prêt à être compilé ! 
+Il suffit maintenant de lancer la compilation à l’aide d’une commande toute simple :
+make
+Une fois la compilation terminée, l'exécutable devrait avoir été créé.
+Exécutez la commande suivante :
+sudo make install
+Une fois que cela est fait, le programme est installé !
+Nous pouvons à présent exécuter htop en tapant le nom de la commande :
+htop
+Si vous souhaitez désinstaller le programme,
+il suffit d'exécuter cette commande depuis le répertoire où vous l'avez compilé :
+sudo make uninstall
