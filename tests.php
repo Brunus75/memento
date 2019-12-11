@@ -704,3 +704,34 @@ function largestProduct($array)
 }
 
 echo largestProduct([-10, -10, 5, 2]); // 500 (-10 * -10 * 5)
+
+
+/* ---------- FIND REPEATING NUMBERS ---------- */
+// Find the numbers that are repeating in a vector containing numbers from 1 to 100
+// in ascending order
+
+function number($array)
+{
+    $duplicates = array();
+
+    foreach (array_count_values($array) as $value => $count) { // array of values to count
+        if ($count > 1) {
+            $duplicates[] = $value;
+        }
+    }
+
+    sort($duplicates);
+
+    return implode(',', $duplicates);
+}
+
+echo number([0, 9, 1, 1, 3, 4, 5, 5, 5, 8, 9, 9, 10]); // 1, 5, 9
+
+
+/* ---------- DOUBLED NUMBERS ---------- */
+// Given an array of integers, return a new array with each value doubled
+
+function maps($x)
+{
+  return array_map(function ($n) { return $n * 2; }, $x);
+}

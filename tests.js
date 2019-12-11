@@ -205,3 +205,20 @@ console.log(count(4)); // 6
 console.log(count(20000));
 
 
+/* ---------- REPLACE A STRING ---------- */
+// change string : replace capitals and punctuation (by lowercase et nothing)
+Test.describe("Example tests", _ => {
+  Test.assertEquals(borrow('WhAt! FiCK! DaMn CAke?'), 'whatfickdamncake');
+  Test.assertEquals(borrow('THE big PeOpLE Here!!'), 'thebigpeoplehere');
+  Test.assertEquals(borrow('i AM a TINY BoY!!'), 'iamatinyboy');
+});
+
+function borrow(s) {
+  const word = s.replace(/[!?;:,. ]+/g, '');
+  return word.toLowerCase();
+}
+
+// autre solution 
+function borrow(s) {
+  return s.replace(/[^\w]/g, '').toLowerCase(); // regex : not matching with word characters
+}

@@ -16,15 +16,22 @@ Commits : si fichier github ailleurs que le fichier source, créer deux fichiers
 (en plus du README), et ne jamais copier les fichiers var et vendor
 Créer un .env.dist pour le repository 
 Créer le .htaccess = https://symfony.com/doc/current/setup/web_server_configuration.html#adding-rewrite-rules
-Déploiement sur FileZilla : tout envoyer, avec le var/ vide, le .htaccess créé, .env sur prod, debug=0 et database online, index.php debug =  false
+
+Déploiement SF 4 : faire diriger le site vers le dossier projet/public
+Déploiement sur FileZilla : tout envoyer, avec le var/ vide, le .htaccess créé (dans /public), 
+.env sur prod, debug=0 et database online, index.php debug = false
 Sur FileZilla, clic droit sur var/ => droits d'accès => 777 (pour que Symfony puisse écrire dedans)
 Sur Filezilla, doctrine.yaml enlever ('resolve') de url: '%env(resolve:DATABASE_URL)%'
+Sur FileZila, enlever public/check.php
+Supprimer le contenu de var/ avant de lancer le site
 Mot de passe sans espaces et avec urlencode() si caractères spéciaux !
-Déploiement SF 4 : faire diriger le site vers le dossier projet/public
 
 php bin/console server:run (php bin/console s:r)
 php bin/console cache:clear
 php bin/console make:form
+
+MAJ (pour patch correctif) : composer update
+downgrade un bundle : composer require easycorp/easyadmin-bundle:2.2.2
 
 Considérations
     • Versions : une grosse version tous les 2 ans (S3, S4, S5) qui intègre beaucoup de changements
