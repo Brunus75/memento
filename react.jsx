@@ -206,3 +206,52 @@ export default class SuperComponent {
 
 import GreatComponent from './SuperComponent'
 
+
+IV) Ecrire des fonctions pures 
+
+React permet de définir des composants à l’aide d’une simple fonction.
+On estime que pour la majorité des applications, 
+environ 90 % des composants seront réalisés de cette façon.
+
+function CoolComponent() {
+    return React.createElement('p', {}, 'Youpi So Cool !')
+    // createElement(nom composant, attributs, contenu)
+}
+
+Pour afficher un DOM virtuel React dans une page web, on utilise ReactDOM.render(…)
+ReactDOM.render(
+    React.createElement(CoolComponent),
+    document.getElementById('root')
+)
+
+◘ Un aperçu de JSX
+
+React est généralement utilisé avec la syntaxe JSX, 
+une extension à JavaScript qui ressemble un peu à du XML au sein de JavaScript
+Notre code deviendrait alors:
+function CoolComponent() {
+    return <p>Youpi So Cool !</p>
+}
+
+ReactDOM.render(
+    <CoolComponent />,
+    document.getElementById('root')
+)
+
+◘ Premières props
+
+On peut fournir à un composant des « attributs », appelés props
+Ces props sont définies par un ensemble de clés / valeurs, 
+définies dans un objet, qui est passé en argument à la fonction du composant
+
+function CoolComponent({ adjective = 'Cool' }) {
+    return <p>Youpi So {adjective} !</p>
+}
+
+ReactDOM.render(
+    <div>
+        <CoolComponent adjective="awesome" /> {/* <p>Youpi so awesome</p> */}
+        <CoolComponent /> {/* <p>Youpi so Cool !</p> */}
+    </div>,
+    document.getElementById('root')
+)
