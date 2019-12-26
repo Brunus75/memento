@@ -8,6 +8,15 @@ https://stackoverflow.com/questions/21337859/sendmail-wamp-php
 https://www.grafikart.fr/blog/mail-local-wamp
 Gmail : activer validation en 2 étapes, puis créer un mot de passe pour une application (en l'occurence sendmail)
 Dans sendmail.ini, remplacer auth_password=mdpgmail par auth_password=mdpappligmail
+XDEBUG
+https://xdebug.org/wizard => copier dans le php.ini de WAMP + copier à la fin du php.exe de la CLI
+https://stackoverflow.com/questions/41755590/xdebug-is-not-running-with-wamp
+les erreurs sur PHP venaient du fait que seuls le php.ini de apache était changé
+PHP DEBUG pour VS STUDIO CODE
+lire la notice : les 2 lignes à rajouter sur le php.ini
+message erreur php debug eaddrinuse adress already in use : 9000 => changer les 9000 du launch.json en 9001
+https://www.cloudways.com/blog/php-debug/#configure-xdebug
+wamp => php => date/timezone => Paris
 
 CONSIDERATIONS :
   • Préférer les "guillemets" pour les requêtes SQL

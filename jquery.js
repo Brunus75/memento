@@ -2,7 +2,10 @@
 
 ##### BONNES PRATIQUES ######
 
-# const pour pi (le code de la valeur ne change pas) | let par défaut;
+# const pour pi (le code de la valeur ne change pas)
+# let pour une valeur qui change;
+# Utiliser const par défaut (on ne peut pas lui assigner une nouvelle valeur,
+ou un nouvel objet, mais on peut modifier les propriétés de l'objet !)
 # if (!array_key_exists('...')); // si la clé n'existe pas (if (!true) = if (false))
 # éviter au maximum de faire des calculs, créer au maximum possible du html,
     créer des classes définies plutôt que les créer avec JS;
@@ -765,9 +768,49 @@ il vous faudra mettre le nom de cette propriété entre "guillemets" ou 'apostro
 pour ne pas entrer en conflit avec JavaScript (langage orienté objet qui utilise le concept de class)
 
 
+VIII) AJAX: les requêtes HTTP par l'objet XmlHttpRequest
 
+◘ AJAX: notre problématique
 
+Ojectif : rafraîchir une partie de page web sans recharger la page complète
+Pour mettre en place un appel AJAX sur son site, jQuery ne va plus nous suffir.
+Voilà ce dont on va avoir besoin:
+ - Un langage côté client: nous utiliserons bien sûr JavaScript, avec jQuery.
+ - Un langage côté serveur: nous utiliserons ici le PHP
+Le script PHP appelé fais son travail: envoi de mail, insertion en base de données...
+et surtout, il renvoie un résultat (en JSON) que jQuery va intercepter.
 
+◘ Rappel sur les requêtes HTTP
 
+Pour que le web fonctionne, il faut que le client et le serveur parlent la même langue(protocole).
+Le protocole utilisé sur le World Wide Web est le protocole HTTP.
+La "demande" que le client fait est ce que l'on appelle une « requête HTTP » ; 
+ce que le serveur répond, c'est la « réponse HTTP ». 
 
+GET = obtenir des données;
+POST = envoyer des données;
+
+◘ AJAX par JavaScript
+
+En instanciant un objet à partir de la classe XmlHttpRequest(), 
+vous pouvez envoyer une requête HTTP vers le serveur grâce à cet objet XHR
+
+◘ XmlHttpRequest avec jQuery
+
+$.(document).ready(function () {
+    /*
+     * $.ajax va créer une instance de XmlHttpRequest
+     */
+    $.ajax();
+});
+
+Appel AJAX sur un clic :
+$(document).ready(function () {
+    /*
+     * Ecoutons l'évènement click()
+     */
+    $("#more_com").click(function () {
+        $.ajax();
+    });
+});
 

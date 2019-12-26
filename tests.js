@@ -222,3 +222,32 @@ function borrow(s) {
 function borrow(s) {
   return s.replace(/[^\w]/g, '').toLowerCase(); // regex : not matching with word characters
 }
+
+
+/* ---------- Replace With Alphabet Position ---------- */
+// Replace every letter with its position in the alphabet
+// If anything in the text isn't a letter, ignore it and don't return it.
+// alphabetPosition("The sunset sets at twelve o' clock.")
+// "20 8 5 19 21 14 19 5 20 19 5 20 19 1 20 20 23 5 12 22 5 15 3 12 15 3 11"(as a string)
+
+function alphabetPosition(text) {
+
+  const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+  const letters = text.replace(/[^a-zA-Z]+/g, '').toLowerCase().split('');
+
+  const numbers = letters.map(letter => {
+    return alphabet.indexOf(letter) + 1;
+  });
+
+  return numbers.join(" ");
+}
+
+// solution populaire :
+function alphabetPosition(text) {
+  return text
+    .toUpperCase()
+    .match(/[a-z]/gi)
+    .map((c) => c.charCodeAt() - 64)
+    .join(' ');
+}
