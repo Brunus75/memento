@@ -735,3 +735,39 @@ function maps($x)
 {
   return array_map(function ($n) { return $n * 2; }, $x);
 }
+
+/**
+ * Reverse every other word in the string
+ * 
+ * @description Reverse every other word in a given string, then return the string.
+ * Punctuation marks should be treated as if they are apart of the word
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testFixedTests() {
+      $this->assertEquals("Did ti work?", reverse("Did it work?"));
+      $this->assertEquals("I yllaer hope ti works siht time...", reverse("I really hope it works this time..."));
+      $this->assertEquals("Reverse siht string, !esaelp", reverse("Reverse this string, please!"));
+      $this->assertEquals("", reverse("   "));
+    }
+}
+
+function reverse($str)
+{
+    // check if string is juste white space
+    if (ctype_space($str)) {
+        return '';
+    }
+
+    $array = explode(" ", $str);
+    // &+$value to add new reference to value
+    foreach ($array as $key => &$value) {
+        // if key is odd
+        if ($key % 2 == 1) {
+            $value = strrev($value);
+        }
+    }
+
+    return implode(" ", $array);
+}
