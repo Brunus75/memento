@@ -1378,3 +1378,266 @@ componentWillMount() // endroit adapté pour inscrire des timers (ex. setInterva
 render()
 componentDidMount() // le composant a été retranscrit pour la première fois dans le DOM
 componentWillReceiveProps()
+
+
+XVI) Simplifiez votre gestion des valeurs et événements
+
+◘ Valeur d'un champ
+
+En HTML, la valeur réelle d’un champ dépend largement du type de balise utilisée.
+Avec React, on utilise simplement la prop "value=", quel que soit le type de composant.
+Pour valeurs multiples, ex.  <select multiple> et ses enfants <option>, 
+vous passerez tout simplement un tableau de valeurs à la prop
+Pour une valeur par défaut, on utilise la prop "defaultValue="
+
+◘ Détection de changement d’un champ
+
+React normalise le comportement de changement via la prop "onChange", 
+qui est certifiée comme étant immédiate "(« live »)", quel que soit le type de champ.
+
+
+XVII) Validez et formatez à la volée avec les champs contrôlés
+
+◘ Pourquoi les champs contrôlés ?
+
+- effectuer une requête API
+- contrôler le plus tôt possible la validité de la valeur saisie dans les champs
+- pour l’expérience "utilisateur (UX)", de formater à la volée les données saisies 
+lorsque la nature du champ s’y prête "(numéro de téléphone, de carte bancaire, etc.)"
+
+(!) les valeurs des champs sont stockées dans l’état local de notre composant
+
+◘ Comment savoir si un champ est contrôlé ?
+
+Un champ contrôlé est doté d’une prop "value=". 
+De plus, il est généralement doté d’une prop "onChange=" 
+qui amène vers un gestionnaire assurant le contrôle et le formatage de la saisie, 
+puis son stockage dans l’état local.
+Pour les cases à cocher et boutons radio, 
+le fait de définir "checked=" place également le champ en mode contrôlé, 
+même en l’absence de "value="
+
+◘ Deux exemples classiques
+
+• Numéro de téléphone français "(5 × 2 chiffres)"
+
+  class FrenchPhoneField extends Component {
+    static defaultProps = {
+      name: 'tel',
+      placeholder: '0x xx xx xx xx',
+      required: false,
+    }
+
+    static propTypes = {
+      name: PropTypes.string.isRequired,
+      placeholder: PropTypes.string,
+      required: PropTypes.bool,
+    }
+
+    constructor(props) {
+      super(props)
+      this.state = { value: '' }
+    }
+
+    // This method is declared using an arrow function initializer solely
+    // to guarantee its binding, as we cannot use decorators just yet.
+    handleChange = ({ target: { value } }) => {
+      value = value
+        // Remove all non-digits, turn initial 33 into nothing
+        .replace(/\D+/, '')
+        .replace(/^330?/, '0')
+        // Stick to first 10, ignore later digits
+        .slice(0, 10)
+        // Add a space after any 2-digit group followed by more digits
+        .replace(/(\d{2})(?=\d)/g, '$1 ')
+      this.setState({ value })
+    }
+
+    render() {
+      const { name, placeholder, required } = this.props
+      return (
+        <input
+          autocomplete="tel"
+          name={name}
+          onChange={this.handleChange}
+          placeholder={placeholder}
+          required={required}
+          type="tel"
+          value={this.state.value}
+        />
+      )
+    }
+  }
+
+• Numéro de carte "bancaire (4 × 4 chiffres)"
+
+  class CreditCardField extends Component {
+    static defaultProps = {
+      name: 'cc-number',
+      placeholder: 'xxxx xxxx xxxx xxxx',
+      required: false,
+    }
+
+    static propTypes = {
+      name: PropTypes.string.isRequired,
+      placeholder: PropTypes.string,
+      required: PropTypes.bool,
+    }
+
+    constructor(props) {
+      super(props)
+      this.state = { value: '' }
+    }
+
+    // This method is declared using an arrow function initializer solely
+    // to guarantee its binding, as we cannot use decorators just yet.
+    handleChange = ({ target: { value } }) => {
+      value = value
+        // Remove all non-digits
+        .replace(/\D+/, '')
+        // Stick to first 16, ignore later digits
+        .slice(0, 16)
+        // Add a space after any 4-digit group followed by more digits
+        .replace(/(\d{4})(?=\d)/g, '$1 ')
+      this.setState({ value })
+    }
+
+    render() {
+      const { name, placeholder, required } = this.props
+      return (
+        <input
+          autocomplete="cc-number"
+          name={name}
+          onChange={this.handleChange}
+          placeholder={placeholder}
+          required={required}
+          type="text"
+          value={this.state.value}
+        />
+      )
+    }
+  }
+
+◘ Mise en application
+
+• Mettre au point la saisie du nom
+
+Afin de ne pas avoir à gagner une partie à chaque fois qu’on recharge la page 
+pour mettre au point le composant, modifions le render() de  App.js comme suit :
+<HighScoreInput guesses={guesses} />
+{won && <HallOfFame entries={FAKE_HOF} />}
+
+HighScoreInput.js
+Commençons par doter <HighScoreInput /> 
+d’un état local pour la valeur de nom saisie ":"
+class HighScoreInput extends Component {
+  state = { winner: '' };
+
+  render() {
+    return (
+      // …
+      <input autoComplete="given-name" type="text" value={this.state.winner} />
+      // …
+    )
+  }
+}
+À ce stade, le champ est en lecture seule. 
+Ajoutons un gestionnaire de saisie qui va le rendre éditable. 
+L’idée ici est de forcer une saisie majuscule
+// Arrow fx for binding
+handleWinnerUpdate = (event) => {
+  this.setState({ winner: event.target.value.toUpperCase() })
+}
+
+render() {
+  return (
+    // …
+    <input
+      autoComplete="given-name"
+      type="text"
+      onChange={this.handleWinnerUpdate}
+      value={this.state.winner}
+    />
+    // …
+  )
+}
+
+• Intercepter l’envoi du formulaire
+
+HighScoreInput.js 
+render() {
+  return (
+    <form className="highScoreInput" onSubmit={this.persistWinner}>
+    …
+  )
+}
+
+puis, un peu plus haut dans la classe :
+class HighScoreInput extends Component {
+// ...
+// Arrow fx for binding
+persistWinner = (event) => {
+  event.preventDefault()
+  const newEntry = { guesses: this.props.guesses, player: this.state.winner }
+  saveHOFEntry(newEntry, this.props.onStored)
+}
+// ...
+}
+
+La fonction saveHOFEntry() est fournie par le  HallOfFame.js 
+Elle attend une fonction de rappel en second argument, 
+qu’elle appellera avec le tableau d’honneur à jour une fois celui-ci ajusté 
+et persisté dans le navigateur. 
+Ce n’est pas le rôle de la saisie de score de réagir à ça. 
+Nous allons donc déclarer une prop onStored de type fonction, 
+que <App /> nous fournira :
+HighScoreInput.propTypes = {
+  guesses: PropTypes.number.isRequired,
+  onStored: PropTypes.func.isRequired,
+}
+(à mettre en bas du fichier)
+
+• Afficher intelligemment la saisie et le tableau d’honneur
+
+App.js 
+Commençons par ajuster l’initialisation de l’état en haut de classe :
+state = {
+  cards: this.generateCards(),
+  currentPair: [],
+  guesses: 0,
+  hallOfFame: null,
+  matchedCardIndices: [],
+}
+
+Ajoutons ensuite une méthode qui va recevoir un tableau d’honneur 
+et qui en ajustera l’état avec : {
+// Arrow fx for binding
+displayHallOfFame = (hallOfFame) => {
+  this.setState({ hallOfFame })
+}
+}
+
+Au début du render(), 
+allons chercher hallOfFame, également présent dans l’état : {
+render() {
+  const { cards, guesses, hallOfFame, matchedCardIndices } = this.state
+  // …
+}
+
+Enfin, revoyons complètement la fin de grappe JSX, 
+en remplaçant le champ de saisie et la condition simple basée sur won par ceci :
+{
+  won &&
+    (hallOfFame ? (
+      <HallOfFame entries={hallOfFame} />
+    ) : (
+      <HighScoreInput guesses={guesses} onStored={this.displayHallOfFame} />
+    ))
+}
+
+Pour tester ça rapidement, vous pouvez ajuster temporairement la définition de won, 
+pour limiter à quelques paires réussies par exemple :
+{
+  // TEMPORAIRE
+  const won = matchedCardIndices.length === 4 // cards.length
+}
