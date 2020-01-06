@@ -701,6 +701,8 @@ IX) Configurez vos composants avec les props
 ◘ Composants parents et enfants
 
 composant enfant = tout composant défini dans le render() du composant parent
+le composant qui fournit le render() est le parent, 
+tout composant figurant dans ce render() est un enfant
 
 ◘ Props « techniques »
 
@@ -1568,11 +1570,12 @@ HighScoreInput.js
 render() {
   return (
     <form className="highScoreInput" onSubmit={this.persistWinner}>
-    …
+    //
+    </form>…
   )
 }
 
-puis, un peu plus haut dans la classe :
+puis, un peu plus haut dans la classe ":"
 class HighScoreInput extends Component {
 // ...
 // Arrow fx for binding
@@ -1590,7 +1593,7 @@ qu’elle appellera avec le tableau d’honneur à jour une fois celui-ci ajust�
 et persisté dans le navigateur. 
 Ce n’est pas le rôle de la saisie de score de réagir à ça. 
 Nous allons donc déclarer une prop onStored de type fonction, 
-que <App /> nous fournira :
+que <App /> nous fournira ":"
 HighScoreInput.propTypes = {
   guesses: PropTypes.number.isRequired,
   onStored: PropTypes.func.isRequired,
@@ -1600,7 +1603,7 @@ HighScoreInput.propTypes = {
 • Afficher intelligemment la saisie et le tableau d’honneur
 
 App.js 
-Commençons par ajuster l’initialisation de l’état en haut de classe :
+Commençons par ajuster l’initialisation de l’état en haut de classe ":"
 state = {
   cards: this.generateCards(),
   currentPair: [],
@@ -1610,7 +1613,7 @@ state = {
 }
 
 Ajoutons ensuite une méthode qui va recevoir un tableau d’honneur 
-et qui en ajustera l’état avec : {
+et qui en ajustera l’état avec ":" {
 // Arrow fx for binding
 displayHallOfFame = (hallOfFame) => {
   this.setState({ hallOfFame })
@@ -1618,7 +1621,7 @@ displayHallOfFame = (hallOfFame) => {
 }
 
 Au début du render(), 
-allons chercher hallOfFame, également présent dans l’état : {
+allons chercher hallOfFame, également présent dans l’état ":" {
 render() {
   const { cards, guesses, hallOfFame, matchedCardIndices } = this.state
   // …
@@ -1640,4 +1643,461 @@ pour limiter à quelques paires réussies par exemple :
 {
   // TEMPORAIRE
   const won = matchedCardIndices.length === 4 // cards.length
+}
+
+
+XVIII) Déléguez des traitements avec les champs non contrôlés
+
+pratiques lorsque l’on souhaite récupérer une valeur de champ 
+sans contraindre sa saisie ni son formatage
+
+◘ Valeur par défaut
+
+on peut pour cela recourir à la prop "defaultValue="  plutôt que  "value=".
+Pour les cases à cocher et les boutons radio, on a dans le même esprit
+"defaultChecked="  pour l’état coché ou non.
+
+◘ Utiliser une ref
+
+Le moyen le plus fiable pour récupérer une référence sur le champ 
+dont on veut obtenir la valeur le moment venu, 
+consiste à utiliser une prop "ref=" sur le champ ":"
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.input = React.createRef(); // React 16.3
+  }
+
+  handleSubmit(event) {
+    alert('Un nom a été envoyé : ' + this.input.current.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Nom :
+          <input type="text" ref={this.input} />
+        </label>
+        <input type="submit" value="Envoyer" />
+      </form>
+    );
+  }
+}
+
+APPRONDIR LES FORMULAIRES :
+{
+  "forms": https://fr.reactjs.org/docs/forms.html,
+  "uncontrolled-forms": https://fr.reactjs.org/docs/uncontrolled-components.html,
+  "Awesome React": {
+    "forms": https://github.com/enaqx/awesome-react#forms,
+    "saisies auto-complétées": https://github.com/enaqx/awesome-react#autocomplete
+  },
+  "Awesome React Components": https://github.com/brillout/awesome-react-components#form-components
+} 
+
+
+XIX) LES TEST AUTOMATISÉS
+
+◘ `Test-first (TDD) ou Test-after ?`
+
+On aura donc tendance à limiter le "test-first" au code métier 
+(les fonctions qui font évoluer l’état applicatif et les fonctions utilitaires), 
+et on écrira plutôt les tests de composants immédiatement 
+après avoir finalisé l’aspect de ceux-ci "(test-after)", 
+pour éviter de ré-écrire ces tests un paquet de fois.
+
+◘ Les briques d’un outillage de test
+
+• Assertions : brique élémentaire de nos tests 
+morceau de code qui vérifie qu’une condition est bien remplie
+function assertWeRunOnMondays() {
+  const todaysWeekDay = new Date().getDay()
+  if (todaysWeekDay !== 1) {
+    throw new AssertionError('We are supposed to only run on Mondays')
+  }
+}
+
+• Tests et suites
+test = petit bloc de code qui pose une question précise et en vérifie la réponse
+it('should use an empty array for its default state', () => {
+  const initialState = undefined
+  const expectedState = []
+
+  expect(reducer(initialState, {})).to.deep.equal(expectedState)
+})
+
+Les tests sont généralement regroupés en suites de tests, 
+généralement une suite par fichier. 
+Ces fichiers contiennent en général au moins un bloc describe() 
+qui définit le contexte de la suite ; 
+on peut imbriquer les  describe() pour affiner le contexte
+describe('The entries controller', () => {
+  describe('when unauthenticated', () => {
+    it('should redirect any access to the homepage', { … })
+  })
+
+  describe('when authenticated', () => {
+    it('should allow the listing of entries', { … })
+
+    it('should let users filter the listing', { … })
+
+    it('should allow the creation of a new entry', { … })
+
+    // …
+  })
+})
+
+• Harnais = programme chef d’orchestre des tests
+Il permet de trouver les fichiers de test, fournir un rapport, etc. 
+les plus populaires = Mocha, Jest et Jasmine. Create React App utilise Jest
+
+• `Intégration continue`
+va réagir à tout envoi de code sur votre serveur de versions
+Travis CI, Jenkins, GitLab
+
+
+XX) Premier test avec Jest 
+
+Jest est intégré de base avec les applications générées par Create React App
+Le fichier src/App.test.js contient une suite de test basique, 
+ce qu’on appelle un smoke test, 
+qui vérifie simplement que notre composant <App/> arrive à réaliser son rendu sans problème. 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+
+it('renders without crashing', () => {
+  const div = document.createElement('div')
+  ReactDOM.render(<App />, div)
+})
+Puis, dans le terminal : `npm test 
+=> le code est désormais suivi en temps réel`
+il surveille vos fichiers et relance les tests appropriés si besoin. 
+Pour arrêter Jest => appuyer sur q (quitter) ou taper Ctrl+C.
+
+Jest "(de React)" cherche dans le dossier "src/" à la recherche de fichiers 
+se terminant par spec.js ou test.js "(+ .mjs et .jsx)", précédé d’un trait d’union (-) 
+ou d’un point (.)
+
+Jest fournit une fonction expect() qui propose toute une série d’assertions
+=>  https://jestjs.io/docs/en/expect.html#content
+
+
+XXI) (OPTIONNEL) Gagnez en expressivité avec Chai
+
+◘ Utiliser les assertions de Chai
+
+au lieu d’utiliser le  expect()  fourni de base par Jest, 
+on va simplement chercher celui de Chai en début de fichier de test :
+import { expect } from 'chai'
+
+◘ Comparaison rapide des syntaxes
+
+Jest : expect(x).toContain(42),
+expect(f).toHaveBeenCalledWith('yo'),
+expect(obj).toHaveProperty('items')
+expect(obj.items).toHaveLength(42)
+Chai : expect(x).to.contain(42),
+expect(f).to.have.been.calledWith('yo'),
+expect(obj).to.have.property('items').with.length(42)
+
+◘ Installation 
+
+`npm i --save-dev chai dirty-chai`
+`npm i dirty-chai sur le site off`
+
+◘ Attention aux « dirty checks »
+
+expect(obj.name).to.exit // Oops, il manque le "s" : pas d'erreur dans terminal
+expect(obj.state).to.be.Null // Oops, N majuscule : pas d'erreur dans terminal
+Solution : dirty chai
+npm install --save-dev dirty-chai
+
+src/setupTests.js
+const chai = require('chai');
+const dirtyChai = require('dirty-chai');
+
+chai.use(dirtyChai);
+
+◘ Récupérer les jolis diffs de Jest en cas d'inégalité structurelle
+
+npm install --save-dev chai-jest-diff
+`npm i chai-jest-diff sur le site off`
+
+src/setupTests.js
+const chai = require('chai');
+const dirtyChai = require('dirty-chai');
+const chaiJestDiff = require('chai-jest-diff');
+
+chai.use(dirtyChai);
+chai.use(chaiJestDiff.default());
+
+
+XXII) Facilitez-vous l'écriture des tests avec Enzyme
+
+Le renderer de test de React est très inférieur à l’outil Enzyme de Airbnb, 
+lequel est d’ailleurs officiellement recommandé par Create React App
+
+◘ Mise en application
+
+npm install --save-dev enzyme enzyme-adapter-react-16 react-test-renderer chai-enzyme
+setupTests.js 
+-------------
+import Adapter from 'enzyme-adapter-react-16';
+import { configure as configureEnzyme } from 'enzyme';
+import createChaiEnzyme from 'chai-enzyme';
+const chai = require('chai');
+const dirtyChai = require('dirty-chai');
+const chaiJestDiff = require('chai-jest-diff');
+
+chai.use(dirtyChai);
+chai.use(chaiJestDiff.default());
+chai.use(createChaiEnzyme());
+
+configureEnzyme({ adapter: new Adapter() });
+
+• Reformuler notre smoke test
+App.test.js 
+import { expect } from 'chai'
+import React from 'react'
+import { shallow } from 'enzyme' // remplace le renderer React-DOM
+
+import App from './App'
+
+describe('<App />', () => {
+  it('renders without crashing', () => {
+    const wrapper = shallow(<App />)
+  })
+})
+On recourt ici au shallow renderer d’Enzyme, 
+qui utilise le render() du composant, 
+mais sans descendre dans les render() de ses composants fils : 
+c’est une approche idéale pour les tests unitaires, et de loin la plus populaire.
+
+• Ajouter un test de présence de composant dans le render()
+Ex: détecter la présence, quelque part dans la grappe, 
+d’un autre composant doté de props spécifiques, grâce à contain() :
+import GuessCount from './GuessCount' // ++ for testing GuessCount component
+…
+describe('<App />', () => {
+  …
+  it('contains a zero-guess counter', () => { // ++
+    const wrapper = shallow(<App />)
+
+    expect(wrapper).to.contain(<GuessCount guesses={0} />)
+  })
+})
+
+• Encore un exemple
+On peut aussi aller « chercher » des parties de la grappe pour leur poser des questions spécifiques, 
+ou simplement compter les occurrences. 
+Par exemple, notre plateau est censé comporter 36 cartes, 6 × 6 :
+it('has 36 cards', () => {
+  const wrapper = shallow(<App />)
+  expect(wrapper.find('Card')).to.have.length(36)
+})
+
+La doc : https://airbnb.io/enzyme/docs/api/shallow.html
+des assertions comme prop() ou text() sont extrêmement utiles
+
+
+XXIII) Simulez des événements
+
+Rappel à tester : Notre composant <Card /> propose une prop onClick 
+qu’il est effectivement censé appeler, 
+avec sa position dans le tableau (sa prop index) en argument, 
+lorsqu’on clique sur son contenu. 
+
+◘ Avec Jest directement 
+
+Jest propose de base des spies, 
+des fonctions simulées qui enregistrent le détail de tous les appels 
+qui leurs sont faits, avec jest.fn(). 
+Il fournit aussi, sur son expect() natif, 
+des assertions de type toHaveBeenCalledWith()
+----
+Card.test.js 
+----
+import React from 'react'
+import { shallow } from 'enzyme'
+
+describe('<Card/>', () => {
+  it('should trigger its `onClick` prop when clicked', () => {
+    const onClick = jest.fn()
+    const wrapper = shallow(
+      <Card card="😁" feedback="hidden" index={0} onClick={onClick} />
+    )
+
+    wrapper.simulate('click') // simule un clic
+    expect(onClick).toHaveBeenCalledWith(0)
+  })
+})
+
+◘ Avec Sinon
+
+Son API est plus riche et plus vaste que celle de Jest,
+notamment l’isolation de code (spies, stubs, mocks, simulation du temps ou du réseau)
+Installation, avec son plugin pour Chai :
+npm install --save-dev sinon sinon-chai
+-----
+setupTest.js
+-----
+import sinonChai from 'sinon-chai' // ++
+
+chai.use(sinonChai); // ++
+
+-----
+Card.test.js 
+-----
+import { expect } from 'chai'
+import React from 'react'
+import { shallow } from 'enzyme'
+import sinon from 'sinon' // ++
+
+import Card from './Card'
+
+describe('<Card/>', () => {
+  it('should trigger its `onClick` prop when clicked', () => {
+    const onClick = sinon.spy() // ++
+    const wrapper = shallow(
+      <Card card="😁" feedback="hidden" index={0} onClick={onClick} />
+    )
+
+    wrapper.simulate('click')
+    expect(onClick).to.have.been.calledWith(0) // ++
+  })
+})
+
+
+XXIV) Mettre en place un filet de sécurité avec les Snapshots
+
+snapshots = « photo » intégrale du résultat d’un morceau de code, 
+en partant du principe que ce code marche correctement à ce moment-là, 
+pour ensuite, lors des prochaines passes de test, 
+reprendre une photo et comparer à celle de référence.
+snapshots = filet de secours
+snapshots = marchent avec du contenu JSON
+
+◘ Configuration
+
+Si nous utilisions le expect() natif de Jest, 
+il nous suffirait de faire quelque chose du genre expect(wrapper).toMatchSnapshot()
+Mais nos enrobages sont issus d’Enzyme, 
+dont il va donc falloir configurer la sérialisation ; 
+et d’autre part, nous utilisons le expect() de Chai.
+npm install --save-dev chai-jest-snapshot enzyme-to-json
+-----
+src/setupTests.js
+-----
+import chaiJestSnapshot from 'chai-jest-snapshot' // ++
+import enzymeToJSON from 'enzyme-to-json/serializer' // ++
+
+…
+
+chai
+    .use(dirtyChai)
+    .use(chaiJestDiff.default())
+    .use(chaiJestSnapshot) // ++
+    .use(createChaiEnzyme())
+    .use(sinonChai);
+
+expect.addSnapshotSerializer(enzymeToJSON) // ++
+
+◘ Un premier snapshot
+
+Card.test.js 
+------------
+it('should match its reference snapshot', () => {
+  const onClick = sinon.spy()
+  const wrapper = shallow(
+    <Card card="😁" feedback="hidden" index={0} onClick={onClick} />
+  )
+
+  expect(wrapper).to.matchSnapshot()
+})
+
+réponse Console :
+un snapshot a été écrit sur disque + un snapshot a été ajouté. 
+le principe repose sur l’idée qu’au premier snapshot, 
+le sujet testé fonctionne et fait référence.
+
+◘ Aspect du snapshot
+
+créés dans un sous-dossier __snapshots__ de celui contenant la suite de test concernée
+src/__snapshots__/Card.test.js.snap
+// Jest Snapshot v1, https://goo.gl/fbAQLP = 1ère version, celle de base
+
+◘ Un deuxième snapshot… et un souci
+
+Dans App.test.js, ajoutons le bloc suivant :
+it('should match its reference snapshot', () => {
+  const wrapper = shallow(<App />)
+
+  expect(wrapper).to.matchSnapshot()
+})
+À la sauvegarde, Jest va produire un nouveau snapshot.
+Toutefois, si on relance les tests (par exemple avec Entrée), 
+il semble que toutes les cartes aient changé de symbole (logique). 
+
+• Solution : s’assurer d’une liste stable de cartes
+
+Pendant le snapshot, nous allons remplacer l’implémentation de generateCards() 
+dans le composant <App /> par la nôtre, 
+qui renverra toujours la même chose. 
+Ainsi, pas de soucis pour la cohérence des `snapshots !`
+On va pour cela recourir à Sinon.js et la méthode sinon.stub(). 
+Comme le rendu par shallow() et les assertions sont synchrones, 
+un simple try…finally… suffira à s’assurer de restaurer le comportement normal de generateCards()  
+en temps et en heure :
+------
+App.js 
+------
+export const SYMBOLS = '😀🎉💖🎩🐶🐱🦄🐬🌍🌛🌞💫🍎🍌🍓🍐🍟🍿' // ++ export 
+------
+App.test.js
+import sinon from 'sinon'
+
+import App, { SYMBOLS } from './App'
+
+…
+
+it('should match its reference snapshot', () => {
+  const mock = sinon
+    .stub(App.prototype, 'generateCards')
+    .returns([...SYMBOLS.repeat(2)])
+  try {
+    const wrapper = shallow(<App />)
+
+    expect(wrapper).to.matchSnapshot()
+  } finally {
+    mock.restore()
+  }
+})
+
+(!) Lorsqu’on va relancer les tests en sauvant le fichier, 
+on va à nouveau avoir un snapshot incohérent, 
+puisque celui qui fait référence était aléatoire ; 
+on va donc entériner le nouveau snapshot en tapant u (update)
+
+
+XXV) Auditez la couverture de vos tests
+
+npm test -- --coverage
+// --  seul pour indiquer que le reste de la ligne de commande n’est pas à considérer 
+// comme des options pour la commande principale (npm, donc), mais à passer tels quels
+Ouvrir coverage/lcov-report/index.html : tableau interactif et très détaillé de couverture
+
+
+XXVI) Explorez la documentation pour aller plus loin
+
+{
+  Jest: 'https://jestjs.io/',
+  Chai: 'https://www.chaijs.com/',
+  Enzyme: 'https://airbnb.io/enzyme/',
+  'Chai-Enzyme': 'https://github.com/producthunt/chai-enzyme#readme',
+  Sinon: 'https://sinonjs.org/',
+  'Sinon-Chai': 'https://github.com/domenic/sinon-chai#readme'
 }
