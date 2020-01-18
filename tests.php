@@ -771,3 +771,190 @@ function reverse($str)
 
     return implode(" ", $array);
 }
+
+/**
+ * Décrire un paquet de cartes
+ * 
+ * @description Un paquet de cartes, les décrire une à une
+ * chaque carte possède plusieurs symboles différents
+ * chaque carte doit être unique
+ * - Les cartes [A, B, E, H] et [C, D, F, J] sont des cartes valides.
+ * - La carte [B, B, F, G] est invalide (car elle comporte 2 fois ‘B’)
+ * - Les cartes [A, B, E, H] et [H, E, B, A] comptent pour une seule et même carte 
+ * */
+
+/* Si l'argument reçu est un tableau de tableaux : */
+
+function analyseCards($array)
+{
+    $validCards = array();
+
+    foreach ($array as $card) {
+        // find duplicates letters
+        $duplicates = array();
+        foreach (array_count_values($card) as $value => $count) {
+            if ($count > 1) {
+                $duplicates[] = $card;
+            }
+        }
+
+        if ($duplicates) {
+            echo "La carte [" . implode(", ", $card) . "] est invalide. \n";
+        } else {
+            $originalCard = $card;
+            sort($card);
+            if (in_array($card, $validCards)) {
+                echo "La carte [" . implode(", ", $originalCard) . "] existe déjà ! \n";
+            } else {
+                echo "La carte [" . implode(", ", $originalCard) . "] est valide. \n";
+                $validCards[] = $card;
+            }
+        }
+    }
+}
+
+analyseCards([
+    ["A", "B", "E", "H"], ["C", "D", "F", "J"], ["B", "B", "F", "G"],
+    ["H", "E", "B", "A"]
+]);
+// La carte [A, B, E, H] est valide. 
+// La carte [C, D, F, J] est valide. 
+// La carte [B, B, F, G] est invalide. 
+// La carte [H, E, B, A] existe déjà !
+
+
+/* Si l'argument reçu est une string  : */
+
+function analyseCards($list)
+{
+    // list divided by groups of symbols
+    $groups = explode("], [", $list);
+
+    $cards = array();
+
+    // groups of symbols => arrays of symbols
+    foreach ($groups as $value) {
+        $card = preg_replace('/[ \[\] ]+/', '', $value);
+        $cards[] = explode(",", $card);
+    }
+
+    $validCards = array();
+
+    foreach ($cards as $card) {
+        // find duplicates letters
+        $duplicates = array();
+        foreach (array_count_values($card) as $value => $count) {
+            if ($count > 1) {
+                $duplicates[] = $card;
+            }
+        }
+
+        if ($duplicates) {
+            echo "La carte [" . implode(", ", $card) . "] est invalide. \n";
+        } else {
+            $originalCard = $card;
+            sort($card);
+            if (in_array($card, $validCards)) {
+                echo "La carte [" . implode(", ", $originalCard) . "] existe déjà ! \n";
+            } else {
+                echo "La carte [" . implode(", ", $originalCard) . "] est valide. \n";
+                $validCards[] = $card;
+            }
+        }
+    }
+}
+
+analyseCards("[A, B, E, H], [C, D, F, J], [B, B, F, G], [H, E, B, A]");
+// La carte [A, B, E, H] est valide. 
+// La carte [C, D, F, J] est valide. 
+// La carte [B, B, F, G] est invalide. 
+// La carte [H, E, B, A] existe déjà !
+
+
+/**
+ * Comparer le poids de 2 String
+ * 
+ * @description 2 string, remplis de ! ou ?
+ * ! = 2, ? = 3 / Lequel des 2 string pèse le plus lourd ?
+ */
+
+class BalanceTest extends TestCase
+{
+    public function testExamples()
+    {
+        $this->assertEquals("Right", balance("!!", "??"));
+        $this->assertEquals("Left", balance("!??", "?!!"));
+        $this->assertEquals("Left", balance("!?!!", "?!?"));
+        $this->assertEquals("Balance", balance("!!???!????", "??!!?!!!!!!!"));
+    }
+}
+
+function balance(string $l, string $r): string
+{
+    $arrayL = str_split($l);
+    $arrayR = str_split($r);
+
+    $arrayLeft = array_map(function ($letter) {
+        if ($letter === "!") {
+            return $letter = 2;
+        } else {
+            return $letter = 3;
+        }
+    }, $arrayL);
+
+    $arrayRight = array_map(function ($letter) {
+        if ($letter === "!") {
+            return $letter = 2;
+        } else {
+            return $letter = 3;
+        }
+    }, $arrayR);
+
+    $sumLeft = array_sum($arrayLeft);
+    $sumRight = array_sum($arrayRight);
+
+    if ($sumLeft > $sumRight) {
+        return "Left";
+    } elseif ($sumLeft < $sumRight) {
+        return "Right";
+    } else {
+        return "Balance";
+    }
+}
+
+// solution populaire
+function balance(string $l, string $r): string
+{
+    $a = substr_count($l, "!") * 2 + substr_count($l, "?") * 3;
+    $b = substr_count($r, "!") * 2 + substr_count($r, "?") * 3;
+    if ($a == $b) return "Balance";
+    elseif ($a < $b) return "Right";
+    else return "Left";
+}
+
+// solution 2
+function balance(string $l, string $r): string
+{
+    $l = array_sum(str_split(str_replace(['!', '?'], ['2,', '3,'], $l)));
+    $r = array_sum(str_split(str_replace(['!', '?'], ['2,', '3,'], $r)));
+    return $l == $r ? 'Balance' : ($l > $r ? 'Left' : 'Right');
+}
+
+/**
+ * Renvoyer un tableau de carrés (triés)
+ * 
+ * @description Un tableau d'entiers
+ * retourner un tableau de carrés, triés par odre croissant
+ */
+
+function numbersToSquares($array)
+{
+    $arraySquare = array_map(function ($n) {
+        return $n * $n;
+    }, $array);
+    // $arraySquare = array_map(function($n) { return $n * $n; }, $array);
+    sort($arraySquare);
+    return '[' . implode(', ', $arraySquare) . ']';
+}
+
+echo numbersToSquares([-9, -2, 0, 2, 3]); // [0, 4, 4, 9, 81]

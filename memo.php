@@ -19,57 +19,64 @@ https://www.cloudways.com/blog/php-debug/#configure-xdebug
 wamp => php => date/timezone => Paris
 
 CONSIDERATIONS :
-  • Préférer les "guillemets" pour les requêtes SQL
-  • "UPDATE daily_count SET count = 0 WHERE user_id = $id" pour une requête sans erreur, malgré un champ qui s'appelle count
-	• Page d'inscription compte le formulaire + la partie SQL (sur la même page)
-	• !empty($_POST[element]) pour éviter les erreurs de type variable indéfinie
-	• Limiter le PHP dans le HTML : tout ce qui ne s'affiche pas ne vas pas dans le HTML
-	• Pour echo une seul message, utiliser <?= message ?>
-	• Utiliser var_dump($_POST); // console log de POST
-	// die(); arrête le code de la console
-	• Plusieurs variables dans le header : header('Location: update_article.php?id=' . $_SESSION['id_article'] . '&amp;$error=1');
-	• exit(); arrête le code suivant (vient après un header('Location') par ex.)
-	• Le fichier ne compte que du PHP :  on ne ferme pas la balise PHP ?>
-	• require(), à l'inverse de include(), fait planter le script si le fichier n'est pas trouvé
-	• nl2br — Insère un retour à la ligne HTML à chaque nouvelle ligne
-	• fetch(PDO::FETCH_ASSOC) = retrouve un tableau de valeur, avec, contrairement à fetch, SEULEMENT le NOM de la colonne et la valeur associée (et non, en plus, le NUMERO de la colonne et la valeur associée)
-  • SQL : moteur de stockage à préférer : InnoDB (peut accepter les FOREIGN KEYS)
-  • The keyword elseif SHOULD be used instead of else if so that all control keywords look like single words.
-    if ($a === $b) {
-        bar();
-    } elseif ($a > $b) {
-        $foo->bar($arg1);
-    } else {
-        BazClass::bar($arg2, $arg3);
-    }
-  • abstract and final MUST be declared before the visibility; static MUST be declared after the visibility
-    final public static function bar()
-    {
-        // method body
-    }
-  • if (!array_key_exists(...)) // si la clé n'existe pas (if (!true) = if (false))
-  • htmlspecialchars_decode("affiche le texte protégé comme il doit s'afficher")
-  • PHP orienté objet = tous les chemins cible sont selon l'emplacement de index.php
-  • BDD : username plutôt que pseudo
-  • plusieurs scripts (penser orienté objet) :
-      $script = '
-          <script1 src="public/js/contact.js"></script>
-          <script2></script>
-      ';
-  • mail() = charset (oui) & boundary (frontière, sépare les parties du mail)
-  • Dans une classe, on appelle les variables attributs (ou propriétés)
-  • Organisation : travailler avec UML
-  • Utilitaire : Laragon (englobe les principaux composants pour un projet PHP)
-  • Ordre d'apparition des use : ordre alphabétique (PCR1)
 
-VISUAL STUDIO :
-  • Ctrl + D : sélectionner des groupes de mots semblables
-  • Ctrl + alt + i : récupérer le namespace de la classe sélectionnée
-  • PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
-  • Extensions : Auto Close Tag, Beautify, canvas-snippets, HTML CSS Support,
-  Javascript (ES6) code snippets, jQuery Code snippets, PHP Getters & Setters,
-  PHP Intelephense, PHP Namespace Resolver, PowerShell,
-  Sublime Text Keymap and Settings Importer, Twig Language
+## SQL ##
+• nom de table, colonne = singulier
+• convention de naming = PascalCase
+• exporter seulement le squelette de la BDD = exporter => structure
+• Préférer les "guillemets" pour les requêtes SQL
+• "UPDATE daily_count SET count = 0 WHERE user_id = $id" pour une requête sans erreur, malgré un champ qui s'appelle count
+• Page d'inscription compte le formulaire + la partie SQL (sur la même page)
+• SQL : moteur de stockage à préférer : InnoDB (peut accepter les FOREIGN KEYS)
+• BDD : username plutôt que pseudo
+
+## PHP ##
+• !empty($_POST[element]) pour éviter les erreurs de type variable indéfinie
+• Limiter le PHP dans le HTML : tout ce qui ne s'affiche pas ne vas pas dans le HTML
+• Pour echo une seul message, utiliser <?= message ?>
+• Utiliser var_dump($_POST); // console log de POST
+// die(); arrête le code de la console
+• Plusieurs variables dans le header : header('Location: update_article.php?id=' . $_SESSION['id_article'] . '&amp;$error=1');
+• exit(); arrête le code suivant (vient après un header('Location') par ex.)
+• Le fichier ne compte que du PHP :  on ne ferme pas la balise PHP ?>
+• require(), à l'inverse de include(), fait planter le script si le fichier n'est pas trouvé
+• nl2br — Insère un retour à la ligne HTML à chaque nouvelle ligne
+• fetch(PDO::FETCH_ASSOC) = retrouve un tableau de valeur, avec, contrairement à fetch, SEULEMENT le NOM de la colonne et la valeur associée (et non, en plus, le NUMERO de la colonne et la valeur associée)
+• The keyword elseif SHOULD be used instead of else if so that all control keywords look like single words.
+if ($a === $b) {
+	bar();
+} elseif ($a > $b) {
+	$foo->bar($arg1);
+} else {
+	BazClass::bar($arg2, $arg3);
+}
+• abstract and final MUST be declared before the visibility; static MUST be declared after the visibility
+final public static function bar()
+{
+	// method body
+}
+• if (!array_key_exists(...)) // si la clé n'existe pas (if (!true) = if (false))
+• htmlspecialchars_decode("affiche le texte protégé comme il doit s'afficher")
+• PHP orienté objet = tous les chemins cible sont selon l'emplacement de index.php
+• plusieurs scripts (penser orienté objet) :
+	$script = '
+		<script1 src="public/js/contact.js"></script>
+		<script2></script>
+	';
+• mail() = charset (oui) & boundary (frontière, sépare les parties du mail)
+• Dans une classe, on appelle les variables attributs (ou propriétés)
+• Organisation : travailler avec UML
+• Utilitaire : Laragon (englobe les principaux composants pour un projet PHP)
+• Ordre d'apparition des use : ordre alphabétique (PCR1)
+
+## VISUAL STUDIO ##
+• Ctrl + D : sélectionner des groupes de mots semblables
+• Ctrl + alt + i : récupérer le namespace de la classe sélectionnée
+• PHP Getters & Setters, puis clic droit sur une variable > Get setters and getters PHP
+• Extensions : Auto Close Tag, Beautify, canvas-snippets, HTML CSS Support,
+Javascript (ES6) code snippets, jQuery Code snippets, PHP Getters & Setters,
+PHP Intelephense, PHP Namespace Resolver, PowerShell,
+Sublime Text Keymap and Settings Importer, Twig Language
 
 
 I) Créer une variable
