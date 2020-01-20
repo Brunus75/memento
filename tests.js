@@ -251,3 +251,63 @@ function alphabetPosition(text) {
     .map((c) => c.charCodeAt() - 64)
     .join(' ');
 }
+
+
+/* ---------- RENVERSER LES MOTS D'UN STRING ---------- */
+// Un string, renverser ses mots
+// "This is an example!" ==> "sihT si na !elpmaxe"
+
+Test.describe('Sample Tests', _ => {
+  Test.it('Should pass Sample tests', _ => {
+    Test.assertEquals(reverseWords('The quick brown fox jumps over the lazy dog.'), 'ehT kciuq nworb xof spmuj revo eht yzal .god');
+    Test.assertEquals(reverseWords('apple'), 'elppa');
+    Test.assertEquals(reverseWords('a b c d'), 'a b c d');
+    Test.assertEquals(reverseWords('double  spaced  words'), 'elbuod  decaps  sdrow');
+  });
+});
+
+function reverseWords(str) {
+  const arr = str.split(" ");
+  const arrReverse = arr.map(word => {
+    return word.split("").reverse().join("");
+  });
+
+  return arrReverse.join(" ");
+}
+
+// version condensée
+function reverseWords(str) {
+  return str.split(' ').map(function (word) {
+    return word.split('').reverse().join('');
+  }).join(' ');
+}
+
+
+/* ---------- DETECT PANGRAM ---------- */
+// Un string, vérifier si c'est un "pangram" : contient toutes les lettres de l'alphabet
+// "The quick brown fox jumps over the lazy dog" is a pangram, 
+// because it uses the letters A-Z at least once (case is irrelevant)
+
+var string = "The quick brown fox jumps over the lazy dog."
+Test.assertEquals(isPangram(string), true)
+var string = "This is not a pangram."
+Test.assertEquals(isPangram(string), false)
+
+function isPangram(string) {
+  const alphabet = ['a', 'b', 'c', 'd', 'e', 'f','g', 'h', 'i', 'j', 'k', 'l', 'm', 
+  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+  const arr = string.replace(/^(?=.*\d)[\d ]+$/g, '').toLowerCase().split("");
+  // string => remove white space and numbers, uppercase => array
+  // const arrUnique = [... new Set(arr)]; enlève les lettres dupliquées
+
+  return alphabet.every(letter => arr.includes(letter));
+  // vérifie si chaque entrée du tableau alphabet est incluse dans le tableau arr
+}
+
+// solution populaire
+function isPangram(string) {
+  return 'abcdefghijklmnopqrstuvwxyz'
+    .split('')
+    .every((value) => string.toLowerCase().includes(value));
+}

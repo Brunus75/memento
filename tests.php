@@ -958,3 +958,82 @@ function numbersToSquares($array)
 }
 
 echo numbersToSquares([-9, -2, 0, 2, 3]); // [0, 4, 4, 9, 81]
+
+
+/**
+ * Renvoyer le produit des plus grands nombres
+ * 
+ * @description Un tableau d'entiers et un [$nombre]
+ * retourner le produit des [$nombre] plus grand nombres du tableau
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testFixedTests()
+    {
+        $this->assertEquals(20, maxProduct([4, 3, 5], 2));
+        $this->assertEquals(247895375, maxProduct([13, 12, -27, -302, 25, 37, 133, 155, -14], 5));
+        $this->assertEquals(1, maxProduct([1], 1));
+    }
+}
+
+function maxProduct($arr, $size)
+{
+    rsort($arr); // decreasing sort
+    $product = (int) $arr[0];
+
+    for ($i = 1; $i < $size; $i++) {
+        $product *= $arr[$i];
+    }
+
+    return $product;
+}
+
+/**
+ * Renvoyer le nombre de fois un nombre doit se multiplier pour ne rester qu'un chiffre
+ * 
+ * @description Un chiffre, deviner le nombre de fois où il doit se multiplier
+ * pour ne rester qu'un chiffe
+ * ex. persistence(39) === 3; // because 3 * 9 = 27, 2 * 7 = 14, 1 * 4 = 4 and 4 has only one digit
+ * persistence(4) === 0; // because 4 is already a one-digit number
+ */
+
+class PersistenceTest extends TestCase
+{
+    public function testDescriptionExamples()
+    {
+        $this->assertEquals(3, persistence(39));
+        $this->assertEquals(4, persistence(999));
+        $this->assertEquals(0, persistence(4));
+    }
+}
+
+function persistence(int $num): int
+{
+    if ($num < 10) {
+        return 0;
+    } else {
+        $arr = str_split($num);
+        $i = 0;
+
+        while (count($arr) > 1) {
+            $arr = array_product($arr);
+            $arr = str_split($arr);
+            $i++;
+        }
+
+        return $i;
+    }
+}
+
+// solution populaire :
+function persistence(int $num): int
+{
+    $count = 0;
+    while ($num > 9) {
+        $num = array_product(str_split($num));
+        $count++;
+    }
+
+    return $count;
+}
