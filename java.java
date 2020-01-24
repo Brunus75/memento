@@ -1,5 +1,11 @@
 /* MEMENTO JAVA */
 
+// INTELLIJ IDEA
+
+    // CTRL + / ==> To comment/uncomment a line .
+    /* CTRL + Shift + / ==> To comment/uncomment block of code. */
+    // CTRL + Y ==> To delete a line.
+
 // I) BASES
 
 public class MyClass {
@@ -1034,5 +1040,571 @@ public class HelloUniverse {
 
         System.out.println("Le nombre de planètes découvertes est de : " + Planete.nbPlanetesDecouvertes);
         // Le nombre de planètes découvertes est de : 8
+    }
+}
+
+
+// VI) HERITAGE ET INTERFACES
+
+// • héritage avec le mot clé extends
+
+// par défaut, une classe hérite de la classe Object
+// la classe mère définit la nature de son enfant (ex. Voiture avec Fiat Panda)
+
+// une classe ne peut hériter que d'une seule classe
+// pour régler ce probleme, on fait appel à la délégation (concept qui regroupe les 2 parents)
+public class Personne extends Couple {
+}
+public class Couple {
+    Personne pere;
+    Personne mere;
+}
+
+// ex. planètes
+public class Vaisseau {
+    String type;
+    int nbPassagers;
+    int blindage; // capacité de résistance
+    int resistanceDuBouclier; // nb minutes de résistance restantes
+
+    void activerBouclier() {
+        System.out.println("Activation du bouclier d'un vaisseau de type " + this.type);
+    }
+
+    void desactiverBouclier() {
+        System.out.println("Désactivation du bouclier d'un vaisseau de type " + this.type);
+    }
+}
+
+public class VaisseauCivil extends Vaisseau {}
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    void attaque(Vaisseau vaisseauCible, String arme, int duree) {
+        System.out.println("Un vaisseau de type " + this.type + " attaque un vaisseau de type "
+                + vaisseauCible.type + " en utilisant l'arme " + arme + " pendant " + duree + " minutes.");
+
+        vaisseauCible.resistanceDuBouclier = 0;
+        vaisseauCible.blindage = vaisseauCible.blindage / 2;
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        VaisseauDeGuerre chasseur = new VaisseauDeGuerre();
+        chasseur.type = "CHASSEUR";
+        chasseur.blindage = 156;
+        chasseur.resistanceDuBouclier = 2;
+
+        VaisseauCivil vaisseauMonde = new VaisseauCivil();
+        vaisseauMonde.type = "VAISSEAU-MONDE";
+        vaisseauMonde.blindage = 4784;
+        vaisseauMonde.resistanceDuBouclier = 30;
+
+        vaisseauMonde.activerBouclier(); // Activation du bouclier d'un vaisseau de type VAISSEAU-MONDE
+        chasseur.activerBouclier(); // Activation du bouclier d'un vaisseau de type CHASSEUR
+
+        chasseur.attaque(vaisseauMonde, "lasers photoniques", 3);
+        // Un vaisseau de type CHASSEUR attaque un vaisseau de type VAISSEAU-MONDE en utilisant l'arme lasers photoniques pendant 3 minutes.
+        vaisseauMonde.desactiverBouclier();
+        // Désactivation du bouclier d'un vaisseau de type VAISSEAU-MONDE
+
+        System.out.println("La durée de protection résiduelle du bouclier du Vaisseau-Monde est de : "
+        + vaisseauMonde.resistanceDuBouclier);
+        System.out.println("La valeur du blindage du Vaisseau-monde est de : " + vaisseauMonde.blindage);
+        // La durée de protection résiduelle du bouclier du Vaisseau-Monde est de : 0
+        // La valeur du blindage du Vaisseau-monde est de : 2392
+
+    }
+}
+
+// • le transtypage 
+
+VoitureAMoteur voitureDeJean = new Voiture("Jaune", 3);
+// voituredeJean considérée comme une VoitureAMoteur (perd les attributs spécifiques de Voiture)
+// solution 1 pour indiquer explicitement que voitureDeJean est une Voiture :
+Voiture voitureDeJeanEnVoiture = (Voiture) voitureDeJean;
+// voitureDeJean transtypée en Voiture
+voitureDeJeanEnVoiture.nbRoues; 
+// solution 2 : transtypage à la volée
+((Voiture) voitureDeJean).nbRoues;
+
+// • héritage et constructeurs : le mot clé super
+// les constructeurs ne sont pas hérités
+// bonne pratique de faire à appel à super si on ne veut pas modifier le constructeur
+// bonne pratique comme 1ère opération dans un constructeur
+
+public class VehiculeMoteur {
+
+    VehiculeMoteur() {
+        System.out.println("Une voiture est construite sans paramètres.");
+    }
+
+    VehiculeMoteur(Moteur moteur) {
+        this.moteur = moteur;
+        System.out.println("Une voiture est construite avec  un moteur.");
+    }
+}
+
+public class Voiture extends VehiculeMoteur {
+
+    Voiture() { 
+        super(); // fait appel au constructeur parent par défaut
+        super(new Moteur()); // chaque instanciation invoque le constructeur parent
+        // qui prend Moteur en paramètres
+    }
+
+    Voiture(String couleur) {
+        this(); // fait appel au constructeur sans paramètres de voiture
+        // qui lui fait appel au constructeur parent avec Moteur en paramètres
+        this.color = couleur;
+        System.out.println("Une voiture est construite avec la couleur.");
+    }
+
+    Voiture(Moteur moteur) { // ++
+        super(moteur); // invoque le constructeur parent
+        // qui prend en paramètre un objet Moteur
+        // remplace :
+        // this.moteur = moteur;
+        // System.out.println("Une voiture est construite avec un moteur.");
+    }
+}
+
+// • covariance des méthodes : réécriture de la méthode parente
+public class UsineAssemblage {
+
+    VehiculeMoteur assemble() {
+        Moteur moteur = new Moteur();
+        VehiculeMoteur vam = new VehiculeMoteur(moteur);
+        return vam;
+    }
+}
+
+public class UsineAssemblageVoiture extends UsineAssemblage {
+    // réécriture de la méthode parente
+    // redéfinit son type de retour
+    Voiture assemble() {
+        Voiture v = new Voiture();
+        return v;
+    }
+}
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        UsineAssemblage ua = new UsineAssemblage();
+        VehiculeMoteur vm = ua.assemble(); // renvoie un VéhiculeMoteur
+
+        UsineAssemblageVoiture uav = new UsineAssemblageVoiture();
+        Voiture v = uav.assemble(); // a redéfinit la méthode parente pour renvoyer une Voiture
+    }
+}
+
+// • l'interface : le mot clé implements
+// représente les capacités données à une classe
+// se finit très souvent par -able
+
+// une classe peut implémenter plusieurs interfaces
+// ex. implements Vidangeable, Amarable
+
+// une interface peut hériter d'une autre
+// ex. Amarrable extends Mobile
+// une interface peut hériter de plusieurs interface
+// ex. Vidangeable extends Devissable, Revissable
+
+// interface drapeau : interface qui ne bénificie d'aucune méthode
+// juste là pour indiquer une capacité
+
+// une interface peut avoir une propriété
+// qui doit être définie
+// et qui ne sera jamais modifiée
+
+// IntelliJ => new Java Class => Interface
+
+public interface Vidangeable {
+    public void vidanger();
+}
+
+public class Voiture extends VehiculeMoteur implements Vidangeable {
+    // la classe implémente l'interface Vidangeable
+
+    // rajouté grâce à la correction de l'IDE (implement methods)
+    @Override
+    public void vidanger() {
+        System.out.println("Dévisser le bouchon sous la culasse et attendre que ça coule.");
+    }
+}
+
+// autre exemple
+public interface Amarrable {
+    public int combienDeCordes(int vitesseVent);
+}
+
+public class Bateau implements Amarrable {
+    int masse;
+
+    @Override
+    public int combienDeCordes(int vitesseVent) {
+        int nbCordes = masse / 10; // 1 corde pour 10 tonnes
+        nbCordes = nbCordes + vitesseVent / 100;
+        return nbCordes;
+    }
+}
+
+public class Montgolfiere implements Amarrable {
+    int surface;
+
+    @Override
+    public int combienDeCordes(int vitesseVent) {
+        int nbCordes = surface / 50; // 1 corde pour 50 mètres carré
+        nbCordes = nbCordes + vitesseVent / 100;
+        return nbCordes;
+    }
+}
+
+public class Port {
+
+    void accueilleEngin(Amarrable amarrable) { // l'engin qui va s'amarrer au port
+        // reçoit en paramètre un objet qui est amarrable,
+        // qui implemente Amarrable
+        int nbCordes = amarrable.combienDeCordes(50);
+        System.out.println("Le nombre de cordes nécessaires est de : " + nbCordes);
+    }
+}
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        Bateau bateau = new Bateau();
+        bateau.masse = 60;
+
+        Port port = new Port();
+        port.accueilleEngin(bateau); // attend un amarrable
+        // Le nombre de cordes nécessaires est de : 6
+    }
+}
+
+// avec les planètes
+
+public interface Habitable {
+    public Vaisseau accueillirVaisseau(Vaisseau vaisseau);
+}
+
+public class Planete {
+
+    Planete(String nom) {
+        this.nom = nom;
+        nbPlanetesDecouvertes++;
+    }
+}
+
+public class PlaneteGazeuse extends Planete {
+
+    String matiere = "Gazeuse";
+
+    PlaneteGazeuse(String nom) {
+        super(nom);
+    }
+}
+
+public class PlaneteTellurique extends Planete implements Habitable {
+
+    String matiere = "Tellurique";
+
+    PlaneteTellurique(String nom) {
+        super(nom);
+    }
+
+    // méthode supprimée de la classe Planete
+    public Vaisseau accueillirVaisseau(Vaisseau vaisseau) { // rajouter public
+
+        if (this.vaisseau == null) {
+            System.out.println("Aucun vaisseau ne s'en va");
+        } else {
+            System.out.println("Un vaisseau de type " + this.vaisseau.type + " doit s'en aller.");
+        }
+
+        this.totalVisiteurs += vaisseau.nbPassagers;
+
+        Vaisseau vaisseauEnPartance = this.vaisseau;
+        this.vaisseau = vaisseau; // replace the actual spaceship
+
+        return vaisseauEnPartance;
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        PlaneteTellurique mars = new PlaneteTellurique("Mars");
+        mars.diametre = 6792;
+        PlaneteGazeuse jupiter = new PlaneteGazeuse("Jupiter");
+        jupiter.diametre = 142984;
+
+        mars.accueillirVaisseau(vaisseauMonde); // ++
+        // jupiter.accueillirVaisseau(vaisseauMonde); // impossible
+        mars.accueillirVaisseau(chasseur);
+
+    }
+}
+
+// • le mot clé instanceof : savoir si l'objet hérite d'un type précis
+
+public class Port {
+
+    void accueilleEngin(Amarrable amarrable) {
+
+        if (amarrable instanceof Bateau) {
+            System.out.println("Il s'agit d'un bateau.");
+        }
+
+        if (!(amarrable instanceof Bateau)) {
+            System.out.println("Il ne s'agit pas d'un bateau.");
+        }
+
+        if (amarrable instanceof Amarrable) {
+            System.out.println("Il s'agit d'un engin amarrable.");
+        }
+    }
+}
+
+// avec les planètes
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    boolean armesDesactivees; // ++
+
+    void attaque(Vaisseau vaisseauCible, String arme, int duree) { // ++ contraintes
+
+        if (armesDesactivees) {
+            System.out.println("Attaque impossible, l'armement est désactivé.");
+        } else {
+            System.out.println("Un vaisseau de type " + this.type + " attaque un vaisseau de type "
+                    + vaisseauCible.type + " en utilisant l'arme " + arme + " pendant " + duree + " minutes.");
+
+            vaisseauCible.resistanceDuBouclier = 0;
+            vaisseauCible.blindage = vaisseauCible.blindage / 2;
+        }
+    }
+
+    void desactiverArmes() { // ++
+        armesDesactivees = true;
+        System.out.println("Désactivation des armes d'un vaisseau de type " + this.type);
+    }
+}
+
+public class PlaneteTellurique extends Planete implements Habitable {
+
+    public Vaisseau accueillirVaisseau(Vaisseau vaisseau) { // ajoute contrainte
+
+        if (vaisseau instanceof VaisseauDeGuerre) {
+            // transtypage pour activer la méthode
+            ((VaisseauDeGuerre) vaisseau).desactiverArmes();
+        }
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        VaisseauDeGuerre chasseur = new VaisseauDeGuerre();
+
+        mars.accueillirVaisseau(chasseur);
+        // Désactivation des armes d'un vaisseau de type CHASSEUR
+    }
+}
+
+// • le polymorphisme (de sous-typage)
+// l'objet est traité comme une instance de la classe fille, ou la classe mère
+// grâce au polymorphisme, une méthode peut accepter un objet sous la forme de son type parent
+// ou de l'une de ses interfaces associées
+// il est parfois + simple d'accepter en paramètres le type parent ou interface
+// que de créer autant de méthodes que de types acceptables
+
+public Vaisseau accueillirVaisseau(Vaisseau vaisseau) { // type parent en paramètres
+
+    if (vaisseau instanceof VaisseauDeGuerre) {
+        // transtypage pour activer la méthode
+        ((VaisseauDeGuerre) vaisseau).desactiverArmes();
+    }
+}
+
+Voiture peugeot206 = new Voiture(); // classique
+VehiculeMoteur peugeot307 = new Voiture(); // objet Voiture considéré comme un VM
+Vidangeable peugeot508 = new Voiture(); // objet Voiture considéré comme vidangeable
+// n'est que vidangeable, n'a accès qu'à la méthode vidanger
+// permet de considérer nos objets d'une autre nature que voiture
+
+// ex. planètes
+
+public class Vaisseau {
+
+    void activerBouclier() {
+        System.out.println("Activation du bouclier d'un vaisseau de type " + this.type);
+    }
+}
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    // Clic-droit => Generate => Override methods
+    @Override
+    void activerBouclier() {
+        this.desactiverArmes();
+        super.activerBouclier();
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        Vaisseau chasseur = new VaisseauDeGuerre();
+        Vaisseau vaisseauMonde = new VaisseauCivil();
+
+        // transtypage
+        ((VaisseauDeGuerre) chasseur).attaque(vaisseauMonde, "lasers photoniques", 3);
+    }
+}
+
+// • méthodes et classes abstraites
+// une classe qui ne peut être instanciée. Son but : générer d'autres classes
+// une classe abstraite peut hériter d'une autre classe, qui doit être abstraite
+
+public abstract class Vehicule {
+    // peut avoir des propriétés,
+    // des méthodes
+    // et
+    // des méthodes abstraites : n'ont pas d'implementation (bloc d'instruction)
+    // comme les interfaces
+    abstract void klaxonner();
+}
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    // une classe qui hérite d'une classe abstraite doit
+    // implémenter ses méthodes
+    @Override
+    void klaxonner() {
+        System.out.println("Tut tut !");
+    }
+}
+
+public class Velo extends Vehicule {
+    @Override
+    void klaxonner() {
+        System.out.println("Dring dring !");
+    }
+}
+
+// ex. planètes
+
+public abstract class Vaisseau {
+
+    int tonnageMax; // ++
+    int tonnageActuel; // ++
+
+    // ++
+    abstract int emporterCargaison(int cargaison);
+}
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    VaisseauDeGuerre(String type) {
+        this.type = type;
+        if (this.type.equals("FREGATE")) {
+            this.tonnageMax = 50;
+        }
+        else if (this.type.equals("CROISEUR")) {
+            this.tonnageMax = 100;
+        }
+        else if (this.type.equals("CHASSEUR")) {
+            this.tonnageMax = 0;
+        }
+    }
+
+    // ++
+    @Override
+    int emporterCargaison(int cargaison) {
+
+        if (this.type.equals("CHASSEUR") || this.nbPassagers < 12) {
+            return cargaison;
+        } else {
+            int tonnagePassager = 2 * this.nbPassagers;
+            int tonnageRestant = this.tonnageMax - this.tonnageActuel;
+            int tonnageRésultat = (tonnagePassager < tonnageRestant ? tonnagePassager : tonnageRestant);
+
+            if (cargaison > tonnageRésultat) {
+                this.tonnageActuel = this.tonnageMax;
+                return cargaison - tonnageRésultat;
+            } else {
+                this.tonnageActuel += cargaison;
+                return 0;
+            }
+        }
+    }
+}
+
+public class VaisseauCivil extends Vaisseau {
+
+    VaisseauCivil(String type) {
+        this.type = type;
+        if (this.type.equals("CARGO")) {
+            this.tonnageMax = 500;
+        }
+        else if (this.type.equals("VAISSEAU-MONDE")) {
+            this.tonnageMax = 2000;
+        }
+    }
+
+    @Override
+    int emporterCargaison(int cargaison) {
+        int tonnageRestant = this.tonnageMax - this.tonnageActuel;
+
+        if (cargaison > tonnageRestant) {
+            this.tonnageActuel = this.tonnageMax;
+            return cargaison - tonnageRestant;
+        } else {
+            this.tonnageActuel += cargaison;
+            return 0;
+        }
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        VaisseauDeGuerre chasseur2 = new VaisseauDeGuerre("CHASSEUR");
+        terre.accueillirVaisseau(chasseur2);
+        System.out.println("Le Chasseur a rejeté " + chasseur2.emporterCargaison(20) + " tonnes.");
+        // Le Chasseur a rejeté 20 tonnes.
+
+        VaisseauDeGuerre fregate = new VaisseauDeGuerre("FREGATE");
+        fregate.nbPassagers = 100;
+        terre.accueillirVaisseau(fregate);
+        System.out.println("La frégate a rejeté " + fregate.emporterCargaison(45) + " tonnes.");
+        System.out.println("Puis la frégate a rejeté " + fregate.emporterCargaison(12) + " tonnes.");
+        // La frégate a rejeté 0 tonnes.
+        // Puis la frégate a rejeté 7 tonnes.
+
+        VaisseauDeGuerre fregate2 = new VaisseauDeGuerre("FREGATE");
+        fregate2.nbPassagers = 14;
+        terre.accueillirVaisseau(fregate2);
+        System.out.println("La frégate a rejeté " + fregate2.emporterCargaison(30) + " tonnes.");
+        // La frégate a rejeté 2 tonnes.
+
+        Vaisseau vaisseauMonde2 = new VaisseauCivil("VAISSEAU-MONDE");
+        terre.accueillirVaisseau(vaisseauMonde2);
+        System.out.println("Le Vaisseau-Monde a rejeté " + vaisseauMonde2.emporterCargaison(1560) + " tonnes.");
+        System.out.println("Puis le Vaisseau-Monde a rejeté " + vaisseauMonde2.emporterCargaison(600) + " tonnes.");
+        // Le Vaisseau-Monde a rejeté 0 tonnes.
+        // Puis le Vaisseau-Monde a rejeté 160 tonnes.
+
     }
 }
