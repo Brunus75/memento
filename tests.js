@@ -311,3 +311,76 @@ function isPangram(string) {
     .split('')
     .every((value) => string.toLowerCase().includes(value));
 }
+
+
+/* ---------- Extract the domain name from a URL ---------- */
+// Un string, retourner seulement le nom de domaine
+// domainName("http://github.com/carbonfive/raygun") == "github" 
+// domainName("http://www.zombie-bites.com") == "zombie-bites"
+// domainName("https://www.cnet.com") == "cnet"
+
+function domainName(url) {
+  // remove everything that start with http://, optionally https://, 
+  // optionally https://www., or start with www., in case insensitive
+  const urlRaw = url.replace(/^(https?\:\/\/(www\.)?|(www\.))/i, "");
+  return urlRaw.split('.')[0]; // ex. [google, com] => google
+}
+
+// solution populaire
+function domainName(url) {
+  url = url.replace("https://", '');
+  url = url.replace("http://", '');
+  url = url.replace("www.", '');
+  return url.split('.')[0];
+};
+
+
+/* ---------- UN STRING SE FINIT PAR ? ---------- */
+// Un string, retourner s'il finit par le string proposé
+// solution('abc', 'bc') // returns true
+// solution('abc', 'd') // returns false
+
+function solution(str, ending) {
+  return str.includes(ending, (str.length - ending.length));
+  // includes(mot, début du mot dans la phrase)
+}
+
+// solution populaire
+function solution(str, ending) {
+  return str.endsWith(ending);
+}
+
+/* ---------- TROUVER LA VALEUR MOYENNE D'UN TABLEAU DE 3 ---------- */
+// Un tableau de 3 valeurs, retourner l'index de la valeur moyenne
+// gimme([2, 3, 1]) => 0
+// gimme([5, 10, 14]) => 1
+
+var gimme = function (inputArray) {
+  let middle = inputArray[0];
+  if ((inputArray[1] > middle && inputArray[1] < inputArray[2]) ||
+    (inputArray[1] < middle && inputArray[1] > inputArray[2])) {
+    middle = inputArray[1];
+  }
+  else if ((inputArray[2] > middle && inputArray[2] < inputArray[1]) ||
+    (inputArray[2] < middle && inputArray[2] > inputArray[1])) {
+    middle = inputArray[2];
+  }
+  return inputArray.indexOf(middle);
+};
+
+// autre solution
+var gimme = function (inputArray) {
+  if ((inputArray[0] < inputArray[1] && inputArray[0] > inputArray[2])
+    || (inputArray[0] > inputArray[1] && inputArray[0] < inputArray[2]))
+    return 0;
+
+  if ((inputArray[1] < inputArray[0] && inputArray[1] > inputArray[2])
+    || (inputArray[1] > inputArray[0] && inputArray[1] < inputArray[2]))
+    return 1;
+
+  if ((inputArray[2] < inputArray[0] && inputArray[2] > inputArray[1])
+    || (inputArray[2] > inputArray[0] && inputArray[2] < inputArray[1]))
+    return 2;
+};
+
+

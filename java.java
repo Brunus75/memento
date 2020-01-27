@@ -1608,3 +1608,206 @@ public class HelloUniverse {
 
     }
 }
+
+
+// VII) Classes et techniques utilitaires
+
+// • La classe System
+// ne peut être instanciée
+// méthodes et propriétés statiques
+// System.out.println(""); // out est l'une de ces propriétés (représente le terminal)
+System.err.println(""); // err : flux d'écriture en erreur
+System.in; // in : ce qui est entré par l'utilisateur au clavier
+System.exit(0); // en paramètre : un entier, un code erreur
+// 0 : OK, tout s'est bien passé, le reste : erreur (à moi de définir ce que vaut 1)
+// son appel stoppe le code (comme un exit en PHP)
+long time = System.currentTimeMillis(); // nb de millisecondes écoulées depuis le 01/01/1970
+long nanoTimeStart = System.nanoTime(); // pour mesurer un écart de temps précisément
+System.out.println("Message");
+long nanoTimeEnd = System.nanoTime();
+// • La classe Scanner
+// scanne le texte d'un canal d'entrée (comme System.in)
+// utilisation
+
+// import java.util.Scanner; ++ à ajouter (automatiquement)
+
+public class HelloWorld {
+    
+    public static void main(String... args) {
+
+        Scanner scanner = new Scanner(System.in); // le flux à étudier
+
+        String nextLine = scanner.nextLine(); // enregistre ce qui est tapé dans la console
+        System.out.println("la ligne suivante est : " + nextLine);
+
+        int nextInt = scanner.nextInt();
+        System.out.println("L'entier entré est : " + nextInt);
+
+        boolean trueOrFalse = scanner.nextBoolean();
+        System.out.println("L'utilisateur a entré : " + trueOrFalse);
+    }
+}
+
+// ex. planètes
+
+// import java.util.Scanner; ++
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        PlaneteTellurique mercure = new PlaneteTellurique("Mercure");
+        mercure.diametre = 4880;
+        // ect.
+
+        VaisseauDeGuerre chasseur3 = new VaisseauDeGuerre("CHASSEUR");
+        chasseur3.nbPassagers = 20;
+        VaisseauDeGuerre fregate3 = new VaisseauDeGuerre("FREGATE");
+        fregate3.nbPassagers = 35;
+        VaisseauDeGuerre croiseur = new VaisseauDeGuerre("CROISEUR");
+        croiseur.nbPassagers = 50;
+        VaisseauCivil cargo = new VaisseauCivil("CARGO");
+        cargo.nbPassagers = 100;
+        VaisseauCivil vaisseauMonde3 = new VaisseauCivil("VAISSEAU-MONDE");
+        vaisseauMonde3.nbPassagers = 200;
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Quel type de VAISSEAU souhaitez-vous manipuler ?");
+        String ship = scanner.nextLine();
+        System.out.println("Sur quelle planète tellurique souhaitez-vous atterrir ?");
+        String planet = scanner.nextLine();
+        System.out.println("Quel tonnage de cargaison souhaitez-vous embarquer ?");
+        int tonnage = scanner.nextInt();
+
+        Vaisseau vaisseau = null;
+        switch (ship) {
+        case "CHASSEUR":
+            vaisseau = chasseur3;
+            break;
+        case "FREGATE":
+            vaisseau = fregate3;
+            break;
+        case "CROISEUR":
+            vaisseau = croiseur;
+            break;
+        case "CARGO":
+            vaisseau = cargo;
+            break;
+        case "VAISSEAU-MONDE":
+            vaisseau = vaisseauMonde3;
+            break;
+        }
+
+        PlaneteTellurique planete = null;
+        switch (planet) {
+        case "Terre":
+            planete = terre;
+            break;
+        case "Mercure":
+            planete = mercure;
+            break;
+        case "Venus":
+            planete = venus;
+            break;
+        case "Mars":
+            planete = mars;
+            break;
+        }
+
+        planete.accueillirVaisseau(vaisseau);
+        int rejet = vaisseau.emporterCargaison(tonnage);
+        System.out.println("Le rejet est de " + rejet);
+
+    }
+}
+
+// • les classes conteneurs ou wrapper (int, bool, etc.)
+Integer number = new Integer(12); // entier qui vaut 12 encapsulé dans un objet Integer
+// méthode dépréciée
+Integer number = 12; // nouvelle norme
+// Boolean, Long, Character, Float, Double, marche de la même manière.
+Float number2 = new Float(12.6f); // Float number2 = 12.6f;
+Float number3 = new Float("12.6"); // déprécié
+// retrouver la valeur primitive
+float number4 = number2.floatValue(); // préférer float number4 = number2;
+int number5 = number2.intValue();
+// méthode statique pour conversion
+float number6 = Float.parseFloat("12.3");
+boolean trueOrNot = Boolean.parseBoolean("true");
+// avantage : jouer sur les valeurs par défaut + profiter des méthodes (equals) de la classe
+public class Voiture extends Vehicule implements Vidangeable {
+    // int rapportCourant; // 0 par défaut
+    Integer rapportCourant; // null par défaut
+}
+        
+public class HelloWorld {
+    public static void main(String... args) {
+        Voiture peugeot206 = new Voiture(); // classique
+        peugeot206.rapportCourant = new Integer(0); // préférer peugeot206.rapportCourant = 0;
+    }
+}
+
+// ex. planètes
+
+public class Atmosphere {
+    Float tauxHydrogene;
+    Float tauxMethane;
+    Float tauxAzote;
+    Float tauxHelium;
+    Float tauxArgon;
+    Float tauxDioxydeCarbone;
+    Float tauxSodium;
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        Atmosphere atmosphereUranus = new Atmosphere();
+        atmosphereUranus.tauxHydrogene = 83f;
+        // atmosphereUranus.tauxHydrogene = new Float(83f) est déprécié grâce à l'auto-boxing
+        atmosphereUranus.tauxHelium = 15f;
+        atmosphereUranus.tauxMethane = 2.5f;
+        atmosphereUranus.tauxAzote = 0f;
+        uranus.atmosphere = atmosphereUranus;
+
+        System.out.println("L'atmosphère de Uranus est composée de : ");
+        if (uranus.atmosphere.tauxHydrogene != null) {
+            System.out.println("A " + uranus.atmosphere.tauxHydrogene + "% d'hydrogène");
+        }
+        if (uranus.atmosphere.tauxArgon != null) {
+            System.out.println("A " + uranus.atmosphere.tauxArgon + "% d'argon");
+        }
+        if (uranus.atmosphere.tauxDioxydeCarbone != null) {
+            System.out.println("A " + uranus.atmosphere.tauxDioxydeCarbone + "% de dioxyde de carbone");
+        }
+        if (uranus.atmosphere.tauxAzote != null) {
+            System.out.println("A " + uranus.atmosphere.tauxAzote + "% d'azote");
+        }
+        if (uranus.atmosphere.tauxHelium != null) {
+            System.out.println("A " + uranus.atmosphere.tauxHelium + "% d'hélium");
+        }
+        if (uranus.atmosphere.tauxMethane != null) {
+            System.out.println("A " + uranus.atmosphere.tauxMethane + "% de méthane");
+        }
+        if (uranus.atmosphere.tauxSodium != null) {
+            System.out.println("A " + uranus.atmosphere.tauxSodium + "% de sodium");
+        }
+    }
+}
+
+// • l'autoboxing permet de ne pas avoir à manipuler explicitement les classes conteneurs
+// la conversion s'effectue automatiquement
+peugeot206.rapportCourant = 0; // rapportCourant est un objet Integer de valeur 0
+// peugeot206.rapportCourant++; // l'Integer repasse en primitif (à cause du calcul)
+// principe d'auto-unboxing
+
+// • les conversions de type
+int number7 = Integer.parseInt("12"); // on évoque la méthode parse... de la classe
+boolean trueOrNot = Boolean.parseBoolean("true");
+// inverse est vrai
+String word = String.valueOf(number7); // accepte une multitude de type
+// "12"
+// utiliser les méthodes des conteneurs
+Integer number = 12;
+long numberLong = number.longValue();
