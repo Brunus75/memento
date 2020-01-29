@@ -1037,3 +1037,58 @@ function persistence(int $num): int
 
     return $count;
 }
+
+/**
+ * Renvoyer un tableau qui ne comprend pas un ensemble de vecteurs
+ * 
+ * @description Deux tableaux, le dernier contient le(s) nombre(s) à supprimer dans le premier
+ * arrayDiff([1,2],[1]) == [2]
+ * arrayDiff([1,2,2,2,3],[2]) == [1,3]
+ */
+
+function arrayDiff($a, $b)
+{
+    $c = array();
+    foreach ($a as $value) {
+        if (!in_array($value, $b)) {
+            $c[] = $value;
+        }
+    }
+    return $c;
+}
+
+// supprimer une value dans une boucle foreach
+function arrayDiff($a, $b)
+{
+    $c = array();
+    foreach ($a as $key => $value) {
+        if (in_array($value, $b)) {
+            unset($a[$key]);
+        }
+    }
+    return $a;
+}
+
+// solution populaire
+function arrayDiff($a, $b)
+{
+    return array_values(array_diff($a, $b));
+    // les valeurs non présentes dans le tableau 2 dans un tableau indexé
+}
+
+
+/**
+ * Trouver le nombre unique dans un tableau
+ * 
+ * @description un tableau, trouver le nombre unique
+ * findUniq([ 1, 1, 1, 2, 1, 1 ]) === 2
+ * findUniq([ 0, 0, 0.55, 0, 0 ]) === 0.55
+ */
+
+function find_uniq($a)
+{
+    $b = array_map('strval', $a); // allow array_count_values on floats
+    $counted = array_count_values($b); // array of [value] => count
+    return array_search(1, $counted); // the [value] with count === 1 (so, unique)
+}
+

@@ -1640,6 +1640,8 @@ public class HelloWorld {
         String nextLine = scanner.nextLine(); // enregistre ce qui est tapé dans la console
         System.out.println("la ligne suivante est : " + nextLine);
 
+        // pour les char; il faudra faire un nextLine().chartAt(0)
+
         int nextInt = scanner.nextInt();
         System.out.println("L'entier entré est : " + nextInt);
 
@@ -1811,3 +1813,218 @@ String word = String.valueOf(number7); // accepte une multitude de type
 // utiliser les méthodes des conteneurs
 Integer number = 12;
 long numberLong = number.longValue();
+
+// • les types énumérés
+// restreindre les valeurs possibles d'une variable à une gamme prédéterminée
+// Avant sur JAVA :
+public class Voiture extends Vehicule implements Vidangeable {r
+    // boolean automatic;
+    int typeBoite; // ++
+}
+
+public class TypeBoiteVitesse {
+    // remplace la propriété boolean automatic de Voiture
+    // car 3 choix à présent
+    static final int AUTO = 1; // final : ne peut plus être changé
+    static final int SEMI_AUTO = 2; // pb on peut attribuer les mêmes valeurs à toutes
+    static final int MANUELLE = 3;
+}
+
+public class HelloWorld {
+    Voiture peugeot206 = new Voiture(); // classique
+    peugeot206.typeBoite=TypeBoiteVitesse.SEMI_AUTO; // ++
+    // rien ne m'empêche aussi d'écrire peugeot206.typeBoite= 4 (correspond à rien);
+}
+
+// avec les types énumérés
+public enum TypeBoiteVitesse {
+    AUTO, // 0
+    SEMI_AUTO, // 1
+    MANUELLE // 2
+}
+
+public class Voiture extends Vehicule implements Vidangeable {
+    TypeBoiteVitesse typeBoite; // ++
+}
+
+public class HelloWorld {
+
+    Voiture peugeot206 = new Voiture();
+    peugeot206.typeBoite = TypeBoiteVitesse.SEMI_AUTO;
+
+    switch(peugeot206.typeBoite)
+    {
+        case AUTO:
+            System.out.println("La boite est auto");
+            break;
+        case SEMI_AUTO:
+            System.out.println("La boite est semi-auto");
+            // La boite est semi-auto
+            break;
+        case MANUELLE:
+            System.out.println("La boite est manuelle");
+            break;
+    }
+}
+
+// ajouter des attributs
+public enum TypeBoiteVitesse {
+
+    AUTO("Automatique"), // AUTO(nomTypeBoite: "Automatique")
+    SEMI_AUTO("Semi-automatique"), // chaque valeur s'associe au constructeur
+    MANUELLE("Manuelle"); // appelle le constructeur puis valorise nomTypeBoite
+
+    String nomTypeBoite;
+
+    TypeBoiteVitesse(String nomTypeBoite) {
+        this.nomTypeBoite = nomTypeBoite;
+    }
+}
+
+public class Voiture extends Vehicule implements Vidangeable {
+    TypeBoiteVitesse typeBoite;
+}
+
+public class HelloWorld {
+
+    Voiture peugeot206 = new Voiture();
+    peugeot206.typeBoite = TypeBoiteVitesse.SEMI_AUTO;
+    System.out.println("Le type de ma boite est " + peugeot206.typeBoite.nomTypeBoite);
+    System.out.println("La valeur de ma boite est de " + peugeot206.typeBoite.ordinal());
+    // Le type de ma boite est Semi-automatique
+    // La valeur de ma boite est de 1 (SEMI-AUTO vaut 1)
+    TypeBoiteVitesse semiAuto = TypeBoiteVitesse.valueOf("SEMI_AUTO");
+    System.out.println("La boite récupérée par le biais de la chaine de caractères est : " + 
+        semiAuto.nomTypeBoite);
+    // La boite récupérée par le biais de la chaine de caractères est : Semi-automatique
+}
+
+// ex. planètes
+
+public enum TypeVaisseau {
+    CHASSEUR("Chasseur"),
+    FREGATE("Frégate"),
+    CROISEUR("Croiseur"),
+    CARGO("Cargo"),
+    VAISSEAUMONDE("Vaisseau-Monde");
+
+    String nom;
+
+    TypeVaisseau(String nom) {
+        this.nom = nom;
+    }
+}
+
+public abstract class Vaisseau {
+    TypeVaisseau type;
+
+    Vaisseau(TypeVaisseau type, int blindage, int resistanceBouclier) {
+        this.type = type;
+        this.blindage = blindage;
+        this.resistanceDuBouclier = resistanceBouclier;
+    }
+}
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    VaisseauDeGuerre(TypeVaisseau type) {
+        this.type = type;
+        if (type == TypeVaisseau.FREGATE) {
+            this.tonnageMax = 50;
+        }
+        else if (type == TypeVaisseau.CROISEUR) {
+            this.tonnageMax = 100;
+        }
+        else if (type == TypeVaisseau.CHASSEUR) {
+            this.tonnageMax = 0;
+        }
+    }
+}
+
+public class VaisseauCivil extends Vaisseau {
+
+    VaisseauCivil(TypeVaisseau type) {
+        this.type = type;
+        if (type == TypeVaisseau.CARGO) {
+            this.tonnageMax = 500;
+        }
+        else if (type == TypeVaisseau.VAISSEAUMONDE) {
+            this.tonnageMax = 2000;
+        }
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        VaisseauDeGuerre chasseur3 = new VaisseauDeGuerre(TypeVaisseau.CHASSEUR);
+        chasseur3.nbPassagers = 20;
+        VaisseauDeGuerre fregate3 = new VaisseauDeGuerre(TypeVaisseau.FREGATE);
+        fregate3.nbPassagers = 35;
+        VaisseauDeGuerre croiseur = new VaisseauDeGuerre(TypeVaisseau.CROISEUR);
+        croiseur.nbPassagers = 50;
+        VaisseauCivil cargo = new VaisseauCivil(TypeVaisseau.CARGO);
+        cargo.nbPassagers = 100;
+        VaisseauCivil vaisseauMonde3 = new VaisseauCivil(TypeVaisseau.VAISSEAUMONDE);
+        vaisseauMonde3.nbPassagers = 200;
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Quel type de VAISSEAU souhaitez-vous manipuler ?");
+        String ship = scanner.nextLine();
+        System.out.println("Sur quelle planète tellurique souhaitez-vous atterrir ?");
+        String planet = scanner.nextLine();
+        System.out.println("Quel tonnage de cargaison souhaitez-vous embarquer ?");
+        int tonnage = scanner.nextInt();
+
+        TypeVaisseau typeVaisseau = TypeVaisseau.valueOf(ship);
+        Vaisseau vaisseau = null;
+        switch (typeVaisseau) {
+            case CHASSEUR:
+                vaisseau = chasseur3;
+                break;
+            case FREGATE:
+                vaisseau = fregate3;
+                break;
+            case CROISEUR:
+                vaisseau = croiseur;
+                break;
+            case CARGO:
+                vaisseau = cargo;
+                break;
+            case VAISSEAUMONDE:
+                vaisseau = vaisseauMonde3;
+                break;
+        }
+
+        PlaneteTellurique planete = null;
+        switch (planet) {
+        case "Terre":
+            planete = terre;
+            break;
+        case "Mercure":
+            planete = mercure;
+            break;
+        case "Venus":
+            planete = venus;
+            break;
+        case "Mars":
+            planete = mars;
+            break;
+        }
+
+        planete.accueillirVaisseau(vaisseau);
+        int rejet = vaisseau.emporterCargaison(tonnage);
+        System.out.println("Le rejet est de " + rejet);
+
+        // Quel type de VAISSEAU souhaitez-vous manipuler ?
+        // FREGATE
+        // Sur quelle planète tellurique souhaitez-vous atterrir ?
+        // Terre
+        // Quel tonnage de cargaison souhaitez-vous embarquer ?
+        // 60
+        // Désactivation des armes d'un vaisseau de type FREGATE
+        // Un vaisseau de type VAISSEAUMONDE doit s'en aller.
+        // Le rejet est de 10
+    }
+}
