@@ -2028,3 +2028,887 @@ public class HelloUniverse {
         // Le rejet est de 10
     }
 }
+
+
+// VIII) LES TABLEAUX ET LES COLLECTIONS
+
+int[] tableauDeInt = new int[5]; // tableau unidimensionnel de 5 espaces vides [0,0,0,0,0]
+tableauDeInt[1] = 15; // valorise le deuxième élément du tableau
+char[] tableauDeChar = new char[5]; // ['','','','','']
+tableauDeChar.length; // longueur du tableau
+Voiture[] tableauDeVoiture = new Voiture[5]; // [null, null, null, null, null]
+tableauDeVoiture[1] = new Voiture("rouge");
+System.out.println("La couleur de la 2ème voiture du tableau est " + tableauDeVoiture[1].couleur);
+
+// ex. planètes
+
+public class PlaneteTellurique extends Planete implements Habitable {
+
+    Vaisseau[] vaisseauxAccostes; // ++
+
+    PlaneteTellurique(String nom, int tailleBaie) {
+        super(nom);
+        this.vaisseauxAccostes = new Vaisseau[tailleBaie]; // ++
+    }
+
+    public void accueillirVaisseau(Vaisseau vaisseau) {
+
+        if (vaisseau instanceof VaisseauDeGuerre) {
+            // transtypage
+            ((VaisseauDeGuerre) vaisseau).desactiverArmes();
+        }
+
+        for (int i = 0; i < vaisseauxAccostes.length; i++) { // ++
+            if (vaisseauxAccostes[i] == null) {
+                vaisseauxAccostes[i] = vaisseau;
+                break; // s'arrête à la première occurence trouvée
+            }
+        }
+    }
+
+    boolean restePlaceDisponible() { // ++
+        for (Vaisseau element : vaisseauxAccostes) { // simple loop
+            if (element == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        PlaneteTellurique mercure = new PlaneteTellurique("Mercure", 1);
+        mercure.diametre = 4880;
+        PlaneteTellurique venus = new PlaneteTellurique("Venus", 2);
+        venus.diametre = 12100;
+        PlaneteTellurique terre = new PlaneteTellurique("Terre", 10);
+        terre.diametre = 12756;
+        PlaneteTellurique mars = new PlaneteTellurique("Mars", 3);
+        mars.diametre = 6792;
+
+        String recommencer;
+
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Quel type de VAISSEAU souhaitez-vous manipuler ?");
+            String ship = scanner.nextLine();
+            System.out.println("Sur quelle planète tellurique souhaitez-vous atterrir ?");
+            String planet = scanner.nextLine();
+            System.out.println("Quel tonnage de cargaison souhaitez-vous embarquer ?");
+            int tonnage = scanner.nextInt(); // n'effectue pas de saut de ligne
+            scanner.nextLine(); // permet de considérer la prochaine valeur comme une chaine de caractère
+            // car effectue au préalable le saut de ligne
+            TypeVaisseau typeVaisseau = TypeVaisseau.valueOf(ship);
+            Vaisseau vaisseau = null;
+            switch (typeVaisseau) {
+            case CHASSEUR:
+                vaisseau = chasseur3;
+                break;
+            case FREGATE:
+                vaisseau = fregate3;
+                break;
+            case CROISEUR:
+                vaisseau = croiseur;
+                break;
+            case CARGO:
+                vaisseau = cargo;
+                break;
+            case VAISSEAUMONDE:
+                vaisseau = vaisseauMonde3;
+                break;
+            }
+
+            PlaneteTellurique planete = null;
+            switch (planet) {
+            case "Terre":
+                planete = terre;
+                break;
+            case "Mercure":
+                planete = mercure;
+                break;
+            case "Venus":
+                planete = venus;
+                break;
+            case "Mars":
+                planete = mars;
+                break;
+            }
+
+            if (!planete.restePlaceDisponible()) {
+                System.out.println("Le vaisseau ne peut pas se poser sur la planète par manque de place dans la baie.");
+            } else {
+                planete.accueillirVaisseau(vaisseau);
+                int rejet = vaisseau.emporterCargaison(tonnage);
+                System.out.println("Le rejet est de " + rejet);
+            }
+
+            System.out.println("Voulez-vous recommencer ?");
+            recommencer = scanner.nextLine();
+
+        } while (recommencer.equalsIgnoreCase("oui"));
+    }
+}
+
+
+// • les ellipses ou varargs
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    Ville transporter(Passager passager, Ville villeDepart, Ville... villesEtapes) { // rajout d'une varargs
+        // après villeDépart, il peut y avoir un nom variable de villes étapes
+        // le paramètre ellipse doit être le dernier argument
+        System.out.println("La voiture transporte un passager qui s'appelle "
+                + passager.prenom + " " + passager.nom);
+        System.out.println("Le passager est parti de la ville de " + villeDepart.nom);
+
+        System.out.println("La première ville étape est : " + villesEtapes[0].nom); // ++
+        System.out.println("Il y a " + villesEtapes.length + " ville(s) étape(s)"); // ++
+
+        Ville villeDestination = new Ville();
+        villeDestination.nom = "Wellington";
+
+        return villeDestination;
+    }
+}
+
+public class HelloWorld {
+    public static void main(String... args) {
+
+        Passager passagerL = new Passager();
+        passagerL.nom = "Lalanne";
+        passagerL.prenom = "Francis";
+        Ville depart = new Ville();
+        depart.nom = "Auckland";
+        Ville etape1 = new Ville();
+        etape1.nom = "Hamilton";
+        Ville etape2 = new Ville();
+        etape1.nom = "Taupo";
+        Ville etape3 = new Ville();
+        etape1.nom = "Wellington";
+
+        peugeot206.transporter(passagerL, depart, etape1, etape2, etape3);
+        // La voiture transporte un passager qui s'appelle Francis Lalanne
+        // Le passager est parti de la ville de Auckland
+        // La première ville étape est : Wellington
+        // Il y a 3 ville(s) étape(s)
+    }
+}
+
+// ex. planètes
+
+public interface Habitable {
+    public void accueillirVaisseaux(Vaisseau... vaisseaux);
+}
+
+public class PlaneteTellurique extends Planete implements Habitable {
+
+    public void accueillirVaisseaux(Vaisseau... vaisseaux) { // ++
+        
+        for (Vaisseau vaisseau : vaisseaux) {
+
+            if (vaisseau instanceof VaisseauDeGuerre) {
+                // transtypage
+                ((VaisseauDeGuerre) vaisseau).desactiverArmes();
+            }
+
+            for (int i = 0; i < vaisseauxAccostes.length; i++) {
+                if (vaisseauxAccostes[i] == null) {
+                    vaisseauxAccostes[i] = vaisseau;
+                    break; // s'arrête à la première occurence trouvée
+                }
+            }
+        }
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        VaisseauDeGuerre chasseurA = new VaisseauDeGuerre(TypeVaisseau.CHASSEUR);
+        VaisseauDeGuerre chasseurB = new VaisseauDeGuerre(TypeVaisseau.CHASSEUR);
+        VaisseauCivil cargoA = new VaisseauCivil(TypeVaisseau.CARGO);
+        terre.accueillirVaisseaux(chasseurA, chasseurB, cargoA); // ++
+    }
+}
+
+// • la méthode main : point d'entrée du programme
+
+// public static void main(String... args) : point d'entrée
+public static void main(String... args) {}
+// peut se trouver dans n'importe quelle classe
+// Pour donner des args à ce main => Run => Edit Configurations => Program arguments
+// pour les récupérer dans le code = args[0]
+
+// • tableau multidimensionnel (tableau de tableaux)
+int[][] tableauDeuxDimensions = new int[5][3]; // 5 : colonnes, 3 : lignes
+System.out.println(Arrays.deepToString(tableauDeuxDimensions));
+// rendu : [[0, 0, 0], [0, 0, 12], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+tableauDeuxDimensions[1][2] = 12; // valorise la 2° colonne et la 3ème ligne
+// deuxième tableau, 3ème valeur
+// rendu : [[0, 0, 0], [0, 0, 12], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+// boucle dans le tableau multi
+public static void main(String... args) {
+
+    for (int col = 0; col < tableauDeuxDimensions.length; col++) {
+
+        for (int lines = 0; lines < tableauDeuxDimensions[col].length; lines++) {
+            System.out.println("L'élément contenu à la position " + col + "," + lines + " vaut "
+                    + tableauDeuxDimensions[col][lines]);
+            // L'élément contenu à la position 1,2 vaut 12
+        }
+    }
+}
+
+
+// ex. planètes
+public class PlaneteTellurique extends Planete implements Habitable {
+
+    Vaisseau[][] vaisseauxAccostes; // ++
+
+    PlaneteTellurique(String nom, int tailleBaie) {
+        super(nom);
+        this.vaisseauxAccostes = new Vaisseau[2][tailleBaie]; 
+        // 2 tableaux pour un nombre de vaisseaux admis identique
+        // ex [[0,0,0], [0,0,0]] : 3 vaisseaux de Guerre + 3 vaisseaux civils
+    }
+
+    public void accueillirVaisseaux(Vaisseau... vaisseaux) { // ++
+        
+        for (int i = 0; i < vaisseaux.length; i++) { // ++
+
+            int indexType = 0;
+
+            switch (vaisseaux[i].type) {
+                case CARGO: // pas de break, on continue
+                case VAISSEAUMONDE:
+                    indexType = 1;
+            }
+
+            for (int index = 0; index < vaisseauxAccostes[indexType].length; index++) {
+                if (vaisseauxAccostes[indexType][index] == null) {
+                    vaisseauxAccostes[indexType][index] = vaisseaux[i];
+                    break;
+                }
+            }
+
+            if (vaisseaux[i] instanceof VaisseauDeGuerre) { // ++
+                // transtypage
+                ((VaisseauDeGuerre) vaisseaux[i]).desactiverArmes();
+            }
+        }
+    }
+
+    boolean restePlaceDisponible(Vaisseau vaisseau) { // ++
+        
+        int indexType = 0;
+
+        // if (vaisseau instanceof VaisseauDeGuerre) // autre possibilité
+
+        switch (vaisseau.type) {
+            case CARGO: // pas de break, on continue
+            case VAISSEAUMONDE:
+                indexType = 1;
+        }
+
+        for (int index = 0; index < vaisseauxAccostes[indexType].length; index++) {
+            if (vaisseauxAccostes[indexType][index] == null) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        if (!planete.restePlaceDisponible(vaisseau)) { // ++
+            System.out.println("Le vaisseau ne peut pas se poser sur la planète par manque de place dans la baie.");
+        } else {
+            planete.accueillirVaisseaux(vaisseau);
+            int rejet = vaisseau.emporterCargaison(tonnage);
+            System.out.println("Le rejet est de " + rejet);
+        }
+    }
+}
+
+
+// • Les collections
+// ensemble d'éléments sous forme d'objets
+// on fait appel à une classe pour ce genre de processus
+// 4 types de classe : List, Set, Map, Queue
+
+// • List 
+// collections qui peuvent contenir plusieurs fois le même élément
+// List est une interface
+
+// import java.util.ArrayList; // ++
+// import java.util.List; // ++
+
+public class HelloWorld {
+    public static void main(String... args) {
+
+        Voiture peugeot206 = new Voiture();
+        peugeot206.color = "rouge";
+        Voiture peugeot207 = new Voiture();
+        peugeot207.color = "verte";
+
+        List list = new ArrayList(); // bonne pratique : utiliser le type de l'interface
+        // list.add(/* rajout d'un objet*/);
+        list.add(peugeot206); // index 0
+        list.add(3); // rajout dans la liste d'un Integer grâce à l'auto-boxing, index 1
+        list.add(peugeot206); // index 2
+        list.remove(peugeot206); // supprime le premier élément rencontré, i.e index 0
+        // les index sont réarrangés => 3 => index 0
+        Object object = list.get(0); // récupère l'objet de l'index 0
+        System.out.println("L'objet a l'index 0 est : " + object);
+        // L'objet a l'index 0 est : 3
+        Voiture voiture = (Voiture) list.get(1); // transtypage : Object => Voiture
+        System.out.println("La voiture à l'index 1 est de couleur " + voiture.color);
+        // La voiture à l'index 1 est de couleur rouge
+
+        // En général un seul type nous intérésse pour une collection
+        // collection de Voitures, d'entiers, etc.
+        // l'opérateur <diamant> permet de préciser ce qui est attendu dans la
+        // collection
+        List<Voiture> listVoiture = new ArrayList();
+        listVoiture.add(peugeot206);
+        listVoiture.add(peugeot207);
+        listVoiture.add(peugeot206);
+        Voiture voiture2 = listVoiture.get(1); // plus besoin de transtypage
+        // listVoiture.get() retournera obligatoirement un objet de type Voiture
+    }
+}
+
+// ex. planètes
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        Galaxie systemeSolaire = new Galaxie(); // ++
+        systemeSolaire.nom = "Système solaire";
+        systemeSolaire.planetes.add(mercure);
+        systemeSolaire.planetes.add(venus);
+        systemeSolaire.planetes.add(terre);
+        systemeSolaire.planetes.add(mars);
+        systemeSolaire.planetes.add(jupiter);
+        systemeSolaire.planetes.add(saturne);
+        systemeSolaire.planetes.add(uranus);
+        systemeSolaire.planetes.add(neptune);
+
+        boolean recommencer = true; // ++
+
+        while (recommencer) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Quel type de VAISSEAU souhaitez-vous manipuler ?");
+            String ship = scanner.nextLine();
+            System.out.println("Sur quelle planète (tapez l'index) souhaitez-vous atterrir ?");
+            int planet = scanner.nextInt(); // ++
+            scanner.nextLine(); // ++
+            Planete p = systemeSolaire.planetes.get(planet);
+            if (p instanceof PlaneteGazeuse) { // ++
+                System.out.println("La planète choisie n'est pas tellurique !");
+                continue; // retourne au début
+            }
+            
+            // ...
+
+            PlaneteTellurique planete = (PlaneteTellurique) p; // plus besoin de switch
+
+            if (!planete.restePlaceDisponible(vaisseau)) { // ++
+                System.out.println("Le vaisseau ne peut pas se poser sur la planète par manque de place dans la baie.");
+            } else {
+                planete.accueillirVaisseaux(vaisseau);
+                int rejet = vaisseau.emporterCargaison(tonnage);
+                System.out.println("Le rejet est de " + rejet);
+            }
+
+            System.out.println("Voulez-vous recommencer ?");
+            recommencer = scanner.nextLine().equalsIgnoreCase("oui"); // ++
+        }
+    }
+}
+
+// • Set : collections qui ne PEUVENT PAS contenir 2x le même élément
+// une collection de type HashSet n'est pas ordonnée
+// la position des éléments est imprévisible
+
+// import java.util.*; // ++
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        Set<Voiture> set = new HashSet();
+        set.add(peugeot206);
+        set.add(peugeot206); // sera ignoré
+        System.out.println(set.size()); // 1
+        Voiture exemple = (Voiture) set.toArray()[0];
+        // transtypage d'objet à Voiture
+        // récupère le premier élement du Set sous forme de tableau
+    }
+}
+
+// • foreach : itérer sur une collection
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        set.add(peugeot207);
+
+        for (Voiture voitureSet : set) {
+            System.out.println(voitureSet.color);
+            // on ne peut pas modifier la collection pendant son parcours
+            // ex. ajouter ou retirer une voiture
+        }
+
+        // autre façon de faire une boucle :
+        Iterator<Voiture> it = set.iterator();
+        while (it.hasNext()) {
+            Voiture voitureI = it.next();
+            System.out.println(voitureI.color);
+        }
+
+    }
+}
+
+
+// ex. planètes
+
+// import java.util.HashSet;
+/// import java.util.Set;
+
+public class Galaxie {
+
+    String nom;
+    Set<Planete> planetes = new HashSet();
+
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        while (recommencer){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Quel type de VAISSEAU souhaitez-vous manipuler ?");
+            String ship = scanner.nextLine();
+
+            System.out.println("Sur quelle planète souhaitez-vous atterrir ?");
+            String planet = scanner.nextLine(); // ++
+
+            Planete p = null;
+
+            for (Planete planete : systemeSolaire.planetes) { // cherche la planete dans la collection
+                if (planete.nom.equals(planet)) {
+                    p = planete;
+                    break; // je sors de la boucle
+                }
+            }
+        }
+    }
+}
+
+// • Map : référence chaque élément par une clé
+
+// import java.util.*;
+
+public class HelloWorld {
+    
+    public static void main(String... args) {
+
+        Voiture peugeot206 = new Voiture();
+        peugeot206.color = "rouge";
+        Voiture peugeot207 = new Voiture();
+        peugeot207.color = "verte";
+
+        Map map = new HashMap();
+        map.put("206", peugeot206); // put(clé, valeur)
+        map.put(6, "Hello");
+        // en général, les clés sont du même type, comme les valeurs
+
+        Map<String, Voiture> map2 = new HashMap(); // Map<type clé, type valeur>
+        map2.put("206", peugeot206);
+        map2.put("207", peugeot207);
+        Voiture peugeot = (Voiture) map.get("206"); // récupère la peugeot 206
+        System.out.println("Couleur de la voiture : " + peugeot.color); // rouge
+        // foreach
+        for (Map.Entry<String, Voiture> entry : map2.entrySet()) { // Map.Entry contient objets clé + objet valeur
+            String key = entry.getKey();
+            Voiture value = entry.getValue();
+            System.out.println("La peugeot " + key + " est de couleur " + value.color);
+            // La peugeot 206 est de couleur rouge
+            // La peugeot 207 est de couleur verte
+        }
+
+        for (String key : map2.keySet()) { // pour n'itérer que sur les clés
+            // renvoie un set (car les clés sont uniques)
+            System.out.println("La peugeot " + key);
+            // La peugeot 206
+            // La peugeot 207
+        }
+
+        for (Voiture value : map2.values()) { // pour n'itérer que sur les valeurs
+            // renvoie une List, car doublons possibles
+            System.out.println("La peugeot sélectionnée est de couleur " + value.color);
+            // La peugeot sélectionnée est de couleur rouge
+            // La peugeot sélectionnée est de couleur verte
+        }
+    }
+}
+
+// ex. planètes
+
+// import java.util.HashMap;
+// import java.util.Map;
+
+public class Atmosphere {
+    Map<String, Float> constituants = new HashMap();
+}
+
+// import java.util.Map;
+// import java.util.Scanner;
+
+public class HelloUniverse {
+    public static void main(String... args) {
+        
+        new PlaneteTellurique("Mars", 3);
+        mars.diametre = 6792;
+
+        Atmosphere atmosphereMars = new Atmosphere();
+        mars.atmosphere = atmosphereMars;
+        mars.atmosphere.constituants.put("C02", 95f);
+        mars.atmosphere.constituants.put("N2", 3f);
+        mars.atmosphere.constituants.put("AR", 1.5f);
+        mars.atmosphere.constituants.put("NO", 0.013f);
+        System.out.println("L'atmosphère de Mars est constituée de : ");
+        for (Map.Entry<String, Float> entry : mars.atmosphere.constituants.entrySet()) {
+            System.out.println(entry.getValue() + "% de " + entry.getKey());
+            // 95.0% de C02, ect.
+        }
+    }
+}
+
+// l'interface collection et ses méthodes (remove, add, toArray)
+// liste des méthodes :
+// https://docs.oracle.com/javase/8/docs/api/java/util/Collections.html
+
+// import java.util.*;
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        Map<String, Voiture> map2 = new HashMap(); // Map<type clé, type valeur>
+        map2.put("206", peugeot206);
+        map2.put("207", peugeot207);
+
+        System.out.println("Le nombre d'éléments contenus dans la map est de : " + map2.size());
+        System.out.println("La map est-elle vide ? " + map2.isEmpty());
+        // La map est-elle vide ? false
+        System.out.println("La map contient-elle la clé 207 ? " + map2.containsKey("207"));
+        // La map contient-elle la clé 207 ? true
+        System.out.println("La map contient-elle une peugeot 206 ? " + map2.containsValue(peugeot206));
+        // La map contient-elle une peugeot 206 ? true
+        map2.clear();
+        System.out.println("La map est-elle vide ? " + map2.isEmpty());
+        // La map est-elle vide ? true
+
+        // la classe utilitaire Collections permet des opérations classiques sur les collections
+        // par le biais de méthodes statiques
+
+        List<String> list2 = new ArrayList();
+        list2.add("one");
+        list2.add("two");
+        list2.add("tree");
+
+        Collections.replaceAll(list2, "two", "four");
+        // Collections.replaceAll(List, a, b)
+        // remplace les éléments a d'une liste par les éléments b
+
+        for (String string : list2) {
+            System.out.println(string);
+            // one
+            // four
+            // tree
+        }
+
+        // marche aussi avec un objet
+
+        List list3 = new ArrayList();
+        list3.add("one");
+        list3.add("two");
+        list3.add("tree");
+
+        Collections.replaceAll(list3, "two", 2);
+        // Collections.replaceAll(List, a, b)
+        // remplace les éléments a d'une liste par les éléments b
+
+        for (Object object3 : list3) {
+            System.out.println(object3);
+            // one
+            // 2
+            // tree
+        }
+
+    }
+}
+
+// • Trier les collections
+
+// Une classe (String, Integer) qui a un ordre naturel implémente la classe Comparable
+// pour trier, par ex, des objets Voiture => la classe Voiture doit implémenter la classe Comparable
+// puis réécrire la méthode compareTo
+
+public class Carre implements Comparable {
+
+    long cote;
+
+    Carre(long cote) {
+        this.cote = cote;
+    }
+
+    @Override // create comparator
+    public int compareTo(Object o) {
+        Carre autreCarre = (Carre) o;
+        if (this.cote == autreCarre.cote) { return 0; } // equal
+        if (this.cote > autreCarre.cote) { return 1; } // superior
+        return - 1; // inferior
+    }
+}
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        List<Integer> listEntier = new ArrayList();
+        listEntier.add(6);
+        listEntier.add(3);
+        listEntier.add(12);
+        listEntier.add(50);
+        listEntier.add(2);
+
+        Collections.sort(listEntier); // sort
+
+        for (Integer number : listEntier) {
+            System.out.println(number);
+            // 2
+            // 3
+            // 6, ect.
+            // possible car les Integer (classe) disposent d'un ordre naturel
+        }
+
+        List<Carre> listCarre = new ArrayList();
+        listCarre.add(new Carre(10l));
+        listCarre.add(new Carre(8l));
+        listCarre.add(new Carre(50l));
+        listCarre.add(new Carre(2l));
+
+        Collections.sort(listCarre);
+
+        for (Carre carre : listCarre) {
+            System.out.println(carre.cote);
+            // 2
+            // 8
+            // 10
+        }
+    }
+}
+
+// si la propriété était un Long (classe qui a un ordre naturel)
+
+public class Carre implements Comparable {
+    Long cote;
+
+    Carre(long cote) {
+        this.cote = cote;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Carre autreCarre = (Carre) o;
+        return this.cote.compareTo(autreCarre.cote);
+    }
+}
+
+
+// • collections ordonnées pour Set et Map
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        Set<Carre> setCarre = new TreeSet(); // ordonne les éléments
+        setCarre.add(new Carre(10l));
+        setCarre.add(new Carre(8l));
+        setCarre.add(new Carre(50l));
+        setCarre.add(new Carre(2l));
+
+        for (Carre carre : setCarre) {
+            System.out.println(carre.cote);
+            // 2
+            // 8
+            // 10
+        }
+
+        Map<Integer, Carre> mapCarre = new TreeMap(); // ordonne les éléments par la clé
+        mapCarre.put(3, new Carre(10l));
+        mapCarre.put(2, new Carre(8l));
+        mapCarre.put(4, new Carre(50l));
+        mapCarre.put(1, new Carre(2l));
+
+        for (Map.Entry<Integer, Carre> carre : mapCarre.entrySet()) {
+            System.out.println(carre.getKey() + " est le clé de la valeur de côté " + carre.getValue().cote);
+            // 1 est le clé de la valeur de côté 2
+            // 2 est le clé de la valeur de côté 8
+            // 3 est le clé de la valeur de côté 10
+        }
+
+        Map<Carre, Voiture> mapCarre2 = new TreeMap(); // ordonne les éléments par la clé
+        mapCarre2.put(new Carre(10l), peugeot206);
+        mapCarre2.put(new Carre(8l), peugeot206);
+        mapCarre2.put(new Carre(50l), peugeot207);
+        mapCarre2.put(new Carre(2l), peugeot207);
+
+        for (Map.Entry<Carre, Voiture> carre : mapCarre2.entrySet()) {
+            System.out.println(carre.getKey().cote + " est le clé de la valeur Voiture de couleur "
+                    + carre.getValue().color);
+            // 2 est le clé de la valeur Voiture de couleur verte
+            // 8 est le clé de la valeur Voiture de couleur rouge
+            // 10 est le clé de la valeur Voiture de couleur rouge
+        }
+    }
+}
+
+// ex. planètes : ordonner les planètes par ordre de distance avec le soleil
+
+// import java.util.Set;
+// import java.util.TreeSet;
+
+public class Galaxie {
+
+    String nom;
+    Set<Planete> planetes = new TreeSet(); // créé un set ordonné
+
+}
+
+public abstract class Planete implements Comparable {
+
+    float distanceEtoile; // ++
+
+    // ordonne les planètes par ordre de distance avec le soleil
+
+    // Code => implement methods in IntelliJ (n'affiche pas d'erreur car classe abstraite)
+    @Override
+    public int compareTo(Object o) {
+        Planete planete2 = (Planete) o;
+        if (this.distanceEtoile == planete2.distanceEtoile) { return 0; }
+        if (this.distanceEtoile > planete2.distanceEtoile) {return 1; }
+        return -1;
+
+        // plus simple :
+        // Float distanceEtoileF = (Float) this.distanceEtoile;
+        // return distanceEtoileF.compareTo(planete2.distanceEtoile);
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        PlaneteTellurique mars = new PlaneteTellurique("Mars", 3);
+        mars.diametre = 6792;
+        mars.distanceEtoile = 227.9f;
+        // etc.
+
+        Galaxie systemeSolaire = new Galaxie(); // ++
+        systemeSolaire.nom = "Système solaire";
+        systemeSolaire.planetes.add(mercure);
+        // ect.
+
+        for (Planete planete : systemeSolaire.planetes) {
+            System.out.println(planete.nom + " " + planete.distanceEtoile);
+            // Mercure 57.9
+            // Venus 108.2
+            // Terre 149.6
+            // ordonnées par distance avec le soleil
+        }
+    }
+}
+
+
+// • L'équivalence d'objets : equals() et hashCode()
+// il est conseillé de redéfinir la méthode equals() d'une classe qui implémente Comparable
+// car equals() se base sur la méthode compareTo()
+// pour des ordres plus poussés :
+// https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html
+
+public class Carre implements Comparable {
+    Long cote;
+
+    Carre(long cote) {
+        this.cote = cote;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Carre autreCarre = (Carre) o;
+        if (this.cote == autreCarre.cote) { return 0; } // equal
+        if (this.cote > autreCarre.cote) { return 1; } // superior
+        return - 1; // inferior
+    }
+
+    // Code => Override Methods dans IntelliJ
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Carre)) {
+            return false;
+        }
+        Carre carre2 = (Carre) obj;
+        return this.cote == carre2.cote;
+    }
+
+    // redéfinir equals() oblige à redéfinir hashCode()
+    // retourne un entier unique
+    // sauf si équivalents
+    // appelé avec equals()
+
+    @Override
+    public int hashCode() {
+        return this.cote.hashCode(); // appelé sur un type objet
+        // dépendant du hashCode du côté
+        // deux côtés égaux auront le même hashCode
+    }
+}
+
+// import java.util.Objects;
+
+public class Bateau implements Amarrable {
+
+    // les méthodes equals() et hashCode()
+    // ont été générées grâce à Code => Generate de IntelliJ
+
+    int masse;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bateau bateau = (Bateau) o;
+        return masse == bateau.masse;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(masse);
+    }
+
+}
