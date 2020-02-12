@@ -2912,3 +2912,461 @@ public class Bateau implements Amarrable {
     }
 
 }
+
+
+// IX) ORGANISER ET GERER L'ACCES AUX CLASSES
+
+// les répertoires se nomment packages
+// New => Package => nomdupackageenminuscule ex. transport
+// faire les déplacements puis Refactor puis Do Refactor
+// un package dans un autre package donne transport.terrestre
+
+package transport.terrestre; // nom du repertoire
+import transport.UsineAssemblage; // nom des classes utilisées dans le fichier
+
+// il est recommandé que toute classe possède un répertoire
+// pb du "..." is not public in demonstration.Ville
+package demonstration;
+
+public class Ville {
+
+    public String nom; // rajout du public
+
+}
+
+// toute classe utilisée s'importe, sauf les interfaces
+// import java.util.*; importe toutes les classes utilitaires
+// a éviter pour ne pas tomber sur des pbs de compatibilité (plusieurs classes du même nom)
+// utiliser deux List dans le code :
+List<Voiture> listVoiture = new ArrayList();
+java.awt.List awList = new java.awt.List();
+// niveau de package :
+com // nom de domaine internet de l'entreprise propriétaire du logiciel
+    udemy
+        nomduprojet // com.udemy.nomduprojet // après c'est comme bon nous semble
+
+// ex. planètes 
+com
+    espcacex 
+            decouverte 
+                enginsspatiaux
+                    // files
+                objetsastro
+                    // files
+            HelloUniverse.java // main file
+
+// message erreur : Error:(24, 34) java: an enum switch case label must be the
+// unqualified name of an enumeration constant
+switch(vaisseaux[i].type) {
+    case CARGO: // remplace TypeVaisseau.CARGO
+    case VAISSEAUMONDE: // remplace TypeVaisseau.VAISSEAUMONDE
+        indexType = 1;
+}
+
+// • l'import statique
+// (à n'utiliser que si les attributs/methodes statiques sont utilisées de façon intensive)
+
+System.out.println("Le nombre PI vaut " + Math.PI);
+// pour utiliser plusieurs fois Math.PI => import static java.lang.Math.PI;
+System.out.println("Le nombre PI vaut " + PI);
+// import static java.lang.Math.abs;
+int absMoinsDouze = abs(-12);
+System.out.println(absMoinsDouze); // 12
+
+// ex. planetes 
+
+// import com.espacex.decouverte.enginsspatiaux.TypeVaisseau;
+
+// import static com.espacex.decouverte.enginsspatiaux.TypeVaisseau.VAISSEAUMONDE;
+// import static com.espacex.decouverte.enginsspatiaux.TypeVaisseau.CARGO;
+// import static com.espacex.decouverte.enginsspatiaux.TypeVaisseau.CHASSEUR;
+// import static com.espacex.decouverte.enginsspatiaux.TypeVaisseau.FREGATE;
+// import static com.espacex.decouverte.enginsspatiaux.TypeVaisseau.CROISEUR;
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+        Vaisseau chasseur = new VaisseauDeGuerre();
+        chasseur.type = CHASSEUR; // avant : chasseur.type = TypeVaisseau.CHASSEUR;
+        }
+    }
+}
+
+// • visibilité ou modificateur d'accès 
+
+// 4 modificateurs d'accès : public, private, protected, package
+// public : accessible depuis partout (par défaut pour les méthodes/attributs interfaces)
+// package : par défaut : accessible pour n'importe classe présente dans le package
+// private : réduit l'accès à la classe courante
+// protected : accessible à la classe courante, à toute classe dans le même package,
+// toute classe héritante de la classe courante
+// chaque méthode réécrite doit être plus permissive
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    private boolean armesDesactivees; // ++
+
+    public void desactiverArmes() {
+        armesDesactivees = true;
+        System.out.println("Désactivation des armes d'un vaisseau de type " + this.type);
+    }
+
+    public void activerArmes() {
+        armesDesactivees = false;
+        System.out.println("Activation des armes d'un vaisseau de type " + this.type);
+    }
+}
+
+// • l'encapsulation des propriétés
+
+// utiliser la convention JavaBeans : https://fr.wikipedia.org/wiki/JavaBeans
+// tout attribut private, getters & setters, constructeur publique sans paramètres
+// accesseur ou getter => lire la propriété en lecture seule
+// mutateur ou setter => modifier la propriété
+// IntelliJ => Generate => Getter & Setter
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    private String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+
+
+Voiture peugeot206 = new Voiture();
+peugeot206.setColor("rouge"); // ++ 
+
+// • ajout de commentaire et javadoc
+// https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html
+// https://docs.oracle.com/javase/8/docs/api/
+
+/*
+comment
+sur plusieurs
+lignes
+*/
+
+// comment sur un ligne
+
+/**
+ * comment javadoc : devant la déclaration d'une classe, méthode, attribut
+ */
+
+// Tools => Generate Javadoc pour une vue d'ensemble
+
+// • le mot clé final : ne pourra plus être modifié
+// pour une propriété final, il faut déclarer la valeur lors de la déclaration
+final static int NB_ROUES = 4; // constante car ne change pas
+
+public final class UsineAssemblage { // classe ne peut être étendue
+
+    public final VehiculeMoteur assemble() { // méthode ne peut être réécrite
+        Moteur moteur = new Moteur();
+        VehiculeMoteur vam = new VehiculeMoteur(moteur);
+        return vam;
+    }
+}
+
+// ex. planetes : rendre le type de vaisseau immuable (il ne changera jamais)
+
+public abstract class Vaisseau {
+
+    public final TypeVaisseau type;
+
+    Vaisseau(TypeVaisseau type) { // indipensable pour donner une valeur à l'attribut type
+        this.type = type;
+    }
+}
+
+public class VaisseauCivil extends Vaisseau {
+
+    public VaisseauCivil(TypeVaisseau type) {
+
+        super(type); // fait appel au constructeur parent avec le type en paramètres
+
+        if (type == CARGO) {
+            this.tonnageMax = 500;
+        }
+        else if (type == VAISSEAUMONDE) {
+            this.tonnageMax = 2000;
+        }
+    }
+}
+
+
+// XI) SCENARIOS ALTERNANTIFS
+
+// • La classe Exception, le mot clé throws
+
+// 1) créer son scénario
+public class Voiture extends Vehicule implements Vidangeable {
+
+    private String immatriculation; // ++
+
+    // mot clé throws + classes d'exceptions susceptibles d'être appelées
+    // throws Exception pour un cas simple
+    public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException, 
+        ImmatriculationPresenteException { // ++
+        if (numeroImmatriculation.length() != 9) {
+            // cas d'exception
+            // il faut choisir une classe qui se rapproche du cas d'exception
+            // classe générique : java.lang.Exception
+            // on peut aussi créer ses exceptions
+            throw new CaracteresInvalidesException(
+                    "Le numéro " + numeroImmatriculation + " a un nombre de caractères invalide");
+            // tout est interrompu
+        }
+        if (this.immatriculation != null) {
+            // deuxieme exception
+        }
+        this.immatriculation = numeroImmatriculation;
+    }
+}
+
+// 2) créer sa classe d'exception
+public class CaracteresInvalidesException extends Exception{
+
+    // Generate => constructor with message in parameters
+
+    public CaracteresInvalidesException(String message) {
+        super(message);
+    }
+}
+
+// • attraper une exception avec try et catch
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException {
+        
+        if (numeroImmatriculation.length() != 9) {
+            throw new CaracteresInvalidesException(
+                    "Le numéro " + numeroImmatriculation + " a un nombre de caractères invalide");
+        }
+        
+        this.immatriculation = numeroImmatriculation;
+    }
+}
+
+public class CaracteresInvalidesException extends Exception{
+
+    // Generate => constructor with message in parameters
+    public CaracteresInvalidesException(String message) {
+        super(message);
+    }
+}
+
+public class UsineAssemblageVoiture extends UsineAssemblage {
+
+    public Voiture assemble() {
+
+        Voiture v = new Voiture();
+        // sélectionner la partie qui pose pb => Code
+        // => Surrond With try/catch
+        try {
+            v.immatriculer("aaa"); // partie qui peut poser pb
+            System.out.println("Tout s'est bien passé");
+        } catch (CaracteresInvalidesException e) {
+            System.out.println("Un problème est survenu");
+            // e.printStackTrace();
+            e.getMessage();
+        }
+}
+
+public class HelloWorld {
+
+    public static void main(String... args) {
+
+        UsineAssemblageVoiture uav = new UsineAssemblageVoiture();
+        uav.assemble();
+        // Un problème est survenu
+        // com.udemy.decouvertejava.demonstration.CaracteresInvalidesException: 
+        // Le numéro aaa a un nombre de caractères invalide
+    }
+}
+
+// ex. planetes : création d'une exception en cas de dépassement de tonnage
+
+public class DepassementTonnageException extends Exception {
+
+    public int tonnageEnExces; // stoque en mémoire l'excès
+
+    public DepassementTonnageException(int tonnageEnExces) {
+        super("La cargaison ne peut être chargée car elle présente un excès de " + tonnageEnExces);
+        this.tonnageEnExces = tonnageEnExces;
+    }
+}
+
+public abstract class Vaisseau {
+
+    // la méthode qui accueille l'exception
+    public abstract void emporterCargaison(int cargaison) throws DepassementTonnageException;
+}
+
+public class VaisseauDeGuerre extends Vaisseau {
+
+    @Override
+    public void emporterCargaison(int cargaison) throws DepassementTonnageException {
+
+        if (this.type.equals("CHASSEUR") || this.nbPassagers < 12) {
+            throw new DepassementTonnageException(cargaison); // ++
+        } else {
+            // ...
+            if (cargaison > tonnageRésultat) {
+                int tonnageEnExces = cargaison - tonnageRésultat; // ++
+                throw new DepassementTonnageException(tonnageEnExces); // ++
+            } else {
+                this.tonnageActuel += cargaison;
+            }
+        }
+    }
+}
+
+public class VaisseauCivil extends Vaisseau {
+
+    @Override
+    public void emporterCargaison(int cargaison) throws DepassementTonnageException {
+        int tonnageRestant = this.tonnageMax - this.tonnageActuel;
+
+        if (cargaison > tonnageRestant) {
+            this.tonnageActuel = this.tonnageMax;
+            int tonnageEnExces = cargaison - tonnageRestant; // ++
+            throw new DepassementTonnageException(tonnageEnExces); // ++
+        } else {
+            this.tonnageActuel += cargaison;
+        }
+    }
+}
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+            if (!planete.restePlaceDisponible(vaisseau)) { // ++
+                System.out.println("Le vaisseau ne peut pas se poser sur la planète par manque de place dans la baie.");
+            } else {
+                planete.accueillirVaisseaux(vaisseau);
+                try {
+                    vaisseau.emporterCargaison(tonnage); // erreur : on l'entoure d'un try/catch
+                } catch (DepassementTonnageException depassement) {
+                    System.out.println("Le vaisseau a rejeté " + depassement.tonnageEnExces + " tonnes");
+                    System.out.println("Voulez-vous emporter un tonnage partiel à hauteur de "
+                            + (tonnage - depassement.tonnageEnExces) + " (oui/non) ?");
+                    String depassementPartiel = scanner.nextLine();
+                    if (depassementPartiel.equals("oui")) {
+                        try {
+                            vaisseau.emporterCargaison(tonnage - depassement.tonnageEnExces);
+                            // erreur : on l'entoure d'un nouveau try/catch
+                        } catch (DepassementTonnageException e) {
+                            System.out.println("Erreur inattendue lors de l'import de cargaison");
+                        }
+                    } else {
+                        System.out.println("Opération annulée.");
+                    }
+                }
+            }
+
+            System.out.println("Voulez-vous recommencer ?");
+            recommencer = scanner.nextLine().equalsIgnoreCase("oui"); // ++
+        }
+    }
+}
+
+// • le mot clé finally : toujours exécuté qu'une exception soit rejetée ou non
+
+try {
+    // exécute ce code si tout va bien
+} catch (Exception e) {
+    // exécute ce code si erreur
+} finally {
+    // exécute ce code dans tous les cas
+    // même s'il y a un return plus haut
+}
+
+// • cas des exceptions multiples
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException,
+            ImmatriculationPresenteException { // ++
+        if (numeroImmatriculation.length() != 9) {
+            throw new CaracteresInvalidesException("Le numéro " + numeroImmatriculation +
+                    " a un nombre de caractères invalide");
+        }
+        if (this.immatriculation != null) {
+            // deuxieme exception
+            throw new ImmatriculationPresenteException("La voiture est déjà immatriculée : " + this.immatriculation);
+        }
+        this.immatriculation = numeroImmatriculation;
+    }
+}
+
+public class UsineAssemblageVoiture extends UsineAssemblage {
+    
+    public Voiture assemble() {
+
+        Voiture v = new Voiture();
+
+        try {
+            v.immatriculer("AAA111AAA");
+            v.immatriculer("AAA111BBB"); // immatriculation déjà présente
+            System.out.println("Tout s'est bien passé");
+        } catch (CaracteresInvalidesException e) {
+            System.out.println("Un problème est survenu");
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        } catch (ImmatriculationPresenteException i) {
+            System.out.println(i.getMessage());
+        }
+        finally {
+            System.out.println("Ce message s'affiche dans tous les cas");
+        }
+
+        return v;
+    }
+
+}
+
+public class HelloWorld {
+
+    UsineAssemblageVoiture uav = new UsineAssemblageVoiture();
+    uav.assemble();
+    // La voiture est déjà immatriculée : AAA111AAA
+    // Ce message s'affiche dans tous les cas
+}
+
+// 2ème solution
+try {
+    v.immatriculer("AAA111AAA");
+    v.immatriculer("AAA111BBB");
+    System.out.println("Tout s'est bien passé");
+} catch (UneAutreException e) { // ++
+    System.out.println("Une autre exception");
+} catch (Exception i) { // ++
+    System.out.println(i.getMessage());
+    // Exception pour les 2 exceptions qui agissent de la même manière
+}
+finally {
+    System.out.println("Ce message s'affiche dans tous les cas");
+}
+
+// 3ème solution, la plus intelligente : chainer les exceptions
+try {
+    v.immatriculer("AAA111AAA");
+    v.immatriculer("AAA111BBB");
+    System.out.println("Tout s'est bien passé");
+} catch (CaracteresInvalidesException | ImmatriculationPresenteException i) { // ++
+    System.out.println(i.getMessage());
+}
+finally {
+    System.out.println("Ce message s'affiche dans tous les cas");
+}
+
+
