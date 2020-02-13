@@ -3292,6 +3292,22 @@ try {
 
 // • cas des exceptions multiples
 
+public class CaracteresInvalidesException extends Exception{
+
+    // Generate => constructor with message in parameters
+    public CaracteresInvalidesException(String message) {
+        super(message); // fait appel au constructeur parent (Exception)
+        // avec le message en paramètre
+    }
+}
+
+public class ImmatriculationPresenteException extends Exception{
+
+    public ImmatriculationPresenteException(String message) {
+        super(message);
+    }
+}
+
 public class Voiture extends Vehicule implements Vidangeable {
 
     public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException,
@@ -3367,6 +3383,116 @@ try {
 }
 finally {
     System.out.println("Ce message s'affiche dans tous les cas");
+}
+
+// • RuntimeException et Error : les exceptions de type "unchecked"
+
+// java.lang.Throwable a 2 classes filles : Exception et Error
+// Error pour des problèmes liés à l'environnement
+// throw n'est pas indispensable
+// pas besoin de le vérifier dans un bloc catch : exceptions de type "unchecked"
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException,
+            ImmatriculationPresenteException { // ++
+
+        throw new UnknownError("Erreur inconnue");
+        // pas besoin de déclarer la classe dans la déclaration de la méthode
+    }
+}
+
+public class UsineAssemblageVoiture extends UsineAssemblage {
+    
+    public Voiture assemble() {
+        
+        try {
+            v.immatriculer("AAA111AAA");
+            v.immatriculer("AAA111BBB");
+            System.out.println("Tout s'est bien passé");
+        } catch (CaracteresInvalidesException | ImmatriculationPresenteException i) {
+            System.out.println(i.getMessage());
+        } catch (UnknownError ue) {
+            System.out.println("Erreur inconnue attrapée"); 
+            // possible d'attraper l'erreur dans un catch
+            // pas obligatoire
+        }
+        finally {
+            System.out.println("Ce message s'affiche dans tous les cas");
+        }
+
+        return v;
+    }
+
+}
+
+// java.lang.RunTimeException est la classe fille de Exception
+// également de type unchecked
+// pas nécessaire de les déclarer
+// ni de les attrapper
+
+public class Voiture extends Vehicule implements Vidangeable {
+
+    public void immatriculer(String numeroImmatriculation) throws CaracteresInvalidesException,
+            ImmatriculationPresenteException {
+        
+        System.out.println("Le numéro est actuellement de longueur " + this.immatriculation.length());
+        // this.immatriculation est null par défaut, un NullPointerException va être lancé
+        
+    }
+}
+
+public class UsineAssemblageVoiture extends UsineAssemblage {
+
+    public Voiture assemble() {
+
+        try {
+            v.immatriculer("AAA111AAA");
+            v.immatriculer("AAA111BBB");
+            System.out.println("Tout s'est bien passé");
+        } catch (CaracteresInvalidesException | ImmatriculationPresenteException i) {
+            System.out.println(i.getMessage());
+            // Exception pour les 2 exceptions qui agissent de la même manière
+        } catch (NullPointerException npe) {
+            System.out.println("NullPointerException attrapé"); 
+            // possible d'attraper l'erreur dans un catch
+        }
+        finally {
+            System.out.println("Ce message s'affiche dans tous les cas");
+        }
+
+        return v;
+    }
+}
+
+// ex. planètes : vérifier que le nombre renseigné (tonnage) est bien un nombre
+
+public class HelloUniverse {
+
+    public static void main(String... args) {
+
+            // ...
+
+            int tonnage;
+
+            while (true) {
+
+                System.out.println("Quel tonnage de cargaison souhaitez-vous embarquer ?");
+
+                try {
+                    tonnage = scanner.nextInt(); // n'effectue pas de saut de ligne
+                    // ici, il retourne la valeur précédente
+                    break; // tout va bien, on sort de la boucle
+                } catch (InputMismatchException ime) { // InputMismatchException est un RunTimeException
+                    System.out.println("Le nombre renseigné n'est pas un entier !");
+                } finally {
+                    scanner.nextLine(); // fait le saut de ligne nécéssaire
+                    // pour éviter que la même valeur tourne en boucle
+                }
+            }
+
+            // ...
+    }
 }
 
 
