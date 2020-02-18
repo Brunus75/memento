@@ -556,3 +556,215 @@ app.component.html
 ○ A retenir :
 Essayez d'éviter de mettre la logique de votre application dans vos templates. 
 Gardez-les le plus simple possible !
+
+
+V) LES DIRECTIVES
+
+○ Une directive ?
+classe Angular, proche d'un composant, sans template
+réagit avec les éléments HTML en leur attachant un comportement
+est activée par un sélecteur CSS
+types de directives :
+* composants 
+* directives d'attributs
+* directives structurelles (manipulent les éléments HTML, ex. ngIf et ngFor)
+
+○ Créer une directive d'attribut 
+but : changer l'apparence ou le comportement d'un élément
+// ajoute une bordure en hover
+// les photos de la même hauteur
+src/app/border-card.directive.ts
+import { Directive, ElementRef } from '@angular/core';
+// ElementRef : objet du DOM sur lequel on applique la directive
+
+@Directive({
+  selector: '[pkmnBorderCard]' // nom de l'attribut qui déclenche la directive
+  // crée une instance de la directive
+  // il est recommandé de préfixer le nom des directives (pour éviter collisions)
+  // ne pas utiliser ng
+  // utiliser cameCase
+})
+export class BorderCardDirective {
+  constructor(private el: ElementRef) {
+    this.setBorder('#f5f5f5');
+    this.setHeight(180);
+  }
+
+  private setBorder(color: string) {
+    let border = 'solid 4px ' + color;
+    this.el.nativeElement.style.border = border;
+  }
+
+  private setHeight(height: number) {
+    this.el.nativeElement.style.height = height + 'px';
+  }
+}
+
+○ Prendre en compte les actions de l'utilisateur
+but: déclencher la directive au hover 
+import { Directive, ElementRef, HostListener } from '@angular/core';
+// ElementRef : objet du DOM sur lequel on applique la directive
+// HostListener : lier une méthode de la directive à un event
+
+@Directive({
+  selector: '[pkmnBorderCard]'
+})
+export class BorderCardDirective {
+  constructor(private el: ElementRef) {
+    this.setBorder('#f5f5f5');
+    this.setHeight(180);
+  }
+
+  // déclenché à l'evenement mouseenter
+  @HostListener('mouseenter') onMouseEnter() {
+    this.setBorder('#009688');
+  }
+
+  // ++
+  @HostListener('mouseleave') onMouseLeave() {
+    this.setBorder('#f5f5f5');
+  }
+
+  private setBorder(color: string) {
+    let border = 'solid 4px ' + color;
+    this.el.nativeElement.style.border = border;
+  }
+
+  private setHeight(height: number) {
+    this.el.nativeElement.style.height = height + 'px';
+  }
+}
+
+○ Utiliser la directive 
+importer la nouvelle directive dans app.module.ts 
+import { BorderCardDirective } from './border-card.directive'; // ++
+
+@NgModule({
+  imports: [BrowserModule],
+  declarations: [AppComponent, BorderCardDirective], // ++
+  bootstrap: [AppComponent]
+})
+
+utiliser l'attribut (et sa directive) dans app.component.html 
+<div class="card horizontal" (click)="selectPokemon(pokemon)" pkmnBorderCard></div>
+
+○ Ajouter un paramètre à la directive 
+but : personnaliser la couleur de la bordure
+border-card.directive.ts 
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+// Input : pour préciser la propriété d'entrée
+
+@Directive({
+  selector: '[pkmnBorderCard]'
+})
+export class BorderCardDirective {
+  constructor(private el: ElementRef) {
+    this.setBorder('#f5f5f5');
+    this.setHeight(180);
+  }
+
+  @Input('pkmnBorderCard') borderColor: string; // ++
+  // @Input('nomDirective) alias;
+
+  // déclenché à l'evenement mouseenter
+  @HostListener('mouseenter') onMouseEnter() {
+    this.setBorder(this.borderColor || '#009688'); // ++
+    // 2ème choix si l'utilisateur ne choisit rien
+  }
+
+  // ...
+
+}
+
+app.component.html 
+<div class="card horizontal" (click)="selectPokemon(pokemon)" pkmnBorderCard="red"></div>
+// les bordures sont à présent rouges
+
+○ Réorganiser le code 
+border-card.directive.ts 
+export class BorderCardDirective {
+
+  private initialColor: string = '#f5f5f5'; // couleur initiale
+  private defaultColor: string = '#009688'; // couleur si l'utilisateur n'a pas fait de choix
+  private defaultHeight: number = 180; // hauteur par défaut
+
+  constructor(private el: ElementRef) {
+    this.setBorder(this.initialColor);
+    this.setHeight(this.defaultHeight);
+  }
+
+  @Input('pkmnBorderCard') borderColor: string; // ++
+  // @Input('nomDirective) alias;
+
+  // déclenché à l'evenement mouseenter
+  @HostListener('mouseenter') onMouseEnter() {
+    this.setBorder(this.borderColor || this.defaultColor);
+    // 2ème choix si l'utilisateur ne choisit rien
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.setBorder(this.initialColor);
+  }
+
+  private setBorder(color: string) {
+    let border = 'solid 4px ' + color;
+    this.el.nativeElement.style.border = border;
+  }
+
+  private setHeight(height: number) {
+    this.el.nativeElement.style.height = height + 'px';
+  }
+}
+
+app.component.html 
+<div class="card horizontal" (click)="selectPokemon(pokemon)" pkmnBorderCard="blue"></div>
+// mes bordures seront bleues
+
+○ Ajouter un autre paramètre
+border-card.directive.ts 
+export class BorderCardDirective {
+
+  private initialColor: string = '#f5f5f5'; // couleur initiale
+  private defaultColor: string = '#009688'; // couleur si l'utilisateur n'a pas fait de choix
+  private defaultHeight: number = 180; // hauteur par défaut
+
+  constructor(private el: ElementRef) {
+    this.setBorder(this.initialColor);
+    this.setHeight(this.defaultHeight);
+  }
+
+  @Input('pkmnBorderCard') borderColor: string;
+  // @Input('nomDirective) alias;
+  @Input() userHeight: number; // add new input ++
+
+  // déclenché à l'evenement mouseenter
+  @HostListener('mouseenter') onMouseEnter() {
+    this.setBorder(this.borderColor || this.defaultColor);
+    // 2ème choix si l'utilisateur ne choisit rien
+    this.setHeight(this.userHeight || this.defaultHeight); // ++
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.setBorder(this.initialColor);
+    this.setHeight(this.defaultHeight); // ++
+  }
+
+  private setBorder(color: string) {
+    let border = 'solid 4px ' + color;
+    this.el.nativeElement.style.border = border;
+  }
+
+  private setHeight(height: number) {
+    this.el.nativeElement.style.height = height + 'px';
+  }
+}
+
+app.component.html 
+<div class="card horizontal" (click)="selectPokemon(pokemon)" 
+  pkmnBorderCard="orange" userHeight="200"></div>
+
+○ A retenir 
+Angular crée une nouvelle instance de notre directive à chaque fois qu'il détecte un élément HTML
+avec l'attribut correspondant.
+Il injecte alors dans le constructeur de la directive l'élément du DOM ElementRef
+
