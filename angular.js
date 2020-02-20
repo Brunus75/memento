@@ -4,6 +4,12 @@
 // Ressources : https://awesome-angular.com/ebook/
 // https://angular.io/start
 
+RAPPEL 
+* Module : ensemble de fichiers lié à une fonctionnalité de l'appli;
+* Composant : section dynamique et autonome de la page web (code HTML + classe JS);
+* Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
+* Interpolation : fait d'afficher une { propriété } d'un composant dans son template
+
 I) PRESENTATION
 
 Angular est orienté composant;
@@ -1147,4 +1153,346 @@ export class AppModule { }
 * L'opérateur permettant d'intercepter toutes les routes est **.
 * Les routes doivent être regroupées par fonctionnalité au sein de modules.
 
+
+VIII) LES MODULES 
+
+○ Les modules 
+Chaque application Angular possède son "module racine" = app.module
+Pour chaque fonctionnalité, un "module" associé
+"module de fonctionnalité" = ensemble de classes + éléments dédié à un domaine de l'appli 
+un "module" est une classe avec le décorateur @NgModule, qui prend en paramètres
+des propriétés (5) qui décrivent le "module" :
+{
+  declarations: les classes de vue (Composant, Directives, Pipes),
+  exports: sous-ensemble de classes de vue à exporter,
+  utilisables dans les templates des composants des autres modules,
+  imports: classes nécessaires au fonctionnement du "module",
+  providers: permet de fournir un service au "module",
+  bootstrap: le composant racine lancé au démarrage
+}
+
+○ Créer un "module"
+but : centraliser la gestion des pokémons 
+créer un dossier qui centralise tout
+++ src/app/pokemons/, ou l'on va placer tous élements relatifs au module pokemon
+(composants, pipes, directives) (tout ce qui se rapporte aux pokemons)
+++ src/app/pokemons/pokemons.module.ts
+// fichier qui sert à articuler tous les autres éléments du module
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+// BrowserModule inclut CommonModule
+// permet de démarrer l'appli dans le navigateur
+// CommonModule à importer pour les sous modules (pas module racine)
+import { ListPokemonComponent } from './list-pokemon.component';
+import { DetailPokemonComponent } from './detail-pokemon.component';
+import { BorderCardDirective } from './border-card.directive';
+import { PokemonTypeColorPipe } from './pokemon-type-color.pipe';
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: [
+    ListPokemonComponent,
+    DetailPokemonComponent,
+    BorderCardDirective,
+    PokemonTypeColorPipe
+  ],
+  providers: [] // déclare les services
+})
+export class PokemonsModule { }
+
+○ Les routes du "module"
+Le "module" doit avoir ses propres routes car 
+les modules regroupent des fonctionnalités indépendantes,
+chaque "module" doit posséder des routes propres
+++ src/app/pokemons/pokemons-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { ListPokemonComponent } from './list-pokemon.component';
+import { DetailPokemonComponent } from './detail-pokemon.component';
+
+// les routes du module Pokémon
+// ne concernent que les pokemons
+// pas de page d'accueil ni de page 404
+const pokemonsRoutes: Routes = [
+  { path: 'pokemons', component: ListPokemonComponent },
+  { path: 'pokemon/:id', component: DetailPokemonComponent }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forChild(pokemonsRoutes)
+    // forChild() pour ajouter des routes additionnelles
+    // aux routes du module racine
+    // forRoot() seulement pour le module racine !
+    // permet de modifier les routes du module
+    // sans modifier celles du module principal
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class PokemonRoutingModule { }
+
+○ Déclarer les routes
+src/app/pokemons/pokemons.module.ts
+import { PokemonRoutingModule } from './pokemons-routing.module'; // ++
+
+@NgModule({
+  imports: [
+    CommonModule,
+    PokemonRoutingModule // ++
+  ]
+  // ...
+})
+
+il faut MAJ le "module" racine 
+src/app/app.module.ts 
+supprimer les importations dont nous n'avons plus besoin
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+// import { DetailPokemonComponent } from './pokemons/detail-pokemon.component'; --
+// import { ListPokemonComponent } from './pokemons/list-pokemon.component'; --
+
+// import { BorderCardDirective } from './pokemons/border-card.directive'; --
+// import { PokemonTypeColorPipe } from './pokemons/pokemon-type-color.pipe'; --
+import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { PokemonsModule } from './pokemons/pokemons.module'; // ++
+import { ok } from 'assert'
+
+// permet de déclarer un nouveau module
+@NgModule({
+  imports: [
+    BrowserModule, // ordre : modules avant les routes
+    PokemonsModule, // ++
+    AppRoutingModule // ordre détermine l'ordre de déclaration des routes
+  ],
+  declarations: [
+    AppComponent,
+    // BorderCardDirective, --
+    // PokemonTypeColorPipe, --
+    // ListPokemonComponent, --
+    // DetailPokemonComponent, --
+    PageNotFoundComponent
+  ],
+  bootstrap: [AppComponent] // permet d'identifier le composant racine
+  // que Angular appelle au démarrage de l'application
+})
+export class AppModule { }
+
+on doit déclarer les nouvelles routes
+src/app/app-routing.module.ts
+ne doit contenir que les routes générales 
+const appRoutes: Routes = [
+  // { path: 'pokemons', component: ListPokemonComponent }, --
+  // { path: 'pokemon/:id', component: DetailPokemonComponent }, --
+  { path: '', redirectTo: 'pokemons', pathMatch: 'full' }, // par défaut
+  { path: '**', component: PageNotFoundComponent }
+];
+
+MAJ les url des templates (rajour du dossier pokemons/)
+src/app/pokemons/list-pokemon.component.ts 
+@Component({
+  selector: 'list-pokemon',
+  templateUrl: './app/pokemons/list-pokemon.component.html', // ++
+})
+
+src/app/pokemons/detail-pokemon.component.ts
+@Component({
+  selector: 'detail-pokemon',
+  templateUrl: './app/pokemons/detail-pokemon.component.html' // ++
+})
+
+○ Structurer l'architecture de l'application 
+but : donner une administration à l'utilisateur
+qui se connecte et peut administrer ses pokemons
+* espace privé géré depuis le "module" pokemons
+car relative à la gestion des pokémons
+* ajouter un composant login dans le "module" racine
+car indépendant de la gestion des pokémons
+
+○ A retenir 
+* Il existe deux types de modules : 
+le "module" racine et les modules de fonctionnalité (sous-modules)
+* On déclare un "module" avec l'annotation @NgModule
+* Chaque "module" regroupe tous les composants, directives, pipes, services, 
+... liés au développement d'une fonctionnalité donnée, dans un dossier à part
+* Chaque "module" peut disposer de ses propres routes
+* On définit les routes de nos sous-modules avec forChild, 
+et forRoot pour le "module" racine
+
+
+IX) LES SERVICES ET LES DEPENDANCES
+
+○ Créer un premier service 
+Un service = singleton, cad une instance unique d'un objet
+rôle = fournir un ensemble de tâches nécessaires au fonctionnement de votre application
+classe qui peut être utilisée partout et qui centralise des fonctionnalités communes 
+(ex. list et details ont besoin de faire des opérations sur le tableau de pokémons)
+
+création d'un service qui renvoie la liste d'un pokémon + un pokémon en particulier 
+objectif : créer une classe commune pour gérer les pokémons 
+++ src/app/pokemons/pokemons.service.ts
+import { Injectable } from '@angular/core';
+
+import { Pokemon } from './pokemon';
+import { POKEMONS } from './mock-pokemons';
+
+@Injectable() // permet d'indiquer que ce service peut avoir des dépendances
+export class PokemonsService {
+  // Retourne tous les pokémons
+  getPokemons(): Pokemon[] {
+    return POKEMONS;
+  }
+
+  // Retourne le pokémon avec l'identifiant passé en paramètre
+  getPokemon(id: number): Pokemon {
+    let pokemons = this.getPokemons();
+
+    for (let index = 0; index < pokemons.length; index++) {
+      if (id === pokemons[index].id) {
+        return pokemons[index];
+      }
+    }
+  }
+}
+
+○ Utiliser un service 
+src/app/pokemons/list-pokemon.component.ts
+import { PokemonsService } from './pokemons.service'; // ++
+// ...
+export class ListPokemonComponent implements OnInit {
+
+  private pokemons: Pokemon[];
+
+  constructor(private router: Router, private pokemonsService: PokemonsService) {
+    // instance disponible sous forme de propriété privée this.pokemonsService
+    // injection de dépendance garantit que l'instance est unique dans l'appli
+    // si on l'utilise dans un autre composant, ça sera la même instance
+    // comme c'est unique : sert de stockage provisoire de nos données
+    // NE SURTOUT PAS INSTANCIER LE SERVICE DANS LE CONSTRUCTEUR
+    // Un service est une boîte noire qui n'interesse pas les composants
+  }
+
+  // ... 
+
+}
+
+○ Fournir un service
+src/app/pokemons/list-pokemon.component.ts
+@Component({
+  selector: 'list-pokemon',
+  templateUrl: './app/pokemons/list-pokemon.component.html',
+  providers: [PokemonsService] // ++ permet d'accéder au service à l'instanciation
+  // de la classe ListePokemonComponent
+})
+
+○ Consommer un Service 
+src/app/pokemons/list-pokemon.component.ts
+// import { POKEMONS } from './mock-pokemons'; --
+export class ListPokemonComponent implements OnInit {
+
+  // ...
+
+  ngOnInit() {
+    // étape d'initiliation
+    this.pokemons = this.pokemonsService.getPokemons(); // ++
+  }
+}
+
+src/app/pokemons/detail-pokemon.component.ts
+// import { POKEMONS } from './mock-pokemons'; --
+import { PokemonsService } from './pokemons.service'; // ++
+
+@Component({
+    selector: 'detail-pokemon',
+    templateUrl: './app/pokemons/detail-pokemon.component.html',
+    providers: [PokemonsService] // ++
+})
+export class DetailPokemonComponent implements OnInit {
+
+    // pokemons: Pokemon[] = null; -- (plus besoin)
+    pokemon: Pokemon = null; // le pokemon à afficher
+
+    constructor(
+        private route: ActivatedRoute, 
+        private router: Router,
+        private pokemonsService: PokemonsService) { } // ++
+    // je récupère des informations depuis l'url du composant grâce à route
+    // j'aurais besoin de rediriger l'utilisateur grâce à Router
+
+    ngOnInit(): void {
+        // this.pokemons = this.pokemonsService.getPokemons(); -- (plus besoin)
+
+        let id = +this.route.snapshot.paramMap.get('id'); // +permetDeCasterValeurEnNnombre
+        // récupère l'id contenue dans l'url
+        // propriété snapshot : synchrone (bloque l'éxécution du programme tant
+        // que l'id n'est pas récupérée)
+        this.pokemon = this.pokemonsService.getPokemon(id);
+
+        // for (let i = 0; i < this.pokemons.length; i++) { } --
+    }
+
+    // ... 
+
+}
+
+○ L'injection de dépendances 
+on a fournit un fournisseur de service (provider) dans :
+* list-pokemon
+* details-pokemon
+idée : rendre le processus unique, en amont depuis pokemons.module 
+(plus besoin de le déclarer à chaque fois par la suite)
+injection de dépendances : design pattern (modèle de développement)
+une classe reçoit ses dépendances plutôt que les créer elle-même
+
+○ Fournir un service à toute l'application 
+* placer le service au niveau du dossier app (racine)
+* fournir le service au "module" racine de l'application
+ex. src/app/app.module.ts
+import { AwesomeService } from './awesome.service'; // ++
+
+@NgModule({
+  providers: [AwesomeService] // ++
+})
+
+○ Fournir un service à un "module"
+on supprime le provider de detail-pokemon et list-pokemon
+@Component({
+  selector: 'detail-pokemon',
+  templateUrl: './app/pokemons/detail-pokemon.component.html',
+  // providers: [PokemonsService] --
+})
+
+src/app/pokemons/pokemons.module.ts 
+import { PokemonsService } from './pokemons.service'; // ++
+
+@NgModule({
+  // ...
+  providers: [PokemonsService] // ++
+})
+
+(!) Il est recommandé d'être le + précis dans sa stratégie des providers
+
+○ Fournir un service à un composant
+import { MonService } from './mon.service';
+@Component({
+  // ...
+  providers: [MonService]
+})
+
+○ A retenir 
+  * Il faut ajouter l'annotation @Injectable sur tous nos services
+  * Un service permet de factoriser et de centraliser du code qui peut être utile ailleurs dans l'appli
+  * On utilise l'injection de dépendances pour rendre un service disponible dans un composant
+  * L'injection de dépendance permet de garantir que l'instance de notre service 
+  est unique à travers toute l'application
+  * On définit un fournisseur de service pour déterminer 
+  dans quelles zones de notre application notre service sera disponible
+  * On peut fournir un service pour toute l'application, pour un module particulier ou pour un composant
 
