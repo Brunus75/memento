@@ -4,11 +4,20 @@
 // Ressources : https://awesome-angular.com/ebook/
 // https://angular.io/start
 
-RAPPEL 
+RAPPELS 
 * Module : ensemble de fichiers lié à une fonctionnalité de l'appli;
 * Composant : section dynamique et autonome de la page web (code HTML + classe JS);
 * Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
 * Interpolation : fait d'afficher une { propriété } d'un composant dans son template
+* Directive : classe Angular qui réagit avec les éléments HTML en leur attachant un comportement
+* In TypeScript, each member is public by default.
+* Respecter le principe : une tâche / un fichier;
+* Programmation réactive = programmation avec des flux de données asynchrones;
+* npm --save n'est plus utile' depuis npm 5
+In addition, there are the complementary options --save-dev and --save-optional 
+which save the package under devDependencies and optionalDependencies, respectively. 
+This is useful when installing development-only packages, 
+like grunt or your testing library.
 
 I) PRESENTATION
 
@@ -225,7 +234,7 @@ supprimer les fichiers .js et .js.map
 ○ En résumé
 - SystemJS est la bibliothèque par défaut choisie par Angular pour charger les modules.
 - On a besoin au minimum d'un module racine et d'un composant racine par application.
-- Le module racine se nomme par convention AppModule.
+- Le 'module' racine se nomme par convention AppModule.
 - Le composant racine se nomme par convention AppComponent.
 - L'ordre de chargement de l'application est le suivant: 
 index.html > main.ts > app.module.ts > app.component.ts.
@@ -1496,3 +1505,972 @@ import { MonService } from './mon.service';
   dans quelles zones de notre application notre service sera disponible
   * On peut fournir un service pour toute l'application, pour un module particulier ou pour un composant
 
+
+X) LES FORMULAIRES 
+
+○ Les formulaires 
+* Forms Module = développe une partie importante du formulaire dans le template
+adapté aux petits formulaires
+* Reactive Forms Module = plus centré sur le développement du formulaire côté composant
+* proviennent de la même libraire = '@angular/forms'
+
+○ La directive ngForm 
+active sur toutes les balises <form></form> où le "module" a été importé
+permet de savoir si le formulaire est valide ou non
+
+○ La directive ngModel 
+s'applique sur chacun des champs du formulaire
+Tableau des classes de la directive > https://angular.io/guide/forms#track-control-state-and-validity-with-ngmodel
+
+○ Créer un formulaire
+Pourquoi "?" Editer certaines propriétés d'un pokémon 
+Combien de champs "?" Nom, Points vie, dégâts, Types 
+le formulaire sera un composant 
+
+○ Le composant du formulaire 
+src/app/pokemons/pokemon-form.component.ts 
+import { Component, Input, OnInit } from '@angular/core';
+// Input permet d'écrire une propriété d'entrée pour un composant
+import { Router } from '@angular/router';
+// pour une redirection après la soumission du formulaire
+import { PokemonsService } from './pokemons.service';
+import { Pokemon } from './pokemon';
+
+@Component({
+  selector: 'pokemon-form',
+  templateUrl: './app/pokemons/pokemon-form.component.html',
+  styleUrls: ['./app/pokemons/pokemon-form.component.css']
+})
+export class PokemonFormComponent implements OnInit {
+
+  @Input() pokemon: Pokemon; // propriété d'entrée du composant
+  // formulaire ne peut pas marcher sans la valeur Pokemon en valeur d'entrée
+  types: Array<string>; // types disponibles pour un pokémon : 'Eau', 'Feu', etc ...
+
+  constructor(
+    private pokemonsService: PokemonsService,
+    private router: Router) { }
+
+  ngOnInit() {
+    // Initialisation de la propriété types
+    this.types = this.pokemonsService.getPokemonTypes();
+  }
+
+  // Détermine si le type passé en paramètres appartient ou non au pokémon en cours d'édition.
+  hasType(type: string): boolean {
+    let index = this.pokemon.types.indexOf(type);
+    if (index > -1) return true;
+    return false;
+  }
+
+  // Méthode appelée lorsque l'utilisateur ajoute ou retire un type au pokémon en cours d'édition.
+  selectType($event: any, type: string): void {
+    let checked = $event.target.checked;
+    if (checked) {
+      this.pokemon.types.push(type);
+    } else {
+      let index = this.pokemon.types.indexOf(type);
+      if (index > -1) {
+        this.pokemon.types.splice(index, 1);
+      }
+    }
+  }
+
+  // Valide le nombre de types pour chaque pokémon
+  isTypesValid(type: string): boolean {
+    if (this.pokemon.types.length === 1 && this.hasType(type)) {
+      return false;
+    }
+    if (this.pokemon.types.length >= 3 && !this.hasType(type)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  // La méthode appelée lorsque le formulaire est soumis.
+  onSubmit(): void {
+    console.log("Submit form !");
+    let link = ['/pokemon', this.pokemon.id];
+    this.router.navigate(link);
+  }
+
+}
+
+src/app/pokemons/pokemons.service.ts 
+export class PokemonsService {
+  // ...
+  getPokemonTypes(): string[] { // ++
+    return ['Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik',
+      'Poison', 'Fée', 'Vol'];
+  }
+}
+
+○ Le template du formulaire 
+src/app/pokemons/pokemon-form.component.html
+<form *ngIf="pokemon" (ngSubmit)="onSubmit()" #pokemonForm="ngForm" >
+// un pokémon a bien été soumis au formulaire
+// attache la soumission du formulaire à la méthode onSubmit()
+// #variableTemplate="ngForm"
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <div class="card-panel">
+
+        <!-- Pokemon name -->
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input type="text" class="form-control" id="name"
+                  required
+                  pattern="^[a-zA-Z0-9àéèç]{1,25}$"
+                 // ngModel permet liaison bidirectionnelle composant - template
+                 // combinaison [liaison de propriété] + (liaison d'évenement)
+                 [(ngModel)]="pokemon.name" name="name"
+                 #name="ngModel" > // on associant la directive ngModel
+                 // la variable permet de déclarer le champ
+                 // sur laquelle elle est rattachée
+
+          <div [hidden]="name.valid || name.pristine"
+                class="card-panel red accent-1" />
+                Le nom du pokémon est requis (1-25).
+          </div>
+        </div>
+
+        <!-- Pokemon hp -->
+        <div class="form-group">
+          <label for="hp">Point de vie</label>
+          <input type="number" class="form-control" id="hp"
+                  required
+                  pattern="^[0-9]{1,3}$"
+                 [(ngModel)]="pokemon.hp" name="hp"
+                 #hp="ngModel" >
+           <div [hidden]="hp.valid || hp.pristine"
+                 class="card-panel red accent-1" />
+                 Les points de vie du pokémon sont compris entre 0 et 999.
+           </div>
+        </div>
+
+        <!-- Pokemon cp -->
+        <div class="form-group">
+          <label for="cp">Dégâts</label>
+          <input type="number" class="form-control" id="cp"
+                  required
+                  pattern="^[0-9]{1,2}$"
+                 [(ngModel)]="pokemon.cp" name="cp"
+                 #cp="ngModel" >
+           <div [hidden]="cp.valid || cp.pristine"
+                 class="card-panel red accent-1" />
+                 Les dégâts du pokémon sont compris entre 0 et 99.
+           </div>
+        </div>
+
+        <!-- Pokemon types -->
+        <form class="form-group">
+          <label for="types">Types</label>
+          <p *ngFor="let type of types" > // loop for 
+            <label>
+              <input type="checkbox"
+                class="filled-in"
+                id="{{ type }}" // liaison par interpolation
+                // [checked]="hasType(type) permet de cocher la case
+                // (change) = appele la méthode appelée à chaque changement
+                [value]="type"
+                [checked]="hasType(type)"
+                [disabled]="!isTypesValid(type)"
+                (change)="selectType($event, type)"/>
+              <span [attr.for]="type" > // liaison par interpolation
+                <div class="{{ type | pokemonTypeColor }}">
+                  {{ type }}
+                </div>
+              </span>
+            </label>
+          </p>
+        </form>
+
+        <!-- Submit button -->
+        <div class="divider"></div>
+        <div class="section center">
+          <button type="submit"
+            class="waves-effect waves-light btn"
+            // [disabled] si formulaire invalide
+            [disabled]="!pokemonForm.form.valid" >
+            Valider</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+<h3 *ngIf="!pokemon" class="center">Aucun pokémon à éditer...</h3>
+
+○ Ajouter des règles de validation
+Restrictions à définir :
+  * Nom: string (1 à 25 caractères);
+  * PointsVie: number (0 - 999);
+  * Degats: number (0 - 99);
+  * Types: string[] (max 3);
+
+Comprendre "l'attribut pattern" > https://www.w3schools.com/tags/att_input_pattern.asp
+<input type="text" id="country_code" name="country_code"
+  pattern="[A-Za-z]{3}" title="Three letter country code" />
+
+// Pokemon name : string (1 à 25 caractères)
+<input type="text" class="form-control" id="name" required pattern="^[a-zA-Z0-9àéèç]{1,25}$"
+  [(ngModel)]="pokemon.name" name="name" #name="ngModel" />
+
+// Pokemon hp (points de vie) : number (0 - 999)
+<input type="number" class="form-control" id="hp" required pattern="^[0-9]{1,3}$"
+  [(ngModel)]="pokemon.hp" name="hp" #hp="ngModel" />
+
+// Pokemon cp (dégâts) number (0 - 99);
+<input type="number" class="form-control" id="cp" required pattern="^[0-9]{1,2}$"
+  [(ngModel)]="pokemon.cp" name="cp" #cp="ngModel" />
+
+src/app/pokemons/pokemon-form.component.ts
+// Valide le nombre de types pour chaque pokémon
+isTypesValid(type: string): boolean {
+    if (this.pokemon.types.length === 1 && this.hasType(type)) {
+        return false;
+    }
+    if (this.pokemon.types.length >= 3 && !this.hasType(type)) {
+        return false;
+    }
+
+    return true;
+}
+
+src/app/pokemons/pokemon-form.component.html
+// partie sur la sélection des types
+// on lie l'attribut disabled à la méthode isTypesValid
+<input type="checkbox" class="filled-in" id="{{ type }}" [value]="type"
+  [checked]="hasType(type)" [disabled]="!isTypesValid(type)"
+  (change)="selectType($event, type)" />
+
+○ Prévenir l'utilisateur en cas d'erreur
+○ Ajouter des indicateur visuels
+src/app/pokemons/pokemon-form.component.css
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* bordure verte si champ requis valide */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* bordure rouge sur les élements invalides */
+  /* pas de type form */
+}
+
+src/app/pokemons/pokemon-form.component.ts 
+@Component({
+  selector: 'pokemon-form',
+  templateUrl: './app/pokemons/pokemon-form.component.html',
+  styleUrls: ['./app/pokemons/pokemon-form.component.css'] // ++
+})
+
+○ Afficher les messages "d'erreur"
+src/app/pokemons/pokemon-form.component.html 
+<div [hidden]="name.valid || name.pristine" class="card-panel red accent-1">
+    Le nom du pokémon est requis (1-25).
+</div>
+// le message est masqué si la propriété name est valide
+// ou jamais modifiée (attribut pristine)
+<div [hidden]="hp.valid || hp.pristine" class="card-panel red accent-1">
+  Les points de vie du pokémon sont compris entre 0 et 999.
+</div>
+<div [hidden]="cp.valid || cp.pristine" class="card-panel red accent-1">
+  Les dégâts du pokémon sont compris entre 0 et 99.
+</div>
+
+○ Intégrer le formulaire
+* Créer un composant parent qui appelle le formulaire
+++ src/app/pokemons/edit-pokemon.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Pokemon } from './pokemon';
+import { PokemonsService } from './pokemons.service';
+
+@Component({
+  selector: 'edit-pokemon',
+  // affiche le pokemon seulement s'il existe pokemon?name
+  template: `
+    <h2 class="header center">Editer {{ pokemon?.name }}</h2>
+		<p class="center">
+			<img *ngIf="pokemon" [src]="pokemon.picture"/>
+		</p>
+    <pokemon-form [pokemon]="pokemon"></pokemon-form>
+  `,
+  // <pokemon-form>Composant du formulaire 
+  //  [liaison de propriété]="valeur d'entrée du composant"</pokemon-form>
+})
+export class EditPokemonComponent implements OnInit {
+
+  pokemon: Pokemon = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private pokemonsService: PokemonsService) {}
+
+  ngOnInit(): void {
+    let id = +this.route.snapshot.params['id'];
+    this.pokemon = this.pokemonsService.getPokemon(id);
+  }
+}
+
+src/app/pokemons/pokemons.module.ts
+import { FormsModule } from '@angular/forms'; // ++
+
+import { PokemonFormComponent } from './pokemon-form.component'; // ++
+import { EditPokemonComponent } from './edit-pokemon.component'; // ++
+
+@NgModule({
+  imports: [
+    CommonModule,
+    FormsModule, // ++ (importer les modules Angular avant propres modules)
+    PokemonRoutingModule
+  ],
+  declarations: [
+    ListPokemonComponent,
+    DetailPokemonComponent,
+    PokemonFormComponent, // ++
+    EditPokemonComponent, // ++
+  ]
+  // ...
+})
+
+src/app/pokemons/pokemons-routing.module.ts
+import { EditPokemonComponent } from './edit-pokemon.component'; // ++
+
+const pokemonsRoutes: Routes = [
+  { path: 'pokemons', component: ListPokemonComponent },
+  { path: 'pokemon/edit/:id', component: EditPokemonComponent },  // ++
+  // en 2° pour éviter d'être écrasé par la requête pokemon/:id
+  // ordre : du plus précis au plus général
+  { path: 'pokemon/:id', component: DetailPokemonComponent },
+];
+
+src/app/pokemons/detail-pokemon.component.html
+// on ajoute le bouton d'édition
+<div class="card-action">
+    <a (click)="goBack()" >Retour</a>
+    <a (click)="goEdit(pokemon)" >Editer</a>
+</div>
+
+src/app/pokemons/detail-pokemon.component.ts
+export class DetailPokemonComponent implements OnInit {
+  // ... 
+  goEdit(pokemon: Pokemon): void {
+    let link = ['/pokemon/edit', pokemon.id]
+    this.router.navigate(link);
+  }
+}
+
+○ A retenir :
+  * 2 modules différents pour développer des formulaires Angular: FormsModule et ReactiveFormsModule
+  * Le "module" FormsModule est pratique pour développer des formulaires de petites tailles
+  * Il met à disposition les directives NgForm et NgModel
+  * La directive NgModel ajoute et retire certaines classes au champ sur lequel elle s'applique
+  * Ces classes peuvent être utilisées pour afficher des messages d'erreurs ou de succès
+  * La syntaxe à retenir pour utiliser NgModel est[()]
+  * On peut utiliser les attributs HMTL5 pour gérer la validation côté client, comme required ou pattern
+  * On peut utiliser des validateurs personnalisés en développant ses propres méthodes de validation
+  * Il faut toujours effectuer une validation côté serveur en complément de la validation côté client
+
+
+XI) LA PROGRAMMATION REACTIVE 
+
+But = intéragir avec un serveur distant;
+
+○ Le fonctionnement des promesses
+* simplifier la programmation asynchrone 
+programmation asynchrone = mode de fonctionnement dans lequel les opérations sont non bloquantes
+(n'exigent pas de recharger la page ou d'avoir une réponse pour que la suite s'effectue');
+* intègre un callback de succès et un callback d'erreur' 
+
+// récupérer un user grâce à son id
+let getUser = function(idUser) {
+  return new Promise(function(resolve, reject)) { 
+    // création d'une promesse(function(callback succès, callback erreur))
+    // appel asynchrone au serveur pour récupérer les infos du user
+    // a partir de la reponse du serveur, on extrait les donnees du user
+    let user = reponse.data.user;
+    if (response.status === 200) {
+      resolve(user); // callback succès
+    } else {
+      reject(`Cet utilisateur n'existe pas !`); // callback erreur
+    }
+  }
+}
+
+// fonction qui renvoie une promesse
+// contenant les infos du user
+getUser(idUser)
+  .then(function(user)) { // success
+    console.log(user);
+    this.user = user; // récupère la valeur de retour
+  }, function(error) { // error
+    console.log(error);
+  }
+
+// même fonction, en ES6 avec les arrow functions
+getUser(idUser)
+  .then(user => { // success
+  console.log(user);
+  this.user = user; // récupère la valeur de retour
+  }, error => console.log(error);
+};
+
+○ La programmation réactive 
+façon différente de concevoir une application
+idée = considérer les interactions dans l'appli comme des événements'
+sur lesquels on peut effectuer des opérations (regroupement, filtrage, combinaisons)
+ex. les clics deviennent des évenements asynchrones auxquels on s'abonne pour réagir'
+Programmation réactive = programmation avec des flux de données asynchrones
+écouteurs d'évenements = observeurs'
+flux, sujet observé = observable
+observer un flux = s'abonner, s'inscrire à un flux
+
+○ Qu'est ce qu'un flux '?'
+séquence d'événements en cours ordonnés dans le temps'
+on peut y appliquer des opérations
+site illustrant la programmation réactive: Programmation réactive = https://rxmarbles.com/
+on peut définir une fonction à exécuter selon le flux
+Une fonction peut traiter :
+* les valeurs de la réponse 
+* le cas d'erreur'
+* le signal de fin
+
+○ La librairie RxJS
+bibliothèque la plus populaire
+choisie par Angular
+
+○ Les Observables
+un flux d'evenements est représenté par un Objet appelé Observable'
+comme un tableau contenant des valeurs qui se rajoutent dans le temps
+opérations similaires à celles appliquées à un tableau
+ex.la fonction take > https://rxmarbles.com/#take
+récupère les n premiers éléments d'un flux et se débarasse du reste'
+ex.la fonction map > https://rxmarbles.com/#map
+comme sur un tableau, l'opération s'effectue sur chaque événement et retourne le résultat
+ex.la fonction filter > https://rxmarbles.com/#filter
+filtre les événements qui répondent positive à la condition passée en paramètre
+ex.la fonction merge > https://rxmarbles.com/#merge
+fusionne deux flux
+ex. la fonction subscribe >
+applique la fonction passée en paramètre à chaque événement reçu dans le flux
+accepte une deuxieme fonction en paramètres, pour la gestion d'erreurs'
+envoie un événement de terminaison (fin de vie) détectable avec une autre fonction
+
+// ex.
+Observable.fromArray([1, 2, 3, 4, 5])
+  .filter(x => x > 2) // [3, 4, 5]
+  .map(x => x * 2) // [6, 8, 10]
+  .subscribe(x => console.log(x)); // affiche résultat
+
+Observable : collection asynchrone dont les événements se rajoutent au cours du temps 
+On peut le construire depuis une requête AJAX, event du navigation, promesse, etc. 
+
+○ Choisir Observable ou Promesse 
+utilisation des promesses = plus simple;
+répondent largement aux besoins de l'application'
+il est possible de transformer un Observable en Promesse,
+grâce à la méthode toPromise de RxJS
+
+import 'rxjs/add/operator/toPromise';
+
+function giveMePromiseFromObservable() {
+
+  return Observable.fromArray([1, 2, 3, 4, 5])
+    .filter(x => x > 2) // [3, 4, 5]
+    .map(x => x * 2) // [6, 8, 10]
+    .toPromise()
+
+}
+
+○ A retenir 
+  * Les promesses sont natives en JavaScript depuis l'arrivée de la norme ES6'.
+  * La programmation réactive implique de gérer des flux de données asynchrones
+  * Un flux est une séquence d'événements ordonnés dans le temps'
+  * On peut appliquer différentes opérations sur les flux: regroupements, filtrages, troncatures, etc
+  * Un flux peut émettre trois types de réponses:
+  * la valeur associée à un événement, une erreur, ou un point de terminaison pour mettre fin au flux.
+  * La librairie RxJS est la librairie la plus populaire pour implémenter la programmation réactive en JavaScript
+  * Dans RxJS, les flux d'événements sont représentés par un objet appelé Observable'
+
+
+XII) EFFECTUER DES REQUETES HTTP 
+
+API = interface de programmation, 
+permet de communiquer avec un service distant depuis votre appli 
+
+○ Mettre en place le 'module' HttpClientModule
+permet de faire communiquer l'appli' avec un serveur distant via le protocole HTTP 
+il faut l'importer' depuis la librairie '@angular/common/http'
+src/systemjs.config.js
+'@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js'
+src/app/app.module.ts
+import { HttpClientModule } from '@angular/common/http'; // ++
+
+// permet de déclarer un nouveau module
+@NgModule({
+  imports: [
+    BrowserModule, // ordre : modules avant les routes
+    HttpClientModule, // ++
+    PokemonsModule,
+    AppRoutingModule // ordre détermine l'ordre de déclaration des routes
+  ]
+  // ...
+})
+
+○ Installation d'un module permettant de simuler une API Web'
+npm install --save-dev angular-in-memory-web-api
+(L'option --save-dev permet de sauvegarder ce paquet directement 
+dans la section devDependencies de votre fichier package.json)
+
+○ Simuler une API Web 
+HttpClientInMemoryWepApiModule
+++ src/app/in-memory-data.service.ts
+import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { POKEMONS } from './pokemons/mock-pokemons';
+
+export class InMemoryDataService implements InMemoryDbService {
+  // methode qui simule une DB et une API
+  createDb() {
+    let pokemons = POKEMONS;
+    return { pokemons };
+  }
+}
+
+src/app/app.module.ts 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api'; // ++
+import { InMemoryDataService } from './in-memory-data.service'; // ++ 
+
+@NgModule({
+  imports: [
+    BrowserModule, // ordre : modules avant les routes
+    HttpClientModule, // ++
+    // intercepte les requêtes HTTP et retourne les requêtes simulées du serveur
+    // dataEncapsulation précise le format des données renvoyées par l'API
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false }),
+    PokemonsModule,
+    AppRoutingModule // ordre détermine l'ordre de déclaration des routes
+  ]
+  // ...
+})
+
+○ Mettre à jour notre service
+src/app/pokemons/pokemons.service.ts 
+import { Observable } from 'rxjs'; // ++
+import { catchError, map, tap } from 'rxjs/operators'; // ++
+
+@Injectable() // permet d'indiquer que ce service peut avoir des dépendances
+export class PokemonsService {
+
+  // pour créer une url vers laquelle nous allons appeler l'API ++ 
+  private pokemonUrl = 'api/pokemons';
+
+  constructor(private http: HttpClient) { } // ++
+
+  private log(log: string) { // ++
+    console.info(log);
+    // centralise la gestion des logs de notre service
+  }
+
+  // retourne un Observable, qui contient un tableau de pokémons
+  getPokemons(): Observable<Pokemon[]> {
+    // la méthode get de la propriété retourne un Observable de type Pokemon[]
+    // Observable qui envoie une requête HTTP de type GET sur la route api/pokemons
+    // l'opérateur tap interagit sur le déroulement des événements générés par l'Observable
+    // utilisé pour débugagge, archivage de log... 
+    // l'opérateur catchError capte les erreurs
+    // le module renvoie les données sous format JSON
+    return this.http.get<Pokemon[]>(this.pokemonUrl).pipe(
+      tap(() => this.log(`fetched pokemons`)),
+      catchError(this.handleError(`getPokemons`, []))
+    );
+  }
+  // ...
+}
+
+○ Gérer les erreurs 
+src/app/pokemons/pokemons.service.ts
+import { Observable, of } from 'rxjs'; // ++
+// of : opérateur permet de transformer les données passées en paramètres
+// en un Observable
+import { catchError, map, tap } from 'rxjs/operators';
+
+import { Pokemon } from './pokemon';
+import { POKEMONS } from './mock-pokemons';
+
+@Injectable() // permet d'indiquer que ce service peut avoir des dépendances
+export class PokemonsService {
+
+  // ....
+
+  // <T> indique que l'on va typer un type en lui-même
+  // parametre operation : nom de la méthode qui a causé l'erreur
+  // operation par défaut
+  // result : donnée facultative à renvoyer du résultat de l'Observable
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.log(error);
+      console.log(`${operation} failed: ${error.message}`);
+
+      return of(result as T);
+      // renvoie un résultat adapté à la méthode qui a levé l'erreur
+      // renvoie le type attendu par cette méthode
+      // tableau pour getPokemons
+      // Pokemon pour getPokemon
+      // permet de faire fonctionner l'appli même si une erreur est levée
+    }
+  }
+
+  // ...
+
+}
+
+○ Récupérer un pokémon à partir de son identifiant
+src/app/pokemons/pokemons.service.ts
+export class PokemonsService {
+
+  // pour créer une url vers laquelle nous allons appeler l'API ++ 
+  private pokemonUrl = 'api/pokemons';
+
+  // <T> indique que l'on va typer u type en lui-même
+  // parametre operation : nom de la méthode qui a causé l'erreur
+  // operation par défaut
+  // result : donnée facultative à renvoyer du résultat de l'Observable
+  private handleError<T>(operation = 'operation', result?: T) {
+
+  // Retourne le pokémon avec l'identifiant passé en paramètre
+  getPokemon(id: number): Observable<Pokemon> {
+    const url = `${this.pokemonUrl}/${id}`;
+
+    return this.http.get<Pokemon>(url).pipe(
+      tap(() => this.log(`fetched pokemon with id : ${id}`)),
+      catchError(this.handleError<Pokemon>(`getPokemon id=${id}`))
+    );
+  }
+}
+
+○ Utiliser le service mis à jour 
+les méthodes renvoyant des Observables, il faut modifier tous les composants qui utilisent le service 
+src/app/pokemons/list-pokemon.component.ts
+// Rappel : la fonction subscribe applique la fonction passée en paramètre 
+// à chaque événement reçu dans le flux
+export class ListPokemonComponent implements OnInit {
+
+  private pokemons: Pokemon[];
+
+  ngOnInit() {
+    // étape d'initiliation
+    this.pokemonsService.getPokemons()
+      .subscribe(pokemons => this.pokemons = pokemons); 
+      // valorise la propriété pokemons avec le tableau de pokemons 
+      // contenu dans l'Observable
+  }
+}
+
+src/app/pokemons/detail-pokemon.component.ts
+export class DetailPokemonComponent implements OnInit {
+
+  pokemon: Pokemon = null; // le pokemon à afficherr
+
+  ngOnInit(): void {
+
+    let id = +this.route.snapshot.paramMap.get('id');
+
+    this.pokemonsService.getPokemon(id)
+      .subscribe(pokemon => this.pokemon = pokemon);
+      // valorise la propriété pokemon avec l'objet Pokemon 
+      // contenu dans l'Observable
+  }
+}
+src/app/pokemons/edit-pokemon.component.ts
+export class EditPokemonComponent implements OnInit {
+
+  pokemon: Pokemon = null;
+
+  ngOnInit(): void {
+
+    let id = +this.route.snapshot.paramMap.get('id');
+
+    this.pokemonsService.getPokemon(id)
+      .subscribe(pokemon => this.pokemon = pokemon);
+    // valorise la propriété pokemon avec l'objet Pokemon 
+    // contenu dans l'Observable
+  }
+}
+
+○ Modifier un pokémon 
+Il faut à présent écrire des requêtes http pour faire persister les données
+
+○ Ajouter une méthode de modification
+écrire une méthode pour faire persister nos modifications
+PUT = type de requête pour modifier une ressource
+src/app/pokemons/pokemons.service.ts
+export class PokemonsService {
+
+  // pour créer une url vers laquelle nous allons appeler l'API ++ 
+  private pokemonUrl = 'api/pokemons';
+
+  updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const HttpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      // déclare une en-tête pour déclarer que la requête sera au format JSON
+    };
+
+    // put(adresse, corps, options)
+    return this.http.put(this.pokemonUrl, pokemon, HttpOptions).pipe(
+      tap(() => this.log(`updated pokemon with id : ${pokemon.id}`)),
+      catchError(this.handleError<any>('updatePokemon'))
+    );
+  }
+}
+
+○ Sauvegarder les données
+src/app/pokemons/pokemon-form.component.ts 
+export class PokemonFormComponent implements OnInit {
+
+  @Input() pokemon: Pokemon; // propriété d'entrée du composant
+  // formulaire ne peut pas marcher sans la valeur Pokemon en valeur d'entrée
+
+  // La méthode appelée lorsque le formulaire est soumis.
+  onSubmit(): void {
+    console.log("Submit form !");
+    // persiste les données
+    this.pokemonsService.updatePokemon(this.pokemon)
+      .subscribe(() => this.goBack());
+    // revient sur le profil modifié du pokemon
+  }
+
+  goBack(): void {
+    let link = ['/pokemon', this.pokemon.id];
+    this.router.navigate(link);
+  }
+}
+
+○ Supprimer un pokémon 
+src/app/pokemons/pokemons.service.ts
+export class PokemonsService {
+
+  // pour créer une url vers laquelle nous allons appeler l'API ++ 
+  private pokemonUrl = 'api/pokemons';
+
+  // création d'une méthode de suppresion dans le service
+  deletePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const url = `${this.pokemonUrl}/${pokemon.id}`;
+    const HttpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      // déclare une en-tête pour déclarer que la requête sera au format JSON
+    };
+
+    return this.http.delete<Pokemon>(url, HttpOptions).pipe(
+      tap(() => this.log(`deleted pokemon with id ${pokemon.id}`)),
+      catchError(this.handleError<Pokemon>('deletePokemon'))
+    );
+  }
+}
+
+src/app/pokemons/detail-pokemon.component.ts
+export class DetailPokemonComponent implements OnInit {
+
+  pokemon: Pokemon = null; // le pokemon à afficher
+
+  // ajout de la méthode pour la lier à la méthode de suppresion du service
+  delete(pokemon: Pokemon): void {
+    this.pokemonsService.deletePokemon(pokemon)
+      .subscribe(() => this.goBack());
+  }
+
+  goBack(): void {
+    this.router.navigate(['/pokemons']);
+    // revient à la page d'accueil
+    // url dans un tableau
+    // window.history.back(); // même processus, moins fiable
+    // car on ne sait pas d'où il vient
+  }
+}
+
+src/app/pokemons/detail-pokemon.component.html
+// rajout du bouton supprimer + effet de style pour le mettre en retrait
+<div class="card-action">
+    <a (click)="goBack()" class="waves-effect waves-light btn">Retour</a>
+    <a (click)="goEdit(pokemon)" class="waves-effect waves-light btn">Editer</a>
+    <a (click)="delete(pokemon)" >Supprimer</a>
+</div>
+
+○ Construire un champ de recherche d'autocomplétion'
+src/app/pokemons/pokemons.service.ts
+export class PokemonsService {
+
+  // pour créer une url vers laquelle nous allons appeler l'API ++ 
+  private pokemonUrl = 'api/pokemons';
+
+  // term : terme de la recherche rentré par l'utilisateur
+  searchPokemons(term: string): Observable<Pokemon[]> {
+    // terme vide renvoie tableau vide
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    // url dynamique de l'API
+    return this.http.get<Pokemon[]>(`${this.pokemonUrl}/?name=${term}`).pipe(
+      tap(() => this.log(`found pokemons matching "${term}"`)),
+      catchError(this.handleError<Pokemon[]>('searchPokemons', []))
+    );
+  }
+}
+
+○ Consommer un Observable 
+idée = créer un composant search-pokemon-component
+aura pour rôle d'afficher' et de gérer le champ de recherche des pokémons 
+et l'autocomplétion'
+src/app/pokemons/search-pokemon.component.html 
+<div class="row">
+  <div class="col s12 m6 offset-m3">
+    <div class="card">
+      <div class="card-content">
+        <div class="input-field">
+          la méthode de liaison keyup appelle la méthode search 
+          et lui envoie la dernière lettre tapée
+          <input #searchBox (keyup)="search(searchBox.value)"
+            placeholder="Rechercher un pokémon"/>
+        </div>
+
+        <div class="collection">
+          le pipe async permet d'afficher le résultat 
+          que quand l'Observable a trouvé une réponse
+          pokemon$ car un Observable, un flux
+          <a *ngFor="let pokemon of pokemons$ | async"
+            (click)="gotoDetail(pokemon)" class="collection-item">
+            {{ pokemon.name }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+src/app/pokemons/search-pokemon.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+
+import { PokemonsService } from './pokemons.service';
+import { Pokemon } from './pokemon';
+
+@Component({
+  selector: 'pokemon-search',
+  templateUrl: './app/pokemons/search-pokemon.component.html'
+})
+export class PokemonSearchComponent implements OnInit {
+
+  private searchTerms = new Subject<string>(); // vient de la libraire rxjs
+  // stocke les recherches dans un tableau de string
+  // sous la forme d'un Observable
+  pokemons$: Observable<Pokemon[]>;
+
+  constructor(
+    private pokemonsService: PokemonsService,
+    private router: Router) { }
+
+  // Ajoute un terme de recherche dans le flux de l'Observable 'searchTerms'
+  search(term: string): void {
+    this.searchTerms.next(term);
+  }
+
+  ngOnInit(): void {
+    this.pokemons$ = this.searchTerms.pipe(
+      // opérations pour réduire le flux de requêtes :
+      // attendre 300ms de pause entre chaque requête
+      debounceTime(300),
+      // ignorer la recherche en cours si c'est la même que la précédente
+      distinctUntilChanged(),
+      // on retourne la liste des résultats correpsondant aux termes de la recherche
+      switchMap((term: string) => this.pokemonsService.searchPokemons(term)),
+    );
+  }
+
+  gotoDetail(pokemon: Pokemon): void {
+    let link = ['/pokemon', pokemon.id];
+    this.router.navigate(link);
+  }
+}
+
+○ Afficher le champ de recherche 
+src/app/pokemons/list-pokemon.component.html
+// add search form
+<pokemon-search></pokemon-search>
+
+src/app/pokemons/pokemons.module.ts
+// module centralise tous les fichiers du module
+import { PokemonSearchComponent } from './search-pokemon.component'; // ++
+
+@NgModule({
+    declarations: [
+        ListPokemonComponent,
+        DetailPokemonComponent,
+        PokemonFormComponent, 
+        EditPokemonComponent, 
+        PokemonSearchComponent, // ++
+        BorderCardDirective,
+        PokemonTypeColorPipe
+    ]
+})
+
+○ Ajouter un icône de chargement
+// disponible sur tout le site
+++ src/app/loader.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'pkmn-loader',
+  template: `
+    <div class="preloader-wrapper big active">
+      <div class="spinner-layer spinner-blue">
+        <div class="circle-clipper left">
+          <div class="circle"></div>
+        </div><div class="gap-patch">
+          <div class="circle"></div>
+        </div><div class="circle-clipper right">
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+  `
+})
+export class LoaderComponent { }
+
+// afficher le loader sur la page de détail d'un pokemon
+src/app/pokemons/detail-pokemon.component.html
+<h4 *ngIf='!pokemon' class="center">Aucun pokémon à afficher !</h4>
+// devient :
+<h4 *ngIf='!pokemon' class="center"><pkmn-loader></pkmn-loader></h4>
+
+src/app/pokemons/pokemon-form.component.html
+<h4 *ngIf='!pokemon' class="center">Aucun pokémon à afficher !</h4>
+// devient :
+<h4 *ngIf='!pokemon' class="center"><pkmn-loader></pkmn-loader></h4>
+
+// déclarer le composant loader là ou il est utilisé
+src/app/pokemons/pokemon.module.html
+import { LoaderComponent } from '../loader.component'; // ++
+
+@NgModule({
+  declarations: [
+    ListPokemonComponent,
+    DetailPokemonComponent,
+    PokemonFormComponent,
+    EditPokemonComponent,
+    PokemonSearchComponent,
+    LoaderComponent, // ++
+    BorderCardDirective,
+    PokemonTypeColorPipe
+  ]
+})
+
+○ A retenir 
+  * Il est possible de mettre en place une API web de démonstration
+  * Les Observables permettent de faciliter la gestion des événements asynchrones
+  * Les Observables sont adaptés pour gérer des séquences d'événements'
+  * Les opérateurs RxJS ne sont pas tous disponibles dans Angular. 
+  * Il faut étendre cette implémentation en important nous-même les opérateurs nécessaires
