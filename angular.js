@@ -13,6 +13,7 @@ RAPPELS
 * In TypeScript, each member is public by default.
 * Respecter le principe : une tâche / un fichier;
 * Programmation réactive = programmation avec des flux de données asynchrones;
+* Guard : mécanisme de protection
 * npm --save n'est plus utile' depuis npm 5
 In addition, there are the complementary options --save-dev and --save-optional 
 which save the package under devDependencies and optionalDependencies, respectively. 
@@ -2474,3 +2475,326 @@ import { LoaderComponent } from '../loader.component'; // ++
   * Les Observables sont adaptés pour gérer des séquences d'événements'
   * Les opérateurs RxJS ne sont pas tous disponibles dans Angular. 
   * Il faut étendre cette implémentation en important nous-même les opérateurs nécessaires
+
+
+XIII) L'AUTHENTIFICATION'
+
+○ Un Guard
+mécanisme de protection
+Doc > `https://angular.io/guide/router#milestone-5-route-guards`
+utilisé pour tout scénario lié à la navigation = redirection, authentification 
+retourne un booléen
+true = le processus de navigation continue
+demande des opérations asynchrones (question au user, sauvegarder changements, récupérer des données)
+dans la plupart des cas, le type de retour est un Observable qui renvoie boolean ou promesse
+le routeur attendra la réponse pour agir sur la navigation
+peut avoir plusieurs types =
+The router supports multiple guard interfaces:
+  * CanActivate to mediate navigation to a route.
+  // influence sur la navigation d'une route (la bloquer)
+  * CanActivateChild to mediate navigation to a child route.
+  // influence sur la navigation d'une route fille
+  * CanDeactivate to mediate navigation away from the current route.
+  // empêcher de naviguer en dehors de la route courante
+  * Resolve to perform route data retrieval before route activation.
+  // récuperer les données avant de naviguer
+  * CanLoad to mediate navigation to a feature 'module' loaded asynchronously.
+  // gérer la navigation vers un sous module chargé de manière asynchrone
+
+○ Mettre en place un guard 
+// afficher un message lorsque l'utilisateur essaie d'accéder à la page d'édition d'un pokemon
+// utilisation d'un Guard de type CanActivate
+++ src/app/auth-guard.service.ts
+import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
+
+@Injectable()
+// service qui implemente l'interface CanActivate
+export class AuthGuard implements CanActivate {
+
+  canActivate(): boolean {
+    console.info(`Le guard a bien été appelé !`);
+    return true;
+  }
+
+}
+
+
+src/app/pokemons/pokemons-routing.module.ts
+import { AuthGuard } from '../auth-guard.service'; // ++
+
+// les routes du module Pokémon
+// ne concernent que les pokemons
+const pokemonsRoutes: Routes = [
+  { path: 'pokemons', component: ListPokemonComponent },
+  { path: 'pokemon/edit/:id', component: EditPokemonComponent, canActivate: [AuthGuard] },  // ++
+  // en 2° pour éviter d'être écrasé par la requête pokemon/:id
+  // ordre : du plus précis au plus général
+  { path: 'pokemon/:id', component: DetailPokemonComponent },
+];
+
+// reorganisation pour appliquer toutes les routes pokemons à notre Guard
+// devient :
+const pokemonsRoutes: Routes = [
+  {
+    path: 'pokemon', // définit un préfixe pour toutes les routes
+    canActivate: [AuthGuard], // toutes les routes sont protégées d'un coup
+    children: [
+      { path: 'all', component: ListPokemonComponent },
+      { path: 'edit/:id', component: EditPokemonComponent, canActivate: [AuthGuard] },  // ++
+      // en 2° pour éviter d'être écrasé par la requête pokemon/:id
+      // ordre : du plus précis au plus général
+      { path: ':id', component: DetailPokemonComponent }
+    ]
+  }
+];
+
+src/app/pokemons/pokemons.module.ts
+import { AuthGuard } from '../auth-guard.service'; // ++
+
+@NgModule({
+  // ...
+  providers: [PokemonsService, AuthGuard] // ++ déclare les services
+})
+
+// les urls ont désormais changé
+// page d'accueil : pokemon/all
+
+src/app/page-not-found.component.ts
+<a routerLink="/pokemon/all" class="waves-effect waves-teal btn-flat">
+  Retourner à l' accueil
+</a>
+
+src/app/pokemons/detail-pokemon.component.ts
+goBack(): void {
+  this.router.navigate(['/pokemon/all']);
+  // revient à la page d'accueil
+  // url dans un tableau
+  // window.history.back(); // même processus, moins fiable
+  // car on ne sait pas d'où il vient
+}
+
+// modifier la route par défaut
+src/app/app-routing.module.ts
+const appRoutes: Routes = [
+  { path: '', redirectTo: 'pokemon/all', pathMatch: 'full' }, // par défaut
+  // ...
+];
+
+○ Un système d'authentification' plus poussé
+// création d'un formulaire de connexion
+// name + password
+// création d'un nouveau service lié à l'authentification
+// découper le Guard et le service d'authentification
+// 1 fichier = 1 tâche
+// authentification + redirection
+
+++ src/app/auth.service.ts 
+import { Injectable } from '@angular/core';
+// RxJS 6
+import { Observable, of } from 'rxjs';
+import { tap, delay } from 'rxjs/operators';
+
+@Injectable()
+export class AuthService {
+  isLoggedIn: boolean = false; // L'utilisateur est-il connecté ?
+  redirectUrl: string; // où rediriger l'utilisateur après l'authentification ?
+  // Une méthode de connexion
+  // simule une connexion à un service externe
+  login(name: string, password: string): Observable<boolean> {
+    // Faites votre appel à un service d'authentification...
+    let isLoggedIn = (name === 'pikachu' && password === 'pikachu');
+
+    return of(true).pipe(
+      delay(1000),
+      tap(val => this.isLoggedIn = isLoggedIn)
+    );
+    // retourne un observable après un délai d'1s
+  }
+
+  // Une méthode de déconnexion
+  logout(): void {
+    this.isLoggedIn = false;
+  }
+}
+
+src/app/auth-guard.service.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot }
+  from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable()
+export class AuthGuard implements CanActivate {
+
+  // injecte notre service d'authentification + router
+  constructor(private authService: AuthService, private router: Router) { }
+
+  // l'objet route : la future route qui sera appelée
+  // l'objet state : futur état du routeur de l'appli
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    let url: string = state.url;
+    return this.checkLogin(url);
+  }
+
+  // retourne un booleen de manière synchrone
+  checkLogin(url: string): boolean {
+    if (this.authService.isLoggedIn) { return true; }
+    this.authService.redirectUrl = url; // stocke l'url où l'authentification a échoué
+    this.router.navigate(['/login']); // redirige vers la page de connexion
+
+    return false;
+  }
+}
+
+○ Créer une page de connexion
+++ src/app/login.component.ts
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Component({
+  selector: 'login',
+  template: `
+    <div class='row'>
+    <div class="col s12 m4 offset-m4">
+    <div class="card hoverable">
+      <div class="card-content center">
+        <span class="card-title">Page de connexion</span>
+        <p><em>{{message}}</em></p>
+      </div>
+			<form #loginForm="ngForm">
+	      <div>
+					<label for="name">Name</label>
+	        <input type="text" id="name" [(ngModel)]="name" name="name" required>
+	      </div>
+	      <div>
+	        <label for="password">Password</label>
+	        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+	      </div>
+	    </form>
+      <div class="card-action center">
+        <a (click)="login()" class="waves-effect waves-light btn"  *ngIf="!authService.isLoggedIn">Se connecter</a>
+        <a (click)="logout()" *ngIf="authService.isLoggedIn">Se déconnecter</a>
+      </div>
+    </div>
+    </div>
+    </div>
+  `
+})
+export class LoginComponent {
+  message: string = 'Vous êtes déconnecté. (pikachu/pikachu)';
+  private name: string;
+  private password: string;
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  // Informe l'utilisateur sur son authentfication.
+  setMessage() {
+    this.message = this.authService.isLoggedIn ?
+      'Vous êtes connecté.' : 'Identifiant ou mot de passe incorrect.';
+  }
+
+  // Connecte l'utilisateur auprès du Guard
+  login() {
+    this.message = 'Tentative de connexion en cours ...';
+    this.authService.login(this.name, this.password).subscribe(() => {
+      this.setMessage();
+      if (this.authService.isLoggedIn) {
+        // Récupère l'URL de redirection depuis le service d'authentification
+        // Si aucune redirection n'a été définis, redirige l'utilisateur vers la liste des pokemons.
+        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/pokemon/all';
+        // Redirige l'utilisateur
+        this.router.navigate([redirect]);
+      } else {
+        this.password = '';
+      }
+    });
+  }
+
+  // Déconnecte l'utilisateur
+  logout() {
+    this.authService.logout();
+    this.setMessage();
+  }
+}
+
+// on utilise le module pour enregistrer la route /login
+// et pour déclarer les fournisseurs de notre guard 
+++ src/app/login-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AuthService } from './auth.service';
+import { LoginComponent } from './login.component';
+
+@NgModule({
+  imports: [
+    RouterModule.forChild([
+      { path: 'login', component: LoginComponent }
+    ])
+  ],
+  exports: [
+    RouterModule
+  ],
+  providers: [
+    AuthService
+  ]
+})
+export class LoginRoutingModule { }
+
+// déclarer le module LoginComponent 
+// + module loginRoutingModule dans le module racine
+// + FormsModule car on ajoute un formulaire (formulaire de connexion)
+// reorganisation
+src/app/app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // ++
+
+import { PokemonsModule } from './pokemons/pokemons.module';
+import { AppRoutingModule } from './app-routing.module'
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { LoginRoutingModule } from './login-routing.module'; // ++
+
+import { InMemoryDataService } from './in-memory-data.service';
+
+import { AppComponent } from './app.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { LoginComponent } from './login.component'; // ++
+
+// permet de déclarer un nouveau module
+@NgModule({
+  imports: [
+    BrowserModule, // ordre : modules avant les routes
+    HttpClientModule,
+    FormsModule, // ++
+    // intercepte les requêtes HTTP et retourne les requêtes simulées du serveur
+    // dataEncapsulation précise le format des données renvoyées par l'API
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false }),
+    PokemonsModule,
+    LoginRoutingModule, // ++
+    AppRoutingModule // ordre détermine l'ordre de déclaration des routes
+  ],
+  declarations: [
+    AppComponent,
+    LoginComponent, // ++
+    PageNotFoundComponent
+  ],
+  bootstrap: [AppComponent] // permet d'identifier le composant racine
+  // que Angular appelle au démarrage de l'application
+})
+export class AppModule { }
+
+○ A retenir
+  * `L'authentification nécessite la mise en place d'un système fiable: on utilise pour cela les Guards`
+  * `Les Guards permettent de gérer toutes sortes de scénarios liés à la navigation: 
+  * redirection, connexion, etc`
+  * `Les Guards reposent sur un mécanisme simple. 
+  * Ils retournent un booléen de manière synchrone ou asynchrone, 
+  * qui permet d'influencer le processus de navigation`
+  * `Il existe plusieurs types de Guards différents. 
+  * Le type utilisé pour l'authentification est CanActivate`
+  * `Il faut toujours déclarer les Guards au niveau du module racine, 
+  * ainsi que les services tiers qu'ils utilisent`
+

@@ -1092,3 +1092,46 @@ function find_uniq($a)
     return array_search(1, $counted); // the [value] with count === 1 (so, unique)
 }
 
+/**
+ * Changer l'ordre des lettres de chaque mot et des caractères ASCII dans un string
+ * 
+ * @description un string, changer chaque lettre
+ * la 2° lettre par la dernière
+ * changer le nombre du début par son équivalent charCode
+ */
+
+// PHPUnit Test Examples:
+// TODO: Replace examples and use TDD development by writing your own tests
+class MyTestCases extends TestCase
+{
+    // test function names should start with "test"
+    public function testThatSomethingShouldHappen() {
+      $this->assertEquals('Hello good day', decipherThis('72olle 103doo 100ya'));
+      $this->assertEquals('Ready set go', decipherThis('82yade 115te 103o'));
+    }
+}
+
+function decipherThis($str) // '72olle 103doo 100ya'
+{
+    $array = explode(" ", $str); // ['72olle', '103doo', '100ya']
+    $array2 = []; // [['H', 'o', 'l', 'l', 'e'], ['g', 'd', 'o', 'o'] ...]
+
+    foreach ($array as $value) {
+        preg_match_all('!\d+!', $value, $number); // find number in string
+        $code = chr($number[0][0]); // number => char (72 => H)
+
+        $newValue = str_replace((string) $number[0][0], (string) $code, $value);
+        $array2[] = str_split($newValue);
+    }
+
+    foreach ($array2 as &$value) {
+        $lastLetter = $value[count($value) - 1];
+        $value[count($value) - 1] = $value[1]; // replace last letter by second
+        $value[1] = $lastLetter; // replace second letter by last
+        $value = implode('', $value);
+    }
+
+    return implode(' ', $array2);
+}
+
+
