@@ -1124,7 +1124,7 @@ function decipherThis($str) // '72olle 103doo 100ya'
         $array2[] = str_split($newValue);
     }
 
-    foreach ($array2 as &$value) {
+    foreach ($array2 as &$value) { // &$value pour donner une nouvelle référence à la value
         $lastLetter = $value[count($value) - 1];
         $value[count($value) - 1] = $value[1]; // replace last letter by second
         $value[1] = $lastLetter; // replace second letter by last
@@ -1134,4 +1134,93 @@ function decipherThis($str) // '72olle 103doo 100ya'
     return implode(' ', $array2);
 }
 
+
+/**
+ * Traduire une phrase avec l'alphabet de l'OTAN
+ * 
+ * @description une phrase, chaque lettre correspond à un mot
+ * enlever les espaces, garder les ponctuations
+ * Input: If you can read ?
+ * Output: India Foxtrot Yankee Oscar Uniform Charlie Alfa November Romeo Echo 
+ * Alfa Delta ?
+ */
+
+class MyTestCases extends TestCase
+{
+    public function testShouldReturnTranslatedString()
+    {
+        $this->assertEquals("India Foxtrot Yankee Oscar Uniform Charlie Alfa November Romeo Echo Alfa Delta", to_nato('If you can read'));
+        $this->assertEquals("Delta India Delta November Oscar Tango Sierra Echo Echo Tango Hotel Alfa Tango Charlie Oscar Mike India November Golf", to_nato('Did not see that coming'));
+    }
+}
+
+function to_nato($words)
+{
+    $codeAlphabet = [
+        'Alfa', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot',
+        'Golf', 'Hotel', 'India', 'Juliet', 'Kilo', 'Lima', 'Mike', 'November',
+        'Oscar', 'Papa', 'Quebec', 'Romeo', 'Sierra', 'Tango', 'Uniform', 'Victor',
+        'Whiskey', 'Xray', 'Yankee', 'Zulu'
+    ];
+    $alphabet = range('a', 'z'); // ['a', 'b', 'c', ect.]
+    $code = [];
+
+    $words = strtolower(str_replace(' ', '', $words)); // ifyoucanread
+    $letters = str_split($words); // ['i' 'f', 'y', ect.]
+
+    foreach ($letters as $letter) {
+        // if letter is not a character
+        if (!ctype_alpha($letter)) {
+            $code[] = $letter; // accept punctuation in answer
+        } else {
+            $number = array_search($letter, $alphabet);
+            $code[] = $codeAlphabet[$number];
+        }
+    }
+
+    return implode(" ", $code);
+}
+
+// solution populaire
+function to_nato($words)
+{
+    $nato = [
+        'a' => 'Alfa ',
+        'b' => 'Bravo ',
+        'c' => 'Charlie ',
+        'd' => 'Delta ',
+        'e' => 'Echo ',
+        'f' => 'Foxtrot ',
+        'g' => 'Golf ',
+        'h' => 'Hotel ',
+        'i' => 'India ',
+        'j' => 'Juliet ',
+        'k' => 'Kilo ',
+        'l' => 'Lima ',
+        'm' => 'Mike ',
+        'n' => 'November ',
+        'o' => 'Oscar ',
+        'p' => 'Papa ',
+        'q' => 'Quebec ',
+        'r' => 'Romeo ',
+        's' => 'Sierra ',
+        't' => 'Tango ',
+        'u' => 'Uniform ',
+        'v' => 'Victor ',
+        'w' => 'Whiskey ',
+        'x' => 'Xray ',
+        'y' => 'Yankee ',
+        'z' => 'Zulu ',
+        ' ' => '',
+        '!' => '! ',
+        '.' => '. ',
+        ',' => ', ',
+        '?' => '? '
+    ];
+
+    $words = strtolower($words);
+
+    return trim(strtr($words, $nato));
+    // strtr(phrase, [tableau des mots à permuter])
+}
 

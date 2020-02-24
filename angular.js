@@ -4,7 +4,29 @@
 // Ressources : https://awesome-angular.com/ebook/
 // https://angular.io/start
 
-RAPPELS 
+RAPPELS
+* nommage des éléments en PascalCase = AppComponent
+* Utiliser un préfixe personnalisé pour les sélecteurs des composants et directives
+  ex. 'selector: admin-user;' ou plus classique 'selector: app-root'
+* déclarer les const en camelCase => const mockPokemons = ['Salamèche', 'Bulbizzare'];
+* Séparez par un espace les importations des librairies tierces de celles codées
+* Déclarez les propriétés avant les méthodes dans un composant, 
+et les éléments privés après ceux qui sont publics, par ordre alphabétique.
+* Limiter la logique d'un composant aux seules nécessités de la vue. 
+Toutes les autres logiques métiers doivent être déléguées dans des services.
+* La logique d'un composant pouvant être réutilisé par plusieurs composants 
+doit être placée dans un service
+
+* L'outil recommandé pour vérifier si son code respecte les bonnes pratiques de développement
+Codelyzer `https://github.com/mgechev/codelyzer`
+* Les snippets Angular pour VS Code `https://marketplace.visualstudio.com/items?itemName=johnpapa.Angular2`
+
+* tsconfig.json 
+renseigner outDir pour placer les fichiers JS dans un dossier à part 
+'pretty' : si définit à true, cette option permet d'ajouter des couleurs aux messages 
+d'erreurs du compilateur dans la console
+'http://www.typescriptlang.org/docs/handbook/compiler-options.html'
+
 * Module : ensemble de fichiers lié à une fonctionnalité de l'appli;
 * Composant : section dynamique et autonome de la page web (code HTML + classe JS);
 * Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
@@ -14,6 +36,7 @@ RAPPELS
 * Respecter le principe : une tâche / un fichier;
 * Programmation réactive = programmation avec des flux de données asynchrones;
 * Guard : mécanisme de protection
+* Limiter les fichiers à 400 lignes, les fonctions à 75 lignes
 * npm --save n'est plus utile' depuis npm 5
 In addition, there are the complementary options --save-dev and --save-optional 
 which save the package under devDependencies and optionalDependencies, respectively. 
@@ -45,15 +68,48 @@ la page web est découpée selon ses rôles = barre de navigation, boite de dial
       }
     }
 
+○ L'héritage' avec extends et 'super'
+
+class Vehicle {
+  constructor(color, drivingWheel, isEngineStart = false) {
+    this.color = color;
+    this.drivingWheel = drivingWheel;
+    this.isEngineStart = isEngineStart;
+  }
+
+  start() {
+    this.isEngineStart = true;
+  }
+
+  stop() {
+    this.isEngineStart = false;
+  }
+}
+
+class Car extends Vehicle {
+  constructor(color, drivingWheel, isEngineStart = false, seatings) {
+    super(color, drivingWheel, isEngineStart);
+    this.seatings = seatings;
+  }
+}
+
+class Motorbike extends Vehicle {
+  constructor(color, drivingWheel, isEngineStart = false, unleash) {
+    super(color, drivingWheel, isEngineStart);
+    this.unleash = unleash;
+  }
+}
+
+
 ○ le mot-clé let : permet de déclarer une variable locale, 
 dans le contexte (scope) où elle a été assignée.
 
     var x = 1;
      
     if (x < 10) { 
-      let v = 1; 
+      let v = 1; // variable asssignée à son scope (bloc d'instruction de if)
       v = v + 21;
-      console.log(v);
+      console.log(v); // v est définie 
     } 
      
     console.log(v); // v n'est pas définie, car v a été déclaré avec 'let' et non 'var'.
@@ -83,6 +139,63 @@ La fonction suivante:
 Correspond donc à la fonction fléchée suivante:
 bouton.onclick = () => { envoyerEmail(this.email); }
 
+Une meilleure utilisation du mot-clé this 
+// Cas n°1 : Confusion sur 'this'
+class Person {
+  constructor(firstName, email, button) {
+    this.firstName = firstName;
+    this.email = email;
+
+    button.onclick = function () {
+      sendEmail(this.email); // ce 'this' fait référence au bouton, et non à une instance de Personne.
+    }
+  }
+}
+
+// Cas n°2 : Utilisation d'une variable intermédiaire
+class Person {
+  constructor(firstName, email, button) {
+    this.firstName = firstName;
+    this.email = email;
+    var that = this; // 'this' fait référence ici à l'instance de Personne
+
+    button.onclick = function () {
+      sendEmail(that.email); // 'that' fait référence à la même instance de Personne
+    }
+  }
+}
+
+// Cas n°3 : Utilisation des fonctions fléchées
+bouton.onclick = () => { envoyerEmail(this.email); } 
+// les arrow functions n'ont pas de contexte
+// this fait référence à l'entité englobante, au contexte englobant 
+// ici l'objet Person
+
+// Exemple d'utilisation des fonctions fléchées avec des Promesses
+getUser(userId)
+  .then(user => getFriendsList(user))
+  .then(friends => showFriends(friends));
+
+le mot-clé return
+// n'est pas nécessaire dans une fonction simple
+var func = x => x * x;
+// concise body syntax, implied "return"
+
+var func = (x, y) => { return x + y; };
+// with block body, explicit "return" needed
+
+// When the only statement in an arrow function is `return`, 
+// we can remove `return` and remove
+// the surrounding curly brackets
+var elements = [
+  'Hydrogen',
+  'Helium',
+  'Lithium',
+  'Beryllium'
+];
+
+elements.map(element => element.length); // [8, 6, 7, 9]
+
 ○ Les paramètres de fonctions par défaut
 En JavaScript ES6, on peut définir facilement des paramètres de fonctions avec une valeur par défaut.
 Imaginons une fonction qui multiplie deux nombres passés en paramètres, 
@@ -92,17 +205,93 @@ mais le deuxième paramètre est facultatif, et il vaut 1 par défaut:
       return a * b;
     }
 
+○ Les collections 'Set' et 'Map'
+Map : tableau de paires clés-valeurs // sorte de dictionnaire
+Set: liste de valeurs, sans clés
+
+// Les Dictionnaires avec Map
+
+let zlatan = { rank: 1, name: 'Zlatan' };
+let players = new Map(); // Je crée une nouveau dictionnaire
+players.set(zlatan.rank, zlatan.name); // J'ajoute lobjet 'zlatan' à la clé '1'
+
+// Les listes avec Set
+
+let players = new Set(); // Je crée une nouvelle liste
+players.add(zlatan); // j'ajoute un joueur dans cette liste
+
+// Méthodes pour Map et Set
+
+players.size; // affiche le nombre d'éléments dans la collection
+players.has(zlatan.rang); // Dictionnaire: affiche si le dictionnaire contient la clé (le rang) de Zlatan.
+players.has(zlatan); // Liste: affiche si la liste contient le joueur Zlatan.
+players.delete(zlatan.rang); // Dictionnaire: supprime un élément d'après une clef.
+players.delete(zlatan); // Liste: supprime l'élément passé en paramètre.
 
 ○ La syntaxe template string
 
 On peut insérer des variables dans la chaîne de caractères avec ${variable}, comme ceci:
 
-    let name = 'toto';
-    let email = 'toto@gmail.com';
-    console.info(`${name} a pour email: ${email}`);
-    // alt Gr + 7
+let name = 'toto';
+let email = 'toto@gmail.com';
+console.info(`${name} a pour email: ${this.email}`);
+// alt Gr + 7
+
+// On peut écrire des strings sur plusieurs ligne grâce au backtick
+let severalLinesString = `bla
+blablalbalblalballb
+balblablalabla
+b
+ablablablabbl`;
     
 ○ Tous les changements: http://es6-features.org/#Constants
+
+○ Les promesses
+simplifier la programmation asynchrone
+callbacks, fonctions anonymes appelées dans l'appli'
+code plus efficace et plus élégant 
+/* Les promesses (ES5) */
+
+// Utilisation de base
+getUser(userId, function (user) {
+  getFriendsList(user, function (friends) {
+    showFriends(friends);
+  });
+});
+
+// Utilisation avec des Promesses
+getUser(userId)
+  .then(function (user) {
+    getFriendsList(user);
+  })
+  .then(function (friends) {
+    showFriends(friends);
+  });
+
+// Déclarer une Promesse
+let getUser = function (userId) {
+  return new Promise(function (resolve, reject) {
+    // new Promise(function (succes, erreur))
+    // appel asynchrone au serveur pour récupérer les informations d'un utilisateur...
+    // à partir de la réponse du serveur, j'extrais les données de l'utilisateur :
+    let user = response.data.user;
+
+    if (response.status === 200) {
+      resolve(user); // appelle fonction de succes
+    } else {
+      reject('Cet utilisateur n\'existe pas.'); // appelle fonction d'erreur
+    }
+  })
+}
+
+// Traiter une Promesse
+getUser(userId)
+  .then(function (user) {
+    console.log(user); // en cas de succés
+  }, function (error) {
+    console.log(error); // en cas d'erreur
+  });
+
 
 ◘ TYPESCRIPT: https://www.typescriptlang.org/docs/handbook/basic-types.html
 
@@ -158,6 +347,12 @@ https://www.typescriptlang.org/index.html (VS Code comprend TS)
 ◘ Créer son application 
 
 Avec la CLI: https://cli.angular.io/ (conseillé)
+`
+npm install -g @angular/cli
+ng new my-first-project
+cd my-first-project
+ng serve
+`
 
 From scratch :
 ○ package.json : dépendances du projet
@@ -246,6 +441,9 @@ qui nous permet de démarrer notre application web.
 
 III) LES COMPOSANTS
 
+○ Créer un composant avec la CLI 
+`ng generate component mon-composant`
+
 ○ Un composant 
 une classe qui contrôle une portion de la page web
 composant = classe + vue (template);
@@ -259,7 +457,7 @@ export class AppComponent {
   // propriété privée, qui renvoit un tableau d'objet de type Pokemon
   private pokemons: Pokemon[];
 }
-on rajoute un nouveu fichier pour modéliser un objet Pokemon :
+on rajoute un nouveau fichier pour modéliser un objet Pokemon :
 src/app/pokemon.ts
 export class Pokemon {
   id: number;
@@ -1886,7 +2084,7 @@ programmation asynchrone = mode de fonctionnement dans lequel les opérations so
 
 // récupérer un user grâce à son id
 let getUser = function(idUser) {
-  return new Promise(function(resolve, reject)) { 
+  return new Promise(function(resolve, reject) { 
     // création d'une promesse(function(callback succès, callback erreur))
     // appel asynchrone au serveur pour récupérer les infos du user
     // a partir de la reponse du serveur, on extrait les donnees du user
@@ -1896,18 +2094,18 @@ let getUser = function(idUser) {
     } else {
       reject(`Cet utilisateur n'existe pas !`); // callback erreur
     }
-  }
-}
+  })
+};
 
 // fonction qui renvoie une promesse
 // contenant les infos du user
 getUser(idUser)
-  .then(function(user)) { // success
+  .then(function(user) { // success
     console.log(user);
     this.user = user; // récupère la valeur de retour
   }, function(error) { // error
     console.log(error);
-  }
+});
 
 // même fonction, en ES6 avec les arrow functions
 getUser(idUser)
@@ -1915,7 +2113,7 @@ getUser(idUser)
   console.log(user);
   this.user = user; // récupère la valeur de retour
   }, error => console.log(error);
-};
+});
 
 ○ La programmation réactive 
 façon différente de concevoir une application
@@ -1997,7 +2195,7 @@ function giveMePromiseFromObservable() {
 
 XII) EFFECTUER DES REQUETES HTTP 
 
-API = interface de programmation, 
+API = 'interface' de programmation, 
 permet de communiquer avec un service distant depuis votre appli 
 
 ○ Mettre en place le 'module' HttpClientModule
@@ -2132,12 +2330,6 @@ export class PokemonsService {
 
   // pour créer une url vers laquelle nous allons appeler l'API ++ 
   private pokemonUrl = 'api/pokemons';
-
-  // <T> indique que l'on va typer u type en lui-même
-  // parametre operation : nom de la méthode qui a causé l'erreur
-  // operation par défaut
-  // result : donnée facultative à renvoyer du résultat de l'Observable
-  private handleError<T>(operation = 'operation', result?: T) {
 
   // Retourne le pokémon avec l'identifiant passé en paramètre
   getPokemon(id: number): Observable<Pokemon> {
@@ -2797,4 +2989,80 @@ export class AppModule { }
   * Le type utilisé pour l'authentification est CanActivate`
   * `Il faut toujours déclarer les Guards au niveau du module racine, 
   * ainsi que les services tiers qu'ils utilisent`
+
+
+XIV) MODIFIER DYNAMIQUEMENT LE TITRE DES PAGES
+
+La balise HTML <title> est dans le document <head>, en dehors du corps, 
+ce qui le rend inaccessible à la liaison de données Angular. 
+
+○ Utiliser le service Title
+`https://angular.io/api/platform-browser/Title`
+simple classe, qui fournit deux méthodes pour récupérer et modifier le titre du document HTML courant
+getTitle() : string // Récupère le titre du document HTML courant.
+setTitle(newTitle : string) // Définit un nouveau titre pour le document HTML courant.
+Pour utiliser ce service Title, il faut l'injecter le service dans le composant où 
+l'on souhaite l'utiliser
+Etant donné que ce service est appelé à être utilisé dans toute l'application, 
+nous allons l'injecter dans le composant racine, AppComponent
+src/app/app.component.ts
+Ensuite on peut définir un titre à la page, grâce à la méthode setTitle()
+import { Title } from '@angular/platform-browser'; // ++ 
+
+export class AppComponent() {
+
+  public constructor(private titleService: Title) { }
+  
+  public updateTitle(title: string) {
+    this.titleService.setTitle(title);
+  }
+}
+
+Il faut également ajouter un fournisseur pour ce service, 
+dans le 'module' racine de notre application
+src/app/app.module.ts
+import { BrowserModule, Title } from '@angular/platform-browser'; // ++
+
+// permet de déclarer un nouveau module
+@NgModule({
+  // ...
+  providers: [Title], // fournit le service 'Title' à l'ensemble de l'application
+})
+
+src/app/pokemons-list-pokemon.component.ts 
+import { Title } from '@angular/platform-browser'; // ++
+
+export class ListPokemonComponent implements OnInit {
+
+  private pokemons: Pokemon[];
+
+  constructor(private router: Router,
+    private pokemonsService: PokemonsService,
+    private titleService: Title) { }
+
+  ngOnInit() {
+    // ...
+    this.titleService.setTitle("La liste des Pokémons"); // add title
+  }
+}
+
+// en utilisant AppComponent comme un service
+
+import { AppComponent } from '../app.component'; // ++
+
+export class ListPokemonComponent implements OnInit {
+
+  constructor(private router: Router,
+    private pokemonsService: PokemonsService,
+    private appComponent: AppComponent) { } // ++
+
+  ngOnInit() {
+    // ...
+    this.appComponent.updateTitle("La liste des Pokémons"); // add title
+  }
+}
+
+Utiliser le service de façon dynamique  
+`https://www.tektutorialshub.com/angular/set-page-title-using-title-service-angular-example/`
+`https://blog.bitsrc.io/dynamic-page-titles-in-angular-98ce20b5c334`
 
