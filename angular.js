@@ -36,6 +36,8 @@ d'erreurs du compilateur dans la console
 * Respecter le principe : une tâche / un fichier;
 * Programmation réactive = programmation avec des flux de données asynchrones;
 * Guard : mécanisme de protection
+* @Input : donnée entrante
+* Préferer ngOnInit au constructeur, sauf petites opérations
 * Limiter les fichiers à 400 lignes, les fonctions à 75 lignes
 * npm --save n'est plus utile' depuis npm 5
 In addition, there are the complementary options --save-dev and --save-optional 
@@ -481,6 +483,7 @@ et les valeurs précédentes disponibles pour ce composant.
 * ngOnInit: 
 Cette méthode est appelée juste après le premier appel à ngOnChanges, 
 et elle initialise le composant après qu’Angular a initialisé les propriétés du composant.
+Démarre donc après le constructeur
 * ngDoCheck: 
 On peut implémenter cette "interface" pour étendre le comportement par défaut de la méthode ngOnChanges, 
 afin de pouvoir détecter et agir sur des changements qu’Angular ne peut pas détecter par lui-même.
@@ -744,6 +747,18 @@ export class AppComponent implements OnInit {
     this.pokemons = POKEMONS;
   }
 }
+
+○ Récupérer l'index' d'un tableau' avec ngFor 
+app.component.html
+<ul>
+    <li *ngFor="let pokemon of pokemons; let i = index" [indexPokemon]="i" >
+      {{ pokemon.name }}
+      </li>
+</ul>
+
+app.component.js 
+@Input indexPokemon: number; // ++ récupère l'index du Pokemon dans le tableau
+
 
 ○ Améliorer le template 
 Materialize.css > https://materializecss.com/getting-started.html

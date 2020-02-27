@@ -280,3 +280,277 @@ True or True or False and True or False # True (True or True or False) and (True
 True and False and False # False
 (True and False) or True # True
 True and (False or True) # True
+# Comment vérifier la valeur du nombre entré par l'utilisateur par rapport au nombre mystère ?
+nombre_essai = int(input("Devinez le nombre mystère : "))
+if nombre_essai == nombre_mystere:
+    print("Bravo, vous avez trouvé le nombre mystère !")
+elif nombre_essai < nombre_mystere:
+    print(f"Le nombre mystère est supérieur à {nombre_essai}")
+else:
+    print(f"Le nombre mystère est inférieur à {nombre_essai}")
+
+
+## -- MODULES ET FONCTIONS -- ##
+
+module = fichier python qui contient des fonctions
+module à importer : import nom_module
+pour utiliser la fonction : nom_module.nom_fonction
+random.randint(0, 1)
+
+# le module random 
+# fonction randint récupère un nombre aléatoire entier entre deux valeurs
+random.randint(0, 1) # génère 0 ou 1 (fonction inclusive)
+# fonction uniform génère un nombre décimal
+random.uniform(0, 1)  # génère 0.33328, 0.99887, ect. 
+# fonction randrange (exclusive) qui génère un entier entre 0 et n
+random.randrange(999) # génère un entier entre 0 et 999
+random.randrange(0, 100, 10) # génère, entre 0 et 101, avec un pas de 10
+# 80, 40, 90, 10
+# comparer 2 nombres aléatoires
+import random
+
+a = random.randint(0, 100)
+b = random.randint(0, 100)
+
+if a == b:
+    print("Le nombre a et le nombre b sont égaux")
+elif a > b:
+    print("Le nombre a est plus grand que le nombre b")
+else:
+    print("Le nombre b est plus grand que le nombre a")
+
+# le module os
+# pour créer et supprimer des dossiers
+import os
+
+chemin = "D:\Documents"
+dossier = os.path.join(chemin, "dossier_a_creer", "sous_dossier") 
+# join gère la différence des slashs
+print(dossier) # D:\Documents\dossier_a_creer\sous_dossier
+# créer un dossier avec la fonction makedirs
+os.makedirs(dossier)
+# créer un dossier que s'il n'existe pas. solution 1
+if not os.path.exists(dossier):
+    os.makedirs(dossier)
+# créer un dossier que s'il n'existe pas. solution 2
+os.makedirs(dossier, exist_ok = True) # (name, mode:int, exist_ok: bool)
+# supprimer un dossier
+if os.path.exists(dossier):
+    os.removedirs(dossier)
+
+# chercher l'aide avec dir et help 
+import random
+from pprint import pprint # appelle la fonction pprint à l'intérieur du module pprint
+print(dir(random)) # introspection : affiche toutes les fonctions associées au module
+# fonctions privées (agrémentées d'underscore(s)) ex. '__all__' sont réservées à python
+# afficher l'aide
+help(random.randint)
+# afficher les résultats de dir() sous forme de tableau par ordre alphabétique
+pprint(dir(random))
+
+# les objets callable
+# objets appelables
+os.makedirs() # objet appelable avec les parenthèses
+from pprint import pprint
+import os
+callable() # dit si l'objet peut être appelé
+print(callable(pprint)) 
+# False avec import pprint, True avec from pprint import pprint
+print(callable(os.name)) # False car name est un attribut
+print(os.name)
+# os.name checks whether certain os specific modules are available (e.g. posix, nt, ...)
+
+# ex. Comment utiliser le module random pour générer un nombre aléatoire ?
+import random
+nombre_essai = int(input("Devinez le nombre mystère : "))
+nombre_mystere = random.randint(0, 100)
+
+if (nombre_essai < nombre_mystere):
+    print(f"Le nombre mystère est supérieur à {nombre_essai}")
+elif (nombre_essai > nombre_mystere):
+    print(f"Le nombre mystère est inférieur à {nombre_essai}")
+else:
+    print("Bravo, vous avez trouvez le nombre mystère !")
+
+
+## -- LES LISTES -- ##
+
+liste = []
+liste2 = [1, 2, 3, 4, 5]
+liste3 = [250, "Python", True]
+# objet mutable : on peut le modifier
+# list est un mot réservé
+
+# tuple : liste immutable
+mon_tuple = (1, 2, 3)
+mon_tuple2 = (250, "Python", True)
+# possible de convertir un tuple en liste et vice-versa grâce aux fonctions list et tuple:
+mon_tuple = (1, 2, 3)
+liste = list(mon_tuple) # [1, 2, 3]
+mon_tuple = tuple(liste) # (1, 2, 3)
+
+# ajouter et enlever des éléments de la liste
+# la méthode append qui permet d'ajouter une valeur
+liste.append(5)
+# la méthode extend ajoute des valeurs
+liste.extend([10, 25, 30])
+# supprimer avec la méthode remove
+liste.remove(5) # enlève la première occurence trouvée
+
+# récupérer un élément dans une liste
+# indice : position d'un élément dans la structure
+liste = ["Python", "C++", "Java"]
+liste[0] # récupère le premier élement de la liste, soit Python
+# pour les nombres négatifs : la fin commence à -1, puis décroit
+liste = ["Python", "C++", "Java"]
+# -3, -2, -1
+
+# Récupérez le premier et le dernier nombre
+nombres = [1, 2, 3, 4, 5, 4, 3, 2, 1]
+nombre_premier = nombres[0]
+nombre_dernier = nombres[-1]
+
+# Récupérer l'élément 'Python'
+langages = ["Java", "Python", "C++"]
+langage = langages[1]
+
+# Changez la position de l'élément 'Python' dans la liste pour qu'il se retrouve à la fin de la liste
+liste = ["Java", "Python", "C++"]
+liste.remove("Python")
+liste.append("Python")
+
+# les slices : récupérer certains éléments d'une liste
+# récupère des tranches d'une liste
+# tableau[début:fin:pas]
+liste = ["Utilisateur1", 
+        "Utilisateur2", 
+        "Utilisateur3", 
+        "Utilisateur4", 
+        "Utilisateur5", 
+        "Utilisateur6"]
+print(liste[0:1]) # récupère le 1er élément car slice est un processus exclusif
+print(liste[0:2]) # ['Utilisateur1', 'Utilisateur2']
+print(liste[1:2]) # ['Utilisateur2']
+print(liste[:]) # ['Utilisateur1', 'Utilisateur2', 'Utilisateur3', 'Utilisateur4', 'Utilisateur5', 'Utilisateur6']
+print(liste[:-1]) # comme c'est exclusif, prend tous les éléments sauf le dernier
+print(liste[:-2]) # exclut les 2 derniers éléments
+print(liste[1:-1]) # récupère tout sauf le premier et dernier élément
+print(liste[2:]) # ['Utilisateur3', 'Utilisateur4', 'Utilisateur5', 'Utilisateur6']
+print(liste[::2]) # récupère un utilisateur sur 2
+# ['Utilisateur1', 'Utilisateur3', 'Utilisateur5']
+print(liste[1::2]) # récupère un utilisateur sur 2, à partir du 2ème élément
+# ['Utilisateur2', 'Utilisateur4', 'Utilisateur6']
+print(liste[1:-2:2]) # part du 2°, s'arrête 2 éléments avant la fin
+# ['Utilisateur2', 'Utilisateur4']
+print(liste[::-1]) # inverse l'ordre des éléments
+# ['Utilisateur6', 'Utilisateur5', ect.]
+
+# ex.
+liste = ["Maxime", "Martine", "Christopher", "Carlos", "Michael", "Eric"]
+trois_premiers = liste[:3]
+trois_derniers = liste[3:]
+liste[-3:] # récupère toujours les trois derniers éléments de la liste
+milieux = liste[1:-1] # sans premier ni dernier
+premier_dernier = liste[::5] # seulement le premier et le dernier
+# possiblité plus flexible :
+premier_dernier = liste[::len(liste)-1]
+# trouver le milieu
+liste = ["Utilisateur1",
+         "Utilisateur2",
+         "Utilisateur3",
+         "Utilisateur4",
+         "Utilisateur5",
+         "Utilisateur6",
+         "Utilisateur7"]
+middle = int(((len(liste) - 1) / 2))
+print(middle) # 3
+print(liste[middle:(-middle)]) # ['Utilisateur4']
+
+# la méthode index, qui renvoie l'index de l'élément
+employes =["Carlos", "Max", "Martine", "Patrick", "Alex"]
+print(employes.index("Max")) # 1
+
+# la méthode count pour le nombre d'occurences dans la liste
+employes = ["Carlos", "Max", "Martine", "Patrick", "Alex", "Max"]
+print(employes.count("Max")) # 2
+
+# la méthode sort qui trie la liste par ordre alphabetique
+employes = ["Carlos", "Max", "Martine", "Patrick", "Alex"]
+print(employes.sort()) # None car ne renvoie rien
+print(employes) # ['Alex', 'Carlos', 'Martine', 'Max', 'Patrick']
+employes_tries = sorted(employes) # la fonction sorted renvoie la liste triée
+print(employes_tries) # ['Alex', 'Carlos', 'Martine', 'Max', 'Patrick']
+
+# d'autres méthodes pour enlever un élément
+# la méthode pop(): enlever un élément par rapport à son index
+employes = ["Carlos", "Max", "Martine", "Patrick", "Alex"]
+employe = employes.pop(-1) # enlève le dernier élément, renvoie la valeur enlevée
+print(employe) # Alex
+# la méthode clear() : supprime tous les éléments
+employes = ["Carlos", "Max", "Martine", "Patrick", "Alex"]
+employes.clear() # enlève le dernier élément, renvoie la valeur enlevée
+print(employes) # []
+
+# la méthode join pour joindre des éléments (chaines de caractères) d'une liste
+liste = ["Python", "est", "un", "langage", "incroyable", "!"]
+# liant.join(tableau)
+phrase = " ".join(liste)
+print(phrase) # Python est un langage incroyable !
+retour_ligne = "\n".join(liste)
+print(retour_ligne)
+# Python
+# est
+# un
+# langage
+# incroyable
+# !
+
+# créer une liste à partir d'une chaine de caractères
+# avec la méthode split()
+# tableau.split(séparateur)
+# split() ne modifie pas la chaine de caractères
+# il faut récupère le résultat dans une variable
+courses = "Riz, Pomme, Lait, Salade, Saumon, Beurre"
+courses = courses.split()
+print(courses) # ['Riz,', 'Pomme,', 'Lait,', 'Salade,', 'Saumon,', 'Beurre']
+# par défaut split() sépare sur les espaces
+courses = courses.split(", ")
+print(courses)  # ['Riz', 'Pomme', 'Lait', 'Salade', 'Saumon', 'Beurre']
+courses = courses.split("-") # caractère pas présent
+print(courses) # ['Riz, Pomme, Lait, Salade, Saumon, Beurre']
+
+# les opérateurs d'appartenance
+# vérifier si un élément ou non appartient à une structure de données
+# in, not in
+utilisateurs = ["Paul", "Pierre", "Marie"]
+print("Paul" in utilisateurs) # True 
+if "Paul" in utilisateurs:
+    print("Bonjour Paul, bon retour parmi nous !")
+if "Paul" in utilisateurs:
+   utilisateurs.remove("Paul")
+# marche aussi pour les chaines de caractères
+print("Java" in "JavaScript") # True
+
+# ex. ajouter un nombre et vérifier s'il a bien été ajouté
+liste = [1, 2, 3, 4, 5]
+liste.append(6)
+if 6 in liste:
+    print("Le nombre 6 a bien été ajouté à la liste.")
+
+# listes imbriquées
+liste = ["Python", ["Java", "C++", ["C"]], ["Ruby"]]
+
+print(liste[1][0]) # Java
+print(liste[1][2][0]) # C
+print(liste[1][-1][0]) # C
+# une chaine de caractères est aussi une liste
+print(liste[0][0]) # P de Python
+print(liste[0][0:2]) # Py de Python
+
+# ex.
+langages = [["Python", "C++"], "Java"]
+nombres = [1, [4, [2, 3]], 5, [6], [[7]]]
+
+python = langages[0][0]
+deux = nombres[1][1][0]
+sept = nombres[-1][0][0]
