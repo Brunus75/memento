@@ -29,6 +29,7 @@ d'erreurs du compilateur dans la console
 
 * Module : ensemble de fichiers lié à une fonctionnalité de l'appli;
 * Composant : section dynamique et autonome de la page web (code HTML + classe JS);
+* Observable : objet qui émet des informations dans le temps
 * Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
 * Interpolation : fait d'afficher une { propriété } d'un composant dans son template
 * Directive : classe Angular qui réagit avec les éléments HTML en leur attachant un comportement
@@ -1375,7 +1376,13 @@ export class AppModule { }
 * La balise <router-outlet> permet de définir où le template des composants fils sera injecté.
 * L'opérateur permettant d'intercepter toutes les routes est **.
 * Les routes doivent être regroupées par fonctionnalité au sein de modules.
-
+* On utilise routerLink pour assurer la redirection
+* On utilise routerLinkActive pour mettre en évidence la route choisie 
+Dans l'exemple', la classe active sera activée sur l'élément' choisi
+<ul>
+  <li routerLinkActive="active" ><a routerLink="home">Accueil</a></li>
+  <li routerLinkActive="active" ><a routerLink="login">Connexion</a></li>
+</ul>
 
 VIII) LES MODULES 
 
@@ -1582,6 +1589,11 @@ export class PokemonsService {
         return pokemons[index];
       }
     }
+
+    // autre solution que la boucle for, la méthode find
+    pokemons.find(
+      (pokemon) => { return pokemon.id === id}
+    )
   }
 }
 
@@ -2693,7 +2705,7 @@ utilisé pour tout scénario lié à la navigation = redirection, authentificati
 retourne un booléen
 true = le processus de navigation continue
 demande des opérations asynchrones (question au user, sauvegarder changements, récupérer des données)
-dans la plupart des cas, le type de retour est un Observable qui renvoie boolean ou promesse
+dans la plupart des cas, le 'type' de retour est un Observable qui renvoie boolean ou promesse
 le routeur attendra la réponse pour agir sur la navigation
 peut avoir plusieurs types =
 The router supports multiple guard interfaces:

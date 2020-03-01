@@ -220,7 +220,7 @@ a is b # true
 
 # les booléens
 True, 1, "a" # true
-False, 0, "" # false
+False, 0, "", [] # false
 False + 1 # 1
 True + 1 # 2
 # ex.
@@ -554,3 +554,710 @@ nombres = [1, [4, [2, 3]], 5, [6], [[7]]]
 python = langages[0][0]
 deux = nombres[1][1][0]
 sept = nombres[-1][0][0]
+
+
+## -- METHODES ET FONCTIONS UTILES -- ##
+
+# méthode agit directement sur l'objet, pas besoin de lui attribuer une nouvelle variable
+liste.sort() # la liste est triée, on peut l'utiliser
+# la fonction fait un changement sur un élément mais ne l'enregistre pas
+# il faut assigner une variable au processus pour récupérer l'élement changé
+liste_triee = sorted(liste) # la liste triée est contenue dans une nouvelle variable
+# pour une fonction, il faut donc enregistrer le processus
+# dans une nouvelle variable, ou en écrasant la précédent
+liste = sorted(liste)
+
+# autres méthodes
+"stop".upper() # STOP
+"DU CALME".lower() # du calme
+"ceci est une phrase".capitalize() # Ceci est une phrase
+"le seigneur des anneaux".title() # Le Seigneur Des Anneaux
+"JavaScript".replace("Java", "Type") # TypeScript
+"JavaScript".replace("Java", "") # Java
+"100".isdigit() # True si contient uniquement des chiffres
+"photo.jpg".endswith("jpg") # True/False
+"photo.jpg".startswith("jpg") # True/False
+
+# Muable et Immuable (mutable ou immutable)
+# 2 catégories d'objets :
+# muable : modifiables : listes, dictionnaire, sets
+# immuable : on peut les modifier directement : string, nombres
+# il faut créer une nouvelle variable pour récupérer l'élément changé
+
+# fonctions supplémentaires
+len("Python") # 6
+len([1, 2, 3]) # 3
+
+round(2.2) # 2 
+round(2.7) # 3
+
+min([1, 2, 3]) # 1
+max([1, 2, 3]) # 3
+min("abc") # a
+max("abc") # c
+
+sum([10, 10, 10]) # 3
+
+range(5) # [0, 1, 2, 3, 4] (fonction exclusive)
+range(2, 5) # [2, 3, 4]
+
+# égréner les lettre de l'alphabet
+for one in range(97, 110):
+    print(chr(one))
+# a
+# b
+# ...
+import string
+string.ascii_lowercase # 'abcdefghijklmnopqrstuvwxyz'
+list(string.ascii_lowercase) # ['a', 'b', 'c', ...]
+
+# la fonction range avec Python 3
+la fonction "range" ne retourne pas directement une liste, mais un objet de "type range"
+Cet objet contient plusieurs méthodes qui vous permettent d'obtenir des informations sur ce range'
+interval = range(10)
+interval.start # 0
+interval.step # 1
+interval.stop # 10
+Pour récupérer l'objet range' sous la forme d'une liste, il suffit de le convertir avec la fonction list'
+interval = list(interval)
+print(interval) # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+Pour Python 2, on obtient directement une liste
+
+# ex.
+# Afficher la phrase mdp_trop_court en majuscule si le mot de passe entré est égal à 0.
+# Afficher la phrase mdp_trop_court avec une majuscule sur la première lettre 
+# si le mot de passe entré est plus petit que 8.
+# Afficher la phrase "Votre mot de passe ne contient que des nombres." 
+# si le mot de passe entré ne contient que des nombres.
+# Afficher la phrase "Inscription terminée." si le mot de passe est valide.
+mdp = input("Entrez un mot de passe (min 8 caractères) : ")
+mdp_trop_court = "votre mot de passe est trop court."
+
+if (len(mdp) == 0):
+    print(mdp_trop_court.upper())
+elif (len(mdp) < 8):
+    print(mdp_trop_court.capitalize())
+elif (mdp.isdigit()):
+    print("Votre mot de passe ne contient que des nombres.")
+else:
+    print("Inscription terminée.")
+
+# Ex. Comment rajouter une condition dans notre script afin d'éviter 
+# de le faire planter si l'utilisateur ne rentre pas un nombre ?
+import random
+
+nombre_mystere = random.randint(0, 10)
+nombre = input("Quel est le nombre mystère ? ")
+
+if nombre.isdigit():
+    nombre = int(nombre)
+    if nombre > nombre_mystere:
+        print(f"Le nombre mystère est plus petit que {nombre}")
+    elif nombre < nombre_mystere:
+        print(f"Le nombre mystère est plus grand que {nombre}")
+    else:
+        print("Bravo, vous avez trouvé le nombre mystère !")
+else:
+    input("Votre réponse n'est pas un nombre. Retentez votre chance : ")
+
+# solution alternative 
+import random
+
+nombre_mystere = random.randint(0, 10)
+nombre = input("Quel est le nombre mystère ? ")
+if not nombre.isdigit():
+    print("SVP, entrez un nombre valide.")
+    exit()
+
+nombre = int(nombre)
+if nombre > nombre_mystere:
+    print(f"Le nombre mystère est plus petit que {nombre}")
+elif nombre < nombre_mystere:
+    print(f"Le nombre mystère est plus grand que {nombre}")
+else:
+    print("Bravo, vous avez trouvé le nombre mystère !")
+
+
+## -- LES BOUCLES -- ##
+
+# la boucle for
+# la liste est définie
+for element in liste:
+    print(element)
+for lettre in "Python":
+    print(lettre)
+# équivalent de for (let = i; i < 100; i++)
+for i in range(100):
+    print(i)
+# for sur un nombre de tours précis
+liste = [1, 2, 3, 4, 5]
+for number in range(2, len(liste)):
+    print(number)
+    # 2
+    # 3
+    # 4
+
+# la boucle while
+# la liste n'est pas définie
+while condition_vraie:
+    print("Bonjour")
+# structure plus verbeuse
+i = 0
+while i < 100:
+    print("Bonjour")
+    i += 1
+# intérêt : quand on ne sait pas le nombre d'itérations nécessaires
+continuer = "o"
+while continuer == "o":
+    print("On continue !")
+    continuer = input("Souhaitez-vous continuer ? o/n : ")
+# autre intérêt : répéter une opérations toutes les X minutes
+import time
+# boucle infinie
+while True:
+    print("Sauvegarde en cours. . .")
+    time.sleep(600) # doit attendre 600s pour reprendre
+    # effectue l'opération toutes les 10min
+
+# contrôler une boucle avec continue et break
+liste = ["1", "2", "Paul", "3", "Marie"]
+# continue : passer à l'élément suivant
+for element in liste:
+    if element.isdigit():
+        continue # passe à l'élément suivant
+    print(element) # n'affiche que les prénoms
+# break : sortir de la condition
+for element in liste:
+    if element.isdigit():
+        break  # sort de la boucle
+    print(element)  # n'affiche rien
+
+# les compréhensions de liste (List comprehension)
+# itérer sur une liste et filtrer les éléments grâce à des structures conditionelles
+liste = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+# avec une boucle for :
+positifs = []
+for nombre in liste:
+    if nombre > 0:
+        positifs.append(nombre)
+# avec une compréhension de liste :
+positifs = [i for i in liste if i > 0] # [1, 2, 3, 4, 5]
+# [ opération_sur_element boucle_sur_liste condition_sur_liste ]
+# effectuer une opération 
+positifs_doubles = [i * 2 for i in liste if i > 0] # [2, 4, 6, 8, 10]
+# if / else
+nombres_inverses = [i if i % 2 == 0 else -i for i in nombres]
+
+# exercices : remplacer les boucles par des listes de compréhension
+nombres = [1, 21, 5, 44, 4, 9, 5, 83, 29, 31, 25, 38]
+"""
+nombres_pairs = []
+for i in nombres:
+    if i % 2 == 0:
+        nombres_pairs.append(i)
+"""
+nombres_pairs = [i for i in nombres if i % 2 == 0]
+print(nombres_pairs)
+
+# ---------------------------------------------------- #
+nombres = range(-10, 10)
+"""
+nombres_positifs = []
+for i in nombres:
+    if i >= 0:
+        nombres_positifs.append(i)
+"""
+nombres_positifs = [i for i in nombres if i >= 0]
+print(nombres_positifs)
+
+# ---------------------------------------------------- #
+nombres = range(5)
+"""
+nombres_doubles = []
+for i in nombres:
+    nombres_doubles.append(i * 2)
+"""
+nombres_doubles = [i * 2 for i in nombres]
+print(nombres_doubles)
+
+# ---------------------------------------------------- #
+nombres = range(10)
+"""
+nombres_inverses = []
+for i in nombres:
+    if i % 2 == 0:
+        nombres_inverses.append(i)
+    else:
+        nombres_inverses.append(-i)
+"""
+nombres_inverses = [i if i % 2 == 0 else -i for i in nombres]
+print(nombres_inverses)
+
+# Comment afficher avec une boucle les dix utilisateurs ?
+for i in range(1, 11):
+    print(f"Utilisateur {i}")
+
+# afficher les lettres du mot 'Python' dans le sens inverse
+# solution 1
+mot = "Python"
+for lettre in reversed(mot):
+    print(lettre)
+# solution 2
+mot = "Python"
+for lettre in mot[::-1]:
+    print(lettre)
+
+# Comment peut-on permettre à l'utilisateur de sortir de la boucle 
+# en modifiant les lignes de code dans la boucle while ?
+continuer = "o"
+while continuer == "o":
+    print("On continue !")
+    input("Voulez-vous continuer ? o/n ")
+# solution
+continuer = "o"
+while continuer == "o":
+    print("On continue !")
+    continuer = input("Voulez-vous continuer ? o/n ")
+# solution 2, plus verbeuse
+continuer = "o"
+while continuer == "o":
+    print("On continue !")
+    resultat = input("Voulez-vous continuer ? o/n ")
+    if resultat != "o":
+        break
+# solution 3, avec Python 3.8 uniquement
+while (continuer: = "o") == "o":
+    print("On continue !")
+    if (resultat: = input("Voulez-vous continuer ? o/n ")) != "o":
+        break
+
+# ajouter une boucle pour permettre à l'utilisateur jusqu'à 5 essais pour trouver le nombre mystère
+import random
+
+nombre_mystere = random.randint(0, 10)
+nombre_essai = 0
+
+while nombre_essai <= 5:
+
+    if nombre_essai == 5:
+        print(f"Vous avez perdu. Le nombre mystère était {nombre_mystere}")
+        break
+
+    nombre = input("Quel est le nombre mystère ? ")
+    if not nombre.isdigit():
+        print("Votre réponse n'est pas un nombre. Retentez votre chance.")
+        continue
+    
+    nombre_essai += 1
+    nombre = int(nombre)
+
+    if nombre > nombre_mystere:
+        print(f"Le nombre mystère est plus petit que {nombre}")
+        continue
+    elif nombre < nombre_mystere:
+        print(f"Le nombre mystère est plus grand que {nombre}")
+        continue
+    else:
+        print("Bravo, vous avez trouvé le nombre mystère !")
+        break
+
+# autre solution
+import random
+
+nombre_mystere = random.randint(0, 50)
+nombre_essais = 5
+essais = 0
+
+while essais < nombre_essais:
+    nombre = input("Quel est le nombre mystère ? ")
+
+    if not nombre.isdigit():
+        print("SVP, entrez un nombre valide.")
+        continue
+
+    nombre = int(nombre)
+
+    if nombre > nombre_mystere:
+        print(f"Le nombre mystère est plus petit que {nombre}")
+    elif nombre < nombre_mystere:
+        print(f"Le nombre mystère est plus grand que {nombre}")
+    else:
+        print("Bravo, vous avez trouvé le nombre mystère !")
+        exit()
+    
+    essais += 1
+
+print(f"Vous avez perdu. Le nombre mystère était {nombre_mystere}")
+
+
+## -- LES FICHIERS -- ## 
+
+# copier le chemin d'accès (Windows)
+shift + clic droit => copier en tant que chemin d'accès'
+problème des slashs sur Windows
+chemin = r"C:\Users\user\Documents\document" # enregistrer comme texte brut
+chemin_valide = "C:/Users/user/Documents/document" # saisir un slah, ctrl + D, changer l'ordre
+chemin_valide2 = "C:\\Users\\user\\Documents\\document"
+
+# lire le contenu d'un fichier
+chemin = r"D:\Documents\WEB DEV\PYTHON\fichier.txt"
+f = open(chemin, "r")  # open(chemin, mode)
+# r = read
+f.close()  # fermer le fichier
+
+# autre solution qui évite de fermer manuellement
+with open(chemin, "r") as f:
+    contenu = f.read()
+    print(contenu)
+    # Python
+    # est
+    # un
+    # super
+    # langage
+    # de
+    # programmation
+
+# renvoie sa représentation en chaine de caractères
+with open(chemin, "r") as f:
+    contenu = repr(f.read()) # représentation de la chaine de caractères
+    print(contenu) # 'Python\nest\nun\nsuper\nlangage\nde\nprogrammation'
+
+# renvoie le résultat sous forme de liste
+with open(chemin, "r") as f:
+    contenu = f.readlines() # représentation sous forme de liste
+    print(contenu) # ['Python\n', 'est\n', 'un\n', 'super\n', 'langage\n', 'de\n', 'programmation']
+
+with open(chemin, "r") as f:
+    contenu = f.read().splitlines() # représentation sous forme de liste
+    print(contenu) # ['Python', 'est', 'un', 'super', 'langage', 'de', 'programmation']
+
+# utiliser plusieurs fois f.read()
+# read déplace le curseur de haut en bas
+# pour l'utiliser de nouveau, il faut replacer le curseur en haut
+f.read() # lit de haut en bas
+f.seek(0) # replace le curseur en haut
+f.read(10) # peut à nouveau lire de haut en bas, jusqu'au 10è caractère
+
+# Windows : pb d'encodage pour ouvrir un fichier
+solution : ajouter encoding='utf-8' lors de l'ouverture du fichier avec la fonction open :
+with open("fichier_txt", "r", encoding='utf-8') as f:
+    contenu = f.read()
+
+# écrire à l'intérieur d'un fichier
+chemin = r"D:\Documents\WEB DEV\PYTHON\fichier.txt"
+
+with open(chemin, "w") as f:
+    f.write("Bonjour")  # mode w => efface ce qu'il y a à l'intérieur
+
+with open(chemin, "a") as f:
+    f.write("Bonjour") # mode a => ajoute à la fin du fichier
+
+with open(chemin, "a") as f:
+    f.write("\nAu revoir")  # \n ajoute à la fin du fichier, en sautant une ligne
+
+# Les fichiers JSON
+# json : pratique pour ajouter des strings et des listes (fichier config, base de données)
+# facilement modifiable
+# retourne les valeurs sous leur aspect non modifiés
+import json
+
+chemin = r"D:\Documents\WEB DEV\PYTHON\fichier.json"
+
+with open(chemin, "w") as f:
+    json.dump("Bonjour", f) # ajoute "Bonjour" (en string) au fichier JSON
+    json.dump(list(range(10)), f) # ajoute [0, 1, 2, ect.] au fichier
+    json.dump(list(range(10)), f, indent=4) # ajoute [0, 1, 2, ect.] au fichier
+    # avec un niveau d'indentation de 4
+
+with open(chemin, "r") as f:
+    liste = json.load(f)
+    print(liste)
+
+# ajouter des lettres avec caractères spéciaux ou accents
+with open(chemin, "w") as f:
+    json.dump("Pèche", f, ensure_ascii=False) # ajoute "Pèche" au fichier JSON
+
+# exercices
+# 1. récupérer la liste de courses depuis le fichier JSON si celui-ci existe
+import os
+import json
+
+dossier_courant = os.path.dirname(__file__)
+dossier_courant = os.path.normpath(dossier_courant) # pour avoir les bons slashs
+chemin_liste = os.path.join(dossier_courant, "liste.json")
+# ajout du fichier au dossier courant
+
+if os.path.exists(chemin_liste):
+    with open(chemin_liste, "r") as f:
+        liste_de_courses = json.load(f)
+else:
+    liste_de_courses = []
+
+# 2. boucler le choix des courses
+import os
+import json
+
+dossier_courant = os.path.dirname(__file__)
+dossier_courant = os.path.normpath(dossier_courant) # pour avoir les bons slashs
+chemin_liste = os.path.join(dossier_courant, "liste.json")
+# ajout du fichier au dossier courant
+
+if os.path.exists(chemin_liste):
+    with open(chemin_liste, "r") as f:
+        liste_courses = json.load(f)
+else:
+    liste_courses = []
+
+affichage = """
+Choisissez une option:
+\t1: Ajouter un élément
+\t2: Enlever un élément
+\t3: Afficher la liste
+\t4: Vider la liste
+\t5: Terminer
+"""
+
+option = "0"
+while option != "5":
+    option = input(affichage)
+
+# 3. ajouter/enlever un élément de la liste
+import os
+import json
+
+dossier_courant = os.path.dirname(__file__)
+dossier_courant = os.path.normpath(dossier_courant) # pour avoir les bons slashs
+chemin_liste = os.path.join(dossier_courant, "liste.json")
+# ajout du fichier au dossier courant
+
+if os.path.exists(chemin_liste):
+    with open(chemin_liste, "r") as f:
+        liste_courses = json.load(f)
+else:
+    liste_courses = []
+
+affichage = """
+Choisissez une option:
+\t1: Ajouter un élément
+\t2: Enlever un élément
+\t3: Afficher la liste
+\t4: Vider la liste
+\t5: Terminer
+"""
+
+option = "0"
+while option != "5":
+    option = input(affichage)
+    if option == "1":
+        element_plus = input("Entrez le nom de l'élément à ajouter : ")
+        liste_courses.append(element_plus)
+    elif option == "2":
+        element_moins = input("Entrez le nom de l'élément à enlever : ")
+        if element_moins in liste_courses:
+            liste_courses.remove(element_moins)
+
+# 4. aficher/vider la liste
+import os
+import json
+
+dossier_courant = os.path.dirname(__file__)
+dossier_courant = os.path.normpath(dossier_courant) # pour avoir les bons slashs
+chemin_liste = os.path.join(dossier_courant, "liste.json")
+# ajout du fichier au dossier courant
+
+if os.path.exists(chemin_liste):
+    with open(chemin_liste, "r") as f:
+        liste_courses = json.load(f)
+else:
+    liste_courses = []
+
+affichage = """
+Choisissez une option:
+\t1: Ajouter un élément
+\t2: Enlever un élément
+\t3: Afficher la liste
+\t4: Vider la liste
+\t5: Terminer
+"""
+
+option = "0"
+while option != "5":
+    option = input(affichage)
+    if option == "1":
+        element_plus = input("Entrez le nom de l'élément à ajouter : ")
+        liste_courses.append(element_plus)
+    elif option == "2":
+        element_moins = input("Entrez le nom de l'élément à enlever : ")
+        if element_moins in liste_courses:
+            liste_courses.remove(element_moins)
+    elif option == "3":
+        if liste_courses: # len(liste_courses) > 0
+            print("\n".join(liste_courses))
+        else:
+            print("La liste est actuellement vide.")
+    elif option == "4":
+        liste_courses.clear()
+
+# 5. sauvegarder la liste sur un fichier JSON
+
+import os
+import json
+
+dossier_courant = os.path.dirname(__file__)
+dossier_courant = os.path.normpath(dossier_courant) # pour avoir les bons slashs
+chemin_liste = os.path.join(dossier_courant, "liste.json")
+# ajout du fichier au dossier courant
+
+if os.path.exists(chemin_liste):
+    with open(chemin_liste, "r") as f:
+        liste_courses = json.load(f)
+else:
+    liste_courses = []
+
+affichage = """
+Choisissez une option:
+\t1: Ajouter un élément
+\t2: Enlever un élément
+\t3: Afficher la liste
+\t4: Vider la liste
+\t5: Terminer
+"""
+
+option = "0"
+while option != "5":
+    option = input(affichage)
+    if option == "1":
+        element_plus = input("Entrez le nom de l'élément à ajouter : ")
+        liste_courses.append(element_plus)
+    elif option == "2":
+        element_moins = input("Entrez le nom de l'élément à enlever : ")
+        if element_moins in liste_courses:
+            liste_courses.remove(element_moins)
+    elif option == "3":
+        if liste_courses: # len(liste_courses) > 0
+            print("\n".join(liste_courses))
+        else:
+            print("La liste est actuellement vide.")
+    elif option == "4":
+        liste_courses.clear()
+
+with open(chemin_liste, "w") as f:
+    json.dump(liste_courses, f, indent=4)
+
+
+## -- LES DICTIONNAIRES -- ## 
+
+système clé: valeur
+clé unique
+dictionnaire = {"prénom": "Paul"}
+
+# récupérer une valeur associée à une clé
+d = {"clé": "valeur"}
+d["clé"] = "valeur"
+dictionnaire[0]["prénom"] # cherche la valeur associée à la clé prénom dans le 1er dico du dico
+# renvoie une erreur si la clé n'existe pas
+dictionnaire.get("prénom") # renvoie none si inexistante
+dictionnaire.get("prénom", "la clé appelée n'existe pas") # personnalise un message d'erreur
+
+# modifier la valeur associée à une clé
+d = {
+        "prenom": "Paul",
+        "profession": "Ingénieur",
+        "ville": "Paris"
+    }
+
+d["prenom"] = "Julie" # modification
+
+# ajouter et supprimer une clé
+d = {
+        "prenom": "Paul",
+        "profession": "Ingénieur",
+        "ville": "Paris"
+    }
+
+d["age"] = 30 # /!\ si clé déjà présente, l'écrase !
+
+if "age" in d:
+    del d["age"] # supprime sans erreur
+
+# boucler sur un dictionnaire
+d = {
+        "prenom": "Paul",
+        "profession": "Ingénieur",
+        "ville": "Paris"
+    }
+
+d.keys() # dict_keys(['prenom', 'profession', 'ville'])
+d.values() # dict_values(['Paul', 'Ingénieur', 'Paris'])
+
+for cle in dictionnaire:
+    print(cle) # comportement par défaut
+    print(dictionnaire[cle])
+
+d.items() # renvoie un tuple
+# dict_items([('prenom', 'Paul'), ('profession', 'Ingénieur'), ('ville', 'Paris')])
+
+for cle, valeur in dictionnaire.items():
+    print(cle, valeur)
+
+# ex.
+employes = {
+    "id01": {"prenom": "Paul", "nom": "Dupont", "age": 32},
+    "id02": {"prenom": "Julie", "nom": "Dupuit", "age": 25},
+    "id03": {"prenom": "Patrick", "nom": "Ferrand", "age": 36}
+}
+
+# enlever Patrick du dictionnaire
+del employes["id03"]
+# Julie vient de fêter son anniversaire
+employes["id02"]["age"] += 1
+# on désire savoir l'âge de Paul, dans une variable age_paul
+age_paul = employes["id01"]["age"]
+
+# ex. Comment itérer sur le dictionnaire et utiliser le module os pour créer la structure de dossiers ?
+import os
+
+chemin = "/Users/thibh/dossier_test"
+
+d = {"Films": ["Le seigneur des anneaux",
+               "Harry Potter",
+               "Moon",
+               "Forrest Gump"],
+     "Employes": ["Paul",
+                  "Pierre",
+                  "Marie"],
+     "Exercices": ["les_variables",
+                   "les_fichiers",
+                   "les_boucles"]}
+
+for key, value in d.items():
+    for dossier in value:
+        chemin_dossier = os.path.join(chemin, key, dossier) # pas besoin de créer le dossier parent
+        # D:\Documents\WEB DEV\PYTHON\Films\Le seigneur des anneaux
+        # créera le dossier parent + le sous-dossier avec join
+        os.makedirs(chemin_dossier, exist_ok=True)
+
+# ex. Comment parcourir tous les fichiers pour trouver les informations demandées ?
+import json
+import glob
+
+dossier = "/Users/thibh/formation-developpeur-python/dossier_exemple/**"
+files = glob.glob(dossier, recursive=True)
+
+numero_de_compte = None
+numero_securite_sociale = None
+
+for f in files:
+    if f.endswith(".json"):
+        with open(f, "r") as f:
+            contenu = json.load(f)
+            if "Credit Mutuel" in contenu:
+                numero_de_compte = contenu["Credit Mutuel"]["Numero de compte"]
+    elif f.endswith(".txt"):
+        with open(f, "r") as f:
+            contenu = f.read()
+            if "Numéro de sécurité sociale" in contenu:
+                numero_securite_sociale = contenu.split(":")[-1]
+
+print(numero_de_compte)          
+print(numero_securite_sociale)
