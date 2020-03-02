@@ -1,5 +1,6 @@
 ## ---------- MEMENTO PYTHON ---------- ##
 
+
 ## -- INSTALLATION -- #
 
 https://www.python.org/downloads/
@@ -20,6 +21,15 @@ lancer python : python
 lancer python en mode interactive : python -i
 lancer une version précise de python : py -3.7
 exit() pour en sortir
+
+
+## -- RACCOURCIS VS CODE -- ##
+Ctrl + : => commente une ligne/plusieurs lignes
+Ctrl + Shift + : => commente plusieurs lignes
+
+
+## -- SPECIFICITES PYTHON -- ##
+* None # équivalent de Null
 
 
 ## -- LE TERMINAL -- ##
@@ -1261,3 +1271,397 @@ for f in files:
 
 print(numero_de_compte)          
 print(numero_securite_sociale)
+
+# ex. trier les fichiers en fonction de leur extension :
+"""
+    mp3, wav : Musique
+    mp4, mov : Videos
+    jpg, jpeg, png : Images
+    pdf : Documents
+"""
+import os
+import glob
+import shutil
+
+dossier = "D:\\Documents\\WEB DEV\\PYTHON\\tri_fichiers_sources\\**"
+files = glob.glob(dossier, recursive=True)
+
+dossier_images = "Images" # jpg jpeg png
+dossier_videos = "Videos" # mp4 mov
+dossier_musique = "Musique" # mp3 wav
+dossier_documents = "Documents" # pdf
+
+for file in files:
+    if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
+        os.makedirs(os.path.join(dossier.replace(
+            "**", ""), dossier_images), exist_ok=True)
+        shutil.move(file, os.path.join(dossier.replace("**", ""), dossier_images))
+    elif file.endswith(".mp4") or file.endswith(".mov"):
+        os.makedirs(os.path.join(dossier.replace(
+            "**", ""), dossier_videos), exist_ok=True)
+        shutil.move(file, os.path.join(dossier.replace("**", ""), dossier_videos))
+    elif file.endswith(".mp3") or file.endswith(".wav"):
+        os.makedirs(os.path.join(dossier.replace(
+            "**", ""), dossier_musique), exist_ok=True)
+        shutil.move(file, os.path.join(dossier.replace("**", ""), dossier_musique))
+    elif file.endswith(".pdf"):
+        os.makedirs(os.path.join(dossier.replace(
+            "**", ""), dossier_documents), exist_ok=True)
+        shutil.move(file, os.path.join(dossier.replace("**", ""), dossier_documents))
+
+# solution 
+import os
+from glob import glob
+import shutil
+
+chemin = "/Users/thibh/trier_fichiers/sources"
+
+extensions = {".mp3": "Musique",
+              ".wav": "Musique",
+              ".mp4": "Videos",
+              ".mov": "Videos",
+              ".jpeg": "Images",
+              ".jpg": "Images",
+              ".png": "Images",
+              ".pdf": "Documents"}
+
+fichiers = glob(os.path.join(chemin, "*"))
+for fichier in fichiers:
+    extension = os.path.splitext(fichier)[-1]
+    # D:\Documents\WEB DEV\PYTHON\tri_fichiers_sources\data.mp3
+    # split sur le point et permet de récupérer l'extension
+    # récupère le ".mp3" du tuple créé
+    dossier = extensions.get(extension)
+    # récupère la valeur associée à la clé ".mp3" du tableau => Musique
+    if dossier:
+        chemin_dossier = os.path.join(chemin, dossier)
+        os.makedirs(chemin_dossier, exist_ok=True)
+        shutil.move(fichier, chemin_dossier)
+
+# ex. réécrire une liste dans l'ordre
+"""
+    Ouvrir le fichier prenoms.txt et lire son contenu.
+    Récupérer chaque prénom séparément dans une liste.
+    Nettoyer les prénoms pour enlever les virgules, points ou espace.
+    Écrire la liste ordonnée et nettoyée dans un nouveau fichier texte.
+"""
+chemin = "D:/Documents/WEB DEV/PYTHON/prenoms.txt"
+chemin2 = "D:/Documents/WEB DEV/PYTHON/prenoms_tries.txt"
+
+with open(chemin, "r") as f:
+    contenu = repr(f.read())  # représentation en string
+    contenu = contenu.replace(".", ",").replace("\\n", ", ")
+    liste = contenu.split(",")
+
+# supprime espaces et guillemets des valeurs de la liste
+for i, prenom in enumerate(liste):
+    liste[i] = prenom.strip(" '' ")
+    # préférer prenoms_final = [prenom.strip(",. ") for prenom in prenoms]
+
+# suprime les string vides + trie dans l'ordre alpha
+liste = sorted(list(filter(None, liste)))
+
+# ecrit la liste ordonée dans un fichier texte
+from pprint import pprint # pour le débug, print sur plusieurs lignes
+
+with open(chemin2, "w") as t:
+    t.write("\n".join(liste))
+
+# solution
+from pprint import pprint # pour le débug, print sur plusieurs lignes
+
+with open("/Users/thibh/Documents/prenoms.txt", "r") as f:
+    lines = f.read().splitlines() # split le contenu en fonction des lignes
+
+prenoms = []
+for line in lines:
+    prenoms.extend(line.split()) # ajoute des éléments progressivement à une liste
+    # étend la liste
+
+prenoms_final = [prenom.strip(",. ") for prenom in prenoms]
+
+with open("/Users/thibh/Documents/prenoms_final.txt", "w") as f:
+    f.write("\n".join(sorted(prenoms_final)))
+
+
+## -- LA GESTION D'ERREURS AVEC LES EXCEPTIONS -- ##
+
+a = 5
+b = 0
+
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except:
+    print("Division par zéro impossible !")
+
+# préciser le type d'erreur
+a = 5
+b = "0"
+
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except ZeroDivisionError:
+    print("Division par zéro impossible !")
+except TypeError: # ex. 5 / "0"
+    print("Opération avec un autre type que int impossible !")
+
+# trouver le type d'erreur :
+# faire appel à l'erreur
+a = 5
+print(a / b) # b n'est pas définie
+# NameError: name 'b' is not defined
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except ZeroDivisionError:
+    print("Division par zéro impossible !")
+except TypeError: # ex. 5 / "0"
+    print("Opération avec un autre type que int impossible !")
+except NameError: # ++
+    print("Une variable n'est pas définie.")
+
+# spécifier une erreur
+try:
+    print(a / b)
+except NameError as e:
+    print("Erreur : ", e) # Erreur :  name 'b' is not defined
+
+# gérer la fin du try avec else et finally
+a = 5
+b = 10
+
+try:
+    resultat = a / b # erreur car ne peut diviser par 0
+except NameError as e:
+    print("Erreur : ", e)
+else: # exécuté que si le try réussit
+    print(resultat) # 0.5
+finally: 
+    print("Je suis exécuté quelque soit le résultat !")
+
+# ex. tenter d'ouvrir et lire un fichier, en gérant les erreurs
+"""
+Gérer l'erreur qui arrive quand l'utilisateur rentre un chemin 
+vers un fichier qui n'existe pas sur le disque.
+Gérer l'erreur qui arrive quand Python n'arrive pas à lire le contenu du fichier 
+qui est passé par l'utilisateur.
+"""
+fichier1 = "D:/Documents/WEB DEV/PYTHON/sources/readme.txt"
+fichier2 = "D:/Documents/WEB DEV/PYTHON/sources/fichier_invalide.abc"
+
+fichier = input("Quel fichier souhaitez-vous ouvrir ? ")
+
+try:
+    f = open(fichier, "r") # le bloc à executer
+    print(f.read()) # pour lever une erreur de type UnicodeDecodeErrror en amont
+except FileNotFoundError as fnf:
+    print("Le chemin entré est incorrect : ", fnf)
+except UnicodeDecodeError as ude:
+    print("Le fichier ne peut être ouvert par Python : ", ude)
+else: # pas d'erreurs, on exécute ce bloc
+    f.close()
+
+
+## -- LES FONCTIONS -- ##
+
+def funcname(parameter_list):
+    print("Je suis une fonction !")
+
+funcname() # appel de la fonction
+
+# retourner une valeur
+def retourne_cinq():
+    return 5 # stoppe le code suivant
+    print("code inatteignable")
+
+a = retourne_cinq()
+
+def fichier_exist(url):
+    if os.path.exists(url):
+        return True
+    return False # pas besoin de else
+    # car le code est stoppé après return
+
+# les paramètres et arguments
+def function(paramètre): # nom variable définie dans la fonction
+    print(paramètre)
+function("argument") # valeur envoyée aux paramètres
+
+def param_defaut(paramètre="Paramètre par défaut"): # parametre par défaut
+    print(paramètre)
+param_defaut() # affiche Paramètre par défaut
+param_defaut("Bonjour !") # affiche Bonjour !
+
+def addition(a, b):
+    return a + b 
+addition(10, 5)
+addition(b=10, a=5) # précise les paramètres associés aux arguments
+
+# espace global et local
+# les variables définies dans la fonction appartiennent uniquement à la fonction
+# espace global = code du fichier
+a = 5
+c = 12
+
+def fonction():
+    a = 10 # espace local => création d'une variable locale
+    b = 5
+    print(c) # affiche 12, car variable dans l'espace global
+
+print(a) # 5, correspond à la variable a de l'espace global
+print(b) # erreur, b n'existe que dans l'espace local
+
+# modifier une variable globale dans une fonction
+a = 5
+b = 10
+
+def addition():
+    global a # annonce la valeur globale
+    a += 5 # permet de modifier la valeur globale
+    print(a)
+
+addition()
+print(a) # 12, la valeur globale a été modifiée !
+
+# passage d'arguments par valeur ou référence
+# cas 1 : objet immuable
+a = 5
+
+def change_a():
+    a = 10 # crée une nouvelle variable a, avec une id différente
+    # on ne peut pas modifier directement l'objet a dans un état local
+
+change_a()
+print(a) # 5
+
+# cas 2 : variable muable
+nombres = [10, 20, 30]
+
+def ajoute_40():
+    nombres.append(40) # une liste est muable, elle peut être modifiée depuis un état local
+
+ajoute_40()
+print(nombres) # [10, 20, 30, 40]
+
+# cas 3 : variable muable + valeur de référence
+nombres = [10, 20, 30]
+
+def ajoute_40(liste): # passage par valeur ou référence
+    liste.append(40) # liste reste donc une valeur globale
+    # liste correspond à la reference de la liste nombres
+
+ajoute_40(nombres)
+print(nombres) # [10, 20, 30, 40]
+
+
+## -- LES MODULES -- ##
+
+# fichier sur le disque qui contient du code Python
+import random # import de module, méthode à privilégier
+random.uniform(2,5) # module.function
+
+from random import uniform # from module import function
+uniform(2,5) # utilisation de la fonction seule
+# problème : on peut écraser la fonction en créer une variable du même nom
+
+# créer son propre module
+++ mon_module.py 
+++ script.py # les deux fichiers sont au même niveau
+
+mon_module.py
+a = 5
+
+script.py
+import mon_module # VS Code reconnaît le module
+mon_module.a # 5
+
+# attention au choix du nom du module : ne pas écraser les existants !
+# les préfixer : ex. app_module, app_random, ect.
+
+# la variable __name__
+# variable magique, peut être appelée n'importe où
+__name__ # renvoie __main__ si on est dans le fichier propriétaire
+# renvoie le nom du fichier si le code est importé dans un fichier
+mon_module.py
+def addition(a, b):
+    return a + b 
+if __name__ == "__main__": # on exécute directement notre module, on est sur le fichier propriétaire
+    print(addition(4, 5)) # ne sera pas exécuté lors de l'import du module
+
+# Le Python Path
+# variable qui contient des dossiers dans lesquels Python va chercher les modules
+import sys
+from pprint import pprint
+
+# pprint(sys.path)
+# ['d:\\Documents\\WEB DEV\\PYTHON', // dossier courant
+#  'C:\\Program Files\\Python37\\python37.zip',
+#  'C:\\Program Files\\Python37\\DLLs',
+#  'C:\\Program Files\\Python37\\lib',
+#  'C:\\Program Files\\Python37',
+#  'C:\\Users\\pablo\\AppData\\Roaming\\Python\\Python37\\site-packages',
+#  'C:\\Program Files\\Python37\\lib\\site-packages']
+
+# tous les dossiers où l'on peut créer un module
+# ex.
+cd 'C:\\Users\\pablo\\AppData\\Roaming\\Python\\Python37\\site-packages'
+touch mon_module.py # crée le fichier
+code mon_module.py # ouvre avec VS Code
+# on peut désormais ajouter de n'importe où notre module, en l'important
+
+# pour ajouter un dossier et ses modules au Path
+import sys 
+sys.path.append("url/du/nouveau/dossier") # ajoute un dossier au Python Path
+# tout fichier dedans sera importable
+touch module_test.py # url/du/nouveau/dossier/module_test.py
+import module_test # on peut importer le module car il est dans le Python Path
+# problème : il faut rétirer le processus (import, append, import) pour
+# CHAQUE fichier qui l'utilise
+
+# modifier le Python Path sur Windows
+modifier les variables d'environnement' 
+Nouvelle variable utilisateur 
+Nom de la variable = PYTHONPATH
+Valeur de la variable = C:\Users\user\Documents\mes_modules; C:\Users\user\Documents\dossier2
+# dossier(s) que je veux ajouter au PYTHON PATH
+
+# actualiser un module Python
+# je lance un script qui importe un module
+# ce module change de valeur durant le script
+# comment actualiser le module directement dans le script qui l'importe ?
+import importlib
+importlib.reload(module_a_recharger)
+# Python utilisera toujours le module qu'il a en mémoire
+# si le module change, il faut donc l'actualiser
+
+
+## -- PACKAGES -- ##
+
+# un dossier qui contient un ou plusieurs modules
+import package.module # importe le module dans le package package
+from package import module # aussi possible
+package/
+    __init__.py # fichier d'initialisation qui permet d'executer le code
+    module1.py # contenu dans les modules à l'intérieur d'un package
+    module2.py
+    module3.py
+
+# le fichier __init__
+import module contenu dans le package 
+# son appel va déclencher l'appel du fichier __init__
+# ex.
+----
+fichier users
+def get_users():
+    print("On récupère les utilisateurs !")
+----
+fichier __init__
+import package.users # à chaque fois qu'un fichier importera le module users,
+# ce fichier est appelé
+# et importe automatiquement le module
+# le rendant disponible pour celui qui l'importe
+----
+fichier qui importe le module users
+import users 
+package.users.get_users() # s'exécute car l'import fait appel au fichier __init__
+# qui importe à son tour la fonction demandée
+

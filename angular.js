@@ -30,6 +30,7 @@ d'erreurs du compilateur dans la console
 * Module : ensemble de fichiers lié à une fonctionnalité de l'appli;
 * Composant : section dynamique et autonome de la page web (code HTML + classe JS);
 * Observable : objet qui émet des informations dans le temps
+* Subject : 'type' d'Observable' qui émet de nouvelles infos (en plus de réagir à de nouvelles infos)
 * Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
 * Interpolation : fait d'afficher une { propriété } d'un composant dans son template
 * Directive : classe Angular qui réagit avec les éléments HTML en leur attachant un comportement
@@ -2086,6 +2087,9 @@ export class DetailPokemonComponent implements OnInit {
     this.router.navigate(link);
   }
 }
+
+○ Ajouter un formulaire de façon réactive 
+Lien > https://openclassrooms.com/fr/courses/4668271-developpez-des-applications-web-avec-angular/5090131-ecoutez-lutilisateur-avec-les-forms-methode-reactive
 
 ○ A retenir :
   * 2 modules différents pour développer des formulaires Angular: FormsModule et ReactiveFormsModule
