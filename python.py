@@ -30,6 +30,8 @@ Ctrl + Shift + : => commente plusieurs lignes
 
 ## -- SPECIFICITES PYTHON -- ##
 * None # équivalent de Null
+* un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
+et le terme librairie quant à lui est souvent utilisé pour parler de packages
 
 
 ## -- LE TERMINAL -- ##
@@ -82,6 +84,8 @@ ou clic sur la flèche à droite de 'VS Code'
 cd dossierScript/
 python3 test.py 
 /usr/local/bin/python3 test.py
+# sur VS Code, pour exécuter un terminal sur un fichier précis
+clic-droit sur le fichier ou dossier => Run in Terminal
 
 ## -- SPECIFICITES -- ##
 * Avec Python3, input renvoie systematiquement une "chaine de caractères"
@@ -1665,3 +1669,468 @@ import users
 package.users.get_users() # s'exécute car l'import fait appel au fichier __init__
 # qui importe à son tour la fonction demandée
 
+
+## -- DOCUMENTER SON CODE -- ##
+
+# commentaire une ligne
+"""
+commentaire
+plusieurs
+lignes
+"""
+# docstring : documentation string : commentaires récupérés sous forme de documentation
+# servent à documenter notre code à certains endroits spécifiques, 
+# comme à l'intérieur d'une fonction ou au début d'un module.
+
+# principaux formats docstring
+* Epytext
+* reST 
+* Google
+
+"""Docstring de style Epytext
+
+@param param1: un premier paramètre
+@param param2: un deuxième paramètre
+@return: description de ce qui est retourné
+"""
+
+"""Docstring de type reST
+
+:param param1: un premier paramètre
+:param param2: un deuxième paramètre
+:returns: description de ce qui est retourné
+"""
+
+"""Docstring de style Google
+
+Args:
+    param1: un premier paramètre
+    param2: un deuxième paramètre
+
+Returns: 
+    Description de ce qui est retourné
+"""
+
+# configurer VS Code pour les docstring
+# extensions => autoDocstring
+# Edit => Preferences => Settings => Extensions
+# autoDocstring => Docstring Format => Google
+# utiliser autoDocstring : se placer dans la fonction
+# """ + entrée
+def fonction_exemple(nom, age):
+    """Description de la fonction
+    
+    Args:
+        nom (str): le nom de l'utiliateur
+        age (int): l'âge de l'utilisateur
+    
+    Returns:
+        list: liste de nombres
+    """
+    return [1, 2, 3]
+
+
+## -- LE LOGGING -- ##
+
+# le module logging
+# affiche les messages d'erreurs et avertissements
+import logging
+
+# équivalent d'un print qui ne s'affiche que selon l'information retournée
+
+logging.debug("La fonction a bien été exécutée")
+logging.info("Message d'information général")
+logging.warning("Attention !")
+logging.error("Une erreur est arrivée")
+logging.critical("Erreur critique")
+
+# on peut décider quels messages on veut afficher
+# par défaut, seuls warning, error et critical s'affichent
+
+# configurer le logger
+# spéficie le niveau que l'on veut afficher
+
+logging.basicConfig(level=logging.DEBUG) # affiche les messages depuis DEBUG
+# soit tous les messages
+
+# formater les messages affichés
+# datetime du logging, niveau de debug, message
+logging.basicConfig(level=logging.ERROR,
+                    format='%(asctime)s : %(levelname)s : %(message)s')
+
+# écrire dans un fichier de log
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    filename="app.log", # ici, chemin relatif (en général, c'est un chemin complet)
+                    # ex. D:/Documents/WEB DEV/PYTHON/app_exemple.log
+                    filemode="w", # w pour write, a pour append et ajouter au fichier
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+logging.debug("La fonction a bien été exécutée")
+logging.info("Message d'information général")
+logging.warning("Attention !")
+logging.error("Une erreur est arrivée")
+logging.critical("Erreur critique")
+
+
+## -- INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP -- ## 
+
+# pip (Pip Installs Packages)
+# petit utilitaire qu'on appelle 'gestionnaire de paquets' 
+# et qui nous permet d'installer des 'paquets' (packages en anglais)
+# On peut donc l'utiliser pour télécharger facilement en ligne de commande des packages
+#  qui sont hébergés sur le site http://pypi.org
+
+Ouvrir GitBash (ou Cmder)
+taper pip3.7 (c'est un alias') # sinon utiliser le chemin .../Python/Scripts/pip3.7.exe
+
+# Chercher des packages sur PyPI et avec pip
+https: // pypi.org/search 
+pip3.7 search requête(nom du module ou description)
+
+# mettre à jour pip sur Windows
+pip3.7 install --upgrade --user pip # NE PAS UTILISER CETTE SYNTAXE! 
+# erreur
+python -m pip lescriptaxecuter
+python -m pip --version
+# solution
+To fix the PATH run Command Prompt as administrator:
+pip install --upgrade --force-reinstall --ignore-installed pip
+
+# installer un package avec pip
+pip3.7 install requests
+sudo pip3.7 install requests # si l'OS refuse de l'installer
+
+# lister les packages avec pip
+pip3.7 'list' # sans les apostrophes 
+
+# désinstaller un package avec pip
+pip3.7 uninstall nomDuPackage
+
+
+## -- LES ENVIRONNEMENTS VIRTUELS -- ##
+
+# autre version de Python, qui va être isolée du python installé sur l'ordinateur
+# on crée généralement un environnement virtuel par projet 
+
+# créer un environnement virtuel
+# se placer dans le dossier principal
+py -3.7 -m venv env # -m pour module
+aller dans Scripts/
+dans le terminal : source activate
+on est dans l'environnement virtuel'
+which pip pour vérifier si on est dans un environnement virtuel
+deactivate pour en sortir
+
+# VS Code et les environnements virtuels
+VS Code gère les environnements virtuels
+il suffit de lancer le projet dans VS Code 
+
+
+## -- L'ORIENTÉ OBJET -- (partie 1) ##
+
+# avec Python, tout est un objet
+# avantages : organiser notre code, éviter les répétitions
+
+# créer une classe
+class Voiture:
+    marque = "Lamborghini" # attribut
+    couleur = "rouge"
+
+print(Voiture.marque, Voiture.couleur) # Lamborghini rouge
+
+# créer des instances
+voiture_01 = Voiture()
+print(voiture_01.marque) # Lamborghini
+
+# attributs de classe et attributs d'instance
+Voiture.marque = "Porsche" # modification de l'attribut de classe (se répercute sur toutes les instances)
+print(Voiture.marque, voiture_01.marque) # Porsche Porsche
+voiture_01.marque = "Fiat Panda" # modification de l'attribut d'instance (modification individuelle)
+print(voiture_01.marque) # Fiat Panda
+
+# initialiser une instance
+class Voiture:
+
+    voitures_crees = 0 # attribut de classe
+
+    def __init__(self, marque): # constructeur (self = instance | équivalent de this)
+        self.marque = marque # attribut d'instance | instance.parametre = parametre
+        Voiture.voitures_crees += 1 # j'accède ici à l'attribut de la classe, non celui de l'objet
+
+voiture_01 = Voiture("Lamborghini")
+voiture_02 = Voiture("Porsche")
+print(voiture_01.marque, voiture_02.marque) # Lamborghini Porsche
+print(Voiture.voitures_crees) # 2
+
+# ex.
+class Livre:
+    def __init__(self, nom, nombre_de_pages, prix):
+        self.nom = nom
+        self.nombre_de_pages = nombre_de_pages
+        self.prix = prix
+        
+livre_HP = Livre("Harry Potter", 300, 10.99)
+livre_LOTR = Livre("Le Seigneur des Anneaux", 400, 13.99)
+
+# la signification de 'self'
+class Voiture:
+
+    voitures_crees = 0
+
+    def __init__(self, marque):
+        self.marque = marque 
+        Voiture.voitures_crees += 1
+    
+    def afficher_marque(self): # le self est à ajouter systématiquement
+        print(f"La voiture est une {self.marque}")
+
+voiture_01 = Voiture("Lamborghini")
+voiture_01.afficher_marque() # La voiture est une Lamborghini
+# équivalent de Voiture.afficher_marque(voiture_01) (ce que fait Python par défaut)
+# il a donc besoin du self (voiture_01) pour faire marcher la méthode
+
+# les fonctions de conversions sont des classes
+a = str(a) # a est une instance de la classe str qui prend a en paramètre
+
+# ex.
+""" * Créez une classe voiture avec un attribut ‘essence’ qui est égal à 100.
+    * Créez une méthode ‘afficher_reservoir’ qui affiche le nombre de litres
+    d’essence restant (‘La voiture contient x litres d’essence’).
+    * Créez une méthode ‘roule’ avec un paramètre km (kilomètre)
+    qui va faire avancer la voiture et vider petit à petit le réservoir. 
+    On considère une consommation de 5L pour 100km, l’opération mathématique 
+    pour déterminer le nombre de litres d’essence nécessaire en fonction du nombre 
+    de kilomètres est donc :
+    (km * 5) / 100
+    Si le réservoir est vide quand on essaie de rouler, afficher la phrase : 
+    ‘Vous n'avez plus d'essence, faites le plein !’ et empêchez la voiture d’avancer.
+    Si la jauge d’essence descend en dessous de 10L, affichez la phrase : 
+    ‘Vous n'avez bientôt plus d'essence !’
+    * Créez une méthode ‘faire_le_plein’ qui remet le niveau d’essence à 100L 
+    et qui affiche la phrase 'Vous pouvez repartir !’
+"""
+class Voiture:
+
+    def __init__(self):
+        self.essence = 100
+    
+    def afficher_reservoir(self):
+        print(f"La voiture contient {self.essence} litres d’essence.")
+
+    def roule(self, km):
+        if not self.essence:
+            print("Vous n'avez plus d'essence, faites le plein !")
+        else:
+            self.essence -= (km * 5) / 100
+            if self.essence < 0: # si le niveau d'essence < 0, il vaut 0
+                self.essence = 0
+            elif self.essence < 10:
+                print("Vous n'avez bientôt plus d'essence !")
+            self.afficher_reservoir()
+
+    def faire_le_plein(self):
+        self.essence = 100
+        print("Vous pouvez repartir !")
+
+voiture = Voiture()
+print(voiture.essence) # 100
+voiture.afficher_reservoir() # La voiture contient 100 litres d’essence.
+voiture.roule(25) # La voiture contient 98.75 litres d’essence.
+voiture.roule(1950) # Vous n'avez bientôt plus d'essence !
+# La voiture contient 1.25 litres d’essence.
+voiture.roule(30) # La voiture contient 0 litres d’essence.
+voiture.roule(30) # Vous n'avez plus d'essence, faites le plein !
+voiture.faire_le_plein() # Vous pouvez repartir !
+voiture.afficher_reservoir() # La voiture contient 100 litres d’essence.
+
+# solution
+class Voiture:
+    def __init__(self):
+        self.essence = 100
+
+    def afficher_reservoir(self):
+        print(f"La voiture contient {self.essence}L d'essence.")
+
+    def roule(self, km):
+        if self.essence <= 0:
+            print("Vous n'avez plus d'essence, faites le plein !")
+            return # arrête la méthode
+
+        self.essence -= (km * 5) / 100
+
+        if self.essence < 10:
+            print("Vous n'avez bientôt plus d'essence !")
+
+        self.afficher_reservoir()
+
+    def faire_le_plein(self):
+        self.essence = 100
+        print("Vous pouvez repartir !")
+
+
+## -- REECRITURE DE LA LISTE DE COURSE EN POO -- ##
+
+++ constants.py # contient le code pour sauvegarder les listes crées
+import os
+
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+# __file__ retourne le chemin du script actuel
+# abspath le transforme en chemin absolu
+# dirname récupère le nom du dossier associé au chemin
+DATA_DIR = os.path.join(CUR_DIR, "data")  # ajoute data au dossier actuel
+# d:\Documents\WEB DEV\PYTHON\liste_course\data
+
+# création de la classe Liste
+++ lib.py 
+class Liste(list): # la classe hérite de la classe list, pour utiliser ses méthodes
+    def __init__(self, nom):
+        self.nom = nom
+
+if __name__ == "__main__":
+    print("Hello !")
+
+# dans le terminal :
+# $ py -3.7
+# from lib import Liste // import de la classe
+# l = Liste("courses") // création d'un objet Liste
+# l
+# [] // liste vide (normal) (reprend le comportement d'une liste)
+# l.nom
+# 'courses'
+
+# création des méthodes ajouter et enlever
+import logging
+
+LOGGER = logging.getLogger()
+
+class Liste(list):
+    def __init__(self, nom):
+        self.nom = nom
+
+    def ajouter(self, element):
+        if not isinstance(element, str): # si élément pas de type string
+            raise ValueError(
+                "Vous ne pouvez ajouter que des chaînes de caractères!")
+
+        if element in self:
+            LOGGER.error(f"{element} est déjà dans la liste.")
+            return False # retourne un booleen qui peut être interprété
+
+        self.append(element) # ajoute l'élément dans ma liste
+        return True
+
+    def enlever(self, element):
+        if element in self:
+            self.remove(element)
+            return True
+        return False
+
+
+if __name__ == "__main__":
+    liste = Liste("courses")
+    liste.ajouter(0) # ValueError: Vous ne pouvez ajouter que des chaînes de caractères!
+    liste.ajouter("Pommes")
+    liste.ajouter("Pommes") # Pommes est déjà dans la liste.
+    liste.ajouter("Poires")
+    print(liste) # ['Pommes', 'Poires']
+
+
+# afficher les éléments dans la liste
+import logging
+
+LOGGER = logging.getLogger()
+
+class Liste(list):
+    def __init__(self, nom):
+        self.nom = nom
+
+    def ajouter(self, element):
+        if not isinstance(element, str):
+            raise ValueError(
+                "Vous ne pouvez ajouter que des chaînes de caractères!")
+
+        if element in self:
+            LOGGER.error(f"{element} est déjà dans la liste.")
+            return False
+
+        self.append(element)
+        return True
+
+    def enlever(self, element):
+        if element in self:
+            self.remove(element)
+            return True
+        return False
+
+    def afficher(self): # ++
+        print(f"Ma liste de {self.nom} :")
+        for element in self:
+            print(f" - {element}")
+
+
+if __name__ == "__main__":
+    liste = Liste("taches")
+    liste.ajouter("Pommes")
+    liste.ajouter("Poires")
+    liste.afficher()
+
+# Ma liste de taches :
+# - Pommes
+# - Poires
+
+# sauvegarder la liste
+import json # ++
+import logging
+import os # ++
+# d'abord les modules de Python
+
+# puis, séparé d'un espace, les modules tiers
+
+# puis, séparé d'un espace, les modules persos
+from constants import DATA_DIR # ++
+
+LOGGER = logging.getLogger()
+
+class Liste(list):
+    def __init__(self, nom):
+        self.nom = nom
+
+    def ajouter(self, element):
+        if not isinstance(element, str):
+            raise ValueError("Vous ne pouvez ajouter que des chaînes de caractères!")
+        
+        if element in self:
+            LOGGER.error(f"{element} est déjà dans la liste.")
+            return False
+
+        self.append(element)
+        return True
+
+    def afficher(self):
+        print(f"Ma liste de {self.nom} :")
+        for element in self:
+            print(f" - {element}")
+
+    def enlever(self, element):
+        if element in self:
+            self.remove(element)
+            return True
+        return False
+
+    def sauvegarder(self): # ++
+        chemin = os.path.join(DATA_DIR, f"{self.nom}.json")
+        if not os.path.exists(DATA_DIR):
+            os.makedirs(DATA_DIR)
+
+        with open(chemin, "w") as f:
+            json.dump(self, f, indent=4)
+
+        return True
+
+if __name__ == "__main__":
+    liste = Liste("courses")
+    liste.ajouter("Pommes")
+    liste.ajouter("Poires")
+    liste.sauvegarder()

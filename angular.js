@@ -32,6 +32,7 @@ d'erreurs du compilateur dans la console
 * Observable : objet qui émet des informations dans le temps
 * Subject : 'type' d'Observable' qui émet de nouvelles infos (en plus de réagir à de nouvelles infos)
 * Service : classe qui peut être utilisée partout et qui centralise des fonctionnalités communes;
+* @Injectable : décorateur qui indique qu'un service' peut accueillir d'autres' services
 * Interpolation : fait d'afficher une { propriété } d'un composant dans son template
 * Directive : classe Angular qui réagit avec les éléments HTML en leur attachant un comportement
 * In TypeScript, each member is public by default.
@@ -2227,7 +2228,10 @@ function giveMePromiseFromObservable() {
 XII) EFFECTUER DES REQUETES HTTP 
 
 API = 'interface' de programmation, 
-permet de communiquer avec un service distant depuis votre appli 
+permet de communiquer avec un service distant depuis votre appli
+
+○ Créer sa base de données Firebase
+lien > https://openclassrooms.com/fr/courses/4668271-developpez-des-applications-web-avec-angular/5091141-interagissez-avec-un-serveur-avec-httpclient
 
 ○ Mettre en place le 'module' HttpClientModule
 permet de faire communiquer l'appli' avec un serveur distant via le protocole HTTP 
