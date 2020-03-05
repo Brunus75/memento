@@ -41,6 +41,8 @@ d'erreurs du compilateur dans la console
 * Guard : mécanisme de protection
 * @Input : donnée entrante
 * Préferer ngOnInit au constructeur, sauf petites opérations
+* this.router.navigate(['/premier_slash', 'deuxieme_slash']) // /premier_slash/deuxieme_slash
+* [disabled]="exempleForm.invalid || fileIsUploading" // indiquer un OR dans le template
 * Limiter les fichiers à 400 lignes, les fonctions à 75 lignes
 * npm --save n'est plus utile' depuis npm 5
 In addition, there are the complementary options --save-dev and --save-optional 
@@ -332,6 +334,15 @@ On utilise @ comme syntaxe:
 })
 export class MonComposant { }
 
+○ Le constructeur 
+tout paramètre ajouté dans le constructeur, précédé d'une visibilité', se rajoute 
+automatiquement à l'objet'
+export class MonComposant {
+  constructor(public title: string) {
+    // équivaut à this.title = title
+  }
+}
+
 ◘ Angular et les Composants Web
 
 web components = widgets réutilisables, sections complètement autonomes au sein des pages web
@@ -349,6 +360,24 @@ II) PREMIERS PAS
 
 https://www.typescriptlang.org/index.html (VS Code comprend TS)
 
+◘ Architecture
+src/
+  app/
+    module1/ // ex. books
+      component_module1/ // books-list
+      component_module2 / // book-view
+      component_module2/ // book-form
+    models/
+      objet1.model.ts // ex. objet Book
+    component_solo1/ // ex. header
+      component_solo1.ts
+      component_solo1.html
+    component_solo2/ // auth
+    services/
+      service1/ // books-service
+      service2/ // auth-service
+
+
 ◘ Créer son application 
 
 Avec la CLI: https://cli.angular.io/ (conseillé)
@@ -358,6 +387,10 @@ ng new my-first-project
 cd my-first-project
 ng serve
 `
+installer Bootstrap : `npm install bootstrap
+npm install bootsrap@3.3.7 pour une version spécifique
+puis l'ajouter aux styles CSS du fichier .JSON`
+compatibilité rxjs : `npm install rxjs-compat`
 
 From scratch :
 ○ package.json : dépendances du projet
@@ -1276,6 +1309,7 @@ const appRoutes: Routes = [
   { path: 'pokemons', component: ListPokemonComponent },
   { path: 'pokemon/:id', component: DetailPokemonComponent },
   { path: '', redirectTo: 'pokemons', pathMatch: 'full' } // par défaut
+  // pathMatch pour indiquer qu'il ne s'agit que du path vide
 ];
 
 @NgModule({
@@ -2231,6 +2265,7 @@ API = 'interface' de programmation,
 permet de communiquer avec un service distant depuis votre appli
 
 ○ Créer sa base de données Firebase
+`npm install firebase`
 lien > https://openclassrooms.com/fr/courses/4668271-developpez-des-applications-web-avec-angular/5091141-interagissez-avec-un-serveur-avec-httpclient
 
 ○ Mettre en place le 'module' HttpClientModule
@@ -3101,3 +3136,8 @@ Utiliser le service de façon dynamique
 `https://www.tektutorialshub.com/angular/set-page-title-using-title-service-angular-example/`
 `https://blog.bitsrc.io/dynamic-page-titles-in-angular-98ce20b5c334`
 
+
+XV) DEPLOIEMENT
+
+`ng build --prod`
+génère un fichier dist/ à déployer sur le serveur 

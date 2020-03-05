@@ -26,12 +26,24 @@ exit() pour en sortir
 ## -- RACCOURCIS VS CODE -- ##
 Ctrl + : => commente une ligne/plusieurs lignes
 Ctrl + Shift + : => commente plusieurs lignes
+Ctrl + Shift + P : => montre les commandes disponibles (SQLite, par ex.)
 
+## -- EXTENSIONS VS CODE -- ##
+Python
+autoDocstring
+SQLite
+
+## -- OUTILS -- ##
+GitBash
+Cmder
+DB Browser
 
 ## -- SPECIFICITES PYTHON -- ##
+* Le point-virgule n'est JAMAIS utilisé en Python'
 * None # équivalent de Null
 * un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
 et le terme librairie quant à lui est souvent utilisé pour parler de packages
+* rien n'est' privé en python, tout est public
 
 
 ## -- LE TERMINAL -- ##
@@ -219,6 +231,11 @@ i **= 1
 
 # opérateurs de comparaison
 >, <, >=, <=, ==, !=
+
+# opérateurs ternaires
+age = 20
+majeur = True if age >= 18 else False
+# équivalent de majeur = age >= 18 ? true : false
 
 # différence entre is et ==
 is # vérifie si les objets sont les mêmes en mémoire
@@ -568,6 +585,27 @@ nombres = [1, [4, [2, 3]], 5, [6], [[7]]]
 python = langages[0][0]
 deux = nombres[1][1][0]
 sept = nombres[-1][0][0]
+
+# la fonction any
+any([False, False, True, False]) # renvoie True
+# si UNE des valeurs est vraie, la fonction retourne True
+# ex. d'utilisation
+notes = [12, 14, 20, 10, 8]
+any([x > 18 for x in notes])
+# renvoie True si une note > 18
+
+# la fonction all
+all([False, False, True, False]) # renvoie False
+# si TOUTES les valeurs sont vraies, la fonction retourne True
+# utilisé avec des compréhensions de liste
+# ex.d'utilisation
+all([f.endswith(".jpg") for f in files])
+# vérifie si tous les fichiers se finissent en .jpg
+
+## -- LES SETS -- ##
+
+liste qui n'accepte' que des valeurs uniques
+set_exemple = {'FRA', 'GER', 'AUS', 'US'}
 
 
 ## -- METHODES ET FONCTIONS UTILES -- ##
@@ -2134,3 +2172,628 @@ if __name__ == "__main__":
     liste.ajouter("Pommes")
     liste.ajouter("Poires")
     liste.sauvegarder()
+
+
+## -- L'ORIENTÉ OBJET -- (partie 2) ##
+
+# méthodes de classe
+# appartient seulement à la classe
+class Voiture:
+    def __init__(self, marque, vitesse, prix):
+        self.marque = marque
+        self.vitesse = vitesse
+        self.prix = prix
+
+    @classmethod # décorateur
+    def lamborghini(cls): # cls = la classe
+        return cls(marque="Lamborghini", vitesse=250, prix=200000)
+        # retourne une instance de Voiture avec des paramètres prédéfinis
+
+    @classmethod
+    def porsche(cls):
+        return cls(marque="Porsche", vitesse=200, prix=180000)
+
+
+lambo = Voiture.lamborghini() # une instance Voiture de marque Lamborghini
+porsche = Voiture.porsche() # instance créée plus facilement
+
+# méthodes statiques
+# méthode qui n'ont pas besoin de paramètres pour fonctionner
+class Voiture:
+    voiture_crees = 0
+    def __init__(self, marque, vitesse, prix):
+        Voiture.voiture_crees += 1
+        self.marque = marque
+        self.vitesse = vitesse
+        self.prix = prix
+
+    @classmethod
+    def lamborghini(cls):
+        return cls(marque="Lamborghini", vitesse=250, prix=200000)
+
+    @classmethod
+    def porsche(cls):
+        return cls(marque="Porsche", vitesse=200, prix=180000)
+
+    @staticmethod # ++
+    def afficher_nombre_voitures():
+        print(f"Vous avez {Voiture.voiture_crees} voitures dans votre garage.")
+
+lambo = Voiture.lamborghini()
+porsche = Voiture.porsche()
+Voiture.afficher_nombre_voitures()
+# Vous avez 2 voitures dans votre garage.
+
+# la méthode __str__
+# définit l'affichage que l'on veut avoir quand on print notre instance
+# ou quand on la convertit en string avec la fonction str()
+class Voiture:
+    def __init__(self, marque, vitesse):
+        self.marque = marque
+        self.vitesse = vitesse
+
+    def __str__(self): # méthode magique
+        return f"Voiture de marque {self.marque} avec vitesse maximale de {self.vitesse}."
+        # pas un print, un return
+
+porsche = Voiture("Porsche", 200)
+print(porsche) # Voiture de marque Porsche avec vitesse maximale de 200.
+affichage = str(porsche)
+print(affichage) # Voiture de marque Porsche avec vitesse maximale de 200.
+
+# l'héritage
+projets = ["pr_GameOfThrones", "HarryPotter", "pr_Avengers"]
+
+class Utilisateur:
+    def __init__(self, nom, prenom):
+        self.nom = nom # paul.nom = nom
+        self.prenom = prenom # paul.prenom = nom
+
+    def __str__(self):
+        return f"Utilisateur {self.nom} {self.prenom}"
+
+    def afficher_projets(self):
+        for projet in projets:
+            print(projet)
+
+class Junior(Utilisateur): # Junior hérite de Utilisateur
+    def __init__(self, nom, prenom): # self = paul
+        Utilisateur.__init__(self, nom, prenom)
+
+paul = Junior("Paul", "Durand")
+print(paul) # appel __str__ de la classe mère : Utilisateur Paul Durand
+paul.afficher_projets()
+
+# la fonction super()
+# sert à réferer facilement la classe parente
+# appelle les méthodes de la classe parente
+projets = ["pr_GameOfThrones", "HarryPotter", "pr_Avengers"]
+class Utilisateur:
+    def __init__(self, nom, prenom):
+        self.nom = nom
+        self.prenom = prenom
+
+    def __str__(self):
+        return f"Utilisateur {self.nom} {self.prenom}"
+
+    def afficher_projets(self):
+        for projet in projets:
+            print(projet)
+
+class Junior(Utilisateur):
+    def __init__(self, nom, prenom):
+        super().__init__(nom, prenom) # plus besoin de self
+
+paul = Junior("Paul", "Durand")
+paul.afficher_projets()
+
+# la surcharge
+# on réécrit la méthode parente
+# car Python fait appel à la méthode qui est le plus proche de l'Objet appelant
+projets = ["pr_GameOfThrones", "HarryPotter", "pr_Avengers"]
+class Utilisateur:
+    def __init__(self, nom, prenom):
+        self.nom = nom
+        self.prenom = prenom
+
+    def __str__(self):
+        return f"Utilisateur {self.nom} {self.prenom}"
+
+    def afficher_projets(self):
+        for projet in projets:
+            print(projet)
+
+class Junior(Utilisateur):
+    def __init__(self, nom, prenom):
+        super().__init__(nom, prenom)
+
+    def afficher_projets(self): # surcharge => on réécrit la méthode parente
+        for projet in projets:
+            if not projet.startswith("pr_"):
+                print(projet)
+
+paul = Junior("Paul", "Durand")
+paul.afficher_projets() # HarryPotter, soit le seul élément non précédé d'un pr_
+
+# polymorphisme
+# concept qui indique que l'on peut utiliser des méthodes 
+# de la même façon sur les objets d'une même entité
+class Vehicule:
+    def avance(self):
+        print("Le véhicule démarre")
+
+class Voiture(Vehicule):
+    def avance(self):
+        super().avance() # on augmente la méthode de la classe parente
+        print("La voiture roule")
+
+class Avion(Vehicule):
+    def avance(self):
+        super().avance()
+        print("L'avion vole")
+
+v = Voiture()
+a = Avion()
+v.avance()
+a.avance()
+# Le véhicule démarre
+# La voiture roule
+# Le véhicule démarre
+# L'avion vole
+
+# le méthodes privées
+Rappel : rien n'est' privé en Python 
+Il y a une convention pour les méthodes privées
+class Classe:
+    def _methode_privee(self):
+        print("Je suis une méthode privée !")
+
+
+## -- LES BASES DE DONNEES -- ##
+
+# SQL
+* fichiers non modifiables directement
+* gestion de données complexes
+# JSON
+* fichiers modifiables directement
+* gestion difficile de données complexes 
+* utilisé pour stocker les paramètres logiciels
+* utilisé pour stocker quelques valeurs
+
+# stocker des données dans un fichier JSON
+import json
+
+fichier = "d:/Documents/WEB DEV/PYTHON/settings.json"
+"""
+{
+    "fontSize": 20
+}
+"""
+
+with open(fichier, "r") as f:
+    settings = json.load(f)
+
+# accéder à la valeur
+# print(settings.get("fontSize")) => 20
+
+settings["fontSize"] = 15 # modification du dictionnaire
+
+with open(fichier, "w") as f: # réécriture du dictionnaire
+    json.dump(settings, f, indent=4)
+    
+"""
+{
+    "fontSize": 15
+}
+"""
+
+# SQLite
+import sqlite3 # module de base de Python 3
+
+# si fichier n'existe pas, Python va le créer
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+conn.close()
+
+# créer un tableau
+import sqlite3
+
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+c = conn.cursor()
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS employees(
+    prenom text,
+    nom text
+)
+""") # name, type
+conn.commit() # ajout
+conn.close()
+
+# ajouter des données au tableau 
+import sqlite3
+
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+c = conn.cursor()
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS employees(
+    prenom text,
+    nom text
+)
+""")
+
+d = {"prenom": "Paul", "nom": "Dupond"}
+c.execute("INSERT INTO employees VALUES (:prenom, :nom)", d)
+
+conn.commit() # ajout
+conn.close()
+
+# visualiser une BDD dans VS Code
+extension SQLite
+Ctrl Shift P
+SQLite Open Database
+SQLite explorer se rajoute en bas à gauche
+Show Table => execute commande SQL pour afficher la table
+
+# récupérer des données
+import sqlite3
+
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+c = conn.cursor()
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS employees(
+    prenom text,
+    nom text
+)
+""")
+
+c.execute("SELECT * FROM employees WHERE prenom='Paul'")
+donnees = c.fetchall() # à la fin du processus, le curseur est placé à la fin du fichier
+print(donnees) # liste de tuple [('Paul', 'Dupond'), ('Paul', 'Durand')]
+premier = c.fetchone() # ainsi, il renvoie None, car le curseur est placé à la fin du fichier
+# il faut éxécuter la requête à nouveau
+# fetchone récupère le premier élément qui satisfait la requête
+print(premier) # ('Paul', 'Dupond')
+
+conn.commit() # ajout
+conn.close()
+
+# mettre à jour des données
+import sqlite3
+
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+c = conn.cursor()
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS employees
+(
+    prenom text,
+    nom text,
+    salaire int
+)
+""")
+
+d = {"salaire": 20000, "prenom": "Patrick", "nom": "Dupont"}
+
+c.execute("""UPDATE employees SET salaire=:salaire
+WHERE prenom=:prenom AND nom=:nom""", d)
+
+conn.commit() # ajout
+conn.close()
+
+# supprimer des données
+import sqlite3
+
+conn = sqlite3.connect("d:/Documents/WEB DEV/PYTHON/database.db")
+c = conn.cursor()
+
+c.execute("""
+CREATE TABLE IF NOT EXISTS employees
+(
+    prenom text,
+    nom text
+)
+""")
+
+c.execute("DELETE FROM employees WHERE prenom='Paul' AND nom='Durand'")
+# DELETE FROM employees pour supprimer toutes les entrées
+
+conn.commit() # ajout
+conn.close()
+
+# ouvrir une Base de données avec DB Browser
+https://sqlitebrowser.org/
+
+
+## -- ARCHITECTURE -- ##
+
+projet/
+    app/
+        app.py
+    env/
+    README.md
+
+
+## -- CREER UNE APP -- ##
+
+new Terminal in VS Code 
+mkdir new_projet
+cd new _projet
+mkdir app
+cd app/ 
+touch app.py 
+cd .. 
+code . # lancer le dossier avec VS Code
+
+py -3.7 -m venv env # création de l'environnement virtuel
+accepter le nouvel environnement 
+
+cd env/bin/
+source activate # active l'environnement virtuel
+pip3.7 list # vérifie les packages installés
+pip3.7 install module_a_telecharger 
+
+
+## -- PROJET CONVERTISSEUR DE DEVISES avec PYSIDE -- ## 
+
+from PySide2 import QtWidgets, QtGui, QtCore # a importer avec pip (dans l'env virtuel)
+import currency_converter
+
+class App(QtWidgets.QWidget): # importe la classe QWidget du module QtWidgets
+    def __init__(self):
+        super().__init__()
+        self.c = currency_converter.CurrencyConverter() # ajoute la classe de currency_converter
+        self.setWindowTitle("Convertisseur de devises")
+        self.setup_ui() # appelle la méthode qui personnalise l'interface
+        # premiere méthode appelée car elle crée les widgets
+        self.set_default_values() # appelle la méthode qui met les valeurs par défaut
+        # ordre important : on modifie les valeurs après les avoir crées avec setup_ui
+        self.setup_connections() # appelle la méthode qui connecte les widgets aux méthode
+        self.setup_css() # appelle la méthode pour modifier le style CSS
+        self.resize(500, 50)
+
+    # création de l'interface graphique
+    def setup_ui(self):
+        self.layout = QtWidgets.QHBoxLayout(self) # créé un layout horizontal (alignement boutons)
+        self.cbb_devisesFrom = QtWidgets.QComboBox() # input
+        self.le_montant = QtWidgets.QSpinBox()  # select
+        self.cbb_devisesTo = QtWidgets.QComboBox()
+        self.le_montantConverti = QtWidgets.QSpinBox()
+        self.btn_inverser = QtWidgets.QPushButton("Inverser devises")
+        # ajout des widgets au layout
+        self.layout.addWidget(self.cbb_devisesFrom)
+        self.layout.addWidget(self.le_montant)
+        self.layout.addWidget(self.cbb_devisesTo)
+        self.layout.addWidget(self.le_montantConverti)
+        self.layout.addWidget(self.btn_inverser)
+    
+    # connecte les widget aux méthodes (pour réagir aux événements)
+    def setup_connections(self):
+        self.cbb_devisesFrom.activated.connect(self.compute)
+        # lie cbb_devisesFrom à self.compute quand une autre value est choisie
+        self.cbb_devisesTo.activated.connect(self.compute)
+        self.le_montant.valueChanged.connect(self.compute)
+        # lie le_montant à self.compute quand le montant est changé
+        self.btn_inverser.clicked.connect(self.inverser_devises)
+        # lie btn_inverser à self.inverser_devises quand le bouton est cliqué
+
+    # changer le style de l'application
+    def setup_css(self):
+        self.setStyleSheet("""
+        background-color: rgb(30, 30, 30);
+        color: rgb(240, 240, 240);
+        border: none;
+        """)
+        style = """
+        QComboBox::down-arrow {
+            image: none;
+            border-width: 0px;
+        }
+        QComboBox::drop-down {
+            border-width: 0px;
+        } 
+        """
+        self.cbb_devisesFrom.setStyleSheet(style)
+        self.cbb_devisesTo.setStyleSheet(style)
+
+    # mettre les valeurs par défaut
+    def set_default_values(self):
+        self.cbb_devisesFrom.addItems(sorted(list(self.c.currencies))) 
+        # addItems pour ajouter une liste d'éléments
+        self.cbb_devisesTo.addItems(sorted(list(self.c.currencies)))
+        self.cbb_devisesFrom.setCurrentText("EUR") # met EUR par défaut dans les input
+        self.cbb_devisesTo.setCurrentText("EUR")
+        self.le_montant.setRange(1, 1000000) # modifie l'odre de grandeur du select
+        self.le_montantConverti.setRange(1, 1000000)
+        self.le_montant.setValue(100) # met 100 comme valeur par défaut
+        self.le_montantConverti.setValue(100)
+
+    # réagit aux événements
+    def compute(self):
+        montant = self.le_montant.value() # récupère la valeur de le_montant
+        deviseFrom = self.cbb_devisesFrom.currentText()
+        deviseTo = self.cbb_devisesTo.currentText()
+        # tente de convertir la valeur
+        try:
+            resultat = self.c.convert(montant, deviseFrom, deviseTo)
+        except currency_converter.currency_converter.RateNotFoundError:
+            print("Rate not found")
+        else:
+            self.le_montantConverti.setValue(resultat) # affiche le résultat de la conversion
+
+    # créer l'action d'inverser les devises
+    def inverser_devises(self):
+        devise_from = self.cbb_devisesFrom.currentText() # récupère les valeurs
+        devise_to = self.cbb_devisesTo.currentText()
+
+        self.cbb_devisesFrom.setCurrentText(devise_to) # inverse les valeurs
+        self.cbb_devisesTo.setCurrentText(devise_from)
+        self.compute() # calcule le nouveaux résultat
+
+app = QtWidgets.QApplication([]) # représente l'application /!\ passer une liste vide
+win = App() # représente l'interface
+win.show() # montre l'interface
+app.exec_() # lance l'appli
+
+
+## -- PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API) -- ##
+
+# Création de la logique du code
+
+structure :
+cine_club/
+    data/
+        movies.json
+    app.py 
+    movie.py
+
+# movie.py
+import json
+import os
+import logging
+
+CUR_DIR = os.path.dirname(__file__) # récupère le chemin du fichier avec __file___, 
+# puis son dossier avec dirname
+DATA_FILE = os.path.join(CUR_DIR, "data", "movies.json")
+
+# récupère tous les films sous forme d'instance de la classe Movie
+def get_movies():
+    # movies_instances = [] // supprimé avec la compréhension de liste
+    with open(DATA_FILE, "r") as f:
+        movies = json.load(f)
+        # for movie_title in movies: // supprimé avec la compréhension de liste
+        #    movies_instances.append(Movie(movie_title)) // supprimé avec la compréhension de liste
+
+        # solution simplifiée avec une compréhension de liste
+        # retourne une instance pour chaque itération de boucle
+        # stockée dans la variable movies_instances
+        movies_instances = [Movie(movie_title) for movie_title in movies]
+
+        return movies_instances
+
+class Movie:
+    def __init__(self, title):
+        self.title = title.title() # méthode title pour enregistrer en style Title
+        # harry potter => Harry Potter
+
+    def __str__(self): # retourne le titre quand on print l'instance
+        return self.title
+
+    def _get_movies(self): # _nom_fonction car elles ne seront pas appelées depuis l'interface
+        # utilisée pour de la logique interne : méthodes privées
+        # dans la méthode add_to_movies
+        with open(DATA_FILE, "r") as f:
+            return json.load(f)
+
+    def _write_movies(self, movies): # méthode privée
+        with open(DATA_FILE, "w") as f:
+            json.dump(movies, f, indent=4)
+
+    def add_to_movies(self):
+        movies = self._get_movies()
+
+        if self.title not in movies:
+            movies.append(self.title) # ajoute le titre de l'instance à la liste de films
+            self._write_movies(movies) # appelle à la méthode privée
+            # qui ajoute la nouvelle liste à la place de l'ancienne liste
+            return True
+        else:
+            logging.warning(f"Le film {self.title} est déjà enregistré.")
+            return False
+
+    def remove_from_movies(self):
+        movies = self._get_movies()
+
+        if self.title in movies:
+            movies.remove(self.title)
+            self._write_movies(movies)
+
+if __name__ == "__main__": # exécute le code que si l'on est sur le fichier principal
+    get_movies() # récupère les films sous forme d'instances
+
+
+## -- PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside) -- ##
+
+# Création de l'interface graphique de l'appli
+
+# app.py
+from PySide2 import QtWidgets, QtCore
+from movie import Movie, get_movies # imports du module movie précédemment créé
+
+class App(QtWidgets.QWidget): # création de l'interface
+    def  __init__(self):
+        super().__init__()
+        self.setWindowTitle("Ciné Club") # donne un titre à la fenêtre
+        self.setup_ui() # appelle la méthode pour créer l'interface 
+        self.setup_connections() # appelle la méthode qui ajoute des actions aux widgets
+        self.populate_movies() # appelle la méthode qui remplit la liste widget
+
+    def setup_ui(self):
+        self.main_layout = QtWidgets.QVBoxLayout(self) # création d'un layout vertical
+
+        self.le_movieTitle = QtWidgets.QLineEdit() # le_ pour line edit (input text)
+        self.btn_addMovie = QtWidgets.QPushButton("Ajouter un film")
+        self.lw_movies = QtWidgets.QListWidget() # lw_ pour list widget (select)
+        self.lw_movies.setSelectionMode(QtWidgets.QListWidget.ExtendedSelection)
+        # ↑ permet de sélectionner plusieurs items d'un coup
+        self.btn_removeMovie = QtWidgets.QPushButton("Supprimer le(s) film(s)")
+
+        self.main_layout.addWidget(self.le_movieTitle) # ajout des widgets au layout
+        self.main_layout.addWidget(self.btn_addMovie)
+        self.main_layout.addWidget(self.lw_movies)
+        self.main_layout.addWidget(self.btn_removeMovie)
+
+    def setup_connections(self):
+        self.btn_addMovie.clicked.connect(self.add_movie) # s'active au clic du bouton "Ajouter un film"
+        # lie l'événement à la méthode add_movie
+        self.le_movieTitle.returnPressed.connect(self.add_movie)
+        # ↑ connecte le bouton entrée sur l'input movieTitle avec la méthode add_movie
+        self.btn_removeMovie.clicked.connect(self.remove_movie)
+
+    def populate_movies(self):
+        self.lw_movies.clear()
+        movies = get_movies()
+        for movie in movies:
+            lw_item = QtWidgets.QListWidgetItem(movie.title) # création d'un item de type list
+            # (!) alternative au setData
+            #     lw_item.movie = movie => créé un attribut à l'item qui contient l'instance
+            lw_item.setData(QtCore.Qt.UserRole, movie) # attache un objet movie à l'item
+            # lie titre de film et son instance
+            self.lw_movies.addItem(lw_item) # ajoute l'item au select
+
+    def add_movie(self):
+        movie_title = self.le_movieTitle.text() # récupère la valeur text de la line edit
+        if not movie_title: # si valeur vide dans le line edit
+            return False
+
+        movie = Movie(title=movie_title) # création d'une instance Movie
+        result = movie.add_to_movies() # ajoute le film à la liste JSON (renvoie True | False)
+        if result: # si film non présent dans la liste
+            lw_item = QtWidgets.QListWidgetItem(movie.title) # création d'un liste widget item
+            # (!) alternative au setData
+            #     lw_item.movie = movie => créé un attribut à l'item qui contient l'instance
+            lw_item.setData(QtCore.Qt.UserRole, movie) # lie l'instance Movie au liste widget item
+            self.lw_movies.addItem(lw_item)
+            self.le_movieTitle.setText("") # vide le line edit
+
+    def remove_movie(self):
+        for selected_item in self.lw_movies.selectedItems(): # récupère les items sélectionnés
+            # ↓ équivalent à movie = Movie(selected_item.text())
+            # évite de recréer une instance
+            # (!) alternative au setData
+            #     movie = selected_item.movie
+            movie = selected_item.data(QtCore.Qt.UserRole) # récupère l'instance attachée
+            # grâce au setData de QtCore
+            movie.remove_from_movies()
+            self.lw_movies.takeItem(self.lw_movies.row(selected_item))
+            # enlève l'élément sélectionné de la liste widget
+            # takeItem(index)
+
+app = QtWidgets.QApplication([]) # création de l'application (avec le tableau vide)
+win = App() # création de l'interface
+win.show() # montre l'interface
+app.exec_() # lance l'appli
+
+
+
