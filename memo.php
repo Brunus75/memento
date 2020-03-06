@@ -99,6 +99,19 @@ I-b) Détruire une variable avec unset()
 	unset($_SESSION['login_error']);
 ?>
 
+I-c) Variables globales et locales 
+
+<?php
+$one = 1; // accessible globalement, mais pas localement
+
+function echoOne($one) {
+    echo $one; // les variables globales ne sont pas accessibles localement
+    // il faut renseigner les variables en paramètres
+}
+
+echoOne($one); // si on ne renseigne pas l'argument, erreur de type variable indéfinie
+?>
+
 II) Les conditions
 
 == ; > ; < ; >= ; <= ; != ;

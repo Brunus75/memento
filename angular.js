@@ -3141,3 +3141,17 @@ XV) DEPLOIEMENT
 
 `ng build --prod`
 génère un fichier dist/ à déployer sur le serveur 
+
+
+XVI) METTRE A JOUR
+`
+ng update @angular/core@8 @angular/cli@8 
+# On passe sur la dernière version d'Angular 8, pour faciliter la mise à jour.
+ng update @angular/core @angular/cli # On migre sur Angular 9
+
+Si vous avez quelques problèmes suite à l’exécution de la commande, 
+supprimez votre dossier node_modules, et réinstaller vos dépendances
+
+Pour une procédure de migration plus détaillée, jetez un coup d’oeil à l’outil de migration Angular 
+https://update.angular.io/
+`
