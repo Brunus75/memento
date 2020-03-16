@@ -694,3 +694,194 @@ donc elle ne doit pas être utilisée en production !
 
 
 ## -- LES MODELES -- ##
+
+## - Créer un modèle
+
+Un modèle s’écrit sous la forme d’une classe
+Il représente une table dans la base de données, dont les attributs correspondent aux champs de la table. 
+Ceux-ci se rédigent dans le fichier models.py de chaque application.
+
+from django.db import models
+from django.utils import timezone
+
+class Article(models.Model): # tout modèle hérite de la classe Model de Django
+    titre = models.CharField(max_length=100) # précise le champ à créer + contraintes
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField(null=True) # pas de limite de taille (pour enregistrer des longs textes)
+    # ici, champ optionnel
+    date = models.DateTimeField(default=timezone.now, 
+                                verbose_name="Date de parution") # donne précision sur le nom du champ
+    
+    class Meta:
+        verbose_name = "article"
+        ordering = ['date']
+    
+    def __str__(self):
+        """ 
+        Cette méthode que nous définirons dans tous les modèles
+        nous permettra de reconnaître facilement les différents objets que 
+        nous traiterons plus tard dans l'administration
+        """
+        return self.titre
+
+La liste des champs disponibles : https://docs.djangoproject.com/en/stable/ref/models/fields/#field-types
+
+# Personnaliser le comportement du modèle avec la classe Meta
+Classe optionnelle
+Celle-ci permet de préciser des comportements propres au modèle lui-même :
+    • verbose_name : permet de dire à Django ce que représente le modèle.
+    # commentaire d’article" pour ArticleComment
+    # utilisé dans l'administration
+    • ordering : définit l’ordre par défaut lors de la sélection des données avec ce modèle.
+
+# Créer la table SQL correspondante
+python manage.py makemigrations 
+# détermine quelles modifications ont été apportées aux modèles 
+# et va détecter quels changements il faut opérer en conséquence sur la structure de la BDD
+python manage.py migrate # réalise ces changements dans la base de données
+
+## - Vérifier les données avec shell
+
+python manage.py shell
+>>> from blog.models import Article
+Chaque instance d’un modèle correspond à une entrée dans la base de données
+>>> article = Article(titre="Bonjour", auteur="Maxime")
+>>> article.contenu = "Les crêpes bretonnes sont trop bonnes !"
+>>> article.auteur
+Maxime
+>>> article.save() # sauvegarde l'objet/l'entrée dans la BDD
+il est toujours possible de modifier l’objet par la suite :
+>>> article.titre = "Salut !"
+>>> article.auteur = "Mathieu"
+>>> article.save() # obligatoire
+>>> article.delete() # supprime l'instance
+Chaque modèle (la classe, et non l’instance, attention !), 
+possède plusieurs méthodes dans la sous-classe objects :
+>>> Article.objects.all() # obtenir toutes les données enregistrées d'un modèle
+<QuerySet []>
+# conteneur itérable
+>>> Article(auteur="Mathieu", titre="Les crêpes", contenu="Les crêpes c'est cool").save()
+>>> Article(auteur="Maxime", titre="La Bretagne", contenu="La Bretagne c'est trop bien").save()
+>>> Article.objects.all()
+<QuerySet [<Article: Les crêpes>, <Article: La Bretagne>]>
+
+afficher les différents titres de nos articles :
+>>> for article in Article.objects.all():
+...     print(article.titre)
+...
+Les crêpes
+La Bretagne
+>>>
+
+sélectionner tous les articles d’un seul auteur uniquement :
+>>> for article in Article.objects.filter(auteur="Maxime"):
+... print(article.titre, "par", article.auteur)
+...
+La Bretagne par Maxime
+
+sélectionner tous les articles SAUF ceux rédigés par un auteur :
+>>> for article in Article.objects.exclude(auteur="Maxime"):
+... print(article.titre, "par", article.auteur)
+...
+Les crêpes par Mathieu
+
+filtrer ou exclure des entrées à partir de plusieurs champs : 
+Article.objects.filter(titre="La Bretagne", auteur="Mathieu")
+
+filtrer les articles dont le titre doit contenir certains caractères :
+>>> Article.objects.filter(titre__contains="crêpe")
+<QuerySet [<Article: Les crêpes>]>
+
+prendre des valeurs du champ (strictement) inférieures ou (strictement) 
+supérieures à l’argument passé, grâce à la méthode lt (less than, plus petit que) 
+et gt (greater than, plus grand que) :
+>>> from django.utils import timezone
+>>> Article.objects.filter(date__lt=timezone.now())
+<QuerySet [<Article: Les crêpes>, <Article: La Bretagne>]>
+# Les deux articles ont été sélectionnés, 
+# car ils remplissent tous deux la condition (leur date de parution est dans le passé)
+
+(!) il existe lte et gte qui opèrent de la même façon,
+la différence réside juste dans le fait que ceux-ci prendront tout élément inférieur/supérieur ou égal 
+(lte  : less than or equal, plus petit ou égal, idem pour gte)
+
+organiser les articles par date de parution, du plus récent au plus ancien :
+>>> Article.objects.order_by('date')
+<QuerySet [<Article: Les crêpes>, <Article: La Bretagne>]>
+
+organiser les articles par date de parution, du plus récent au plus ancien
++ ordre descendant :
+>>> Article.objects.order_by('-date')
+<QuerySet [<Article: La Bretagne>, <Article: Les crêpes>]>
+
+(!) Il est possible de passer plusieurs noms d’attributs à order_by. 
+La priorité de chaque attribut dans le tri est déterminée par sa position dans la liste d’arguments. 
+Ainsi, si nous trions les articles par nom et que deux d’entre eux ont le même nom, 
+Django les départagera selon le deuxième attribut, 
+et ainsi de suite tant que des attributs comparés seront identiques.
+
+Pour inverser les éléments d’un QuerySet : la méthode reverse().
+Les méthodes de QuerySet sont cumulables, ce qui garantit une grande souplesse dans vos requêtes :
+>>> Article.objects.filter(date__lt=timezone.now()).order_by('date','titre').reverse()
+<QuerySet [<Article: La Bretagne>, <Article: Les crêpes>]>
+
+# méthodes qui retournent un objet (et non un QuerySet)
+# get
+>>> Article.objects.get(titre="Je n'existe pas")
+...
+blog.models.DoesNotExist: Article matching query does not exist.
+>>> Article.objects.get(auteur="Mathieu").titre
+Les crêpes
+>>> Article.objects.get(auteur__startswith="M")
+...
+blog.models.MultipleObjectsReturned: get() returned more than one Article -- it returned 2!
+# get_or_create
+crée une entrée si aucune autre n’existe avec les conditions spécifiées:
+renvoie un tuple contenant l’objet désiré et un booléen 
+qui indique si une nouvelle entrée a été créée ou non :
+Article.objects.get_or_create(auteur="Mathieu")
+>>> (<Article: Les crêpes>, False)
+
+Article.objects.get_or_create(auteur="Zozor", titre="Hi han")
+>>> (<Article: Hi han>, True)
+
+## - Les liaisons entre modèles
+
+Django propose tout un système permettant de simplifier grandement les différents types de liaison
+ex. des catégories pour Articles (1 Article = 1 catégorie, 1 catégorie = * Article(s))
+1) créer un autre modèle représentant les catégories
+class Categorie(models.Model):
+    nom = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.nom
+2) créer la liaison depuis notre modèle Article, avec un nouveau champ :
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now, 
+                                verbose_name="Date de parution")
+    categorie = models.ForeignKey('Categorie', on_delete=models.CASCADE) # ++
+    
+    class Meta:
+        ordering = ['date']
+        
+    def __str__(self):
+        return self.titre
+
+Le champ ForeignKey va enregistrer une clé, 
+un identifiant propre à chaque catégorie enregistrée (il s’agit la plupart du temps d’un nombre) 
+qui permettra donc de retrouver la catégorie associée
+
+2 options obligatoires : le modèle vers lequel pointer et 
+que faire en cas de suppression de la clé étrangère :
+    - CASACADE : tous les articles ayant cette catégorie seront également supprimés 
+    (provoquant une cascade de suppression)
+    - SET_NULL : vide le champ categorie de chaque objet
+    - PROTECT : empêche de supprimer une valeur si elle est utilisée, via une exception Python
+
+python manage.py makemigrations
+python manage.py migrate 
+
+# vérifier les changements
