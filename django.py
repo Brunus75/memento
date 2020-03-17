@@ -628,7 +628,7 @@ que ce soit pour le nom de la vue ou les arguments :
 ils n’apparaîtront pas dans la page HTML
 <p>Ma page HTML</p>
 <!-- Ce commentaire HTML sera visible dans le code source. -->
-{# Ce commentaire Django ne sera pas visible dans le code source. #}
+#    {# Ce commentaire Django ne sera pas visible dans le code source. #}
 {% comment %}
     Commentaire sur plusieurs lignes :
     Ceci est une page d'exemple. Elle est composée de 3 tableaux :
@@ -882,6 +882,72 @@ que faire en cas de suppression de la clé étrangère :
     - PROTECT : empêche de supprimer une valeur si elle est utilisée, via une exception Python
 
 python manage.py makemigrations
-python manage.py migrate 
+python manage.py migrate
 
-# vérifier les changements
+# ici, problème de migration, car on rajoute une foreign key qui n'a pas été crée
+# solution : supprimer la bdd et relancer la migration
+
+# vérifier les changements avec shell
+python manage.py shell
+>>> from blog.models import Categorie, Article
+
+>>> cat = Categorie(nom="Crêpes")
+>>> cat.save()
+
+>>> art = Article()
+>>> art.titre = "Les nouvelles crêpes"
+>>> art.auteur = "Maxime"
+>>> art.contenu = "On a fait de nouvelles crêpes avec du trop bon rhum"
+>>> art.categorie = cat
+>>> art.save()
+
+# Pour accéder aux attributs et méthodes de la catégorie associée à l’article :
+>>> art.categorie.nom
+'Crêpes'
+
+# une catégorie peut avoir plusieurs articles
+# pour voir tous les articles liés au modele Categorie :
+>>> cat.article_set.all()
+<QuerySet [<Article: Les nouvelles crêpes>]>
+
+Le nom que prendra une relation en sens inverse est composé du nom du modèle source 
+(qui a la ForeignKey comme attribut), « _ » et finalement du mot set
+Nous pouvons aussi utiliser les méthodes que nous avons vues précédemment : 
+all, filter, exclude, order_by...
+
+(!) il est possible d’accéder aux attributs du modèle lié par une clé étrangère 
+depuis un filter, exclude, order_by…
+# ex. filtrer tous les articles dont le titre de la catégorie possède un certain mot :
+>>> Article.objects.filter(categorie__nom__contains="crêpes")
+<QuerySet [<Article: Les nouvelles crêpes>]>
+
+# OneToOneField
+autre type de liaison, très similaire au principe des clés étrangères
+permet de lier un modèle à un autre tout aussi facilement, 
+et garantit qu’une fois la liaison effectuée, 
+plus aucun autre objet ne pourra être associé à ceux déjà associés
+(!) La relation devient unique
+# ex.
+class Moteur(models.Model):
+    nom = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.nom
+
+class Voiture(models.Model):
+    nom = models.CharField(max_length=25)
+    moteur = models.OneToOneField(Moteur, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nom
+
+python manage.py shell
+
+>>> from blog.models import Moteur, Voiture
+>>> moteur = Moteur.objects.create(nom="Vroum") # crée directement l'objet et l'enregistre
+>>> voiture = Voiture.objects.create(nom="Crêpes-mobile", moteur=moteur)
+
+>>> moteur.voiture
+<Voiture: Crêpes-mobile>
+>>> voiture.moteur
+<Moteur: Vroum>

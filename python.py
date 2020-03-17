@@ -197,7 +197,7 @@ print(2 ** 4) # 16 2*2*2*2
 
 # opérateurs mathématiques avancés avec le module math
 import math # import du module
-racine = math.sqrt(16) #calculer la racine carrée
+racine = math.sqrt(16) # calculer la racine carrée
 print(racine) # 4
 # liste des fonctions les + utilisées :
 math.ceil(-4.7) # entier immédiatement supérieur, donne ici - 4.
@@ -2796,4 +2796,65 @@ win.show() # montre l'interface
 app.exec_() # lance l'appli
 
 
+## ---------- PYTHON AVANCÉ ---------- ##
 
+## -- LA FONCTION ENUMERATE -- ## 
+
+# sans enumerate
+liste = ['Bonjour', 'tout', 'le', 'monde']
+for i in range(len(liste)):
+	if i > 0:
+	    print(liste[i])
+
+# avec enumerate
+liste = ['Bonjour', 'tout', 'le', 'monde']
+for i, mot in enumerate(liste): # plus besoin de range pour récupérer le i
+	if i > 0:
+		print(mot)
+
+# exemples avancé 1
+liste = ['Bonjour', 'tout', 'le', 'monde']
+for i, mot in enumerate(liste, 2): # enumerate(liste, valeur index de départ)
+	print(i) # 2, 3, 4, etc.
+	print(mot) # Bonjour, tout, le, etc.
+
+# exemples avancé 2
+dic = {
+	   'Utilisateur1': 'John',
+	   'Utilisateur2': 'Peter',
+	   'Utilisateur3': 'Julie'
+	  }
+
+for i, (cle, valeur) in enumerate(dic.items(), 1): # index commence à 1
+	print(i, cle, valeur)
+    # 1 Utilisateur1 John
+
+# ex. "Phrase en camel case" => "phraseEnCamelCase"
+def toCamelCase(phrase):
+    mots = phrase.lower().split()
+
+    for i, mot in enumerate(mots):
+        if i > 0:
+            mots[i] = mot.capitalize()
+
+    return print("".join(mots))
+
+phrase = "Phrase en camel case"
+toCamelCase(phrase) # phraseEnCamelCase
+
+# autre solution
+phrase = 'Phrase en camel case'
+mots = phrase.lower().split(' ')
+phrase_convertie = mots[0]
+for i, mot in enumerate(mots):
+    if i > 0:
+        phrase_convertie += mot.capitalize()
+print(phrase_convertie)
+
+# solution optimisée
+phrase = 'Phrase en camel case'
+mots = phrase.lower().split(' ')
+phrase_convertie = mots.pop(0) # enlève la valeur 0 du tableau et la renvoie
+for mot in mots:
+    phrase_convertie += mot.capitalize()
+print(phrase_convertie)
