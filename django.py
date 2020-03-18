@@ -27,6 +27,16 @@ python -i
 '2.2'
 
 
+## -- SQLITE -- ##
+
+# visualiser une BDD dans VS Code
+extension SQLite
+Ctrl Shift P
+SQLite Open Database
+SQLite explorer se rajoute en bas à gauche
+Show Table => execute commande SQL pour afficher la table
+
+
 ## -- DJANGO -- ##
 
 Architecture MVT: Modèle-Vue-Template
@@ -951,3 +961,212 @@ python manage.py shell
 <Voiture: Crêpes-mobile>
 >>> voiture.moteur
 <Moteur: Vroum>
+# ne renvoie olus un QuerySet, 
+# mais directement l’élément concerné (ce qui est logique, celui-ci étant unique)
+
+# changer le nom de la variable créée par la relation inverse
+# ex. moteur de la classe Voiture
+utiliser l’argument related_name du ForeignKey ou OneToOneField
+et lui passer une chaîne de caractères désignant le nouveau nom de l’attribut
+désactiver la relation inverse en donnant related_name='+'
+
+# ManyToManyField
+ManyToManyField va toujours créer une table intermédiaire qui enregistrera les clés étrangères 
+des différents objets des modèles associés. 
+Nous pouvons soit laisser Django s’en occuper tout seul, 
+soit la créer nous-mêmes pour y ajouter des attributs supplémentaires.
+Dans ce deuxième cas, il faut spécifier le modèle faisant la liaison via l’argument through
+du champ et ne surtout pas oublier d’ajouter des ForeignKey vers les deux modèles qui seront liés
+
+ex. comparateur de prix pour les ingrédients nécessaires à la réalisation de crêpes
+Plusieurs vendeurs proposent plusieurs produits, parfois identiques, à des prix différents
+Il nous faudra trois modèles :
+
+class Produit(models.Model):
+    nom = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.nom
+
+class Vendeur(models.Model):
+    nom = models.CharField(max_length=30)
+    produits = models.ManyToManyField(Produit, through='Offre', related_name='+')
+    # Offre est le modèle intermédiaire, qui fait le lien entre Produit et Vendeur
+    # permet d’ajouter des informations supplémentaires sur la liaison 
+    # (ici, le prix, caractérisé par un PositiveIntegerField)
+    produits_sans_prix = models.ManyToManyField(Produit, related_name="vendeurs")
+    # permet d’associer plusieurs produits à un vendeur, et vice-versa
+
+    def __str__(self):
+        return self.nom
+
+class Offre(models.Model):
+    prix = models.IntegerField()
+    produit = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    vendeur = models.ForeignKey(Vendeur, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{0} vendu par {1}".format(self.produit, self.vendeur)
+
+python manage.py shell
+>>> from blog.models import Vendeur, Produit, Offre
+>>> vendeur = Vendeur.objects.create(nom="Carouf")
+>>> p1 = Produit.objects.create(nom="Lait") 
+>>> p2 = Produit.objects.create(nom="Farine")
+
+la gestion du ManyToMany se fait de deux manières différentes :
+Dans le cas de la relation avec le modèle intermédiaire, 
+Django nous laisse gérer le modèle Offre comme un modèle classique, 
+où l’on peut créer, modifier et supprimer des relations :
+>>> o1 = Offre.objects.create(vendeur=vendeur, produit=p1, prix=10)
+>>> o2 = Offre.objects.create(vendeur=vendeur, produit=p2, prix=42)
+>>> o1.prix = 15
+>>> o1.delete()
+
+Dans le cas de la relation sans modèle intermédiaire, 
+on gère les éléments liés à notre vendeur via l’attribut produits_sans_prix, 
+qui se gère tel un ensemble où l’on peut ajouter, supprimer et lister les objets :
+>>> vendeur.produits_sans_prix.add(p1, p1, p2)
+>>> vendeur.produits_sans_prix.all()
+<QuerySet [<Produit: Lait>, <Produit: Farine>]>
+>>> vendeur.produits_sans_prix.remove(p2)
+
+Les relations ManyToMany se comportent également comme un QuerySet, 
+et il est donc possible de manier les produits avec les critères habituels
+(filter, exclude, order_by, reverse...)
+>>> vendeur.produits_sans_prix.filter(nom="Farine")
+<QuerySet [<Produit: Farine>]>
+>>> vendeur.produits.order_by('-offre__prix')
+<QuerySet [<Produit: Farine>, <Produit: Lait>]>
+
+Comme pour les ForeignKey, une relation inverse s’est créée, 
+seulement pour notre relation produits_sans_prix, vu que l’on a désactivé l’autre via le related_name  :
+>>> p1.vendeurs.all()
+<QuerySet [<Vendeur: Carouf>]>
+
+accéder aux valeurs du modèle intermédiaire (ici Offre) :
+>>> Offre.objects.get(vendeur=vendeur, produit=p1).prix
+10
+
+supprimer toutes les liaisons d’un ManyToManyField, 
+que la table intermédiaire soit générée automatiquement ou manuellement :
+>>> vendeur.produits.clear()
+>>> vendeur.produits_sans_prix.clear()
+# toute relation entre les produits et les vendeurs a disparu !
+
+## - Les modèles dans les vues
+
+# Afficher les articles du blog
+Exemple d’application :
+
+# blog/views.py -----------
+from django.http import Http404
+from django.shortcuts import render
+from blog.models import Article
+
+def accueil(request):
+    """ Afficher tous les articles de notre blog """
+    articles = Article.objects.all() # Nous sélectionnons tous nos articles
+    return render(request, 'blog/accueil.html', {'derniers_articles': articles})
+
+def lire(request, id):
+    """ Afficher un article complet """
+    pass # Le code de cette fonction est donné un peu plus loin.
+
+# blog/urls.py -----------
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.accueil, name='accueil'),
+    path('article/<int:id>', views.lire, name='lire')
+]
+
+# blog/templates/blog/accueil.html -----------
+<h1>Bienvenue sur le blog des crêpes bretonnes !</h1>
+
+{% for article in derniers_articles %}
+    <div class="article">
+    	<h3>{{ article.titre }}</h3>
+    	<p>{{ article.contenu|truncatewords_html:80 }}</p>
+        <p><a href="{% url 'lire' article.id %}">Lire la suite</a></p>
+    </div>
+{% empty %}
+    <p>Aucun article.</p>
+{% endfor %}
+
+# Afficher un article précis
+il n’y a pas besoin de vérifier si l’ID précisé est bel et bien un nombre, 
+cela est déjà spécifié dans urls.py
+Une vue possible est la suivante :
+def lire(request, id):
+    try:
+        article = Article.objects.get(id=id)
+    except Article.DoesNotExist:
+        raise Http404
+
+    return render(request, 'blog/lire.html', {'article': article})
+Qui peut être simplifié grâce au raccourci get_object_or_404 :
+# Il faut ajouter l'import get_object_or_404, attention !
+from django.shortcuts import render, get_object_or_404
+
+def lire(request, id):
+    article = get_object_or_404(Article, id=id)
+    return render(request, 'blog/lire.html', {'article':article})
+
+# blog/templates/blog/lire.html
+<h1>{{ article.titre }} <span class="small">dans {{ article.categorie.nom }}</span></h1>
+<p class="infos">Rédigé par {{ article.auteur }}, le {{ article.date|date:"DATE_FORMAT" }}</p>
+<div class="contenu">{{ article.contenu|linebreaks }}</div>
+
+(!) Le même raccourci existe pour obtenir une liste d’objets : get_list_or_404
+
+# des URL plus esthétiques
+Un slug est en journalisme un label court donné à un article publié, 
+ou en cours d’écriture. 
+Il permet d’identifier l’article tout au long de sa production et dans les archives. 
+Il peut contenir des informations sur l’état de l’article, afin de les catégoriser.
+# ex. developpez-votre-site-web-avec-le-framework-django
++ ajout d'un' type de champ dans les modèles : le SlugField
+
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100) # permet de stocker une chaîne de caractères, d’une certaine taille maximale
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now, 
+                                verbose_name="Date de parution")
+
+    def __str__(self):
+        return self.titre
+
+# ajouter notre slug dans l'url
+# Pensez aux imports que nous avons dans l'exemple précédent
+urlpatterns = [
+    path('', views.accueil, name='accueil'),
+    path('article/<int:id>-<slug:slug>', views.lire, name='lire'),
+]
+
+snippet pour créer des slugs uniques : https://djangosnippets.org/snippets/690/
+
+(!) il est possible d’automatiser le remplissage d'un' slug 
+
+
+# Ajout/Modification d'article via le terminal
+python manage.py shell
+>>> from blog.models import Categorie, Article
+
+>>> art = Article.objects.get(auteur="Maxime") # get article by Maxime
+>>> art.slug = "crepes-rhum"
+>>> print(art.slug)
+crepes-rhum
+>>> art.save()
+
+>>> art2 = Article()
+>>> art2.titre = "Les crêpes au cidre"
+>>> art2.auteur = "Pablo"
+>>> art2.contenu = "On a fait des crêpes au cidre !"
+>>> cat = Categorie.objects.get(nom="Crêpes") # get Catégorie Crêpes
+>>> art2.categorie = cat
+>>> art2.slug = "crepes-cidre"
+>>> art2.save()
