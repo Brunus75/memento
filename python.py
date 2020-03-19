@@ -2858,3 +2858,28 @@ phrase_convertie = mots.pop(0) # enlève la valeur 0 du tableau et la renvoie
 for mot in mots:
     phrase_convertie += mot.capitalize()
 print(phrase_convertie)
+
+
+## -- FORMATTING -- ##
+
+"Hello %s, my name is %s" % ('john', 'mike')  # Hello john, my name is mike
+"My name is %s and i'm %d" % ('john', 12)  # My name is john and i'm 12
+name = input("who are you? ")
+print("hello %s" % (name,))
+# %s % variable_a_formater_en_string
+# %d % variable_a_formater_en_int
+
+# (!) Note that this kind of string interpolation is deprecated 
+# in favor of the more powerful str.format method
+
+# the format method
+"Hello {}, my name is {}".format('john', 'mike')
+# 'Hello john, my name is mike'.
+"{1}, {0}".format('world', 'Hello')
+# 'Hello, world'
+"{greeting}, {}".format('world', greeting='Hello')
+# 'Hello, world'
+'%s' % name
+"{'s1': 'hello', 's2': 'sibal'}"
+'%s' %name['s1']
+# 'hello'

@@ -37,6 +37,14 @@
 * *ex. Commercial ⇾ Acheteur ⇽ Client (Client est une spécialisation de Acheteur)*
 * approfondir les branches des utilisations
 * *ex. enregistrer un achat -- include -→ constituer un panier*
+5. Décrire l’interaction entre les acteurs et le système **[diagramme d'activité]**
+* procéder à la description textuelle d’un cas d’utilisation
+* décrire la chronologie des actions qui devront être réalisées par les acteurs et par le système lui-même
+* 1) l'identification : contexte et pré-conditions *(conditions qui doivent être vérifiées avant le démarrage du cas d'utilisation. ex. : authentification)*
+* 2) description des scénarios : nominal *(scénario logique)*, alternatifs *(actions utilisateur)*, d'exception *(imprévus ou actions système)*
+* 3) la fin *(situations d'arrêt)* et les post-conditions *(résultats tangibles)*
+* 4) compléments : ergonomie, performance attendue, contraintes à respecter, problèmes non résolus, ect.
+* 4) le transcrire visuellement avec un diagramme d'activité
 
 
 ## Les relations stéréotypées
@@ -75,3 +83,9 @@
 + **acteurs principaux** : agissent directement sur le système (ex. utilisateurs)
 + **acteurs secondaires** : n’ont pas de besoin direct d’utilisation (ex. un autre système (logiciel) avec lequel le nôtre doit échanger des informations, comme un système bancaire de type Paypal)
 + **lot d’actions** : fonctionnalité dont certains acteurs principaux ont besoin
+
+
+## Ressources
+
++ https://openclassrooms.com/fr/courses/2035826-debutez-lanalyse-logicielle-avec-uml
++ http://staruml.io/

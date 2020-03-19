@@ -1170,3 +1170,298 @@ crepes-rhum
 >>> art2.categorie = cat
 >>> art2.slug = "crepes-cidre"
 >>> art2.save()
+
+
+## -- L'ADMINISTRATION -- ##
+
+Un des gros points forts de Django est que celui-ci génère de façon automatique 
+l’administration en fonction de vos modèles.
+
+## - Mise en place de l'administration
+
+# Les modules django.contrib
+ensemble d’extensions fournies par Django, réutilisables dans n’importe quel projet
+le module django.contrib.admin génère l’administration
+django.contrib.messages = gestion de messages destinés aux visiteurs
+django.contrib.auth = système d’authentification et de gestion des utilisateurs
+
+# Accéder à l'administration
++ avoir dans la liste INSTALLED_APPS de settings.py les applications suivantes, 
+déjà présentes au début de la liste par défaut :
+'django.contrib.admin',
+'django.contrib.auth',
+'django.contrib.contenttypes',
+'django.contrib.sessions',
+'django.contrib.messages',
++ dans l’import de middlewares :
+'django.contrib.sessions.middleware.SessionMiddleware',
+'django.middleware.common.CommonMiddleware',
+'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+# Mise à jour de la base de données
++ créer de nouvelles tables dans la base de données, 
+qui serviront à enregistrer les actions des administrateurs, définir les droits de chacun, etc.
+python manage.py migrate
++ créer un compte super-utilisateur
+python manage.py createsuperuser
+
+# Intégration à notre projet : définissons-lui une adresse
+se rendre à http://127.0.0.1:8000/admin/
+
+## - Première prise en main
+
+Affiche la liste des modèles que vous pouvez gérer. 
+Pour le moment, seuls 2 modèles, Groupes et Utilisateurs, 
+sont disponibles, par défaut. 
+Ce sont les modèles de l’application django.contrib.auth
+
++ Possibilité de créer un utilisateur
+
+## - Administrons nos propres modèles
+
+Dans le fichier blog/admin.py, insérez ces lignes :
+from django.contrib import admin
+from .models import Categorie, Article
+
+admin.site.register(Categorie)
+admin.site.register(Article)
+
+
+# comment ça marche ?
+Au lancement du serveur, le framework va chercher, 
+dans chaque application installée (celles qui sont listées dans INSTALLED_APPS), 
+le fichier admin.py, et si celui-ci existe, exécutera son contenu.
+Pour activer l’administration pour toutes nos applications, 
+il suffit de créer un fichier admin.py dans chacune, 
+et d’appeler la méthode admin.site.register() sur chacun de nos modèles.
+
+## - Personnaliser l'administration
+
+# Modifier l’aspect des listes
+Le tableau ne contient qu’une colonne (méthode __string__() du modèle)
+contenant le titre de notre article.
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    auteur = models.CharField(max_length=42)
+    slug = models.SlugField(max_length=100)
+    contenu = models.TextField()
+    date = models.DateTimeField(auto_now_add=True, auto_now=False, 
+                                verbose_name="Date de parution")
+    categorie = models.ForeignKey(Categorie)
+    
+    class Meta:
+        verbose_name = "article" # on le retrouve partout dans le tableau de bord
+        # ex. Sélectionnez l'article à changer | 4 article, ect.
+        ordering = ['date']
+
+    def __str__(self):
+        return self.titre # le titre de la colonne
+
++ créer une nouvelle classe dans notre fichier admin.py :
++ créer une nouvelle classe pour chaque modèle
+* Notre classe héritera de admin.ModelAdmin
+* et aura principalement 5 attributs, listés dans le tableau suivant :
+{
+    'list_display': 'Liste des champs du modèle à afficher dans le tableau',
+    'list_filter': 'Liste des champs à partir desquels nous pourrons filtrer les entrées',
+    'date_hierarchy': 'Permet de filtrer par date de façon intuitive',
+    'ordering': 'Tri par défaut du tableau',
+    'search_fields': 'Configuration du champ de recherche'
+}
+
++ rédiger notre première classe adaptée au modèle Article  :
+class ArticleAdmin(admin.ModelAdmin):
+   list_display   = ('titre', 'auteur', 'date') # affiche les champs
+   list_filter    = ('auteur','categorie',) # filtre par
+   date_hierarchy = 'date' # ordre par défaut est la date de parution
+   ordering       = ('date', ) # par odre croissant
+   search_fields  = ('titre', 'contenu') # possible de chercher les articles contenant un mot, 
+   # soit dans leur titre, soit dans leur contenu
+
+blog/admin.py 
+from django.contrib import admin
+from .models import Categorie, Article
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display   = ('titre', 'auteur', 'date')
+    list_filter    = ('auteur', 'categorie',)
+    date_hierarchy = 'date'
+    ordering       = ('date', )
+    search_fields  = ('titre', 'contenu')
+
+admin.site.register(Categorie)
+admin.site.register(Article, ArticleAdmin)
+
+# Créer des colonnes plus complexes
++ afficher les 40 premiers caractères de notre article
++ créer une méthode dans notre ModelAdmin, qui va se charger de renvoyer ce que nous souhaitons, 
+et la lier à notre list_display
+
+from django.utils.text import Truncator
+
+def apercu_contenu(self, article):
+    """ 
+    Retourne les 40 premiers caractères du contenu de l'article, 
+    suivi de points de suspension si le texte est plus long. 
+    
+    On pourrait le coder nous même, mais Django fournit déjà la 
+    fonction qui le fait pour nous !
+    """
+    return Truncator(article.contenu).chars(40, truncate='...')
+
++ Pour l’utiliser dans list_display, on peut traiter la fonction comme un champ :
+
+from django.contrib import admin
+from django.utils.text import Truncator
+
+from blog.models import Categorie, Article
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display   = ('titre', 'categorie', 'auteur', 'date', 'apercu_contenu') ## ++
+    list_filter    = ('auteur','categorie', )
+    date_hierarchy = 'date'
+    ordering       = ('date', )
+    search_fields  = ('titre', 'contenu')
+
+    def apercu_contenu(self, article):
+        """ 
+        Retourne les 40 premiers caractères du contenu de l'article, 
+        suivi de points de suspension si le texte est plus long. 
+        """
+        return Truncator(article.contenu).chars(40, truncate='...')
+
+    # En-tête de notre colonne
+    apercu_contenu.short_description = 'Aperçu du contenu'
+
+admin.site.register(Categorie)
+admin.site.register(Article, ArticleAdmin)
+
+# modifier le formulaire d'édition
+L’ordre d’apparition des champs dépend actuellement de l’ordre de déclaration dans notre modèle
++ modifions l’ordre via un nouvel attribut dans notre ModelAdmin : fields
+fields = ('titre', 'auteur', 'categorie', 'contenu')
+# prend une liste de champs qui seront affichés dans l’ordre souhaité
+problème = notre formulaire est dans un unique fieldset (ensemble de champs)
+conséquence = tous les champs sont les uns à la suite des autres, sans distinction
+fieldsets = (
+    # Fieldset 1 : meta-info (titre, auteur…)
+   ('Général', { # nom du fieldset
+        'classes': ['collapse',], # informations sur son contenu, sous forme de dictionnaire *
+        'fields': ('titre', 'auteur', 'categorie')
+    }),
+    # Fieldset 2 : contenu de l'article
+    ('Contenu de l\'article', {
+       'description': 'Le formulaire accepte les balises HTML. Utilisez-les à bon escient !',
+       'fields': ('contenu', )
+    }),
+)
+
+* Ce dictionnaire contient trois types de données :
+ - fields  : liste des champs à afficher dans le fieldset ;
+ - description  : une description qui sera affichée en haut du fieldset, avant le premier champ ;
+ - classes  : des classes CSS supplémentaires à appliquer sur le fieldset 
+ (par défaut, il en existe trois : wide, extrapretty  et collapse)
+
+* Nous avons donc séparé les champs en deux fieldsets et 
+affiché quelques informations supplémentaires pour aider à la saisie. 
+En fin de compte, nous avons le fichier blog/admin.py suivant :
+from django.contrib import admin
+from django.utils.text import Truncator
+
+from blog.models import Categorie, Article
+
+class ArticleAdmin(admin.ModelAdmin):
+
+    # Configuration de la liste d'articles
+    list_display = ('titre', 'categorie', 'auteur', 'date', 'apercu_contenu')
+    list_filter = ('auteur', 'categorie', )
+    date_hierarchy = 'date'
+    ordering = ('date', )
+    search_fields = ('titre', 'contenu')
+
+    # Configuration du formulaire d'édition
+    fieldsets = (
+        # Fieldset 1 : meta-info (titre, auteur…)
+        ('Général', {
+            'classes': ['collapse', ], # rend l'ensemble masqué (à dérouler)
+            'fields': ('titre', 'auteur', 'categorie')
+        }),
+        # Fieldset 2 : contenu de l'article
+        ('Contenu de l\'article', {
+            'description': 'Le formulaire accepte les balises HTML. Utilisez-les à bon escient !',
+            'fields': ('contenu', )
+        }),
+    )
+
+    # Colonnes personnalisées
+    def apercu_contenu(self, article):
+        """ 
+        Retourne les 40 premiers caractères du contenu de l'article, 
+        suivi de points de suspension si le texte est plus long. 
+        """
+        return Truncator(article.contenu).chars(40, truncate='...')
+        # text = article.contenu[0:40]
+        # if len(article.contenu) > 40:
+        #    return '%s…' % text
+        # else:
+        #    return text
+
+    # En-tête de notre colonne
+    apercu_contenu.short_description = 'Aperçu du contenu'
+
+admin.site.register(Categorie)
+admin.site.register(Article, ArticleAdmin)
+
+# Retour sur notre problème de slug
+Dans notre zone d’administration, ce champ est actuellement ignoré… 
+Nous souhaitons toutefois le remplir, mais aussi que cela se fasse automatiquement !
++ ajouter une option qui remplit instantanément ce champ grâce à un script JavaScript
+* il existe un attribut aux classes ModelAdmin nommé prepopulated_fields. 
+Ce champ a pour principal usage de remplir les champs de type SlugField
+en fonction d’un ou plusieurs autres champs :
+prepopulated_fields = {'slug': ('titre', ), } 
+# notre champ slug est rempli automatiquement en fonction du champ titre
+code final :
+
+from django.contrib import admin
+from django.utils.text import Truncator
+
+from blog.models import Categorie, Article
+
+class ArticleAdmin(admin.ModelAdmin):
+
+    # Configuration de la liste d'articles
+    list_display = ('titre', 'categorie', 'auteur', 'date', 'apercu_contenu')
+    list_filter = ('auteur', 'categorie', )
+    date_hierarchy = 'date'
+    ordering = ('date', )
+    search_fields = ('titre', 'contenu')
+    prepopulated_fields = {'slug': ('titre',)} ## ++
+
+    # Configuration du formulaire d'édition
+    fieldsets = (
+        # Fieldset 1 : meta-info (titre, auteur…)
+        ('Général', {
+            'classes': ['collapse', ], # rend l'ensemble masqué (à dérouler)
+            'fields': ('titre', 'slug', 'auteur', 'categorie') # ++ ajout de slug
+        }),
+        # Fieldset 2 : contenu de l'article
+        ('Contenu de l\'article', {
+            'description': 'Le formulaire accepte les balises HTML. Utilisez-les à bon escient !',
+            'fields': ('contenu', )
+        }),
+    )
+
+    # Colonnes personnalisées
+    def apercu_contenu(self, article):
+        """ 
+        Retourne les 40 premiers caractères du contenu de l'article, 
+        suivi de points de suspension si le texte est plus long. 
+        """
+        return Truncator(article.contenu).chars(40, truncate='...')
+
+    # En-tête de notre colonne
+    apercu_contenu.short_description = 'Aperçu du contenu'
+
+admin.site.register(Categorie)
+admin.site.register(Article, ArticleAdmin)
