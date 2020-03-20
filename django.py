@@ -1465,3 +1465,122 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Categorie)
 admin.site.register(Article, ArticleAdmin)
+
+
+## -- LES FORMULAIRES -- ##
+
+## - Créer un formulaire
+
++ créer, dans chaque application, un fichier forms.py dans lequel nous écrirons nos formulaires
++ Un formulaire hérite de la classe mère Form  du module django.forms
++ champs et options : https://docs.djangoproject.com/en/stable/ref/forms/fields/#built-in-field-classes
+# forms.py
+from django import forms
+
+class ContactForm(forms.Form):
+    sujet = forms.CharField(max_length=100) # enregistre toujours du texte, remplace TextField
+    message = forms.CharField(widget=forms.Textarea)
+    # les widgets * transforment le code HTML pour le rendre plus adapté à la situation actuelle
+    envoyeur = forms.EmailField(label="Votre adresse e-mail")
+    # label permet de modifier le nom de la boîte de saisie
+    renvoi = forms.BooleanField(help_text="Cochez si vous souhaitez obtenir une copie du mail envoyé.", 
+                                required=False) # case à cocher
+    # help_text permet d’ajouter un petit texte d’aide concernant le champ
+
+* autres widgets (tous également dans django.forms) : 
+    - PasswordInput  (pour cacher le mot de passe)
+    - DateInput  (pour entrer une date)
+    - CheckboxInput  (pour avoir une case à cocher), etc.
+    - https://docs.djangoproject.com/en/stable/ref/forms/widgets/#built-in-widgets
+* Le champ s’assurera que ce qu’a entré l’utilisateur est valide. 
+* En revanche, tout ce qui se rapporte à l’apparence du champ concerne les widgets
+
+## - Utiliser un formulaire dans une vue
+
++ L’attribut method de l’objet request passé à la vue indique le type de requête
++ Les données envoyées par l’utilisateur via une requête POST sont accessibles
+sous forme d’un dictionnaire depuis request.POST
++ Une vue qui utilise un formulaire suit la plupart du temps une certaine procédure :
+# views.py
+from .forms import ContactForm # correspond à forms.py
+
+def contact(request):
+    # Construire le formulaire, soit avec les données postées,
+    # soit vide si l'utilisateur accède pour la première fois
+    # à la page.
+    form = ContactForm(request.POST or None)
+    # Nous vérifions que les données envoyées sont valides
+    # Cette méthode renvoie False s'il n'y a pas de données 
+    # dans le formulaire ou qu'il contient des erreurs.
+    if form.is_valid(): 
+        # Ici nous pouvons traiter les données du formulaire
+        sujet = form.cleaned_data['sujet']
+        message = form.cleaned_data['message']
+        envoyeur = form.cleaned_data['envoyeur']
+        renvoi = form.cleaned_data['renvoi']
+
+        # Nous pourrions ici envoyer l'e-mail grâce aux données 
+        # que nous venons de récupérer
+        envoi = True
+    
+    # Quoiqu'il arrive, on affiche la page du formulaire.
+    return render(request, 'blog/contact.html', locals())
+
+# urls.py
+path('contact/', views.contact, name='contact'),
+
++ Si le formulaire est valide, un nouvel attribut de l’objet form est apparu, 
+pour accéder aux données : cleaned_data
++ Ce dernier va renvoyer un dictionnaire contenant comme clés les noms de vos différents champs 
+et comme valeurs les données validées de chaque champ.
+>>> form.cleaned_data["sujet"]
+"Le super sujet qui a été envoyé"
++ si le formulaire est faux, il n’est pas remis à zéro par Django ! 
+Si les données sont fausses, nous retournons encore une fois le template avec le formulaire invalide
+
+# création du template :
+{% if envoi %}Votre message a bien été envoyé !{% endif %}
+
+<form action="{% url "contact" %}" method="post">
+    {% csrf_token %} # empêche les attaques de type CSRF (Cross-site request forgery)
+    {{ form.as_p }} # form retranscrit sous la forme d’une suite de paragraphes (as <p></p>) *
+    <input type="submit" value="Submit" />
+</form>
+
+* il pourrait tout aussi bien le générer sous la forme d’un tableau grâce à la méthode as_table,  
+ou sous la forme d’une liste grâce à as_ul
++ ces méthodes ajoutent aussi les messages d’erreur lorsqu’un champ n’est pas correct !
+
+## - Créer ses propres règles de validation
+
++ deux méthodes : soit le filtre ne s’applique qu’à un seul champ et ne dépend pas des autres, 
+soit le filtre dépend des données des autres champs
++ Pour la première méthode, il faut ajouter une méthode à la classe ContactForm
+du formulaire dont le nom doit obligatoirement commencer par clean_, 
+puis être suivi par le nom de la variable du champ.
++ Pour filtrer le champ message, il faut ajouter une méthode semblable à celle-ci :
+def clean_message(self):
+    message = self.cleaned_data['message']
+    if "pizza" in message:
+        raise forms.ValidationError("On ne veut pas entendre parler de pizza !")
+        # il est important d’utiliser l’exception forms.ValidationError
+    return message  # Ne pas oublier de renvoyer le contenu du champ traité
+
++ rejeter que les messages qui possèdent le mot « pizza » dans le message ET dans le sujet
++ Étant donné que la validation dépend de plusieurs champs en même temps, 
+nous devons écraser la méthode clean héritée de la classe mère Form :
+def clean(self):
+    cleaned_data = super(ContactForm, self).clean() # appelle la méthode clean héritée de Form
+    # Appeler la méthode mère permet au framework de vérifier tous les champs comme d’habitude 
+    # pour s’assurer que ceux-ci sont corrects
+    # La méthode mère clean va également renvoyer un dictionnaire avec toutes les données valides
+    sujet = cleaned_data.get('sujet') # renvoie la valeur d’une clé si elle existe, et renvoie None sinon
+    message = cleaned_data.get('message')
+
+    if sujet and message:  # Est-ce que sujet et message sont valides ?
+        if "pizza" in sujet and "pizza" in message:
+            raise forms.ValidationError(
+                "Vous parlez de pizzas dans le sujet ET le message ? Non mais ho !"
+            )
+
+    return cleaned_data  # N'oublions pas de renvoyer les données si tout est OK
