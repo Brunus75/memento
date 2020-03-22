@@ -12,6 +12,9 @@ créer son gitignore:  # http://gitignore.io/api/django
 ## -- BONS PLANS -- ##
 
 django-shortcuts: https://pypi.org/project/django-shortcuts/
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
 
 
 ## -- INSTALLATION -- ##
@@ -1584,3 +1587,570 @@ def clean(self):
             )
 
     return cleaned_data  # N'oublions pas de renvoyer les données si tout est OK
+
+Pb : le message d’erreur est tout en haut et n’est plus lié aux champs qui n’ont pas passé la vérification. 
+Si sujet et message étaient les derniers champs du formulaire, 
+le message d’erreur serait tout de même tout en haut. 
+Pour éviter cela, il est possible d’assigner une erreur à un champ précis :
+def clean(self):
+    cleaned_data = super(ContactForm, self).clean()
+    sujet = cleaned_data.get('sujet')
+    message = cleaned_data.get('message')
+
+    if sujet and message:  # Est-ce que sujet et message sont valides ?
+        if "pizza" in sujet and "pizza" in message:
+            # si les deux champs contiennent le mot « pizza », 
+            # nous ne renvoyons plus une exception, mais nous ajoutons une erreur
+            # l’appel à cette méthode a pour effet de supprimer le message des données "valide" 
+            # et donc d’empêcher toute nouvelle validation de ce champ
+            self.add_error("message", 
+                "Vous parlez déjà de pizzas dans le sujet, "
+                "n'en parlez plus dans le message !"
+            )
+            # on peut également spécifier comme deuxième paramètre de la méthode 
+            # une instance de forms.ValidationError, comme utilisé précédemment
+    return cleaned_data
+
+
+## - Des formulaires à partir de modèles
+
+ModelForm = formulaires générés automatiquement à partir d’un modèle
+Dans le chapitre sur les modèles, nous avons créé une classe Article :
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    auteur = models.CharField(max_length=42)
+    slug = models.SlugField(max_length=100)
+    contenu = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now, verbose_name="Date de parution")
+    categorie = models.ForeignKey(Categorie)
+    
+    def __str__(self):
+        return self.titre
+
+Pour faire un formulaire à partir de ce modèle, c’est très simple :
+from django import forms
+from .models import Article
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = '__all__' # permet de spécifier des informations supplémentaires
+
+Une fonctionnalité très pratique des ModelForm est qu’il n’y a pas besoin d’extraire 
+les données une à une pour créer ou mettre à jour un modèle. 
+En effet, il fournit directement une méthode save() qui va mettre à jour la base de données toute seule.
+Petit exemple via la console :
+>>> from blog.models import Article, Categorie
+>>> from blog.forms import ArticleForm
+>>> donnees = {
+... 'titre': "Les crêpes c'est trop bon",
+... 'slug': "les-crepes-cest-trop-bon",
+... 'auteur': "Maxime",
+... 'contenu': "Vous saviez que les crêpes bretonnes c'est trop bon ? La pêche c'est nul à côté.",
+... 'categorie': Categorie.objects.all()[0].id  # Nous prenons l'identifiant de la première catégorie disponible
+... }
+>>> form = ArticleForm(donnees)
+>>> Article.objects.all()
+[]
+>>> form.save()
+<Article: Les crêpes c est trop bon>
+>>> Article.objects.all()
+<QuerySet [<Article: Les crêpes c est trop bon>]>
+
+* De la même façon, il est possible de mettre à jour une entrée très simplement. 
+En donnant un objet du modèle sur lequel le ModelForm  est basé, 
+il peut directement remplir les champs du formulaire 
+et mettre l’entrée à jour selon les modifications de l’utilisateur.
+Pour ce faire, dans une vue, il suffit d’appeler le formulaire ainsi :
+form = ArticleForm(instance=article)  
+# article est bien entendu un objet d'Article quelconque dans la base de données
+
+* Une fois les modifications du formulaire envoyées depuis une requête POST, 
+il suffit de reconstruire un ArticleForm à partir de l’article 
+et de la requête et d’enregistrer les changements si le formulaire est valide :
+form = ArticleForm(request.POST, instance=article)
+if form.is_valid():
+    form.save() # l’entrée est désormais à jour
+
+* Pour que certains champs ne soient pas éditables par vos utilisateurs, 
+il est possible d’en sélectionner ou d’en exclure certains, toujours grâce à la sous-classe Meta  :
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        exclude = ('auteur','categorie','slug')  
+        # Exclura les champs nommés « auteur », « categorie » et « slug »
+* Cela revient à sélectionner uniquement les champs titre  et contenu, comme ceci, avec fields  :
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ('titre','contenu',)
+        # permet également de déterminer l’ordre des champs
+
+* lors de la création d’une nouvelle entrée, 
+si certains champs obligatoires du modèle (ceux qui n’ont pas null=True  comme argument) 
+ont été exclus, il ne faut pas oublier de les rajouter par la suite. 
+* Il ne faut donc pas appeler la méthode save() telle quelle sur un ModelForm avec des champs exclus,
+sinon Django lèvera une exception. 
+Un paramètre spécial de la méthode save() a été prévu pour cette situation :
+>>> from blog.models import Article, Categorie
+>>> from blog.forms import ArticleForm
+>>> donnees = {
+... 'titre':"Un super titre d'article !",
+... 'contenu':"Un super contenu ! (ou pas)"
+... }
+>>> form = ArticleForm(donnees)  # Pas besoin de spécifier les autres champs, ils ont été exclus
+>>> article = form.save(commit=False)  # Ne sauvegarde pas directement l'article dans la base de données
+>>> article.categorie = Categorie.objects.all()[0]  # Nous ajoutons les attributs manquants
+>>> article.auteur = "Mathieu"
+>>> article.save()
+
+
+## -- LA GESTION DES FICHIERS -- ##
+
+## - Enregistrer une image
+
++ installer la bibliothèque Pillow
++ pip install pillow
+* ex. : un répertoire de contacts dans lequel les contacts ont trois caractéristiques : 
+leur nom, leur adresse et une photo
++ créer un nouveau modèle dans une application 
+# ici blog/models
+class Contact(models.Model):
+    nom = models.CharField(max_length=255)
+    adresse = models.TextField()
+    photo = models.ImageField(upload_to="photos/") # contiendra une image
+    # enregistrera l'image dans le dossier enregistré dans MEDIA_ROOT + / photos
+    # ex. mon_projet/media/photos/mon_fichier.jpeg
+    
+    def __str__(self):
+           return self.nom
+
+* ImageField prend en outre l’argument : upload_to. 
+Ce paramètre permet de désigner l’endroit où seront enregistrées sur le disque dur 
+les images assignées à l’attribut photo pour toutes les instances du modèle.
+* le répertoire indiqué depuis le paramètre sera ajouté au chemin absolu 
+fourni par la variable MEDIA_ROOT dans votre settings.py
+* Il est impératif de configurer correctement cette variable
+avant de commencer à jouer avec des fichiers, 
+avec par exemple MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Cette ligne ajoute le dossier media/ à la racine du projet
+# Si vous ne spécifiez pas de valeur à upload_to, 
+# les images seront enregistrées à la racine de MEDIA_ROOT
+
++ Afin d’avoir une vue permettant de créer un nouveau contact, il faudra créer un formulaire adapté
+# blog/forms
+class NouveauContactForm(forms.Form):
+    nom = forms.CharField()
+    adresse = forms.CharField(widget=forms.Textarea)
+    photo = forms.ImageField()
+
+# blog/views.py
+from .forms import ContactForm, NouveauContactForm # ++
+from .models import Article, Contact # ++
+
+def nouveau_contact(request):
+    sauvegarde = False
+    form = NouveauContactForm(request.POST or None, request.FILES)
+    # tous tous les fichiers sélectionnés sont envoyés dans
+    # le dictionnaire request.FILES
+    if form.is_valid():
+        contact = Contact()
+        contact.nom = form.cleaned_data["nom"]
+        contact.adresse = form.cleaned_data["adresse"]
+        contact.photo = form.cleaned_data["photo"]
+        contact.save()
+        sauvegarde = True
+
+    return render(request, 'blog/nouveau-contact.html', {
+        'form': form,
+        'sauvegarde': sauvegarde
+    })
+
+# blog/urls.py
+path('nouveau-contact/', views.nouveau_contact, name='nouveau-contact')
+
+* Le champ ImageField renvoie une variable du type UploadedFile, 
+qui est une classe définie par Django
+* Si vous souhaitez créer une entrée en utilisant une photo sur votre disque dur, 
+vous devrez créer un objet File, prenant un fichier ouvert classiquement, et le passer à votre modèle.
+Exemple depuis la console :
+>>> from blog.models import Contact
+>>> from django.core.files import File
+>>> c = Contact(nom="Jean Dupont", adresse="Rue Neuve 34, Paris")
+>>> c.photo = File(open('/mon/projet/media/photos/dupont.jpg', 'rb'))
+>>> c.save()
+
++ le template contenant le formulaire : 
+# blog/template/blog/nouveau-contact.html
+<h1>Ajouter un nouveau contact</h1>
+
+{% if sauvegarde %}
+    <p>Ce contact a bien été enregistré.</p>
+{% endif %}
+   
+<p>
+    <form method="post" enctype="multipart/form-data" action=".">
+    # ne pas oublier enctype !
+       {% csrf_token %}
+       {{ form.as_p }}
+       <input type="submit"/>
+    </form>
+</p>
+
++ pour utiliser le nouveau modèle :
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+
++ le dossier mon_projet/media/photos vient d'être' créé !
+
+## - Afficher une image
+
+Par défaut, Django ne s’occupe pas du service de fichiers média (images, musiques, vidéos…), 
+et généralement, il est conseillé de laisser un autre serveur s’en occuper 
+(voir l’annexe sur le déploiement du projet en production)
+
+* pour la phase de développement, 
+il est tout de même possible de laisser le serveur de développement s’en charger
++ compléter la variable MEDIA_URL dans settings.py
+# mon_projet/mon_projet/settings.py
+MEDIA_URL = '/media/'
++ ajouter cette directive dans votre urls.py global :
+# mon_projet/mon_projet/urls.py
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# tous les fichiers consignés dans le répertoire MEDIA_ROOT
+# (dans lequel Django place les fichiers enregistrés) 
+# seront accessibles depuis l’adresse, comme indiquée depuis MEDIA_URL
+
++ rajouter une vue
+# crepes_bretonnes\blog\views.py
+def voir_contacts(request):
+    return render(
+        request,
+        'blog/voir_contacts.html',
+        {'contacts': Contact.objects.all()}
+    )
+
+# crepes_bretonnes\blog\templates\blog\voir_contacts.html
+<h1>Liste des contacts</h1>
+{% for contact in contacts %}
+    <h2>{{ contact.nom }}</h2>
+    Adresse : {{ contact.adresse|linebreaks }}<br/>
+    <img src="{{ contact.photo.url }}"/>
+{% endfor %}
+
+* le tag linebreaks = autorise l’ajout de retours à la ligne en HTML
+* Chaque fichier dans Django a un attribut url, 
+en lecture seule, renvoyant l’URL complète vers le fichier
+* la variable ImageField possède deux attributs supplémentaires = width et height
+
+# crepes_bretonnes\blog\urls.py
+path('voir_contacts/', views.voir_contacts, name='liste-contacts'),
+
+## - Aller plus loin
+
+* Pour uploader un fichier, au lieu d’utiliser ImageField dans les formulaires 
+et modèles, il faut utiliser le champ plus générique FileField :
+* FileField retournera toujours un objet de type django.core.files.File
+* possède les attributs :
+>>> from blog.models import Contact
+>>> c = Contact.objects.get(nom="Chuck Norris")
+>>> c.photo.name
+'photos/chuck_norris.jpg'  # Chemin relatif vers le fichier à partir de MEDIA_ROOT
+>>> c.photo.path
+'/home/user/crepes_bretonnes/media/photos/chuck_norris.jpg'  # Chemin absolu
+>>> c.photo.url
+'http://media.crepes-bretonnes.com/photos/chuck_norris.jpg'  
+# URL telle que construite à partir de MEDIA_URL
+>>> c.photo.size
+45300  # Taille du fichier en bytes
+
+* un objet File possède également des méthodes read() et write()
+* il est possible de renommer les noms de fichier à notre guise, 
+et de ne pas garder le nom que l’utilisateur avait sur son disque dur
+* Au lieu de passer une chaîne de caractères comme paramètre upload_to dans le modèle, 
+il faut lui passer une fonction qui retournera le nouveau nom du fichier
+* Cette fonction prend deux arguments : 
+    - l’instance du modèle où le FileField est défini, 
+    - et le nom d’origine du fichier
+Un exemple de fonction serait donc simplement :
+def renommage(instance, nom_fichier):
+    return "{}-{}".format(instance.id, nom_fichier)
+# notre fonction préfixe le nom de fichier par l’identifiant unique de l’instance de modèle en cours
+Un exemple de modèle utilisant cette fonction serait donc simplement :
+class Document(models.Model):
+    nom = models.CharField(max_length=100)
+    doc = models.FileField(upload_to=renommage, verbose_name="Document")
+
+
+## -- TP: UN RACCOURCISSEUR D'URL -- ##
+
+## - Cahier des charges
+
++ créer une nouvelle application nommée mini_url
++ Cette application ne contiendra qu’un modèle appelé MiniURL ; 
+c’est lui qui enregistrera les raccourcis
+Il comportera les champs suivants :
+- l’URL longue : URLField ; # paramètre unique=True
+- le code qui permet d’identifier le raccourci ; # paramètre unique=True
+- la date de création du raccourci ;
+- le pseudo du créateur du raccourci (optionnel) ;
+- le nombre d’accès au raccourci (une redirection = un accès)
+# le nombre d’accès sera par défaut mis à 0 grâce au paramètre default=0
++ créer un formulaire, plus spécialement un ModelForm basé sur le modèle MiniURL
++ Il ne contiendra que les champs URL et pseudo, 
+le reste sera soit initialisé selon les valeurs par défaut, 
+soit généré par la suite (le code notamment)
+* la fonction qui permet de générer le code :
+import random
+import string
+
+def generer(nb_caracteres):
+    caracteres = string.ascii_letters + string.digits
+    aleatoire = [random.choice(caracteres) for _ in range(nb_caracteres)]
+    
+    return ''.join(aleatoire)
++ Vous aurez ensuite trois vues :
+- une vue affichant toutes les redirections créées et leurs informations, 
+triées par ordre descendant, de la redirection avec le plus d’accès vers celle en ayant le moins ;
+- une vue avec le formulaire pour créer une redirection ;
+- une vue qui prend comme paramètre dans l’URL le code et redirige l’utilisateur vers l’URL longue.
++ il ne faudra que 2 templates (la redirection n’en ayant pas besoin), et 3 routages d’URL
++ L’administration devra être activée, et le modèle accessible depuis celle-ci
++ Il devra être possible de rechercher des redirections depuis la longue URL via une barre de recherche,
+tous les champs devront être affichés dans une catégorie, 
+et le tri par défaut sera fait selon la date de création du raccourci
+
+## - Réalisation 
+
+1) python manage.py startapp mini_url
+
+2) ajouter l''application au projet 
+# settings.py 
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog', 
+    'mini_url', # ++
+]
+
+3) crepes_bretonnes\mini_url\models.py
+from django.db import models
+import random
+import string
+
+class MiniURL(models.Model):
+    url = models.URLField(verbose_name="URL à réduire", unique=True)
+    code = models.CharField(max_length=6, unique=True)
+    date = models.DateTimeField(auto_now_add=True, 
+                                verbose_name="Date d'enregistrement")
+    pseudo = models.CharField(max_length=255, blank=True, null=True)
+    nb_acces = models.IntegerField(default=0, 
+                                   verbose_name="Nombre d'accès à l'URL")
+
+    def __str__(self):
+        return "[{0}] {1}".format(self.code, self.url)
+
+    # surcharge de la méthode save(), 
+    # afin de générer automatiquement le code de notre URL
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.generer(6)
+        # la ligne qui appelle le save() parent
+        # primordiale pour sauvegarder !
+        super(MiniURL, self).save(*args, **kwargs)
+
+    def generer(self, nb_caracteres):
+        caracteres = string.ascii_letters + string.digits
+        aleatoire = [random.choice(caracteres) for _ in range(nb_caracteres)]
+
+        self.code = ''.join(aleatoire)
+
+    # indiquer des métadonnées concernant le modèle
+    # sera utile pour la partie Admin
+    class Meta:
+        verbose_name = "Mini URL"
+        verbose_name_plural = "Minis URL"
+
+4) ajouter les nouveaux modèles dans la base de données 
++ python manage.py makemigrations
++ python manage.py migrate
+
+5) ajouter forms.py 
++ crepes_bretonnes\mini_url\forms.py
+from django import forms
+from .models import MiniURL
+
+class MiniURLForm(forms.ModelForm):
+    class Meta:
+        model = MiniURL
+        fields = ('url', 'pseudo')
+
+6) crepes_bretonnes\mini_url\admin.py
+from django.contrib import admin
+from .models import MiniURL
+
+class MiniURLAdmin(admin.ModelAdmin):
+    list_display = ('url', 'code', 'date', 'pseudo', 'nb_acces')
+    list_filter = ('pseudo', )
+    date_hierarchy = 'date'
+    ordering = ('date', )
+    search_fields = ('url', )
+
+admin.site.register(MiniURL, MiniURLAdmin)
+
+7) ajouter urls.py 
+crepes_bretonnes\mini_url\urls.py
+from django.conf.urls import url
+from . import views
+
+urlpatterns = [
+    # Une string vide indique la racine
+    url(r'^$', views.liste, name='url_liste'),
+    url(r'^nouveau$', views.nouveau, name='url_nouveau'),
+    # (?P<code>\w{6}) capturera 6 caractères alphanumériques. 
+    url(r'^(?P<code>\w{6})/$', views.redirection, name='url_redirection'),
+]
+
+8) l'importer dans urls.py
+from django.conf.urls import url
+url(r'^m/', include('mini_url.urls')),
+
+9) crepes_bretonnes\mini_url\views.py
+from django.shortcuts import redirect, get_object_or_404, render
+from mini_url.models import MiniURL
+from mini_url.forms import MiniURLForm
+
+
+def liste(request):
+    """ Affichage des redirections """
+    minis = MiniURL.objects.order_by('-nb_acces')
+    # listé par ordre descendant
+
+    return render(request, 'mini_url/liste.html', locals())
+
+
+def nouveau(request):
+    """ Ajout d'une redirection """
+    if request.method == "POST":
+        form = MiniURLForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(liste)
+    else:
+        form = MiniURLForm()
+
+    return render(request, 'mini_url/nouveau.html', {'form': form})
+
+
+def redirection(request, code):
+    """ Redirection vers l'URL enregistrée """
+    mini = get_object_or_404(MiniURL, code=code)
+    mini.nb_acces += 1
+    mini.save()
+
+    return redirect(mini.url, permanent=True)
+
+10) créer les templates
++ créer le dossier templates\mini_url\
++ crepes_bretonnes\mini_url\templates\mini_url\liste.html
+<h1>Le raccourcisseur d'URL spécial crêpes bretonnes !</h1>
+
+<p><a href="{% url 'url_nouveau' %}">Raccourcir une URL.</a></p>
+
+<p>Liste des URL raccourcies :</p>
+<ul>
+    {% for mini in minis %}
+    <li> {{ mini.url }} via <a href="http://{{ request.get_host }}{% url 'url_redirection' 
+    mini.code %}">{{ request.get_host }}{% url 'url_redirection' mini.code %}</a>
+    # url_redirection réfère au path de mini_url/urls.py
+    {% if mini.pseudo %}par {{ mini.pseudo }}{% endif %} ({{ mini.nb_acces }} accès)</li>
+    {% empty %}
+    <li>Il n'y en a pas actuellement.</li>
+    {% endfor %}
+</ul>
+
++ crepes_bretonnes\mini_url\templates\mini_url\nouveau.html
+<h1>Raccourcir une URL</h1>
+
+<form method="post" action="{% url 'url_nouveau' %}">
+    {% csrf_token %}
+    {{ form.as_p }} # form retranscrit sous la forme d’une suite de paragraphes
+    <input type="submit"/>
+</form>
+
+
+## -- LES VUES GENERIQUES -- ##
+
+* Sur la plupart des sites web, il existe certains types de pages où créer une vue, 
+est lourd et presque inutile : pour une page statique sans informations dynamiques, 
+ou encore de simples listes d’objets sans traitements particuliers.
+
+## - Premiers pas avec des pages statiques
+
+* exemple de vue classique, qui ne s’occupe que d’afficher un template à l’utilisateur, 
+sans utiliser de variables :
+# views
+from django.shortcuts import render
+
+def faq(request):
+    return render(request, 'blog/faq.html', {})
+
+# urls
+url('faq', views.faq, name='faq'),
+
+* Une première caractéristique des vues génériques = ce ne sont pas des fonctions, 
+comme la vue que nous venons de présenter, mais des classes.
+* Il existe deux méthodes principales d’utilisation pour les vues génériques :
+    - soit nous créons une classe, héritant d’un type de vue générique dont nous surchargerons 
+    les attributs ;
+    - soit nous appelons directement la classe générique, 
+    en passant en arguments les différentes informations à utiliser.
+* Toutes les classes de vues génériques sont situées dans django.views.generic
+* premier type de vue générique = TemplateView
+# permet, comme son nom l’indique, de créer une vue qui s’occupera du rendu d’un template
+
++ créer une classe héritant de TemplateView, et surchargeons ses attributs :
+# \crepes_bretonnes\blog\views.py
+from django.views.generic import TemplateView
+
+class FAQView(TemplateView):
+   template_name = "blog/faq.html" # chemin vers le template à afficher
+
++ router notre URL vers une méthode héritée de la classe TemplateView, 
+nommée as_view  :
+# crepes_bretonnes\blog\urls.py
+from django.conf.urls import patterns, url, include
+from . import views  # N'oubliez pas d'importer les vues
+
+urlpatterns = [
+   url(r'^faq$', views.FAQView.as_view()), 
+   # Nous demandons la vue correspondant à la classe FAQView
+]
+
++ crepes_bretonnes\blog\templates\blog\faq.html
+<h1>FAQ</h1>
+# s'affiche à http://127.0.0.1:8000/blog/faq
+
+* la méthode as_view  de FAQView  retourne une vue (il s’agit d’une fonction classique) 
+qui se basera sur ses attributs pour déterminer son fonctionnement
+# ici, cette vue est remplacé par faq.html 
+
+* Seconde méthode = instancier directement TemplateView dans le fichier urls.py, 
+en lui passant en argument notre template_name
+# crepes_bretonnes\blog\urls.py
+from django.conf.urls import patterns, url, include
+from django.views.generic import TemplateView  # L'import a changé, attention !
+
+urlpatterns = [
+   url(r'^faq', TemplateView.as_view(template_name='blog/faq.html')),
+]
+
++ retirer FAQView, la classe ne sert plus à rien
