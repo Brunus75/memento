@@ -2104,7 +2104,7 @@ def faq(request):
     return render(request, 'blog/faq.html', {})
 
 # urls
-url('faq', views.faq, name='faq'),
+path('faq', views.faq, name='faq'),
 
 * Une première caractéristique des vues génériques = ce ne sont pas des fonctions, 
 comme la vue que nous venons de présenter, mais des classes.
@@ -2127,12 +2127,13 @@ class FAQView(TemplateView):
 + router notre URL vers une méthode héritée de la classe TemplateView, 
 nommée as_view  :
 # crepes_bretonnes\blog\urls.py
-from django.conf.urls import patterns, url, include
+from django.urls import path, re_path
 from . import views  # N'oubliez pas d'importer les vues
 
 urlpatterns = [
-   url(r'^faq$', views.FAQView.as_view()), 
+   re_path(r'^faq$', views.FAQView.as_view()), 
    # Nous demandons la vue correspondant à la classe FAQView
+   # path('faq', TemplateView.as_view(template_name='blog/faq.html')) marche mieux !
 ]
 
 + crepes_bretonnes\blog\templates\blog\faq.html
@@ -2146,11 +2147,298 @@ qui se basera sur ses attributs pour déterminer son fonctionnement
 * Seconde méthode = instancier directement TemplateView dans le fichier urls.py, 
 en lui passant en argument notre template_name
 # crepes_bretonnes\blog\urls.py
-from django.conf.urls import patterns, url, include
+from django.urls import path, re_path
 from django.views.generic import TemplateView  # L'import a changé, attention !
 
 urlpatterns = [
-   url(r'^faq', TemplateView.as_view(template_name='blog/faq.html')),
+   re_path(r'^faq', TemplateView.as_view(template_name='blog/faq.html')),
+   # path('faq', TemplateView.as_view(template_name='blog/faq.html')) marche mieux !
 ]
 
 + retirer FAQView, la classe ne sert plus à rien
+
+## - Lister et afficher des données
+
+* ex. : vous avez une liste d’objets (des articles, des images, etc.), 
+et lorsque vous cliquez sur un élément, vous êtes redirigé vers une page présentant 
+plus en détail ce même élément
+* nous utiliserons deux nouvelles classes : ListView  et DetailView
+* nous réutiliserons les deux modèles Article et Categorie
+
+# Une liste d’objets en quelques lignes avec ListView
+À l’instar de TemplateView, nous pouvons utiliser ListView
+directement en lui passant en paramètre le modèle à traiter :
+# crepes_bretonnes\blog\urls.py
+from django.urls import path
+from django.views.generic import TemplateView, ListView  # ++
+from . import views
+from .models import Article # ++
+
+urlpatterns = [
+    # Nous allons réécrire l'URL de l'accueil
+    path('', ListView.as_view(model=Article,)),
+
+    # path('', views.accueil, name='accueil'),
+    path('article/<int:id>-<slug:slug>', views.lire, name='lire'),
+    path('contact/', views.contact, name='contact'),
+    path('nouveau-contact/', views.nouveau_contact, name='nouveau-contact'),
+    path('voir_contacts/', views.voir_contacts, name='liste-contacts'),
+    path('faq', TemplateView.as_view(
+        template_name='blog/faq.html')),
+]
+
+* Avec cette méthode, Django impose quelques conventions :
+- Le template devra s’appeler <app>/<model>_list.html. 
+Dans notre cas, le template serait nommé blog/article_list.html.
+- L’unique variable retournée par la vue générique et utilisable dans le template 
+est appelée object_list, et contiendra ici tous nos articles.
+* Il est possible de redéfinir ces valeurs en passant des arguments supplémentaires à notre ListView  :
+urlpatterns = [
+    path('', ListView.as_view(model=Article,
+                    context_object_name="derniers_articles",
+                    template_name="blog/accueil.html")),
+    ...
+]
++ supprimer la fonction accueil() dans views.py
+# même résultat qu'avant !
+* L’ordre d’affichage des articles est celui défini dans le modèle, 
+via l’attribut ordering de la sous-classe Meta
+
+# filter les articles affichés
+* plusieurs attributs et méthodes de ListView étendent les possibilités de la vue
+* Par souci de lisibilité, il est conseillé de renseigner les classes dans views.py
++ changeons notre urls.py pour appeler notre nouvelle classe :
+# crepes_bretonnes\blog\urls.py
+# l'appel se fait via la fonction as_view, comme vu tout à l'heure
+    path('', views.ListeArticles.as_view(), name="blog_liste"),
++ créons notre classe qui reprendra les mêmes attributs que notre ListView  de tout à l’heure :
+# crepes_bretonnes\blog\views.py
+from django.views.generic import TemplateView, ListView # ++
+
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+
++ pour paginer nos résultats (afficher que 5 articles par page) :
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+    paginate_by = 5
+
++ soumettre nos propres filtres :
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+    paginate_by = 5
+    queryset = Article.objects.filter(categorie__id=1)
+
++ il est également possible de passer des arguments pour rendre la sélection 
+un peu plus dynamique en ajoutant l’ID souhaité dans l’URL.
+# crepes_bretonnes\blog\urls.py
+from django.urls import path
+from django.views.generic import TemplateView, ListView  # ++
+from . import views
+from .models import Article # ++
+
+urlpatterns = [
+    # Nous allons réécrire l'URL de l'accueil
+    path('', views.ListeArticles.as_view(), name="blog_liste"),
+    # récupérer les articles par catégories
+    path('categorie/<int:id>', views.ListeArticles.as_view(),
+            name='blog_categorie'),
+    ...
+]
+
+# crepes_bretonnes\blog\views.py
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+    paginate_by = 5 # afficher que 5 articles par page
+    # queryset = Article.objects.filter(categorie__id=1)
+    # filtre les articles par catégorie
+    def get_queryset(self):
+        return Article.objects.filter(categorie__id=self.kwargs['id'])
+
+
++ ajouter des éléments au contexte, c’est-à-dire les variables qui sont renvoyées au template
+* ex. : renvoyer l’ensemble des catégories, afin de faire une liste de liens vers celles-ci
++ ajouter au tableau context une clé categories qui contiendra notre liste :
+# crepes_bretonnes\blog\views.py
+from .models import Article, Contact, Categorie
+
+class ListeArticles(ListView):
+    model = Article
+    context_object_name = "derniers_articles"
+    template_name = "blog/accueil.html"
+    paginate_by = 5 # afficher que 5 articles par page
+    # queryset = Article.objects.filter(categorie__id=1)
+    # filtre les articles par catégorie
+    def get_queryset(self):
+        return Article.objects.filter(categorie__id=self.kwargs['id'])
+
+    def get_context_data(self, **kwargs):
+        # Nous récupérons le contexte depuis la super-classe
+        context = super(ListeArticles, self).get_context_data(**kwargs)
+        # Nous ajoutons la liste des catégories, sans filtre particulier
+        context['categories'] = Categorie.objects.all()
+        return context
+
++ afficher la liste des catégories dans notre template :
+# crepes_bretonnes\blog\templates\blog\accueil.html
+<h3>Catégories disponibles</h3>
+<ul>
+    {% for categorie in categories %}
+    <li><a href="{% url "blog_categorie" categorie.id %}">{{ categorie.nom }}</a></li>
+    {% endfor %}
+</ul>
+
+## - Afficher un article via DetailView
+
++ but : afficher un article précis
+* Le but de DetailView est de renvoyer un seul objet d’un modèle, et non une liste.
+* Pour cela, il va falloir passer un paramètre bien précis dans notre URL : 
+pk, qui représentera la clé primaire de l’objet à récupérer :
+# crepes_bretonnes\blog\urls.py
+from . import views
+
+urlpatterns = [
+    # Nous allons réécrire l'URL de l'accueil
+    path('', views.ListeArticles.as_view(), name="blog_liste"),
+    # récupérer les articles par catégories
+    path('categorie/<int:id>', views.ListeArticles.as_view(),
+            name='blog_categorie'),
+
+    # path('', views.accueil, name='accueil'),
+    # path('article/<int:id>-<slug:slug>', views.lire, name='lire'),
+    # réupérer la vue détaillée d'un article
+    path('article/<int:pk>-<slug:slug>',
+         views.LireArticle.as_view(), name='blog_lire'),
+    ...
+]
+
++ écrire la classe qui va récupérer l’objet voulu et le renvoyer à un template précis :
+# crepes_bretonnes\blog\views.py
+from django.views.generic import TemplateView, ListView, DetailView
+
+class LireArticle(DetailView):
+    context_object_name = "article"
+    model = Article
+    template_name = "blog/lire.html"
++ supprimer la fonction lire()
++ corriger les urls 
+# crepes_bretonnes\blog\templates\blog\accueil.html
+<p><a href="{% url 'blog_lire' pk=article.id slug=article.slug %}">Lire la suite</a>
+
+* Comme pour les ListView, il est possible de personnaliser la sélection avec get_queryset()
+afin de ne sélectionner l’article que s’il est public, par exemple
+* autre spécificité utile lorsque nous affichons un objet, 
+c’est d’avoir la possibilité de modifier un de ses attributs
+par exemple son nombre de vues ou sa date de dernier accès
+* Pour faire cette opération, il est possible de surcharger la méthode get_object, 
+qui renvoie l’objet à afficher :
+class LireArticle(DetailView):
+    context_object_name = "article"
+    model = Article
+    template_name = "blog/lire.html"
+
+    def get_object(self):
+        # Nous récupérons l'objet, via la super-classe
+        article = super(LireArticle, self).get_object()
+    
+        article.nb_vues += 1  # Imaginons un attribut « Nombre de vues »
+        article.save()
+    
+        return article  # Et nous retournons l'objet à afficher
+
+*  variable request, qui contient les informations sur la requête et l’utilisateur, 
+est également disponible dans les vues génériques
+* C’est un attribut de la classe, 
+que vous pouvez donc appeler dans n’importe quelle méthode via self.request
+
+## - Agir sur les données
+
+* nous reprendrons comme exemple notre application de raccourcissement d’URL 
+que nous avons développée lors du chapitre précédent
+
+# CreateView
+but = création d’objets
++ Pour simplifier notre formulaire d’ajout de liens, nous allons surcharger la classe CreateView  :
+# crepes_bretonnes\mini_url\views.py
+from django.views.generic import CreateView # ++
+from django.urls import reverse_lazy # ++
+
+class URLCreate(CreateView):
+    model = MiniURL
+    template_name = 'mini_url/nouveau.html'
+    form_class = MiniURLForm
+    success_url = reverse_lazy(liste)
+
+* l’attribut model permet de spécifier avec quel modèle nous travaillons
+* template_name permet de spécifier le chemin vers le template 
+(par défaut, le chemin est <app>/<model>_create_form.html, avec le nom du modèle tout en minuscules)
+* form_class, permet de spécifier quel ModelForm utiliser pour définir 
+les champs disponibles à l’édition, et tout ce qui est propriété du formulaire
+* success_url permet de spécifier vers où rediriger l’utilisateur quand le formulaire est validé et enregistré.
+* Le comportement de cette classe est similaire à notre ancienne vue nouveau() : 
+s’il n’y a pas eu de requêtes de type POST, 
+elle affiche le formulaire, selon les propriétés de form_class, et dans le template fourni.
+* Une fois validé et si, et seulement si, le formulaire est considéré comme correct 
+(if form.is_valid(), dans notre ancienne vue), alors la méthode save() est appelée sur l’objet généré
+par le formulaire, puis elle va rediriger l’utilisateur vers l’URL success_url
+
++ éditer le fichier urls.py  :
+# crepes_bretonnes\mini_url\urls.py
+from django.urls import path, re_path
+from . import views
+
+urlpatterns = [
+    # Une string vide indique la racine
+    path('', views.liste, name='url_liste'),
+    path('nouveau', views.URLCreate.as_view(), name='url_nouveau'),
+    # (?P<code>\w{6}) capturera 6 caractères alphanumériques.
+    re_path(r'^(?P<code>\w{6})/$', views.redirection, name='url_redirection'),
+]
+
+* Si vous vous rendez sur http://127.0.0.1:8000/m/, 
+vous remarquerez que le comportement de la page n’a pas changé. 
+En réalité, notre nouvelle vue en fait autant que l’ancienne, mais nous avons écrit sensiblement moins.
+
+# UpdateView
+but = mise à jour des données
+idée = pouvoir changer l’URL ou le pseudo entré
+* Il nous faut une nouvelle vue qui va nous permettre de fournir de nouveau ces informations
+# crepes_bretonnes\mini_url\views.py
+from django.views.generic import CreateView, UpdateView # ++
+from django.urls import reverse_lazy
+
+class URLUpdate(UpdateView):
+    model = MiniURL
+    template_name = 'mini_url/nouveau.html'
+    form_class = MiniURLForm
+    success_url = reverse_lazy(liste)
+
+* les attributs des classes CreateView et UpdateView sont les mêmes,
+et leur fonctionnement est très proche
+* entre la création d’un objet et sa mise à jour, la page n’a pas réellement besoin d’être modifiée
+* Par défaut, le nom du template attribué à une vue générique de type UpdateView 
+est <app>/<model>_update_form.html
++ pour rendre notre template totalement fonctionnel, il faut juste remplacer la ligne
+# crepes_bretonnes\mini_url\templates\mini_url\nouveau.html
+<form method="post" action="{% url 'url_nouveau' %}">
+par 
+<form method="post" action="">
+* nous utiliserons cette page pour deux types d’actions, ayant deux URL distinctes
+* pour soumettre la requête à la même adresse que la page actuelle
+
++ modifier notre urls.py
+# crepes_bretonnes\mini_url\urls.py
+* comme pour DetailView, il faut récupérer la clé primaire, appelée pk
+re_path(r'^edition/(?P<pk>\d)$', views.URLUpdate.as_view(), name='url_update'),
+
++ accéder à l’édition d’un objet MiniURL. 
+* Pour y accéder, cela se fait depuis les adresses suivantes : /m/edition/1 pour le premier objet, 
+/m/edition/2  pour le deuxième, etc.
