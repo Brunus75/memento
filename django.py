@@ -2364,7 +2364,8 @@ que vous pouvez donc appeler dans n’importe quelle méthode via self.request
 * nous reprendrons comme exemple notre application de raccourcissement d’URL 
 que nous avons développée lors du chapitre précédent
 
-# CreateView
+# - CreateView -
+
 but = création d’objets
 + Pour simplifier notre formulaire d’ajout de liens, nous allons surcharger la classe CreateView  :
 # crepes_bretonnes\mini_url\views.py
@@ -2407,7 +2408,8 @@ urlpatterns = [
 vous remarquerez que le comportement de la page n’a pas changé. 
 En réalité, notre nouvelle vue en fait autant que l’ancienne, mais nous avons écrit sensiblement moins.
 
-# UpdateView
+# - UpdateView -
+
 but = mise à jour des données
 idée = pouvoir changer l’URL ou le pseudo entré
 * Il nous faut une nouvelle vue qui va nous permettre de fournir de nouveau ces informations
@@ -2442,3 +2444,329 @@ re_path(r'^edition/(?P<pk>\d)$', views.URLUpdate.as_view(), name='url_update'),
 + accéder à l’édition d’un objet MiniURL. 
 * Pour y accéder, cela se fait depuis les adresses suivantes : /m/edition/1 pour le premier objet, 
 /m/edition/2  pour le deuxième, etc.
+
+# Améliorons nos URL avec la méthode get_object()
+* idée = prendre le code présent dans l’URL réduite et le rajouter à l'url'
+(remplace le pk, primary key)
++ Surchargeons alors la méthode get_object(), qui s’occupe de récupérer l’objet à mettre à jour
+# crepes_bretonnes\mini_url\views.py
+class URLUpdate(UpdateView):
+    model = MiniURL
+    template_name = 'mini_url/nouveau.html'
+    form_class = MiniURLForm
+    success_url = reverse_lazy(liste)
+
+    def get_object(self, queryset=None):
+        code = self.kwargs.get('code', None)
+        # le dictionnaire self.kwargs contient les arguments nommés dans l’URL
+        return get_object_or_404(MiniURL, code=code)
+        # renvoie une page d’erreur si jamais le code demandé n’existe pas
+
++ changer urls.py pour accepter l’argument code
+# crepes_bretonnes\mini_url\urls.py
+re_path(r'^edition/(?P<code>\w{6})$',
+            views.URLUpdate.as_view(), name='url_update')
+
+# Effectuer une action lorsque le formulaire est validé avec form_valid()
+* idée = changer le comportement lorsque le formulaire est validé, 
+en redéfinissant la méthode form_valid()
+* par défaut, elle s’occupe d’enregistrer les modifications et de rediriger l’utilisateur
+def form_valid(self, form):
+    self.object = form.save()
+    # Envoi d'un message à l'utilisateur
+    messages.success(self.request, "Votre profil a été mis à jour avec succès.")
+    return HttpResponseRedirect(self.get_success_url())
+
+# - DeleteView -
+
+* comme pour UpdateView, cette vue prend un objet et demande la confirmation de suppression
+# crepes_bretonnes\mini_url\views.py
+from django.views.generic import CreateView, UpdateView, DeleteView
+
+class URLDelete(DeleteView):
+    model = MiniURL
+    context_object_name = "mini_url"
+    template_name = 'mini_url/supprimer.html'
+    success_url = reverse_lazy(liste)
+
+    def get_object(self, queryset=None):
+        code = self.kwargs.get('code', None)
+        return get_object_or_404(MiniURL, code=code)
+
++ template supprimer.html, 
+qui demandera juste à l’utilisateur s’il est sûr de vouloir supprimer, 
+et le cas échéant, le redirigera vers la liste
+# crepes_bretonnes\mini_url\templates\mini_url\supprimer.html
+<h1>Êtes-vous sûr de vouloir supprimer cette URL ?</h1>
+
+<p>{{ mini_url.code }} -&gt; {{ mini_url.url }} (créée le {{ mini_url.date|date:"DATE_FORMAT" }})</p>
+
+<form method="post" action="">
+   {% csrf_token %}  <!-- Nous prenons bien soin d'ajouter le csrf_token -->
+   <input type="submit" value="Oui, supprime moi ça" /> - <a href="{% url "url_liste" %}">Pas trop chaud en fait</a>
+</form>
+
++ notre ligne en plus dans le fichier urls.py
+# crepes_bretonnes\mini_url\urls.py
+re_path(r'^supprimer/(?P<code>\w{6})$', views.URLDelete.as_view(), name='url_delete'),
+
++ deux liens ont été ajoutés dans la liste définie dans le template liste.html, 
+afin de pouvoir mettre à jour ou supprimer une URL rapidement :
+# crepes_bretonnes\mini_url\templates\mini_url\liste.html
+<h1>Le raccourcisseur d'URL spécial crêpes bretonnes !</h1>
+
+<p><a href="{% url "url_nouveau" %}">Raccourcir une URL.</a></p>
+
+<p>Liste des URL raccourcies :</p>
+<ul>
+    {% for mini in minis %}
+    <li>
+        <a href="{% url "url_update" mini.code %}">Mettre à jour</a> - 
+        <a href="{% url "url_delete" mini.code %}">Supprimer</a>
+        | {{ mini.url }} via <a href="http://{{ request.get_host }}{% url "url_redirection" mini.code %}">{{ request.get_host }}{% url "url_redirection" mini.code %}</a>
+        {% if mini.pseudo %}par {{ mini.pseudo }}{% endif %} ({{ mini.nb_acces }} accès)</li>
+    
+    {% empty %}
+    <li>Il n'y en a pas actuellement.</li>
+    {% endfor %}
+</ul>
+
+# Aller plus loin
+Le site http://ccbv.co.uk/ présente une documentation exhaustive sur les vues génériques de Django
+Documentation officielle sur les vues génériques : https://docs.djangoproject.com/en/stable/ref/class-based-views/
+
+
+## -- TECHNIQUES AVANCEES DANS LES MODELES -- ##
+
+## - Les requêtes complexes avec Q
+
+but = créer des requêtes complexes sur des modèles
+sorte de queryBuilder
+* un modèle simple pour illustrer nos exemples :
+class Eleve(models.Model):
+    nom = models.CharField(max_length=31)
+    moyenne = models.IntegerField(default=10)
+
+    def __str__(self):
+        return "Élève {0} ({1}/20 de moyenne)".format(self.nom, self.moyenne)
+
+Ajoutons quelques élèves dans la console interactive (manage.py shell) :
+>>> from test.models import Eleve
+>>> Eleve(nom="Mathieu", moyenne=18).save()
+>>> Eleve(nom="Maxime", moyenne=7).save()
+>>> Eleve(nom="Bastien", moyenne=10).save()
+>>> Eleve(nom="Sofiane", moyenne=10).save()
+
++ créer une requête dynamique avec Q :
+>>> from django.db.models import Q
+>>> Q(nom="Maxime")
+<Q: (AND: ('nom', 'Maxime'))> # réponse
+# Nous voyons bien que nous possédons ici un objet de la classe Q
+>>> Eleve.objects.filter(Q(nom="Maxime"))
+<QuerySet [<Eleve: Élève Maxime (7/20 de moyenne)>]>
+>>> Eleve.objects.filter(nom="Maxime")
+<QuerySet [<Eleve: Élève Maxime (7/20 de moyenne)>]>
+# les deux dernières requêtes sont équivalentes
+
+# il est possible de construire une clause « OU » à partir de Q :
+# Nous prenons les moyennes strictement au-dessus de 16 ou en dessous de 8
+>>> Eleve.objects.filter(Q(moyenne__gt=16) | Q(moyenne__lt=8))
+<QuerySet [<Eleve: Élève Mathieu (18/20 de moyenne)>, <Eleve: Élève Maxime (7/20 de moyenne)>]>
+
+# il est également possible d’utiliser l’opérateur & pour signifier « ET » :
+>>> Eleve.objects.filter(Q(moyenne=10) & Q(nom="Sofiane"))
+<QuerySet [<Eleve: Élève Sofiane (10/20 de moyenne)>]>
+# Néanmoins, cet opérateur n’est pas indispensable, 
+# car il suffit de séparer les objets Q avec une virgule, le résultat est identique :
+>>> Eleve.objects.filter(Q(moyenne=10), Q(nom="Sofiane"))
+<QuerySet [<Eleve: Élève Sofiane (10/20 de moyenne)>]>
+
+# Il est aussi possible de prendre la négation d’une condition avec la tilde
+>>> Eleve.objects.filter(Q(moyenne=10), ~Q(nom="Sofiane"))
+<QuerySet [<Eleve: Élève Bastien (10/20 de moyenne)>]>
+
+# Aller plus loin 
+* construisons quelques requêtes dynamiquement
+un objet Q peut se construire de la façon suivante : Q(('moyenne',10)) , 
+ce qui est identique à Q(moyenne=10)
+* intérêt = renseigner des objets comme conditions
+* pour obtenir les objets qui remplissent une des conditions dans la liste suivante :
+conditions = [('moyenne', 15), ('nom', 'Bastien'), ('moyenne', 18)]
+# Nous pouvons construire plusieurs objets Q de la manière suivante :
+objets_q = [Q(x) for x in conditions]
+et les incorporer dans une requête ainsi (avec une clause « OU ») :
+>>> import operator
+>>> from functools import reduce
+>>> Eleve.objects.filter(reduce(operator.or_, objets_q))
+<QuerySet [<Eleve: Élève Mathieu (18/20 de moyenne)>, <Eleve: Élève Bastien (10/20 de moyenne)>]>
+* reduce est une fonction de functools qui permet d’appliquer une fonction à plusieurs valeurs
+successivement
+* ex. reduce(lambda x, y : x+y, [1, 2, 3, 4, 5]) va calculer ((((1+2)+3)+4)+5), donc 15
+* La même chose sera faite ici, mais avec l’opérateur « OU » qui est accessible depuis operator.or_. 
+* En réalité, Python va donc faire :
+>>> Eleve.objects.filter(objets_q[0] | objets_q[1] | objets_q[2])
+
+* C’est une méthode très puissante et très pratique qui vous permet de créer 
+n’importe quelle requête dynamiquement !
+
+## - L’agrégation
+
+but = extraire une information spécifique à travers plusieurs entrées d’un seul et même modèle
+* si nous voulons obtenir la moyenne des moyennes de nos élèves, 
+nous pouvons procéder à partir de la méthode aggregate :
+>>> from django.db.models import Avg
+>>> Eleve.objects.aggregate(Avg('moyenne'))
+{'moyenne__avg': 11.25}
+
+* Cette méthode prend à chaque fois une fonction spécifique fournie par Django, 
+comme Avg (pour Average, signifiant « moyenne » en anglais) et s’applique sur un champ du modèle
+* la valeur retournée par la méthode est un dictionnaire, 
+avec à chaque fois une clé générée automatiquement à partir du nom de la colonne utilisée 
+et de la fonction appliquée (nous avons utilisé la fonction Avg  dans la colonne 'moyenne', 
+Django renvoie donc 'moyenne__avg')
+* Il existe d’autres fonctions comme Avg, également issues de django.db.models, dont notamment :
+    **Max : prend la plus grande valeur ;
+    **Min : prend la plus petite valeur ;
+    **Count : compte le nombre d’entrées.
+
+* Il est même possible d’utiliser plusieurs de ces fonctions en même temps :
+>>> Eleve.objects.aggregate(Avg('moyenne'), Min('moyenne'), Max('moyenne'))
+{'moyenne__max': 18, 'moyenne__avg': 11.25, 'moyenne__min': 7}
+
+* pour préciser une clé spécifique, il suffit de la faire précéder de la fonction :
+>>> Eleve.objects.aggregate(Moyenne=Avg('moyenne'), Minimum=Min('moyenne'), Maximum=Max('moyenne'))
+{'Minimum': 7, 'Moyenne': 11.25, 'Maximum': 18}
+
+* il est également possible d’appliquer une agrégation sur un QuerySet obtenu par la méthode filter, 
+par exemple :
+>>> Eleve.objects.filter(nom__startswith="Ma").aggregate(Avg('moyenne'), Count('moyenne'))
+{'moyenne__count': 2, 'moyenne__avg': 12.5}
+# la fonction Count est assez inutile ici, 
+# d’autant plus qu’une méthode pour obtenir le nombre d’entrées dans un QuerySet existe déjà :
+>>> Eleve.objects.filter(nom__startswith="Ma").count()
+2
+
+* La fonction count() peut se révéler bien plus intéressante 
+lorsque nous l’utilisons avec des liaisons entre modèles. 
++ Pour ce faire, ajoutons un autre modèle :
+class Cours(models.Model):
+    nom = models.CharField(max_length=31)
+    eleves = models.ManyToManyField(Eleve)
+
+    def __str__(self):
+        return self.nom
+
++ Créons deux cours :
+>>> c1 = Cours(nom="Maths")
+>>> c1.save()
+>>> c1.eleves.add(*Eleve.objects.all())
+>>> c2 = Cours(nom="Anglais")
+>>> c2.save()
+>>> c2.eleves.add(*Eleve.objects.filter(nom__startswith="Ma"))
+
+* Il est tout à fait possible d’utiliser les agrégations depuis des liaisons comme une ForeignKey, 
+ou comme ici avec un ManyToManyField :
+>>> Cours.objects.aggregate(Max("eleves__moyenne"))
+{'eleves__moyenne__max': 18}
+# va chercher la meilleure moyenne parmi les élèves de tous les cours enregistrés
+
+* Il est également possible de compter le nombre d’affiliations à des cours :
+>>> Cours.objects.aggregate(Count("eleves"))
+{'eleves__count': 6}
+
+* Il est possible d’ajouter des attributs à un objet selon les objets auxquels il est lié. 
+Nous parlons d’annotation. Exemple :
+>>> Cours.objects.annotate(Avg("eleves__moyenne"))[0].eleves__moyenne__avg
+11.25
+* Un nouvel attribut a été créé. 
+* Au lieu d’être retournées dans un dictionnaire, 
+les valeurs sont désormais directement ajoutées à l’objet lui-même.
+* Il est possible de redéfinir le nom de l’attribut, comme vu précédemment :
+>>> Cours.objects.annotate(Moyenne=Avg("eleves__moyenne"))[1].Moyenne
+12.5
+
+* il est même possible d’utiliser l’attribut créé dans des méthodes du QuerySet, 
+comme filter, exclude ou order_by
+>>> Cours.objects.annotate(Moyenne=Avg("eleves__moyenne")).filter(Moyenne__gte=12)
+<QuerySet [<Cours: Anglais>]>
+
+## - L’héritage de modèles
+
+Django propose trois méthodes principales pour gérer l’héritage de modèles
+
+# - Les modèles parents abstraits -
+* utiles lorsque vous souhaitez utiliser plusieurs méthodes et attributs dans différents modèles, 
+sans devoir les réécrire à chaque fois
+* Django ne l’utilisera pas comme représentation pour créer une table dans la base de données
+* Afin de rendre un modèle abstrait, il suffit de lui assigner l’attribut abstract=True 
+dans sa sous-classe Meta
+* il est impossible de faire des requêtes sur un modèle abstrait
+* ex. : 
+class Document(models.Model):
+    titre = models.CharField(max_length=255)
+    date_ajout = models.DateTimeField(auto_now_add=True, 
+                                      verbose_name="Date d'ajout du document")
+    auteur = models.CharField(max_length=255, null=True, blank=True)
+    
+    class Meta:
+        abstract = True
+
+# deux tables seront créées dans la base de données : Article et Image
+# les tables  Article et Image auront bien les champs de Document
+    
+class Article(Document):
+    contenu = models.TextField()  
+    
+class Image(Document):
+    image = models.ImageField(upload_to="images")
+
+
+## - Les modèles parents classiques -
+* il sera manipulable comme n’importe quel modèle
+* Django créera une table pour le modèle parent et le modèle enfant
+* exemple :
+class Lieu(models.Model):
+    nom = models.CharField(max_length=50)
+    adresse = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.nom
+
+class Restaurant(Lieu):
+    menu = models.TextField()
+
+* Django créera bien deux tables, une pour Lieu, l’autre pour Restaurant
+* la table Restaurant ne contient pas les champs de Lieu (à savoir nom et adresse)
+* elle contient bien le champ menu et une clé étrangère vers Lieu que le framework ajoutera tout seul
+* l’héritage classique s’apparente à la liaison de deux classes avec une clé étrangère
+* lorsque vous créez un objet Restaurant, vous créez aussi un objet Lieu tout à fait banal
+* même si les attributs du modèle parent sont dans une autre table, 
+le modèle fils a bien hérité de toutes ses méthodes et attributs :
+>>> Restaurant(nom="La crêperie bretonne", adresse="42 Rue de la crêpe 35000 Rennes", menu="Des crêpes !").save()
+>>> Restaurant.objects.all()
+<QuerySet [<Restaurant: La crêperie bretonne>]>
+>>> Lieu.objects.all()
+<QuerySet [<Lieu: La crêperie bretonne>]>
+
+* tous les attributs de Lieu sont directement accessibles depuis un objet Restaurant :
+>>> resto = Restaurant.objects.all()[0]
+>>> print(resto.nom + ", " + resto.menu)
+"La crêperie bretonne, Des crêpes !"
+
+* En revanche, il n’est pas possible d’accéder aux attributs spécifiques de Restaurant 
+depuis une instance de Lieu :
+>>> lieu = Lieu.objects.all()[0]
+>>> print(lieu.nom)
+La crêperie bretonne
+>>> print(lieu.menu)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Lieu' object has no attribute 'menu'
+
+* Pour accéder à l’instance de Restaurant associée à Lieu, 
+Django crée tout seul une relation vers celle-ci qu’il nommera selon le nom de la classe fille :
+>>> print(type(lieu.restaurant))
+<class 'blog.models.Restaurant'>
+>>> print(lieu.restaurant.menu)
+Des crêpes !
+
