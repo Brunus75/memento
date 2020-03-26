@@ -2770,3 +2770,279 @@ Django crée tout seul une relation vers celle-ci qu’il nommera selon le nom d
 >>> print(lieu.restaurant.menu)
 Des crêpes !
 
+## - Les modèles proxy
+
+* un modèle proxy hérite de tous les attributs et méthodes du modèle parent, 
+mais aucune table ne sera créée dans la base de données pour le modèle fils
+* le modèle fils sera en quelque sorte une passerelle vers le modèle parent 
+(tout objet créé avec le modèle parent sera accessible depuis le modèle fils, et vice-versa)
+* but = nous pouvons ajouter des méthodes dans le modèle proxy, 
+ou modifier des attributs de la sous-classe Meta sans que le modèle d’origine ne soit altéré, 
+et continuer à utiliser les mêmes données
+ 
+* exemple de modèle proxy qui hérite du modèle Restaurant que nous avons défini tout à l’heure :
+class RestoProxy(Restaurant):
+    class Meta:
+        proxy = True  # Nous spécifions qu'il s'agit d'un proxy
+        ordering = ["nom"]  # Nous changeons le tri par défaut
+
+    def crepes(self):
+        if "crêpe" in self.menu:  # Il y a des crêpes dans le menu
+            return True
+        return False
+
+* Depuis ce modèle, il est donc possible d’accéder aux données enregistrées du modèle parent, 
+tout en bénéficiant des méthodes et attributs supplémentaires :
+>>> print(RestoProxy.objects.all())
+<QuerySet [<RestoProxy: La crêperie bretonne>]>
+>>> resto = RestoProxy.objects.all()[0]
+>>> print(resto.adresse)
+42 Rue de la crêpe 35000 Rennes
+>>> print(resto.crepes())
+True
+
+## - L’application ContentType
+
+idée = la liaison d’une entrée de modèle à un autre modèle en lui-même
+* Dans les entrées de votre variable INSTALLED_APPS dans le fichier settings.py, 
+il est toujours utile de vérifier si le tuple contient bien l’entrée 'django.contrib.contenttypes'
+* Un ContentType est un modèle assez spécial
+* Ce modèle permet de représenter un autre modèle installé
+* Par exemple, nous avons déclaré plus haut le modèle Eleve. 
+Voici sa représentation depuis un ContentType :
+>>> from blog.models import Eleve
+>>> from django.contrib.contenttypes.models import ContentType
+>>> ct = ContentType.objects.get(app_label="blog", model="eleve")
+>>> ct
+<ContentType: eleve>
+* la variable ct représente le modèle Eleve
+* Le modèle ContentType possède deux méthodes :
+    - model_class : renvoie la classe du modèle représenté ;
+    - get_object_for_this_type : raccourci vers la méthode objects.get du modèle
+    # évite de faire  ct.model_class().objects.get(attr=arg)
+* Illustration :
+>>> ct.model_class()
+<class 'blog.models.Eleve'>
+>>> ct.get_object_for_this_type(nom="Maxime")
+<Eleve: Élève Maxime (7/20 de moyenne)>
+
+* Idée = implémenter un système de commentaires, 
+mais que ces commentaires ne se restreignent pas à un seul modèle. 
+En effet, vous souhaitez que vos utilisateurs puissent commenter vos articles, 
+vos images, vos vidéos, ou même des commentaires eux-mêmes
+* Solution = les relations génériques des ContentTypes
+* Une relation générique d’un modèle est une relation permettant de lier une entrée d’un modèle défini
+à une autre entrée de n’importe quel modèle
+* Ex. si notre modèle Commentaire possède une relation générique, 
+nous pourrons le lier à un modèle Image, Video, Commentaire… 
+ou n’importe quel autre modèle installé, sans la moindre restriction
+* Voici une ébauche de ce modèle Commentaire avec une relation générique :
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
+class Commentaire(models.Model):
+    auteur = models.CharField(max_length=255)
+    contenu = models.TextField()
+    content_type = models.ForeignKey(ContentType)
+    # champ qui représente ce modèle
+    object_id = models.PositiveIntegerField()
+    # entier positif contenant l’ID de l’entrée
+    content_object = GenericForeignKey('content_type', 'object_id')
+    # La relation générique est ici l’attribut content_object, avec le champ GenericForeignKey
+    # Il va aller chercher le type de modèle associé dans content_type , 
+    # et l’ID de l’entrée associée dans object_id
+    # la relation générique va aller dans la table liée au modèle obtenu, 
+    # chercher l’entrée ayant l’ID obtenu, et renvoyer la bonne entrée
+
+    def __str__(self):
+        return "Commentaire de {0} sur {1}".format(self.auteur, self.content_object)
+
+* exemple :
+>>> from blog.models import Commentaire, Eleve
+>>> e = Eleve.objects.get(nom="Sofiane")
+>>> c = Commentaire.objects.create(auteur="Le professeur",contenu="Sofiane ne travaille pas assez.", content_object=e)
+>>> c.content_object
+<Eleve: Élève Sofiane (10/20 de moyenne)>
+>>> c.object_id
+4
+>>> c.content_type.model_class()
+<class 'blog.models.Eleve'>
+
+* Lors de la création d’un commentaire, il n’y a pas besoin de remplir les champs object_id 
+et content_type. Ceux-ci seront automatiquement déduits de la variable donnée à content_object
+* il est également possible d’ajouter une relation générique « en sens inverse »
+* Contrairement à une ForeignKey classique, aucune relation inverse n’est créée
+* Pour en créer une sur un modèle bien précis, il suffit d’ajouter un champ nommé GenericRelation
+* Si nous reprenons le modèle Eleve, cette fois modifié :
+from django.contrib.contenttypes.fields import GenericRelation
+
+class Eleve(models.Model):
+    nom = models.CharField(max_length=31)
+    moyenne = models.IntegerField(default=10)
+    commentaires = GenericRelation('Commentaire')
+
+    def __str__(self):
+        return "Élève {0} ({1}/20 de moyenne)".format(self.nom, self.moyenne)
+
+* Dès lors, le champ commentaires contient tous les commentaires adressés à l’élève :
+>>> e.commentaires.all()
+["Commentaire de Le professeur sur Élève Sofiane (10/20 de moyenne)"]
+
+* si vous avez utilisé des noms différents de content_type et object_id 
+pour construire votre GenericForeignKey, 
+vous devrez également les spécifier lors de la création de la GenericRelation :
+commentaires = GenericRelation(Commentaire,
+    content_type_field="le_champ_du_content_type",
+    object_id_field="le champ_de_l_id")
+
+
+## -- SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES -- ##
+
+Django permet également de créer nos propres filtres et tags, 
+et même de générer des variables par défaut lors de la construction d’un template 
+(ce que nous appelons le contexte du template)
+
+## - Architecture des filtres et tags
+
+* soit votre fonctionnalité est propre à une application 
+(par exemple un filtre utilisé uniquement lors de l’affichage d’articles). 
+Dans ce cas, vous pouvez directement le(s) placer au sein de l’application concernée 
+(méthode préférée)
+* soit vous créez une application à part, qui regroupe tous vos filtres et tags personnalisés
+* l’application choisie doit contenir un dossier nommé templatetags, 
+dans lequel il faut créer un fichier Python par groupe de filtres/tags
+*!* Le dossier templatetags  doit en réalité être un module Python classique 
+afin que les fichiers qu’il contient puissent être importés. 
+Il est donc impératif de créer un fichier __init__.py  vide, sans quoi Django ne pourra rien faire.
+* La nouvelle structure de l’application « blog » est donc la suivante :
+blog/
+    __init__.py
+    migrations/
+    models.py
+    templatetags/
+        __init__.py
+        blog_extras.py
+    views.py
+
++ il est nécessaire de spécifier une instance de classe qui nous permettra d’enregistrer nos filtres
+et tags, de la même manière que dans nos fichiers admin.py avec admin.site.register()
+# crepes_bretonnes\blog\templatetags\blog_extras.py
+from django import template
+
+register = template.Library()
+
+* si vous avez décidé d’ajouter vos tags et filtres personnalisés dans une application spécifique,
+l'application' incluant les templatetags doit être incluse dans le fameux INSTALLED_APPS 
+de notre settings.py
+* il sera possible d'intégrer' les tags dans n’importe quel template du projet via la ligne suivante :
+{% load blog_extras %}
+*!* Tous les dossiers templatetags de toutes les applications partagent le même espace de noms. 
+Si vous utilisez des filtres et tags de plusieurs applications, 
+veillez à ce que leurs noms de fichiers soient différents, afin qu’il n’y ait pas de conflit
+* il est possible de charger plusieurs modules de filtres et tags par {% load %}, 
+qui comprend un nombre illimité d’arguments :
+{% load blog_extras static i18n %}
+
+## - Personnaliser l’affichage de données avec nos propres filtres
+
+* un filtre est une fonction classique qui prend 1 ou 2 arguments :
+    - la variable à afficher, qui peut être n’importe quel objet en Python ;
+    - et de façon facultative, un paramètre.
+* ex. de deux filtres : l’un sans paramètre, le deuxième avec.
+# Filtre upper sur la variable "texte" :
+{{ texte|upper }}            
+# Filtre truncatewords, avec comme argument "80" sur la variable "texte" :
+{{ texte|truncatewords:80 }}
+*!* Les fonctions Python associées à ces filtres ne sont appelées qu’au sein du template. 
+Pour cette raison, il faut éviter de lancer des exceptions, 
+et toujours renvoyer un résultat. 
+En cas d’erreur, il est plus prudent de renvoyer l’entrée de départ ou une chaîne vide,
+afin d’éviter des effets de bord lors du « chaînage » de filtres, par exemple.
+
+# Un premier exemple de filtre sans argument
+
+* but = nous allons encadrer la chaîne fournie par des guillemets français doubles.
+Ainsi, si dans notre template, nous avons {{ "Bonjour le monde !"|citation }}, 
+le résultat dans notre page sera « Bonjour le monde ! »
++ ajouter une fonction nommée citation dans blog_extras.py
+# crepes_bretonnes\blog\templatetags\blog_extras.py
+def citation(texte):   
+    """
+    Affiche le texte passé en paramètre, encadré de guillemets 
+    français doubles
+    """
+    return "&laquo; {} &raquo;".format(texte)
+    # entités HTML permettant d’afficher respectivement les guillemets gauches et droits
+
++ préciser au framework d’attacher cette méthode au filtre qui a pour nom citation
+* il y a deux façons différentes de procéder :
+    - soit en ajoutant la ligne @register.filter comme décorateur de la fonction. 
+    L’argument name peut être indiqué pour choisir le nom du filtre ;
+    - soit en appelant la méthode register.filter('citation', citation)
+* avec ces deux méthodes le nom du filtre n’est donc pas directement lié au nom de la fonction, 
+et cette dernière aurait pu s’appeler filtre_citation ou autre, 
+cela n’aurait posé aucun souci tant qu’elle est correctement renseignée par la suite.
+* Ainsi, ces trois fonctions sont équivalentes :
+from django import template
+
+register = template.Library()
+
+# méthode 1 (préférée)
+@register.filter
+def citation(texte):   
+    return "&laquo; {} &raquo;".format(texte)
+
+# méthode 2 (préférée)
+@register.filter(name='mon_filtre_citation')
+def citation2(texte):
+    return "&laquo; {} &raquo;".format(texte)
+
+# méthode 3
+def citation3(texte):
+    return "&laquo; {} &raquo;".format(texte)
+
+register.filter('un_autre_filtre_citation', citation3)
+
++ essayer le filtre dans le template :
+# crepes_bretonnes\blog\templates\blog\accueil.html
+{% load blog_extras %}
+Un jour, une certaine personne m'a dit : {{ "Bonjour le monde !"|citation }}
+# Un jour, une certaine personne m'a dit : &laquo; Bonjour le monde ! &raquo;
+
+* Par défaut, Django échappe automatiquement tous les caractères spéciaux 
+des chaînes de caractères affichées dans un template, ainsi que le résultat des filtres
+* La méthode filter  peut prendre comme argument is_safe, 
+qui permet de signaler au framework par la suite que notre chaîne est sûre :
+@register.filter(is_safe=True)
+def citation(texte):
+    """
+    Affiche le texte passé en paramètre, encadré de guillemets 
+    français doubles et d'espaces insécables
+    """
+    return "&laquo; {} &raquo;".format(texte)
+
+* un problème de sécurité se pose avec cette méthode. 
+En effet, si du HTML est présent dans la chaîne donnée en paramètre, faut-il l’échapper ou pas ?
+* Pour éviter cela, nous allons échapper les caractères spéciaux de notre argument de base 
+et marquer notre résultat comme safe. 
+* Cela peut être fait via la fonction espace du module django.utils.html. 
+Au final, voici ce que nous obtenons :
+from django import template
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
+
+register = template.Library()
+
+@register.filter(is_safe=True)
+def citation(texte):
+    """
+    Affiche le texte passé en paramètre, encadré de guillemets 
+    français doubles et d'espaces insécables.
+    """
+    res = "&laquo; {} &raquo;".format(escape(texte))
+    return mark_safe(res)
+
+* notre chaîne est encadrée de guillemets corrects, 
+mais l’intérieur du message est tout de même échappé
+
+# Un filtre avec arguments
