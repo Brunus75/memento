@@ -2378,6 +2378,11 @@ class URLCreate(CreateView):
     form_class = MiniURLForm
     success_url = reverse_lazy(liste)
 
+* reverse_lazy = fonction permet de récupérer l’URL d’une vue à l’exécution 
+plutôt qu’à l’initialisation du code
+* reverse_lazy renvoie un objet qui ne récupérera l’URL demandée que lors d’un appel explicite, 
+dans un template par exemple
+
 * l’attribut model permet de spécifier avec quel modèle nous travaillons
 * template_name permet de spécifier le chemin vers le template 
 (par défaut, le chemin est <app>/<model>_create_form.html, avec le nom du modèle tout en minuscules)
@@ -3046,3 +3051,752 @@ def citation(texte):
 mais l’intérieur du message est tout de même échappé
 
 # Un filtre avec arguments
+
+* ex. : troncature de texte
+* but = réaliser un filtre qui va couper une chaîne après un certain nombre de caractères, 
+mais sans couper en plein milieu d’un mot
+* rappel = la forme d’un filtre avec un argument est la suivante :
+{{ ma_chaine|smart_truncate:40 }}
+# Nous souhaitons ici appeler un nouveau filtre smart_truncate sur la variable ma_chaine, 
+# tout en lui passant en argument le nombre 40
+
+* Voici un début de fonction :
+# crepes_bretonnes\blog\templatetags\blog_extras.py
+def smart_truncate(texte, nb_caracteres):
+    # Nous vérifions tout d'abord que l'argument passé est bien un nombre
+    try:
+        nb_caracteres = int(nb_caracteres)
+    except ValueError:
+        return texte  # Retour de la chaîne originale sinon
+
+    # Si la chaîne est plus petite que le nombre de caractères maximum voulus,
+    # nous renvoyons directement la chaîne telle quelle.
+    if len(texte) <= nb_caracteres:
+        return texte
+
+    # […]
+
+* La suite de la fonction est tout aussi classique : 
+nous coupons notre chaîne au nombre de caractères maximum voulu, 
+et nous retirons la dernière suite de lettres, 
+si jamais cette chaîne est coupée en plein milieu d’un mot :
+@register.filter
+def smart_truncate(texte, nb_caracteres):
+    """
+    Coupe la chaîne de caractères jusqu'au nombre de caractères souhaité,
+    sans couper la nouvelle chaîne au milieu d'un mot.
+    Si la chaîne est plus petite, elle est renvoyée sans points de suspension.
+    ---
+    Exemple d'utilisation :
+    {{ "Bonjour tout le monde, c'est Diego"|smart_truncate:18 }} renvoie
+    "Bonjour tout le..."
+    """
+    # Nous vérifions tout d'abord que l'argument passé est bien un nombre
+    try:
+        nb_caracteres = int(nb_caracteres)
+    except ValueError:
+        return texte  # Retour de la chaîne originale sinon
+
+    # Si la chaîne est plus petite que le nombre de caractères maximum voulus,
+    # nous renvoyons directement la chaîne telle quelle.
+    if len(texte) <= nb_caracteres:
+        return texte
+
+    # Sinon, nous coupons au maximum, tout en gardant le caractère suivant
+    # pour savoir si nous avons coupé à la fin d'un mot ou en plein milieu
+    texte = texte[:nb_caracteres + 1]
+    # slice [:nb] = garde tous les éléments, de 0 à nb
+
+    # Nous vérifions d'abord que le dernier caractère n'est pas une espace,
+    # autrement, il est inutile d'enlever le dernier mot !
+    if texte[-1:] != ' ':
+        mots = texte.split(' ')[:-1]
+        # enlève le dernier mot du texte.split
+        texte = ' '.join(mots)
+    else:
+        texte = texte[0:-1]
+        # garde toutes les lettres sauf la dernière
+
+    return texte + '…'
+
++ utiliser notre filtre :
+# crepes_bretonnes\blog\templates\blog\accueil.html
+{% load blog_extras %}
+<p>
+   {{ "Bonjour"|smart_truncate:14 }}<br />
+   {{ "Bonjour tout le monde"|smart_truncate:15 }}<br />
+   {{ "Bonjour tout le monde, c'est bientôt Noël"|smart_truncate:18 }}<br />
+   {{ "To be or not to be, that's the question"|smart_truncate:16 }}<br />
+</p>
+# Bonjour
+# Bonjour tout le…
+# Bonjour tout le…
+# To be or not to…
+
+* il est possible de mixer les cas filtre sans argument et filtre avec un argument
+* par exemple vouloir par défaut tronquer à partir du 20e caractère, si aucun argument n’est passé
+* solution = indiquer qu’un argument est facultatif et lui donner une valeur par défaut. 
+Il suffit de changer la déclaration de la fonction par :
+def smart_truncate(texte, nb_caracteres=20):
+Désormais, la syntaxe suivante est acceptée :
+{{ "To be or not to be, that's the question"|smart_truncate }}
+# « To be or not to be... »
+
+
+## - Les contextes de templates
+
+* sujet = template context processor (ou en français, des processeurs de contextes de templates)
+* but = préremplir le contexte de la requête et 
+ainsi de disposer de données dans tous les templates de notre projet
+* contexte =  l’ensemble des variables disponibles dans votre template
+* ex :
+return render(request, 'blog/archives.html', {'news': news, 'date': date_actuelle})
+# les variables news et date_actuelle seront incorporées au contexte
+
+# Un exemple maladroit : afficher la date sur toutes nos pages
+* l’exemple pris ici n’est pas réellement pertinent, 
+puisque Django permet déjà par défaut d’afficher la date avec le tag {% now %}
+* Une première idée serait de récupérer la date sur chacune des vues :
+from django.shortcuts import render
+from datetime import datetime
+
+def accueil(request):
+    date_actuelle = datetime.now()
+    # […] Récupération d'autres données (exemple : une liste de news)
+    return render(request, 'accueil.html', locals())
+
+def contact(request):
+    return render(request, 'contact.html', {'date_actuelle': datetime.now()})
+* méthode est lourde et répétitive !
+
+# Factorisons encore et toujours
+* solution = créer une fonction qui sera appelée à chaque page, 
+et qui se chargera d’incorporer la date dans les données disponibles de façon automatique
++ créer un fichier Python, que nous appellerons context_processors.py, par convention, 
+dans une de vos applications
+* Vu que cela concerne tout le projet, il est même conseillé de le créer dans le sous-dossier 
+ayant le même nom que votre projet (crepes_bretonnes, dans le cas de ce cours)
+# crepes_bretonnes\crepes_bretonnes\context_processors.py
+from datetime import datetime
+
+# récupère la date actuelle
+def get_infos(request):
+    date_actuelle = datetime.now()
+    return {'date_actuelle': date_actuelle}
+    # renvoie un/des dictionnaire(s) de données 
+    # que le framework intégrera à tous nos templates
+
+* Django exécute d’abord la vue et seulement après le contexte
+* faire attention de prendre des noms de variables suffisamment explicites 
+et qui ont peu de chance de se retrouver dans vos vues, et donc d’entrer en collision
+
++ indiquer au framework d’exécuter cette fonction à chaque page
++ le fichier settings.py et y modifier la variable TEMPLATES
+* À chaque page, Django exécute et récupère les dictionnaires de plusieurs fonctions, 
+listées dans l’option context_processors
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+                'crepes_bretonnes.context_processors.get_infos', ## ++
+            ],
+        },
+    },
+]
+
++ utiliser notre variable date_actuelle dans tous nos templates et
+afficher fièrement la date sur notre blog :
+# crepes_bretonnes\blog\templates\blog\accueil.html
+<p>Bonjour à tous, nous sommes le {{ date_actuelle }} et il fait beau en Bretagne !</p>
+
+# Petit point technique sur l’initialisation du contexte
+* Faire attention à vos contextes si jamais vous vous écartez de la fonction render()
+* la fonction render() est un « raccourci » effectuant plusieurs actions en interne, 
+et nous évitant la réécriture de plusieurs lignes de code. 
+Cette méthode prend notamment en charge le fait de charger le contexte !
+* Cependant, toutes les fonctions de django.shortcut ne le font pas, comme render_to_response
+* défaut, render_to_response ne prend pas en compte les fonctions de processeurs contenues 
+dans TEMPLATES… Pour régler ce problème, il faut à chaque fois ajouter un argument :
+return render_to_response('blog/archives.html', locals(), context_instance=RequestContext(request))
+
+
+## - Des structures plus complexes : les custom tags
+
+* Alors que les filtres peuvent être comparés à des fonctions, 
+les tags doivent être décomposés en deux parties : la structuration du tag et son rendu
+* Lorsque nous créons un nouveau tag, 
+la fonction appelée à la compilation doit renvoyer un objet dont la classe hérite de Node, 
+avec sa propre méthode render
+
+# - Première étape : la fonction de compilation -
+
+* exemple : afficher un nombre aléatoire compris entre deux arguments
+* Notre tag pourra être utilisé de la façon suivante : {% random 0 42 %}; 
+et renverra donc un nombre entier compris entre 0 et 42
+* Contrairement au filtre, Django requiert que notre méthode prenne deux arguments précis : 
+parser, qui est l’objet en charge de parser le template actuel (que nous n’utiliserons pas ici), 
+et token, qui contient les informations sur le tag actuel, comme les paramètres passés
+* token contient quelques méthodes qui vont nous simplifier le traitement des paramètres
+    - la méthode split_contents() permet de séparer les arguments dans une liste
+* Il est extrêmement déconseillé d’utiliser la méthode classique token.contents.split(' '), 
+qui pourrait « casser » vos arguments si jamais il y a des chaînes de caractères avec des espaces
+
+* un bref exemple de fonction de compilation :
++ la partie logique :
+from django import template
+
+def random(parser, token):
+    """ Tag générant un nombre aléatoire, entre les bornes données en arguments """
+    # Séparation des paramètres contenus dans l'objet token. 
+    # Le premier élément du token est toujours le nom du tag en cours
+    try:
+        nom_tag, begin, end = token.split_contents()
+    except ValueError:
+        msg = 'Le tag %s doit prendre exactement deux arguments.' % token.split_contents()[0]
+        raise template.TemplateSyntaxError(msg)
+
+    # Nous vérifions ensuite que nos deux paramètres sont bien des entiers
+    try:
+        begin, end = int(begin), int(end)
+    except ValueError:
+        msg = 'Les arguments du tag %s sont obligatoirement des entiers.' % nom_tag
+        raise template.TemplateSyntaxError(msg)
+
+    # Nous vérifions si le premier est inférieur au second
+    if begin > end:
+        msg = 'L\'argument "begin" doit obligatoirement être inférieur à l\'argument "end" dans le tag %s.' % nom_tag
+        raise template.TemplateSyntaxError(msg)
+
+    return RandomNode(begin, end)
+    # la partie rendu
+
++ écrire la classe RandomNode, qui est renvoyée par la méthode ci-dessus
+* il semble évident que sa méthode __init__  prend trois arguments : self, begin  et end. 
+* Comme nous l’avons vu tout à l’heure, cette classe doit également définir 
+une méthode render(self, context), qui va renvoyer une chaîne de caractères et 
+qui remplacera notre tag dans notre rendu HTML
+* Cette méthode prend en paramètre le contexte du template, 
+auquel nous pouvons accéder et que nous pouvons éditer
+from random import randint
+
+class RandomNode(template.Node):
+    # souvenir des arguments
+    def __init__(self, begin, end):
+           self.begin = begin
+           self.end = end
+    # appeler le rendu en générant un nombre aléatoire
+    def render(self, context):
+           return str(randint(self.begin, self.end))
+
++ enregistrer notre tag
+* Comme pour les filtres, il existe plusieurs méthodes :
+    @register.tag() au début de notre fonction de compilation; # préféré
+    @register.tag(name='nom_du_tag')  si jamais nous prenons un nom différent ;
+    register.tag('nom_du_tag', random)  pour l’enregistrer après la déclaration de la fonction.
+
+* Au final, notre tag complet ressemble à ceci :
+# crepes_bretonnes\blog\templatetags\blog_extras.py
+from django import template
+from random import randint
+
+register = template.Library()
+
+@register.tag
+def random(parser, token):
+    """ Tag générant un nombre aléatoire, entre les bornes données en arguments """
+    try:
+        nom_tag, begin, end = token.split_contents()
+    except ValueError:
+        msg = 'Le tag %s doit prendre exactement deux arguments.' % token.split_contents()[0]
+        raise template.TemplateSyntaxError(msg)
+
+    # Nous vérifions que nos deux paramètres sont bien des entiers
+    try:
+        begin, end = int(begin), int(end)
+    except ValueError:
+        msg = 'Les arguments du tag %s sont obligatoirement des entiers.' % nom_tag
+        raise template.TemplateSyntaxError(msg)
+
+    # Nous vérifions si le premier est bien inférieur au second
+    if begin > end:
+        msg = 'L\'argument "begin" doit obligatoirement être inférieur à l\'argument "end" dans le tag %s.' % nom_tag
+        raise template.TemplateSyntaxError(msg)
+
+    return RandomNode(begin, end)
+
+
+class RandomNode(template.Node):
+    def __init__(self, begin, end):
+        self.begin = begin
+        self.end = end
+
+    def render(self, context):
+        return str(randint(self.begin, self.end))
+
++ utiliser le tag
+# crepes_bretonnes\blog\templates\blog\accueil.html
+{% random "a" 10 %}
+# lève une erreur : Les arguments du tag random sont obligatoirement des entiers
+
+# - Passage de variable dans notre tag -
+
+idée = donner des variables en arguments
+* Une variable est par définition indéterminée, 
+il y a donc plusieurs tests que nous ne pourrons faire qu’au rendu, 
+et non plus à la compilation du tag
+* Nous allons continuer sur notre tag {% random %}, 
+en lui passant en paramètres deux variables qui seront définies dans notre vue comme ceci :
+def ma_vue(request):
+    return render(request, 'template.html', {'begin': 1, 'end': 42})
+
+{% random begin end %}
+
++ changer notre tag pour interpréter les variables 
+et faire attention au cas où une des variables entrées n’existerait pas dans notre contexte 
+(qui est l’ensemble des variables passées au template depuis la vue)
+* problème = ce genre d’informations n’est disponible qu’au rendu. 
++ Il va donc falloir décaler la plupart de nos tests au rendu.
+
++ supprimer les tests sur le type et la comparaison entre begin et end de la méthode de compilation,
+ce qui nous laisse uniquement :
+@register.tag
+def random(parser, token):
+    """ Tag générant un nombre aléatoire, entre les bornes en arguments """
+    try:
+        nom_tag, begin, end = token.split_contents()
+    except ValueError:
+        msg = 'Le tag random doit prendre exactement deux arguments.'
+        raise template.TemplateSyntaxError(msg)
+
+    return RandomNode(begin, end)
+
+* notre méthode render() dans la classe RandomNode sera un peu plus complexe. 
+* Nous allons devoir vérifier dedans si la variable passée en paramètre existe et si oui, 
+vérifier s’il s’agit bien d’un entier. 
+* Pour ce faire, il existe dans le module template une classe Variable qui permet 
+de récupérer le contenu d’une variable à partir de son nom dans le contexte. 
+from django.template.base import VariableDoesNotExist
+
+class RandomNode(template.Node):
+    def __init__(self, begin, end):
+        self.begin = begin
+        self.end = end
+
+    def render(self, context):
+        not_exist = False
+
+        try:
+            begin = template.Variable(self.begin).resolve(context)
+            self.begin = int(begin)
+        except (VariableDoesNotExist, ValueError):
+            not_exist = self.begin
+        try:
+            end = template.Variable(self.end).resolve(context)
+            self.end = int(end)
+        except (VariableDoesNotExist, ValueError):
+            not_exist = self.end
+
+        if not_exist:
+            msg = 'L\'argument "%s" n\'existe pas, ou n\'est pas un entier.' % not_exist
+            raise template.TemplateSyntaxError(msg)
+
+        # Nous vérifions si le premier entier est bien inférieur au second
+        if self.begin > self.end:
+            msg = 'L\'argument "begin" doit obligatoirement être inférieur à l\'argument "end" dans le tag random.'
+            raise template.TemplateSyntaxError(msg)
+
+        return str(randint(self.begin, self.end))
+
++ tester votre tag dans n’importe quel sens :
+
+{% random 0 42 %}
+{% random begin end %}
+{% random begin 42 %}
+
+Mais aussi avec des cas qui ne marchent pas :
+{% random a 42 %} avec a = "Bonjour"
+{% random begin fin %} où 'fin' n'existe pas
+
+# - Les simple tags -
+
+* idée = coder des tags simples, qui prennent des arguments 
+et dont la sortie ne dépend que de ces arguments
+* C’est le cas de notre tag random, par exemple, 
+qui renvoie un nombre en ne se basant que sur nos deux paramètres. 
+Il est alors possible de simplifier tout notre tag par :
+@register.simple_tag(name='random')  # L'argument name est encore une fois facultatif
+def random(begin, end):
+    try:
+       return randint(int(begin), int(end))
+    except ValueError:
+       raise template.TemplateSyntaxError('Les arguments doivent nécessairement être des entiers')
+
+* Il est aussi possible d’accéder au contexte depuis ce genre de tags, 
+en le précisant à son enregistrement :
+@register.simple_tag(takes_context=True)
+def random(context, begin, end):
+    # …
+
+* il n’est pas possible de tout faire avec des simple tags
+* Dès que vous avez besoin d’avoir un état interne, par exemple (comme pour cycle), 
+il est plus facile de passer via une classe (notre nœud) qui stockera cet état
+* les simple tags fonctionnent en réalité de la même façon que nos tags précédents : 
+un objet SimpleNode est instancié et sa fonction render() ne fait qu’appeler notre fonction random.
+
+* cas spécifiques de tags possibles :
+    - les tags composés, par exemple {% if %} {% endif %}  ;
+    - les tags incluant d’autres templates, et possédant leur propre contexte ;
+    - et enfin, les tags agissant sur le contexte plutôt que de renvoyer une valeur
+
+# - Quelques points à ne pas négliger -
+
+* les tags renvoient toujours du texte considéré comme sécurisé, 
+c’est-à-dire que le HTML y est interprété
+* Il est donc important de penser à échapper le HTML quand il est nécessaire, 
+via la fonction escape(), telle que nous l’avons vue avec les filtres
+
+
+## -- LES SIGNAUX ET MIDDLEWARES -- ##
+
+* comment effectuer une action précise à chaque fois qu’une entrée d’un modèle est supprimée, 
+et ce depuis n’importe où dans le code ? 
+* Ou comment analyser toutes les requêtes d’un visiteur pour s’assurer 
+que son adresse IP n’est pas bannie ? 
+* Pour ces situations un peu spéciales qui nécessitent de répéter la même action à plusieurs moments 
+et endroits dans le code, Django intègre deux mécanismes différents qui permettent de résoudre 
+ce genre de problèmes : les signaux et les middlewares.
+
+## - Notifiez avec les signaux
+
+* Un signal est une notification envoyée par une application à Django lorsqu’une action se déroule, 
+et renvoyée par le framework à toutes les autres parties d’applications qui se sont enregistrées 
+pour savoir quand ce type d’action se déroule, et comment
+*!* Les signaux ne permettent pas d’interagir avec les templates.
+* exemple de la suppression d’un modèle : 
+imaginons que nous ayons plusieurs fichiers sur le disque dur, liés à une instance d’un modèle
+Lorsque l’instance est supprimée, nous souhaitons que les fichiers associés soient également supprimés.
+* solution = les signaux
+* une fois que vous avez écrit la fonction de suppression des fichiers associés, 
+vous n’avez qu’à indiquer à Django d’appeler cette fonction à chaque fois qu’une entrée de modèle 
+est supprimée
+* En pratique, cela se fait ainsi :
+from django.db.models.signals import post_delete
+# import du signal
+# Le signal ici importé est post_delete, et comme son nom l’indique, 
+# il est notifié à chaque fois qu’une instance a été supprimée
+
+post_delete.connect(ma_fonction_de_suppression, sender=MonModele)
+# utilise la méthode connect pour connecter une fonction à ce signal
+# la méthode peut prendre plusieurs paramètres, comme par exemple ici sender, 
+# qui permet de restreindre l’envoi de signaux à un seul modèle
+
+* Une fonction appelée par un signal prend souvent plusieurs arguments.
+* elle prend presque toujours un argument appelé sender
+* Chaque type de signal possède ses propres arguments
+* post_delete en prend trois :
+    - sender : le modèle concerné, comme vu précédemment;
+    - instance : l’instance du modèle supprimée (celle-ci étant supprimée, 
+    il est très déconseillé de modifier ses données ou de tenter de la sauvegarder);
+    - using : l’alias de la base de données utilisée 
+    (si vous utilisez plusieurs bases de données, il s’agit d’un point particulier 
+    et inutile la plupart du temps)
+
+* Notre fonction ma_fonction_de_suppression pourrait donc s’écrire de la sorte :
+def ma_fonction_de_suppression(sender, instance, **kwargs):
+	# processus de suppression selon les données fournies par instance
+* Pourquoi spécifier un **kwargs ?
+- Vous ne pouvez jamais être certain qu’un signal renverra bien tous les arguments possibles
+- il est toujours important de spécifier un dictionnaire pour récupérer les valeurs supplémentaires, 
+et si vous avez éventuellement besoin d’une de ces valeurs, il suffit de vérifier 
+si la clé est bien présente dans le dictionnaire
+
+* Cette fonction et sa connexion peuvent être mises n’importe où, 
+tant que Django charge le fichier afin qu’il puisse faire la connexion directement.
+* Le framework charge déjà par défaut certains fichiers comme les models.py, urls.py, etc. 
+Le meilleur endroit serait donc un de ces fichiers.
+* Généralement, nous choisissons un models.py 
+(étant donné que certains signaux agissent à partir d’actions sur des modèles, 
+c’est plutôt un bon choix !)
+
+* il est également possible d’enregistrer une fonction à un signal directement 
+lors de sa déclaration avec un décorateur. En reprenant l’exemple ci-dessus :
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+@receiver(post_delete, sender=MonModele)
+def ma_fonction_de_suppression(sender, instance, **kwargs):
+	# processus de suppression selon les données fournies par instance
+
+* Les autres types de signaux : 
+https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1873451-les-signaux-et-middlewares#/id/r-1876856
+* Il existe d’autres signaux inclus par défaut. Ils sont expliqués dans la documentation officielle.
+https://docs.djangoproject.com/en/stable/ref/signals/
+
+* vous pouvez tester tous ces signaux simplement en créant une fonction 
+affichant une ligne dans la console (avec print) et en liant cette fonction aux signaux désirés
+
+# - créer ses propres signaux -
+
+* Chaque signal est en fait une instance de django.dispatch.Signal. 
+* Pour créer un nouveau signal, il suffit donc de créer une nouvelle instance, 
+et de lui dire quels arguments le signal peut transmettre :
+from django.dispatch import Signal
+
+crepe_finie = Signal(providing_args=["adresse", "prix"])
+# nous créons un nouveau signal nommé crepe_finie. 
+# Nous lui indiquons une liste contenant les noms d’éventuels arguments qu’il peut transmettre
+# (les arguments de signaux n’étant jamais fixes, vous pouvez la modifier à tout moment)
+
++ enregistrer une fonction sur ce signal, comme vu précédemment :
+crepe_finie.connect(faire_livraison) # Quand crepe_finie est lancé, appeler 'faire_livraison'
+
+* pour lancer une notification à toutes les fonctions enregistrées au signal, 
+il suffit d’utiliser la méthode send(), et ceci depuis n’importe où.
+Nous l’avons fait depuis un modèle :
+class Crepe(models.Model):
+	nom_recette = models.CharField(max_length=255)
+	prix = models.IntegerField()
+	# ...
+
+	def preparer(self, adresse):
+		# Nous préparons la crêpe pour l'expédier à l'adresse transmise
+		crepe_finie.send(sender=self, adresse=adresse, prix=self.prix)
+        # À chaque fois que la méthode preparer  d’une crêpe sera appelée, 
+        # la fonction faire_livraison  le sera également avec les arguments adéquats
+        # il est toujours obligatoire de préciser un argument sender
+        # il est censé représenter l’entité qui est à l’origine du signal
+
+* la fonction send() retourne une liste de paires de variables, 
+chaque paire étant un tuple de type (receveur, retour) où le receveur est la fonction appelée, 
+et le retour est la variable retournée par la fonction
+
+* il est également possible de déconnecter une fonction d’un signal
+* Pour ce faire, il faut utiliser la méthode disconnect  du signal. 
+Cette dernière s’utilise comme connect  :
+crepe_finie.disconnect(faire_livraison)
+# crepe_finie n’appellera plus faire_livraison si une notification est envoyée
+* si vous avez soumis un argument sender lors de la connexion, 
+vous devrez également le préciser lors de la déconnexion
+
+## - Contrôlez tout avec les middlewares
+
+* juste avant et après l’appel de la vue, le framework va à ce moment exécuter certains bouts de code 
+appelés des middlewares. 
+* Il s’agit en quelque sorte de fonctions qui seront exécutées à chaque requête, 
+en "enrobant" la vue Django appelée
+* Un middleware est une classe avec plusieurs méthodes. 
+Le nom de la méthode indique quand le middleware sera exécuté. 
+Ainsi, la méthode process_view d’un middleware sera exécutée avant une vue, 
+mais process_response sera appelé à la fin de la requête, juste avant l’envoi au client. 
+* les middlewares se chargent de modifier certaines variables ou d’interrompre le processus de traitement 
+de la requête, et cela aux différents moments que nous allons lister ci-dessous
+* Par défaut, Django inclut plusieurs middlewares dans la configuration par défaut :
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+* Ils s’occupent de certaines tâches pratiques et permettent d’utiliser d’autres fonctionnalités 
+du framework que nous verrons plus tard ou avons déjà vues 
+(comme la sécurisation des formules contre les attaques CSRF, le système utilisateur, 
+l’envoi de notifications aux visiteurs, etc.).
+* Un middleware = une fonction qui retourne une fonction qui sera appelée à chaque fois 
+qu’une requête est reçue par Django
+* La fonction principale prend en paramètre une méthode, fournie par Django, 
+qui va nous permettre de lancer l’appel de la vue demandée par l’utilisateur et 
+ainsi de lui renvoyer la réponse.
+def simple_middleware(get_response):
+    # Le code ici est appelé une seule fois, pour l'initialisation
+    # et la configuration
+
+    def middleware(request):
+        # Code qui sera exécuté à chaque requête, et avant
+        # le traitement de la réponse
+
+        response = get_response(request)
+        # Code qui sera exécuté à chaque requête, une fois la
+        # réponse calculée, mais pas encore servie
+
+        return response
+
+    return middleware
+
+* Il est dès lors possible d’intercepter toute requête, d’en modifier ses paramètres 
+puis de laisser continuer son exécution, 
+ou même de décider de renvoyer une réponse tout à fait différente. 
+De même, il est tout à fait possible de modifier une réponse calculée.
+* les middlewares sont appelés dans l’ordre précisé dans le settings.py, de haut en bas, 
+pour toutes les méthodes appelées avant l’appel de la vue. 
+* Chaque fonction englobe donc la suivante. 
+* Ainsi, avec le code suivant, et dans l’ordre (middleware1, middleware2) :
+def middleware1(get_response):
+    def middleware(request):
+        print("J'ouvre le bal de la requête") # 1
+        response = get_response(request)
+        print("Et je clôture également le show.") # 5
+        return response
+
+    return middleware
+    
+
+def middleware2(get_response):
+    def middleware(request):
+        print("J'englobe également la vue, mais après") # 2
+        response = get_response(request)
+        print("Compris ?") # 4
+        return response
+
+    return middleware
+    
+    
+def ma_vue(request):
+    print("Enfin, nous arrivons dans la vue !") # 3
+    return HttpResponse("Ma réponse")
+
+* On obtient le résultat suivant dans la console :
+J'ouvre le bal de la requête
+J'englobe également la vue, mais après
+Enfin, nous arrivons dans la vue !
+Compris ?
+Et je clôture également le show.
+
+# - Créons notre propre middleware -
+
+* exemple = coder un petit middleware simple, mais pratique, 
+qui comptabilise le nombre de fois qu’une page est vue et affiche ce nombre à la fin de chaque page
+* le middleware sera placé dans une nouvelle application nommée stats
+
++ créer notre application "stats"
+python manage.py startapp stats
+
++ créer un nouveau modèle dans l’application qui permet de tenir compte 
+du nombre de visites d’une page
+* Chaque entrée du modèle correspondra à une page
+# crepes_bretonnes\stats\models.py
+from django.db import models
+
+class Page(models.Model):
+    url = models.URLField()
+    nb_visites = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.url
+
++ ajouter l’application au settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog',
+    'mini_url',
+    'stats', ## ++
+]
+
++ lancer la migration
+python manage.py makemigrations
+python manage.py migrate
+
++ ajouter le middleware que nous avons enregistré dans stats/middleware.py :
+from django.db.models import F
+from .models import Page
+
+def stats_middleware(get_response):
+    def middleware(request):
+        # Avant chaque exécution de la vue, on incrémente 
+        # le nombre de page vues à chaque appel de vues
+        try:
+            # Le compteur lié à la page est récupéré et incrémenté
+            p = Page.objects.get(url=request.path)  
+            p.nb_visites = F('nb_visites') + 1
+            # équivalent de UPDATE stats_page SET nb_visites=nb_visites+1
+            p.save()
+        except Page.DoesNotExist:
+            # Un nouveau compteur à 1 par défaut est créé
+            p = Page.objects.create(url=request.path)
+        
+        # Appel de la vue Django
+        response = get_response(request)
+        
+        # Une fois la vue exécutée, on ajoute à la fin le nombre
+        # de vues de la page 
+        response.content += bytes(
+            "Cette page a été vue {0} fois.".format(p.nb_visites),
+            "utf8"
+        )
+        # Et on retourne le résultat
+        return response
+
+    return middleware
+
+* l'objet' F sert à construire des requêtes SQL plus élaborées.
+* Au lieu de récupérer la valeur en Python et de l’incrémenter de 1,  
+F prend en compte l’opération "+ 1" auquel il a été associé 
+et va directement faire ces opérations dans la base de données, si possible
+* C’est un outil pratique pour optimiser de simples opérations numériques sur des champs.
+
++ mettons à jour MIDDLEWARE dans votre settings.py
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'stats.middleware.stats_middleware', ## ++ 
+]
+
+* avant chaque appel de vue, Django appelle la méthode process_view
+qui se charge ici de déterminer si l’URL de la page a déjà été appelée ou non 
+(l’URL est accessible à partir de l’attribut request.path)
+* En fin de compte, sur toutes vos pages, vous verrez la phrase avec le nombre de visites 
+qui se rajoute toute seule, sans devoir modifier toutes les vues une à une !
+
++ intégrer notre middleware à notre projet
++ ajouter un view
+# crepes_bretonnes\stats\views.py
+from django.shortcuts import render
+
+def accueil(request):
+    return render(request, 'stats/accueil.html', locals())
+
++ ajouter un template
+# crepes_bretonnes\stats\templates\stats\accueil.html
+<h1>Bienvenue sur la page des statistiques !</h1>
+# le message s'affichera ici #
+
++ ajouter un url
+# crepes_bretonnes\stats\urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # Une string vide indique la racine
+    path('', views.accueil, name='accueil'),
+]
+
++ ajouter l'url' aux url du projet
+# crepes_bretonnes\crepes_bretonnes\urls.py
+path('stats/', include('stats.urls')),
+
+  
+
+
+# A approfondir :
+F et Django
+HttpRequest
+HttpResponse
