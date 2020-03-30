@@ -3746,6 +3746,10 @@ def stats_middleware(get_response):
 * Au lieu de récupérer la valeur en Python et de l’incrémenter de 1,  
 F prend en compte l’opération "+ 1" auquel il a été associé 
 et va directement faire ces opérations dans la base de données, si possible
+* Un objet F() représente la valeur d’un champ de modèle ou d’une colonne annotée. 
+Il permet de se référer à des valeurs de champs de modèles 
+et d’effectuer avec elles des opérations en base de données sans avoir à les récupérer 
+préalablement de la base de données vers la mémoire Python
 * C’est un outil pratique pour optimiser de simples opérations numériques sur des champs.
 
 + mettons à jour MIDDLEWARE dans votre settings.py
@@ -3794,9 +3798,256 @@ urlpatterns = [
 path('stats/', include('stats.urls')),
 
   
-
-
 # A approfondir :
-F et Django
-HttpRequest
-HttpResponse
+F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
+HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
+HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse
+
+
+## -- LES UTILISATEURS -- ##
+
+## - La Base
+
+* Vérifier toujours que 'django.contrib.auth' et 'django.contrib.contenttypes' 
+sont bien présents dans la variable INSTALLED_APPS de votre settings.py
+les middlewares suivants sont nécessaires :
+'django.contrib.sessions.middleware.SessionMiddleware';
+'django.contrib.auth.middleware.AuthenticationMiddleware'.
+
+# - L’utilisateur -
+
+* Tout le système utilisateur tourne autour du modèle django.contrib.auth.models.User
+* les principaux attributs de User  :
+- username : nom d’utilisateur, 30 caractères maximum 
+(lettres, chiffres et les caractères spéciaux _, @, +, . et -);
+- first_name : prénom, optionnel, 30 caractères maximum ;
+- last_name : nom de famille, optionnel, 30 caractères maximum ;
+- email : adresse e-mail ;
+- password : un hash du mot de passe. 
+- is_staff : booléen, permet d’indiquer si l’utilisateur a accès à l’administration de Django
+- is_active : booléen, par défaut mis à True. 
+Si mis à False, l’utilisateur est considéré comme désactivé et ne peut plus se connecter. 
+Au lieu de supprimer un utilisateur, il est conseillé de le désactiver 
+afin de ne pas devoir supprimer d’éventuels modèles liés à l’utilisateur 
+(avec une ForeignKey, par exemple) ;
+- is_superuser : booléen, si mis à True, l’utilisateur obtient toutes les permissions
+- last_login : datetime, représente la date/l’heure à laquelle l’utilisateur 
+s’est connecté la dernière fois ;
+- date_joined : datetime, représente la date/l’heure à laquelle l’utilisateur s’est inscrit ;
+- user_permissions : une relation ManyToMany vers les permissions
+- groups : une relation ManyToMany vers les groupes
+
+* La façon la plus simple de créer un utilisateur est d’utiliser la fonction create_user  
+fournie avec le modèle.
+* Elle prend trois arguments : le nom de l’utilisateur, son adresse e-mail et son mot de passe 
+(les trois attributs obligatoires du modèle). 
+Elle enregistre ensuite directement l’utilisateur dans la base de données :
+>>> from django.contrib.auth.models import User
+>>> user = User.objects.create_user('Maxime', 'maxime@crepes-bretonnes.com', 'm0nsup3rm0td3p4ss3')
+>>> user.id
+2
+* Tous les champs sont éditables classiquement, sauf un, password, qui possède ses propres fonctions.
+>>> user.first_name, user.last_name = "Maxime", "Lorant"
+>>> user.is_staff = True
+>>> user.save()
+
+# - Les mots de passe -
+
+* Django hache automatiquement les mots de passe
+* Tous les mots de passe sont enregistrés selon cette disposition :
+algorithme$iterations$sel$empreinte
+>>> user.password
+'pbkdf2_sha256$10000$cRu9mKvGzMzW$DuQc3ZJ3cjT37g0TkiEYrfDRRj57LjuceDyapH/qjvQ='
+* Django fournit quatre méthodes au modèle User  pour la gestion des mots de passe :
+- set_password(mot_de_passe) : permet de modifier le mot de passe de l’utilisateur 
+par celui donné en argument. Django va hacher ce dernier, comme vu précédemment. 
+Cette méthode ne sauvegarde pas l’entrée dans la base de données, 
+il faut faire un .save() par la suite.
+- check_password(mot_de_passe) : vérifie si le mot de passe donné en argument correspond bien 
+à l’empreinte enregistrée dans la base de données. 
+Retourne True si les deux mots de passe correspondent, sinon False.
+- set_unusable_password() : permet d’indiquer que l’utilisateur n’a pas de mot de passe défini. 
+Dans ce cas, check_password retournera toujours False.
+- has_usable_password() : retourne True  si le compte utilisateur a un mot de passe valide, 
+False  si set_unusable_password a été utilisé.
+
+Petit exemple pratique désormais, en reprenant notre utilisateur de tout à l’heure :
+>>> user = User.objects.get(username="Maxime")
+>>> user.set_password("coucou")    # Nous changeons le mot de passe
+>>> user.check_password("salut")   # Nous essayons un mot de passe invalide
+False
+>>> user.check_password("coucou")  # Avec le bon mot de passe, ça marche !
+True
+>>> user.set_unusable_password()   # Nous désactivons le mot de passe
+>>> user.check_password("coucou")  # Comme prévu, le mot de passe précédent n'est plus bon
+False
+
+# - Étendre le modèle User -
+
+but = par exemple adjoindre un avatar à chaque utilisateur
+solution = étendre le modèle avec un autre modèle contenant tous les champs 
+que vous souhaitez ajouter à votre modèle utilisateur
+* Une fois ce modèle spécifié, il faudra le lier au modèle User 
+en ajoutant un OneToOneField  vers ce dernier
+* ex. : donner la possibilité à un utilisateur d’avoir un avatar, une signature pour ses messages,
+un lien vers son site web et de pouvoir s’inscrire à la newsletter de notre site. 
+Notre modèle ressemblerait à ceci :
+from django.contrib.auth.models import User
+
+class Profil(models.Model):
+    user = models.OneToOneField(User)  # La liaison OneToOne vers le modèle User
+    site_web = models.URLField(blank=True)
+    avatar = models.ImageField(null=True, blank=True, upload_to="avatars/")
+    signature = models.TextField(blank=True)
+    inscrit_newsletter = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "Profil de {0}".format(self.user.username)
+
+* vous pouvez accéder à l’instance Profil associée à une instance User depuis cette dernière
+en utilisant la relation inverse créée automatiquement par le OneToOneField
+Pour illustrer le fonctionnement de cette relation inverse, voici un petit exemple :
+>>> from django.contrib.auth.models import User
+>>> from blog.models import Profil
+>>> user = User.objects.create_user('Mathieu', 'mathieu@crepes-bretonnes.com', 'sup3rp@ssw0rd')  # Nous créons un nouvel utilisateur
+>>> profil = Profil(user=user, site_web="<a href="<a href="http://www.crepes-bretonnes.com">http://www.crepes-bretonnes.com</a>"><a href="http://www.crepes-bretonnes.com">http://www.crepes-bretonnes.com</a></a>", signature="Coucou ! C'est moi !")
+>>> profil.save()
+>>> profil
+<Profil: Profil de Mathieu>
+>>> user.profil
+<Profil: Profil de Mathieu>
+>>> user.profil.signature
+"Coucou ! C'est moi !"
+
+* pour avoir une méthode d’authentification personnelle 
+(utiliser l’adresse e-mail comme identifiant ou passer par un serveur LDAP), 
+c’est possible de redéfinir totalement le modèle User. 
+Cependant, la décision de remplacer le modèle User doit être prise au début du projet, 
+afin d’éviter de nombreux problèmes de dépendances au niveau de la base de données, 
+avec les ForeignKey vers le modèle utilisateur.
+
+## - Les vues 
+
+# - La connexion -
+
+* Nous avons désormais des utilisateurs, ils n’ont plus qu’à se connecter ! 
+* Pour ce faire, nous aurons besoin des éléments suivants :
+- un formulaire pour récupérer le nom d’utilisateur et le mot de passe ;
+- un template pour afficher ce formulaire ;
+- une vue pour récupérer les données, les vérifier, et connecter l’utilisateur.
+
+* création de l'application' d'authentification'
+python manage.py startapp secret
+
++ ajouter l’application au settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'blog',
+    'mini_url',
+    'stats',
+    'secret', ## ++
+]
+
+* Commençons par le formulaire. 
+Il ne nous faut que deux choses : le nom d’utilisateur et le mot de passe. 
+Autrement dit, le formulaire est très simple. 
++ Nous le plaçons dans un fichier forms.py :
+# crepes_bretonnes\secret\forms.py
+from django import forms
+
+class ConnexionForm(forms.Form):
+    username = forms.CharField(label="Nom d'utilisateur", max_length=30)
+    password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
+    # permet d’avoir une boîte de saisie dont les caractères seront masqués
+
++ lancer la migration (pas utile car pas de création de modèles)
+python manage.py makemigrations
+python manage.py migrate
+
++ ajouter le template
+# crepes_bretonnes\secret\templates\auth\connexion.html
+<h1>Se connecter</h1>
+
+{% if error %}
+<p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+{% endif %}
+
+{% if user.is_authenticated %}
+Vous êtes connecté, {{ user.username }} !
+{% else %}
+<form method="post" action=".">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Se connecter" />
+</form>
+{% endif %}
+
+* la variable user contient l’instance User de l’utilisateur s’il est connecté, 
+ou une instance de la classe AnonymousUser. 
+La classe AnonymousUser est utilisée pour indiquer que le visiteur n’est pas un utilisateur connecté
+* La variable user dans les templates est ajoutée par un processeur de contexte inclus par défaut. 
+* Le même objet est disponible via request.user dans les vues.
+
+* Pour terminer, passons à la partie intéressante : la vue. 
+Récapitulons auparavant tout ce qu’elle doit faire :
+- afficher le formulaire ;
+- après la saisie par l’utilisateur, récupérer les données ;
+- vérifier si les données entrées correspondent bien à un utilisateur ;
+- si c’est le cas, le connecter et le rediriger vers une autre page ;
+- sinon, afficher un message d’erreur.
+* Pour savoir comment vérifier si les données sont correctes, et si c’est le cas, 
+connecter l’utilisateur. 
+Pour cela, Django fournit deux fonctions, authenticate et login, 
+toutes deux situées dans le module django.contrib.auth
+Voici comment elles fonctionnent :
+- authenticate(username=nom, password=mdp) : si la combinaison utilisateur/mot de passe est correcte, 
+authenticate renvoie l’entrée du modèle User correspondante. 
+Si ce n’est pas le cas, la fonction renvoie None.
+- login(request, user) : permet de connecter l’utilisateur. 
+La fonction prend l’objet HttpRequest passé à la vue par le framework,
+et l’instance de User de l’utilisateur à connecter.
+*!* Avant d’utiliser login avec un utilisateur, vous devez avant tout avoir utilisé authenticate
+avec le nom d’utilisateur et le mot de passe correspondant
+
+* Exemple de vue :
+# crepes_bretonnes\secret\views.py
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from secret.forms import ConnexionForm
+
+def connexion(request):
+    error = False
+
+    if request.method == "POST":
+        form = ConnexionForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)  
+            # Nous vérifions si les données sont correctes
+            if user:  # Si l'objet renvoyé n'est pas None
+                login(request, user)  # nous connectons l'utilisateur
+            else: # sinon une erreur sera affichée
+                error = True
+    else:
+        form = ConnexionForm()
+
+    return render(request, 'secret/connexion.html', locals())
+
+* Et finalement la directive de routage :
+# crepes_bretonnes\secret\urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('connexion', views.connexion, name='connexion')
+]
+
+* et l'ajout' aux url globales
+# crepes_bretonnes\crepes_bretonnes\urls.py
+path('secret/', include('secret.urls')),
