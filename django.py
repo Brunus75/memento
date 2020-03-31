@@ -3980,7 +3980,7 @@ python manage.py migrate
 {% if user.is_authenticated %}
 Vous êtes connecté, {{ user.username }} !
 {% else %}
-<form method="post" action=".">
+<form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Se connecter" />
@@ -4032,6 +4032,7 @@ def connexion(request):
             # Nous vérifions si les données sont correctes
             if user:  # Si l'objet renvoyé n'est pas None
                 login(request, user)  # nous connectons l'utilisateur
+                return redirect(reverse(accueil))
             else: # sinon une erreur sera affichée
                 error = True
     else:
@@ -4051,3 +4052,131 @@ urlpatterns = [
 * et l'ajout' aux url globales
 # crepes_bretonnes\crepes_bretonnes\urls.py
 path('secret/', include('secret.urls')),
+
+# - La déconnexion - #
+
+* il suffit d’appeler la fonction logout de django.contrib.auth. 
+* il n’y a même pas besoin de vérifier si le visiteur est connecté ou non
+# crepes_bretonnes\secret\views.py
+from django.contrib.auth import logout # ++
+from django.urls import reverse # ++
+from django.shortcuts import redirect # ++
+
+def deconnexion(request):
+    logout(request)
+    return redirect(reverse(connexion))
+    # reverse crée une directive semblable à la balise de gabarit url
+    # {% url 'some-url-name' arg1=v1 arg2=v2 %}
+
+* le routage :
+path('deconnexion', views.deconnexion, name='deconnexion'),
+
+* créer la page d'accueil' (qui s'affiche' après connexion)
+# crepes_bretonnes\secret\urls.py
+path('', views.accueil, name='accueil'),
+# crepes_bretonnes\secret\views.py
+def accueil(request):
+    return render(request, 'secret/accueil.html', locals())
+# crepes_bretonnes\secret\templates\secret\accueil.html
+<h1>Bienvenue sur votre compte secret !</h1>
+
+
+# - Intéragir avec le profil utilisateur -
+
+* un processeur de contexte se charge d’ajouter une variable reprenant l’instance User 
+de l’utilisateur dans les templates. 
+* Il en va de même pour les vues.
+* l’objet HttpRequest passé à la vue contient également un attribut user 
+qui renvoie l’objet utilisateur du visiteur
+* il peut, encore une fois, être une instance User s’il est connecté, ou AnonymousUser 
+si ce n’est pas le cas
+* exemple :
+from django.http import HttpResponse
+
+def dire_bonjour(request):
+    if request.user.is_authenticated():
+        return HttpResponse("Salut, {0} !".format(request.user.username))
+    return HttpResponse("Salut, anonyme.")
+
+* pour autoriser l’accès de certaines vues uniquement aux utilisateurs connectés,
+Django fournit un décorateur très pratique qui nous permet de nous assurer qu’uniquement
+des visiteurs authentifiés accèdent à la vue = login_required 
+(il se situe dans django.contrib.auth.decorators)
+* exemple d’utilisation :
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def ma_vue(request):
+    # …
+
+* Si l’utilisateur n’est pas connecté, il sera redirigé vers l’URL de la vue de connexion. 
+* Cette URL est normalement définie depuis la variable LOGIN_URL dans votre settings.py. 
+* Si ce n’est pas fait, la valeur par défaut est '/accounts/login/'. 
+* Comme nous avons utilisé l’URL 'secret/connexion' tout à l’heure, réindiquons-la ici :
+LOGIN_URL = '/secret/connexion'
+* si l’utilisateur n’est pas connecté, non seulement il sera redirigé vers 'secret/connexion', 
+mais l’URL complète de la redirection sera "secret/connexion?next=/{url d'où vient redirection}/"
+* vous pouvez également préciser le nom de ce paramètre (au lieu de next  par défaut), 
+via l’argument redirect_field_name du décorateur :
+from django.contrib.auth.decorators import login_required
+
+@login_required(redirect_field_name='rediriger_vers')
+def ma_vue(request):
+    # …
+
+Vous pouvez également spécifier une autre URL de redirection pour la connexion 
+(au lieu de prendre LOGIN_URL  dans le settings.py) :
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/connexion_pour_concours/')
+def jeu_concours(request):
+    # …
+
+* classe finale :
+# crepes_bretonnes\secret\views.py
+from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from secret.forms import ConnexionForm
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/secret/connexion')
+def accueil(request):
+    user = request.user.username
+    return render(request, 'secret/accueil.html', locals())
+
+def connexion(request):
+    error = False
+
+    if request.method == "POST":
+        form = ConnexionForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            # Nous vérifions si les données sont correctes
+            user = authenticate(username=username, password=password)
+            if user:  # Si l'objet renvoyé n'est pas None
+                login(request, user)  # nous connectons l'utilisateur
+                return redirect(reverse(accueil))
+            else:  # sinon une erreur sera affichée
+                error = True
+    else:
+        form = ConnexionForm()
+
+    return render(request, 'secret/connexion.html', locals())
+
+
+def deconnexion(request):
+    logout(request)
+    return redirect(reverse(connexion))
+    # reverse crée une directive semblable à la balise de gabarit url
+    # {% url 'some-url-name' arg1=v1 arg2=v2 %}
+
+# crepes_bretonnes\secret\templates\secret\accueil.html
+<h1>Bienvenue, {{ user }}, sur votre compte secret !</h1>
+
+* Enfin, comme pour les modèles, Django utilise des signaux pour certains événements utilisateurs :
+- user_logged_in : envoyé quand un utilisateur se connecte, avec request et user en argument ;
+- user_logged_out : envoyé quand un utilisateur se déconnecte, avec request et user en argument ;
+- user_login_failed : envoyé quand une tentative de connexion a échoué, avec credentials en argument, 
+contenant des informations sur la tentative.
