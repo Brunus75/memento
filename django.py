@@ -17,6 +17,22 @@ python manage.py migrate
 python manage.py runserver
 
 
+## -- LEXIQUE -- ##
+
+# *args & **kwargs
+**kwargs = les arguments nommés dans l’URL (arguments nominatifs)
+**kwargs = pour faire passer une variable indéfinie, associée à une clé
+**kwargs allows you to pass keyworded variable length of arguments to a function. 
+You should use **kwargs if you want to handle named arguments in a function.
+*args = faire passer une variable indéfinie, sans clé, dans une fonction
+
+# HttpRequest & HttpResponse
+Lorsqu’une page est demandée, Django crée un objet "HttpRequest" 
+contenant des métadonnées au sujet de la requête. 
+Puis, Django charge la vue appropriée, lui transmettant l’objet "HttpRequest" comme premier paramètre. 
+Chaque vue est responsable de renvoyer un objet "HttpResponse"
+
+
 ## -- INSTALLATION -- ##
 
 ouvrir en Administrateur
@@ -625,6 +641,10 @@ pour ce cours, il s’agit du dossier templates à la racine du projet
 <a href="/blog/article/42">
     Lien vers mon super article n° 42
 </a>
+
+{% url 'some-url-name' v1 v2 %} # paramètres positionnels
+{% url 'some-url-name' arg1=v1 arg2=v2 %} # syntaxe par mot-clé
+
 Ce tag construit donc l’URL vers la vue dont le nom est donné comme premier paramètre,
 entre guillemets. 
 Les arguments qui suivent seront ceux de la vue (à condition de respecter le nombre et l’ordre 
@@ -4180,3 +4200,807 @@ def deconnexion(request):
 - user_logged_out : envoyé quand un utilisateur se déconnecte, avec request et user en argument ;
 - user_login_failed : envoyé quand une tentative de connexion a échoué, avec credentials en argument, 
 contenant des informations sur la tentative.
+
+## - Les vues génériques
+
+* L’application django.contrib.auth contient certaines vues qui permettent de réaliser les tâches 
+communes d’un système utilisateurs sans devoir écrire une seule vue : 
+se connecter, 
+se déconnecter, 
+changer le mot de passe 
+et récupérer un mot de passe perdu
+* Utilisation des vues : https://docs.djangoproject.com/fr/3.0/topics/auth/default/#module-django.contrib.auth.views
+* Pour utiliser ces vues, il suffit de leur assigner une URL 
+et de passer les éventuels paramètres que vous souhaitez changer :
+# On import les vues de Django, avec un nom spécifique
+from django.contrib.auth import views as auth_views
+path('connexion', auth_views.login, {'template_name': 'secret/connexion.html'})
+
+Les vues génériques : https://docs.djangoproject.com/fr/3.0/topics/auth/default/#all-authentication-views
+*!* les noms des vues ont changé depuis le cours, on fait désormais appel à des classes
+# https://dev.to/stuartelimu/create-an-authentication-app-for-almost-any-django-project-9kc
+# exemple plus récent :
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
+
+urlpatterns = [
+    path('login/', auth_views.LoginView.as_view(template_name='myapp/login.html'),
+    {'arg1': 'valeur', 'arg2': 'valeur'} name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+]
+
+◘ Se connecter
+* Vue :django.contrib.auth.views.login.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut 
+    registration/login.html).
+* Contexte du template :
+    form : le formulaire à afficher ;
+    next : l’URL vers laquelle l’utilisateur sera redirigé après la connexion.
+* Affiche le formulaire et se charge de vérifier si les données saisies correspondent à un utilisateur. 
+Si c’est le cas, la vue redirige l’utilisateur vers l’URL indiquée dans settings.LOGIN_REDIRECT_URL 
+ou vers l’URL passée par le paramètre GET next  s’il y en a un, sinon il affiche le formulaire. 
+Le template doit pouvoir afficher le formulaire et un bouton pour l’envoyer.
+
+◘ Se déconnecter
+* Vue : django.contrib.auth.views.logout.
+* Arguments optionnels (un seul à utiliser) :
+    next_page : l’URL vers laquelle le visiteur sera redirigé après la déconnexion ;
+    template_name : le template à afficher en cas de déconnexion (par défaut registration/logged_out.html) ;
+    redirect_field_name : utilise pour la redirection l’URL du paramètre GET passé en argument.
+* Contexte du template :
+    title : chaîne de caractères contenant « Déconnecté ».
+* Déconnecte l’utilisateur et le redirige.
+
+◘ Se déconnecter puis se connecter
+* Vue : django.contrib.auth.views.logout_then_login.
+* Arguments optionnels :
+    login_url : l’URL de la page de connexion à utiliser (par défaut utilise settings.LOGIN_URL).
+* Contexte du template : aucun.
+* Déconnecte l’utilisateur, puis le redirige vers l’URL contenant la page de connexion.
+
+◘ Changer le mot de passe
+* Vue :django.contrib.auth.views.password_change.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_change_form.html) ;
+    post_change_redirect : l’URL vers laquelle rediriger l’utilisateur après le changement du mot de passe ;
+    password_change_form : pour spécifier un autre formulaire que celui utilisé par défaut.
+* Contexte du template :
+    form : le formulaire à afficher
+* Affiche un formulaire pour modifier le mot de passe de l’utilisateur,
+puis le redirige si le changement s’est correctement déroulé. 
+Le template doit contenir ce formulaire et un bouton pour l’envoyer.
+
+◘ Confirmation du changement de mot de passe
+* Vue :django.contrib.auth.views.password_change_done.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_change_done.html).
+* Contexte du template : aucun.
+* Vous pouvez vous servir de cette vue pour afficher un message de confirmation 
+après le changement de mot de passe. 
+Il suffit de faire pointer la redirection de django.contrib.auth.views.password_change sur cette vue.
+
+◘ Demande de réinitialisation du mot de passe
+* Vue :django.contrib.auth.views.password_reset.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_reset_form.html) ;
+    email_template_name : le nom du template à utiliser pour générer l’e-mail qui sera envoyé 
+    à l’utilisateur avec le lien pour réinitialiser le mot de passe 
+    (par défaut registration/password_reset_email.html) ;
+    html_email_template_name : le nom du template HTML à utiliser pour l’e-mail. 
+    Par défaut, l’e-mail n’est envoyé qu’au format texte ;
+    subject_template_name : le nom du template à utiliser pour générer le sujet de l’e-mail envoyé 
+    à l’utilisateur (par défaut registration/password_reset_subject.txt) ;
+    password_reset_form  : pour spécifier un autre formulaire à utiliser que celui par défaut ;
+    post_reset_redirect  : l’URL vers laquelle rediriger le visiteur après la demande de réinitialisation ;
+    from_email  : une adresse e-mail valide depuis laquelle sera envoyé l’e-mail 
+    (par défaut, Django utilise settings.DEFAULT_FROM_EMAIL).
+* Contexte du template :
+    form : le formulaire à afficher.
+* Contexte de l’e-mail et du sujet :
+    user : l’utilisateur concerné par la réinitialisation du mot de passe ;
+    email : un alias pour user.email ;
+    domain : le domaine du site web à utiliser pour construire l’URL 
+    (utilise request.get_host() pour obtenir la variable) ;
+    protocol : http ou https ;
+    uid : l’ID de l’utilisateur encodé en base 36 ;
+    token : le token  unique de la demande de réinitialisation du mot de passe.
+* La vue affiche un formulaire permettant d’indiquer l’adresse e-mail du compte à récupérer. 
+L’utilisateur recevra alors un e-mail (il est important de configurer l’envoi d’e-mails ; 
+référez-vous à l’annexe sur le déploiement en production pour davantage d’informations à ce sujet) 
+avec un lien vers la vue de confirmation de réinitialisation du mot de passe.
+* Voici un exemple du template pour générer l’e-mail :
+Une demande de réinitialisation a été envoyée pour le compte {{ user.username }}. 
+Veuillez suivre le lien ci-dessous :
+{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb36=uid token=token %}
+
+◘ Confirmation de demande de réinitialisation du mot de passe
+* Vue :django.contrib.auth.views.password_reset_done.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_reset_done.html).
+* Contexte du template : vide.
+* Vous pouvez vous servir de cette vue pour afficher un message de confirmation 
+après la demande de réinitalisation du mot de passe. 
+Il suffit de faire pointer la redirection de django.contrib.auth.views.password_reset sur cette vue.
+
+◘ Réinitialiser le mot de passe
+* Vue : django.contrib.auth.views.password_reset_confirm.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_reset_confirm.html) ;
+    set_password_form : pour spécifier un autre formulaire à utiliser que celui par défaut ;
+    post_reset_redirect : l’URL vers laquelle sera redirigé l’utilisateur après la réinitialisation.
+* Contexte du template :
+    form  : le formulaire à afficher ;
+    validlink  : booléen, mis à True  si l’URL actuelle représente bien une demande de réinitialisation valide.
+* Cette vue affichera le formulaire pour saisir un nouveau mot de passe, 
+et se chargera de la mise à jour de ce dernier.
+
+◘ Confirmation de la réinitialisation du mot de passe
+* Vue : django.contrib.auth.views.password_reset_complete.
+* Arguments optionnels :
+    template_name : le nom du template à utiliser (par défaut registration/password_reset_complete.html).
+* Contexte du template : aucun.
+* Vous pouvez vous servir de cette vue pour afficher un message de confirmation 
+après la réinitialisation du mot de passe. 
+Il suffit de faire pointer la redirection de django.contrib.auth.views.password_reset_confirm  
+sur cette vue.
+
+## - Les permissions et les groupes
+
+* les permissions permettent de déterminer si un utilisateur a le droit d’effectuer 
+une certaine action ou non. 
+* Les groupes permettent de définir des permissions communes à un ensemble d’utilisateurs
+
+# - les permissions -
+
+* Une permission a la forme suivante : nom_application.nom_permission
+* Django crée automatiquement trois permissions pour chaque modèle enregistré.
+* Si nous reprenons par exemple le modèle Article  de l’application blog, 
+trois permissions sont créées par Django :
+    blog.add_article : la permission pour créer un article ;
+    blog.change_article : la permission pour modifier un article ;
+    blog.delete_article : la permission pour supprimer un article.
+* Il est possible de créer ses propres permissions
+* Chaque permission dépend d’un modèle et doit être renseignée dans sa sous-classe Meta. 
+Petit exemple en reprenant notre modèle Article utilisé au début :
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField()
+    date = models.DateTimeField(auto_now_add=True, auto_now=False, verbose_name="Date de parution")
+    categorie = models.ForeignKey(Categorie)
+
+    def __str__(self):
+        return self.titre
+
+    class Meta:
+        permissions = (
+            ("commenter_article", "Commenter un article"),
+            ("marquer_article", "Marquer un article comme lu"),
+            # création d'un tuple contenant les paires de vos permissions, 
+            # avec à chaque fois le nom de la permission et sa description
+        )
+
+* Après avoir mis à jour la base de données (makemigrations et migrate), 
+il est ensuite possible d’assigner des permissions à un utilisateur dans l’administration 
+(cela se fait depuis la fiche d’un utilisateur)
+* pour vérifier si un utilisateur possède ou non une permission, 
+il suffit de faire : user.has_perm("blog.commenter_article").
+La fonction renvoie True  ou False, selon si l’utilisateur dispose de la permission ou non. 
+Cette fonction est également accessible depuis les templates,
+encore grâce à un context processor, perms :
+{% if perms.blog.commenter_article %}
+	<p><a href="/commenter/">Commenter</a></p>
+{% endif %}
+# Le lien ici ne sera affiché que si l’utilisateur dispose de la permission pour commenter
+
+* De même que pour le décorateur login_required, il existe un décorateur 
+permettant de s’assurer que l’utilisateur qui souhaite accéder à la vue dispose bien 
+de la permission nécessaire. 
+* Il s’agit de django.contrib.auth.decorators.permission_required
+from django.contrib.auth.decorators import permission_required
+
+@permission_required('blog.commenter_article')
+def article_commenter(request, article):
+    # …
+
+* il est également possible de créer une permission dynamiquement. 
+* Pour cela, il faut importer le modèle Permission, situé dans django.contrib.auth.models
+* Ce modèle possède les attributs suivants :
+    name : le nom de la permission, 50 caractères maximum ;
+    content_type : un content_type pour désigner le modèle concerné ;
+    codename : le nom de code de la permission.
+
+* si nous souhaitons par exemple créer une permission « commenter un article » spécifique à chaque article, 
+et ce à chaque fois que nous créons un nouvel article, voici comment procéder :
+from django.contrib.auth.models import Permission
+from blog.models import Article
+from django.contrib.contenttypes.models import ContentType
+
+…  # Récupération des données
+article.save()
+
+content_type = ContentType.objects.get(app_label='blog', model='Article')
+permission = Permission.objects.create(
+    codename='commenter_article_{0}'.format(article.id),
+    name='Commenter l\'article "{0}"'.format(article.titre),
+    content_type=content_type)
+
+* Une fois que la permission est créée, 
+il est possible de l’assigner à un utilisateur précis de cette façon :
+user.user_permissions.add(permission)
+* Pour rappel, user_permissions est une relation ManyToMany 
+de l’utilisateur vers la table des permissions.
+
+## - Les groupes
+
+* groupe = regroupement d’utilisateurs auquel nous pouvons assigner des permissions
+* Une fois qu’un groupe dispose d’une permission, 
+tous ses utilisateurs en disposent automatiquement aussi
+* Il s’agit donc d’un modèle, django.contrib.auth.models.Group, qui dispose des champs suivants :
+    name : le nom du groupe (80 caractères maximum) ;
+    permissions : une relation ManyToMany vers les permissions, 
+    comme user_permissions pour les utilisateurs.
+* Pour ajouter un utilisateur à un groupe, il faut utiliser la relation ManyToManygroups de User  :
+>>> from django.contrib.auth.models import User, Group
+>>> group = Group(name="Les gens géniaux")
+>>> group.save()
+>>> user = User.objects.get(username="Mathieu")
+>>> user.groups.add(group)
+* La méthode user.has_perm('app.nom_perm') vérifie donc si l’utilisateur a cette permission 
+ou s’il appartient à un groupe ayant la permission app.nom_perm
+
+
+## -- LES MESSAGES -- ##
+
+## - Les bases
+
+* s’assurer que l’application et ses dépendances sont bien installées. 
+* dans settings.py, vous devez avoir :
+    dans MIDDLEWARE, 'django.contrib.messages.middleware.MessageMiddleware' ;
+    dans INSTALLED_APPS, 'django.contrib.messages' ;
+    dans TEMPLATES,'django.contrib.messages.context_processors.messages' ;
+
+* Django peut envoyer des notifications (aussi appelées messages) à tous les visiteurs, 
+qu’ils soient connectés ou non. 
+* Il existe plusieurs niveaux de messages par défaut (nous verrons comment en ajouter par la suite) :
+    DEBUG : message destiné à la phase de développement uniquement. 
+    Ces messages ne seront affichés que si DEBUG=True dans votre settings.py.
+    INFO : message d’information pour l’utilisateur.
+    SUCCESS : confirmation qu’une action s’est bien déroulée.
+    WARNING : une erreur n’a pas été rencontrée, mais pourrait être imminente.
+    ERROR : une action ne s’est pas déroulée correctement ou une erreur quelconque est apparue.
+* Chaque niveau a son « tags » associé, qui est le niveau en minuscules (debug, info...)
+* Ces tags sont notamment utilisés pour pouvoir définir un style CSS précis à chaque niveau, 
+afin de pouvoir les différencier.
+
+* Voici la fonction à appeler pour envoyer un message depuis une vue :
+from django.contrib import messages
+messages.add_message(request, messages.INFO, 'Bonjour visiteur !')
+# Il est important de ne pas oublier le premier argument : request, l’objet HttpRequest donné à la vue
+
+* Il existe également quelques raccourcis pour les niveaux par défaut :
+messages.debug(request, '%s requêtes SQL ont été exécutées.' % compteur)
+messages.info(request, 'Rebonjour !')
+messages.success(request, 'Votre article a bien été mis à jour.')
+messages.warning(request, 'Votre compte expire dans 3 jours.')
+messages.error(request, 'Cette image n\'existe plus.')
+
+* afficher les messages
+* Django se charge de la majeure partie du travail : une variable messages
+est incluse dans le contexte grâce au context_processors installé
++ choisir où afficher les notifications dans le template
+* ébauche de code de template pour afficher les messages au visiteur :
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    # À l’itération de chaque message, ce dernier sera supprimé tout seul, 
+    # ce qui assure que l’utilisateur ne verra pas deux fois la même notification
+    {% endfor %}
+</ul>
+{% endif %}
+
+*!* Ce code est de préférence à intégrer dans une base commune 
+(appelée depuis {% extends %}) pour éviter de devoir le réécrire dans tous vos templates.
+
+## - Dans les détails
+
+* en réalité, les niveaux de messages ne sont que des entiers constants :
+>>> from django.contrib import messages
+>>> messages.INFO
+20
+* Voici la relation entre niveau et entier par défaut :
+    DEBUG  : 10
+    INFO  : 20
+    SUCCESS  : 25
+    WARNING  : 30
+    ERROR  : 40
+* ajouter un niveau = créer une nouvelle constante
+Par exemple :
+CRITICAL = 50
+messages.add_message(request, CRITICAL, 'Une erreur critique est survenue.')
+* Il est dès lors tout aussi possible d’ajouter des tags à un message. 
+Ici, le tag « fail » sera ajouté :
+messages.add_message(request, CRITICAL, 'Une erreur critique est survenue.', extra_tags="fail")
+
+* il est posible de limiter l’affichage des messages à un certain niveau (égal ou supérieur)
+* Cela peut se faire de deux manières différentes. 
+* Soit depuis le settings.py, en mettant MESSAGE_LEVEL au niveau minimum des messages à afficher 
+(par exemple 25, pour ne pas montrer les messages DEBUG  et INFO)
+* soit en faisant cette requête dans la vue :
+messages.set_level(request, messages.DEBUG)
+# tous les messages dont le niveau est égal ou supérieur à 10 (la valeur de messages.DEBUG) 
+# seront affichés
+* On préfèrera la méthode globale avec le settings.py, 
+qui permet d’afficher des informations supplémentaires lors du développement sans avoir à changer le code.
+* En effet, il suffit de mettre le minimum à SUCCESS sur votre environnement de production 
+pour cacher les messages de debug et d’info
+
+* si vous souhaitez faire une application réutilisable, 
+il se peut que les gens qui souhaitent l’intégrer n’utilisent pas le système de messages sur leur projet. 
+Pour éviter de provoquer des erreurs, si vous pensez que le message est facultatif, 
+vous pouvez spécifier à Django d’échouer silencieusement :
+messages.info(request, 'Message à but informatif.', fail_silently=True)
+
+
+## -- LA MISE EN CACHE -- ##
+
+## - Le cache et ses systèmes
+
+https://docs.djangoproject.com/fr/3.0/topics/cache/
+
+* Mettre quelque chose « en cache » est le fait de sauvegarder le résultat d’une opération 
+chère en temps de calcul, afin de ne pas avoir à ré-effectuer cette opération la fois suivante.
+* Django enregistre les données dans un système de cache ; 
+or, il dispose de plusieurs systèmes de caches différents à la base.
+* Chacun de ces systèmes a ses avantages et désavantages, et tous fonctionnent un peu différemment. 
+* Il s’agit donc de trouver le système de cache le plus adapté à vos besoins.
+* La configuration du système de cache se fait grâce à la variable CACHES de votre settings.py
+
+# Dans les fichiers
+
+Un système de cache simple est celui enregistrant les données dans des fichiers sur 
+le disque dur du serveur. 
+Pour chaque valeur enregistrée dans le cache, 
+le système va créer un fichier et y enregistrer le contenu de la donnée sauvegardée. 
+Voici comment le configurer :
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # système de cache utilisé
+        'LOCATION': '/var/tmp/django_cache',
+        # doit pointer vers un dossier absolu, et non pas vers un fichier spécifique
+        # 'c:/mon/dossier'
+    }
+}
+Les fichiers sauvegardés seront « sérialisés » en utilisant le module pickle
+pour y encoder les données à sauvegarder. 
+Vous devez également vous assurer que votre serveur web a bien accès en écriture et
+en lecture au dossier que vous avez indiqué.
+
+# Dans la mémoire
+
+Toutes vos données seront enregistrées dans la mémoire vive du serveur. 
+Voici la configuration de ce système :
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'cache_crepes'
+        # identifiant de l’instance du cache, doit être unique
+    }
+}
+Ce cache n’est pas très performant au niveau de la gestion mémoire, 
+mais est pratique pour un environnement de développement. 
+Il est par ailleurs le système utilisé par défaut si vous ne spécifiez pas de configuration.
+
+# Dans la base de données
+
++ créer une table dans celle-ci pour y accueillir les données. 
+* Cela se fait grâce à une commande spéciale de manage.py  :
+python manage.py createcachetable [nom_table_cache]
++ l’indiquer dans le settings.py :
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'nom_table_cache',
+    }
+}
+Ce système peut se révéler pratique et rapide si vous avez dédié tout un serveur physique 
+à votre base de données ; néanmoins, il faut disposer de telles ressources pour arriver à 
+quelque chose de convenable.
+
+# En utilisant Memcached
+
+* indépendant de Django, et le framework ne s’en charge pas lui-même
+* Pour l’utiliser, il faut avant tout lancer un programme responsable lui-même du cache. 
+* Django ne fera qu’envoyer les données à mettre en cache et les récupérer par la suite ; 
+c’est au programme de sauvegarder et de gérer ces données.
+* Si cela peut sembler assez pénible à déployer, le système est en revanche très rapide et 
+probablement le plus efficace de tous. 
+* Memcached va enregistrer les données dans la mémoire vive, comme le système vu précédemment 
+qui utilisait la même technique, sauf qu’en comparaison de ce dernier, 
+Memcached est bien plus efficace et utilise moins de mémoire. 
+* Memcached est utile si vous comptez utiliser beaucoup de cache, sur un site à plutôt fort trafic.
+* La configuration côté Django est encore une fois relativement simple :
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+        # combinaison adresse IP:port depuis laquelle Memcached est accessible
+    }
+}
+
+# Pour le développement
+
+* Celui-ci ne fait rien (il n’enregistre aucune donnée et n’en renvoie aucune). 
+* Il permet juste d’activer le système de cache, ce qui peut se révéler pratique 
+si vous utilisez le cache en production, mais que vous n’en avez pas besoin en développement. 
+* Voici sa configuration :
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+# Quel système choisir ?
+
+* développement => cache de développement ou cache mémoire (le simple, sans Memcached)
+* production, si vous avez peu de données à mettre en cache, 
+la solution la plus simple => système utilisant les fichiers
+* lorsque le cache devient fortement utilisé, Memcached est probablement la meilleure solution
+Sinon, utilisez le système utilisant la base de données. 
+
+## - Les différentes techniques de mise en cache
+
+https://docs.djangoproject.com/fr/3.0/topics/cache/#the-per-site-cache
+
+# - Le cache « par site » -
+
+* la manière la plus simple d’utiliser le cache est de mettre en cache tout le site
+* Il s’agit alors d’ajouter 'django.middleware.cache.UpdateCacheMiddleware' et 
+'django.middleware.cache.FetchFromCacheMiddleware' au réglage MIDDLEWARE, comme dans cet exemple :
+MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+]
++ ajoutez les réglages obligatoires suivants dans votre fichier de réglages Django :
+    CACHE_MIDDLEWARE_ALIAS – L’alias de cache à utiliser pour le stockage.
+    CACHE_MIDDLEWARE_SECONDS – le nombre de secondes durant lequel chaque page doit être conservée en cache.
+    CACHE_MIDDLEWARE_KEY_PREFIX – Si le cache est partagé par plusieurs sites utilisant la même installation de Django, 
+    définissez cette valeur au nom du site ou à un nom unique de cette instance de Django, 
+    afin d’éviter des collisions de clés. Indiquez une chaîne vide si cela ne vous concerne pas.
+
+# - Cache par vue -
+
+https://docs.djangoproject.com/fr/3.0/topics/cache/#the-per-view-cache
+* méthode de cache pratique 
+* Une manière plus fine d’utiliser l’infrastructure de cache
+* Avec cette technique, dès que le rendu d’une vue est calculé, 
+il sera directement enregistré dans le cache. Tant que celui-ci sera dans le cache, 
+la vue ne sera plus appelée et la page sera directement cherchée dans le cache.
+* Cette mise en cache se fait grâce à un décorateur : django.views.decorators.cache.cache_page. 
+Voici son utilisation :
+from django.views.decorators.cache import cache_page
+
+@cache_page(60 * 15) # (durée en secondes après laquelle le rendu dans le cache aura expiré)
+# Grâce à cet argument, vous êtes assuré que le cache restera à jour automatiquement
+def lire_article(request, id):
+    article = Article.objects.get(id=id)
+    # ...
+
+* Il est également possible de spécifier une mise en cache directement depuis les URLconf.
+* Ex. : pour que les vues puissent être réutilisées pour un autre site sans cache, 
+ou peut-être qu’à un moment donné les vues seront mises à disposition d’autres personnes 
+qui voudront les utiliser sans cache 
+Ainsi, la mise en cache de vues génériques est également possible :
+from django.views.decorators.cache import cache_page
+from . import views
+
+urlpatterns = [
+    path('foo/<int:code>/', cache_page(60 * 15)(views.lire_article)),
+    # inclure la vue sous forme de référence, et non pas sous forme de chaîne de caractères
+]
+
+# - Dans les templates -
+
+* Il est également possible de mettre en cache certaines parties d’un template. 
+* Cela se fait grâce au tag {% cache %}
+* Ce tag doit au préalable être inclus grâce à la directive {% load cache %}
+* cache prend deux arguments au minimum : la durée d’expiration de la valeur (toujours en secondes), 
+et le nom de cette valeur en cache (une sorte de clé que Django utilisera pour retrouver la bonne valeur
+dans le cache) :
+{% load cache %}
+{% cache 500 carrousel %}
+    /* mon carrousel */
+{% endcache %}
+# nous enregistrons dans le cache notre carrousel. 
+# Celui-ci expirera dans 500 secondes et nous utilisons la clé carrousel
+
+* il est également enregistrer plusieurs copies en cache d’une même partie de template 
+dépendant de plusieurs variables.
+* ex. : notre carrousel est différent pour chaque utilisateur
+* solution = réutiliser une clé dynamique et différente pour chaque utilisateur :
+{% load cache %}
+{% cache 500 user.username %}
+    /* mon carrousel adapté à l'utilisateur actuel */
+{% endcache %}
+# chaque utilisateur connecté aura dans le cache la copie du carrousel adaptée à son profil
+
+# - La mise en cache de bas niveau -
+
+https://docs.djangoproject.com/fr/3.0/topics/cache/#the-low-level-cache-api
+
+* Pourquoi ? Il arrive parfois qu’enregistrer toute une vue ou 
+une partie de template soit une solution exagérée et non adaptée
+* solution = réaliser une mise en cache de variables bien précises
+* Ces opérations sont réalisées grâce à plusieurs fonctions de l’objet cache
+du module django.core.cache
+* Cet objet cache se comporte un peu comme un dictionnaire. 
+* Nous pouvons lui assigner des valeurs à travers des clés :
+>>> from django.core.cache import cache
+>>> cache.set('ma_cle', 'Coucou !', 30) # valeur enregistrée pendant 30 secondes dans le cache
+>>> cache.get('ma_cle')
+'Coucou !'
+
+* il est possible de spécifier une valeur par défaut si la clé n’existe pas ou plus :
+>>> cache.get('ma_cle', 'a expiré')
+'a expiré'
+
+* Pour essayer d’ajouter une clé si elle n’est pas déjà présente, 
+il faut utiliser la méthode add. Si cette clé est déjà présente, rien ne se passe :
+>>> cache.set('cle', 'Salut')
+>>> cache.add('cle', 'Coucou')
+>>> cache.get('cle')
+'Salut'
+
+* Pour ajouter et obtenir plusieurs clés à la fois, il existe deux fonctions adaptées, 
+set_many et get_many :
+>>> cache.set_many({'a': 1, 'b': 2, 'c': 3})
+>>> cache.get_many(['a', 'b', 'c'])
+{'a': 1, 'b': 2, 'c': 3}
+
+* Vous pouvez également supprimer une clé du cache, voire plusieurs en même temps :
+>>> cache.delete('a')
+>>> cache.delete_many(['a', 'b', 'c'])
+
+* Pour vider tout le cache, voici la méthode clear. 
+Toutes les clés et leurs valeurs seront supprimées :
+>>> cache.clear()
+
+* il existe encore deux fonctions, incr et decr, qui permettent respectivement d’incrémenter 
+et de décrémenter un nombre dans le cache, sans avoir à le récupérer pour le redéfinir :
+>>> cache.set('num', 1)
+>>> cache.incr('num')
+2
+>>> cache.incr('num', 10) # incrémente de 10
+12
+>>> cache.decr('num')
+11
+>>> cache.decr('num', 5) # décrémente de 5
+6
+
+
+## -- LA PAGINATION -- ##
+
+https://docs.djangoproject.com/fr/3.0/topics/pagination/
+https://docs.djangoproject.com/fr/3.0/ref/paginator/#django.core.paginator.Paginator
+
+## - Exemples en console
+
+* Django permet de répartir des ensembles d’objets sur plusieurs pages : des listes, des QuerySet, etc. 
+En réalité, tous les objets ayant une méthode count ou __len__ sont acceptés.
+
+* premier exemple = une simple liste et sera effectué dans l’interpréteur interactif. 
++ Ouvrez une console et tapez la commande python manage.py shell pour lancer l’interpréteur.
+* Django fournit une classe nommée Paginator qui effectue la pagination. 
+Elle se situe dans le module django.core.paginator
+>>> from django.core.paginator import Paginator
+>>> villes = ['Tokyo', 'Mexico', 'Seoul', 'New York', 'Bombay', 'Karachi', 
+'Sao Paulo', 'Manille', 'Bangkok', 'New Delhi', 'Djakarta', 'Shanghai',
+'Los Angeles', 'Kyoto', 'Le Caire', 'Calcutta', 'Moscou', 'Istanbul',
+'Buenos Aires', 'Dacca', 'Gauteng', 'Teheran', 'Pekin']
+
+* La classe Paginator est instanciable avec deux paramètres : la liste d’objets à répartir 
+et le nombre maximum d’objets à afficher par page
+# class Paginator(object_list, per_page, orphans=0, allow_empty_first_page=True)
+* Imaginons que nous souhaitions afficher 5 villes par page :
+>>> p = Paginator(villes, 5)
+* Cet objet possède les attributs suivants :
+>>> p.count      # Nombre d'objets au total, toutes pages confondues
+23
+>>> p.num_pages  # Nombre de pages nécessaires pour répartir toutes les villes
+5                # En effet, 4 pages avec 5 villes et 1 page avec 3 villes
+
+>>> p.page_range  # La liste des pages disponibles
+[1, 2, 3, 4, 5]   # range(1, 6)
+
+* Nous pouvons obtenir les villes d’une page précise grâce la méthode page(). 
+Cette méthode renvoie un objet Page, dont voici les méthodes principales :
+>>> page1 = p.page(1)  # Renvoie un objet Page pour notre première page
+>>> page1
+<Page 1 of 5>
+>>> page1.object_list      # Le contenu de cette première page
+['Tokyo', 'Mexico', 'Seoul', 'New York', 'Bombay']  
+>>> p.page(5).object_list  # Même opération pour la cinquième page
+['Gauteng', 'Teheran', 'Pekin']
+>>> page1.has_next()      # Est-ce qu'il y a une page suivante ?
+True   
+>>> page1.has_previous()  # Est-ce qu'il y a une page précédente ?
+False
+
+*!* la numérotation des pages commence bien à 1
+
+* La classe renvoie plusieurs types d’exceptions en cas d’erreur à la récupération d’une page :
+>>> p.page(0)
+Traceback (most recent call last):
+   […]
+django.core.paginator.EmptyPage: That page number is less than 1
+>>> p.page(6)
+Traceback (most recent call last):
+   […]
+django.core.paginator.EmptyPage: That page contains no results
+>>> p.page('abc') 
+Traceback (most recent call last):
+  […]
+django.core.paginator.PageNotAnInteger: That page number is not an integer
+
+* deux autres situations permettant de compléter au mieux notre système de pagination
+* le constructeur complet de Paginator  accepte deux paramètres optionnels
+
+* le paramètre orphans permet de préciser le nombre minimum d’éléments qu’il faut 
+pour afficher une dernière page
+* Si le nombre d’éléments est inférieur au nombre requis, alors ces éléments sont déportés 
+sur la page précédente (qui devient elle-même la dernière page), 
+en plus des éléments qu’elle contient déjà. Prenons notre exemple précédent :
+>>> p = Paginator(villes, 10, orphans=5)
+>>> p.num_pages
+2
+>>> p.page(1).object_list
+['Tokyo', 'Mexico', 'Seoul', 'New York', 'Bombay', 'Karachi', 'Sao Paulo', 'Manille', 'Bangkok', 
+'New Delhi']
+>>> p.page(2).object_list
+['Djakarta', 'Shanghai', 'Los Angeles', 'Kyoto', 'Le Caire', 'Calcutta', 'Moscou', 'Istanbul', 
+'Buenos Aires', 'Dacca', 'Gauteng', 'Teheran', 'Pekin']
+# Nous voyons que la dernière page théorique (la 3e) aurait dû contenir 3 éléments 
+# (Gauteng, Teheran  et Pekin), ce qui est inférieur à 5. 
+# Ces éléments sont donc affichés à la page 2, qui devient la dernière, avec 13 éléments.
+
+* Le dernier attribut, allow_empty_first_page, permet de lancer une exception 
+si la première page est vide. 
+Autrement dit, une exception est levée s’il n’y a aucun élément à afficher. 
+Un exemple est encore une fois plus parlant :
+# Nous initialisons deux Paginator avec une liste vide
+>>> pagination_avec_vide = Paginator([], 42)  
+>>> pagination_sans_vide = Paginator([], 42, allow_empty_first_page=False) 
+
+>>> pagination_avec_vide.page(1)  # Comportement par défaut si la liste est vide
+<Page 1 of 1>
+>>> pagination_avec_vide.page(1).object_list
+[]
+>>> pagination_sans_vide.page(1) 
+Traceback (most recent call last):
+ […]
+django.core.paginator.EmptyPage: That page contains no results
+
+## - Utilisation concrète dans une vue
+
+* Nous reprenons notre vue simple (pas celle utilisant les vues génériques) du TP 
+sur la minification d’URL :
+def liste(request):
+    """Affichage des redirections"""
+    minis = MiniURL.objects.order_by('-nb_acces')
+
+    return render(request, 'mini_url/liste.html', locals())
+
++ ajouter un argument page  à notre vue, afin de savoir quelle page l’utilisateur souhaite voir. 
+* Pour ce faire, il y a deux méthodes :
+- passer le paramètre page  via un paramètre GET  (/url/?page=1) ;
+ce cas se résume à un simple request.GET.get('page') dans la vue pour récupérer le numéro de page
+- modifier la définition de l’URL et la vue pour prendre en compte un numéro de page
+(/url/1 pour la première page)
+
+* Nous modifions donc légèrement notre vue pour le paramètre page :
+# crepes_bretonnes\mini_url\views.py
+def liste(request, page=1):
+   """ Affichage des redirections """
+   minis = MiniURL.objects.order_by('-nb_acces')
+
+   return render(request, 'mini_url/liste.html', locals())
+
+* Et notre fichier urls.py :
+# crepes_bretonnes\mini_url\urls.py
+from django.urls import path, re_path
+from . import views
+
+urlpatterns = [
+    # Pas d'argument page précisé -> vaudra 1 par défaut
+    path('', views.liste, name='url_liste'),
+    re_path(r'^(?P<page>\d+)$', views.liste, name='url_liste'),
+    
+    # . . .
+]
+
++ créons donc un objet Paginator à partir de cette liste
+from django.core.paginator import Paginator, EmptyPage
+
+def liste(request, page=1):
+    """ Affichage des redirections enregistrées """
+    minis_list = MiniURL.objects.order_by('-nb_acces')
+    paginator = Paginator(minis_list, 5)  # 5 liens par page
+
+    try:
+        # La définition de nos URL autorise comme argument « page » uniquement 
+        # des entiers, nous n'avons pas à nous soucier de PageNotAnInteger
+        minis = paginator.page(page)
+    except EmptyPage:
+        # Nous vérifions toutefois que nous ne dépassons pas la limite de page
+        # Par convention, nous renvoyons la dernière page dans ce cas
+        minis = paginator.page(paginator.num_pages)
+
+    return render(request, 'mini_url/liste.html', locals())
+
+* l’adresse http://127.0.0.1:8000/m/ renvoie les 5 premières URL,
+http://127.0.0.1:8000/m/2 les 5 suivantes, etc.
+
++ améliorer le template : 
+<h1>Le raccourcisseur d'URL spécial crêpes bretonnes !</h1>
+
+<p><a href="{% url 'url_nouveau' %}">Raccourcir une URL.</a></p>
+
+<p>Liste des URL raccourcies :</p>
+<ul>
+    {% for mini in minis %}
+    <li> <a href="{% url 'url_update' mini.code %}">Mettre à jour</a> -  
+        <a href="{% url 'url_delete' mini.code %}">Supprimer</a> | {{ mini.url }} via 
+        <a href="http://{{ request.get_host }}{% url 'url_redirection' mini.code %}">
+            {{ request.get_host }}{% url 'url_redirection' mini.code %}
+        </a> 
+        {% if mini.pseudo %}par {{ mini.pseudo }}{% endif %} ({{ mini.nb_acces }} accès)
+    </li>
+    {% empty %}
+    <li>Il n'y en a pas actuellement.</li>
+    {% endfor %}
+</ul>
+
+<div class="pagination">
+   {% if minis.has_previous %}
+       <a href="{% url 'url_liste' minis.previous_page_number %}">Précédente</a> -
+   {% endif %}
+
+   <span class="current">
+       Page {{ minis.number }} sur {{ minis.paginator.num_pages }}
+   </span>
+
+   {% if minis.has_next %}
+       - <a href="{% url 'url_liste' minis.next_page_number %}">Suivante</a>
+   {% endif %}
+</div>
+
+*!* créer un template générique gérant la pagination et de l’appeler où vous en avez besoin,
+via {% include "pagination.html" with liste=minis view="url_liste" %}
+
++ adapter la pagination comme vous voulez en modifiant la ligne appelant Paginator
+# crepes_bretonnes\mini_url\views.py
++ Par exemple, on peut réutiliser le troisième argument optionnel orphans 
+pour avoir un minimum de liens sur la dernière page :
+paginator = Paginator(minis_list, 20, 5) # 20 liens par page, avec un minimum de 5 liens sur la dernière
+
+
+## -- L'INTERNATIONALISATION (I18N) -- ##
+
+https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874201-linternationalisation
+https://docs.djangoproject.com/fr/3.0/topics/i18n/
+
+# settings.py
+
+LANGUAGE_CODE = 'fr-fr'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = False # permet d’activer l’internationalisation
+
+USE_L10N = True # permet de formater automatiquement certaines données 
+# en fonction de la langue de l’utilisateur

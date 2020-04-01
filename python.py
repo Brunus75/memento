@@ -28,15 +28,18 @@ Ctrl + : => commente une ligne/plusieurs lignes
 Ctrl + Shift + : => commente plusieurs lignes
 Ctrl + Shift + P : => montre les commandes disponibles (SQLite, par ex.)
 
+
 ## -- EXTENSIONS VS CODE -- ##
 Python
 autoDocstring
 SQLite
 
+
 ## -- OUTILS -- ##
 GitBash
 Cmder
 DB Browser
+
 
 ## -- SPECIFICITES PYTHON -- ##
 * Le point-virgule n'est JAMAIS utilisé en Python'
@@ -44,6 +47,32 @@ DB Browser
 * un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
 et le terme librairie quant à lui est souvent utilisé pour parler de packages
 * rien n'est' privé en python, tout est public
+
+
+## -- LEXIQUE -- ##
+
+# - *args et **kwargs
+*args = faire passer une variable indéfinie, sans clé, dans une fonction
+
+def test_var_args(f_arg, *argv):
+    print("first normal arg:", f_arg)
+    for arg in argv:
+        print("another arg through *argv:", arg)
+
+test_var_args('yasoob', 'python', 'eggs', 'test')
+# first normal arg: yasoob
+# another arg through *argv: python
+# another arg through *argv: eggs
+# another arg through *argv: test
+
+**kwargs = faire passer une variable indéfinie, associée à une clé
+
+def greet_me(**kwargs):
+    for key, value in kwargs.items():
+        print("{0} = {1}".format(key, value))
+
+>>> greet_me(name="yasoob")
+name = yasoob
 
 
 ## -- LE TERMINAL -- ##
