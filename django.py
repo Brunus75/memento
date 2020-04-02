@@ -1,5 +1,6 @@
 ## ---------- MEMENTO DJANGO ---------- ##
 
+
 ## -- GITHUB -- ##
 
 le fichier settings.py renferme de nombreuses informations privées
@@ -17,6 +18,26 @@ python manage.py migrate
 python manage.py runserver
 
 
+## -- BONNES PRATIQUES -- ##
+
+* préférer timezone à datetime
+
+* reverse() : préférer les noms de motifs d'URL' à l'objet' de la vue
+# exemple :
+from news import views
+path('archive/', views.archive, name='news-archive')
+# using the named URL
+reverse('news-archive')
+# passing a callable object
+# (This is discouraged because you can't reverse namespaced views this way.)
+from news import views
+reverse(views.archive)
+# avec des *args :
+reverse('arch-summary', args=[1945])
+# avec des **kwargs :
+reverse('admin:app_list', kwargs={'app_label': 'auth'})
+
+
 ## -- LEXIQUE -- ##
 
 # *args & **kwargs
@@ -31,6 +52,9 @@ Lorsqu’une page est demandée, Django crée un objet "HttpRequest"
 contenant des métadonnées au sujet de la requête. 
 Puis, Django charge la vue appropriée, lui transmettant l’objet "HttpRequest" comme premier paramètre. 
 Chaque vue est responsable de renvoyer un objet "HttpResponse"
+
+# reverse_lazy()
+une version de reverse() à exécution différée
 
 
 ## -- INSTALLATION -- ##
@@ -587,6 +611,37 @@ La directive {% empty %} permet d’afficher un message par défaut si la liste 
     <p class="empty">Pas de commentaires pour le moment.</p>
 {% endfor %}
 
+# as
+Dans certains cas, il peut être souhaitable de se référer à la valeur actuelle du cycle 
+sans passer à la valeur suivante. 
+Pour cela, donnez un nom à la balise {% cycle %} via « as », comme ceci :
+{% cycle 'row1' 'row2' as rowcolors %}
+
+À partir de cet instance, vous pouvez insérer la valeur actuelle du cycle chaque fois 
+que vous en avez besoin dans votre gabarit en vous référant au nom du cycle comme variable de contexte. 
+Si vous souhaitez faire passer le cycle à la prochaine valeur indépendamment de la balise cycle d’origine, 
+vous pouvez utiliser une autre balise cycle et indiquer le nom de la variable. 
+Ainsi, le gabarit suivant :
+<tr>
+    <td class="{% cycle 'row1' 'row2' as rowcolors %}">...</td>
+    <td class="{{ rowcolors }}">...</td>
+</tr>
+<tr>
+    <td class="{% cycle rowcolors %}">...</td>
+    <td class="{{ rowcolors }}">...</td>
+</tr>
+
+affichera :
+<tr>
+    <td class="row1">...</td>
+    <td class="row1">...</td>
+</tr>
+<tr>
+    <td class="row2">...</td>
+    <td class="row2">...</td>
+</tr>
+
+
 # Le tag {% block %}
 nous pouvons créer un fichier, appelé usuellement base.html, 
 qui va définir la structure globale de la page, autrement dit son squelette. 
@@ -670,6 +725,7 @@ ils n’apparaîtront pas dans la page HTML
     - retours en garantie
 {% endcomment %}
 <table>...
+
 
 ## - Ajoutons des fichiers statiques
 
@@ -2399,7 +2455,9 @@ class URLCreate(CreateView):
     success_url = reverse_lazy(liste)
 
 * reverse_lazy = fonction permet de récupérer l’URL d’une vue à l’exécution 
-plutôt qu’à l’initialisation du code
+plutôt qu’à l’initialisation du code 
+(nous souhaitons que la valorisation soit effectuée à l’exécution et non à la déclaration des classes,
+lors de la validation des modèles par le serveur)
 * reverse_lazy renvoie un objet qui ne récupérera l’URL demandée que lors d’un appel explicite, 
 dans un template par exemple
 
@@ -5004,3 +5062,598 @@ USE_I18N = False # permet d’activer l’internationalisation
 
 USE_L10N = True # permet de formater automatiquement certaines données 
 # en fonction de la langue de l’utilisateur
+
+
+## -- LES TESTS UNITAIRES -- ##
+
+* opération qui vérifie une certaine partie de votre code
+https://docs.djangoproject.com/fr/3.0/topics/testing/tools/
+https://docs.djangoproject.com/fr/3.0/topics/testing/overview/
+https://docs.python.org/3/library/unittest.html#module-unittest
+* exemple :
+from django.test import TestCase
+from myapp.models import Animal
+
+class AnimalTestCase(TestCase):
+    def setUp(self):
+        Animal.objects.create(name="lion", sound="roar")
+        Animal.objects.create(name="cat", sound="meow")
+
+    def test_animals_can_speak(self):
+        """Animals that can speak are correctly identified"""
+        lion = Animal.objects.get(name="lion")
+        cat = Animal.objects.get(name="cat")
+        self.assertEqual(lion.speak(), 'The lion says "roar"')
+        self.assertEqual(cat.speak(), 'The cat says "meow"')
+
+## - Tests de fonctions et méthodes
+
+# - Écrire un test unitaire -
+
+* Reprenons notre modèle Article introduit précédemment dans l’application « blog ». 
+* Nous y avons adjoint une méthode est_recent qui renvoie True si la date de parution de l’article
+est comprise dans les 30 derniers jours, sinon elle renvoie False :
+# crepes_bretonnes\blog\models.py
+from django.db import models
+from django.utils import timezone
+
+class Article(models.Model):
+    titre = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now,
+                                verbose_name="Date de parution")
+    categorie = models.ForeignKey('Categorie', on_delete=models.CASCADE)  # ++
+
+    class Meta:
+        ordering = ['date']
+
+    def est_recent(self):
+        """ Retourne True si l'article a été publié dans
+            les 30 derniers jours """
+        return (timezone.now() - self.date).days < 30
+
+    def __str__(self):
+        return self.titre
+
+* que se passe-t-il si la date de parution de l’article se situe dans le futur ? 
+L’article ne peut pas être considéré comme récent, car il n’est pas encore sorti !
+* Les tests sont répartis par application
+* Chaque application possède par défaut un fichier nommé tests.py dans lequel 
+vous devez insérer vos tests
+* Django exécutera tous les tests contenus dans les fichiers commençant par test
+* si votre application possède de nombreux tests, vous pouvez créer un répertoire tests/ 
+(avec un __init__.py) et créer plusieurs fichiers dedans, commençant tous par test_
+* dès que la suite de tests grandit, il devient préférable de restructurer ce fichier 
+en un module Python afin de pouvoir séparer les tests en sous-modules tels que 
+test_models.py, test_views.py, test_forms.py, etc. 
+
+* Voici notre tests.py incluant le test pour vérifier si un article du futur est récent ou non :
+# crepes_bretonnes\blog\tests.py
+from django.test import TestCase
+from django.utils import timezone
+from datetime import timedelta
+from .models import Article
+
+# regroupe tous les tests concernant le modèle Article
+class ArticleTests(TestCase):
+    # chaque méthode de test commence par test_
+    def test_est_recent_avec_futur_article(self):
+        """
+        Vérifie si la méthode est_recent d'un Article ne
+        renvoie pas True si l'Article a sa date de publication
+        dans le futur.
+        """
+        # crée un article censé être publié dans 20 jours 
+        # et vérifie si sa méthode est_recent renvoie True ou False (espéré)
+        futur_article = Article(date=timezone.now() + timedelta(days=20))
+        # Il n'y a pas besoin de remplir tous les champs, ni de sauvegarder
+        self.assertEqual(futur_article.est_recent(), False)
+
+* La vérification même se fait grâce à une méthode de TestCase nommée assertEqual. 
+* Cette méthode prend deux paramètres et vérifie s’ils sont identiques. 
+* Il existe plusieurs méthodes assert* pour faire vos tests, notamment :
+Méthode                | Test Python équivalent
+assertEqual(a, b)      | a == b
+assertTrue(x)          | bool(x) is True
+assertFalse(x)         | bool(x) is False
+assertIs(a, b)         | a is b
+assertIsNone(x)        | x is None
+assertIn(a, b)         | a in b
+assertIsInstance(a, b) | isinstance(a, b)
+
+# - Lancer le test en console -
+
+* la méthode est_recent  devrait renvoyer False. 
+Comme nous avons introduit une erreur dans notre modèle, 
+elle est censée renvoyer True  pour le moment, et donc faire échouer le test
+
++ python manage.py test
+# FAIL: test_est_recent_avec_futur_article (blog.tests.ArticleTests)
+# AssertionError: True != False
+
+* vous pouvez choisir les tests à lancer. 
+* La commande test peut prendre en paramètre le chemin Python des tests à exécuter
+* Si vous souhaitez juste tester l’application « blog », vous pouvez indiquer manage.py test blog
+* Si vous avez plusieurs fichiers de tests, vous pouvez spécifier le fichier et
+même la classe à exécuter :
+python manage.py test blog.tests
+python manage.py test blog.tests.ArticleTests
+* Vous pouvez aller plus loin en spécifiant un seul test précis :
+python manage.py test blog.tests.ArticleTests.test_est_recent_avec_futur_article
+
++ modifions la méthode est_recent afin de corriger le bug :
+def est_recent(self):
+        return (timezone.now() - self.date).days < 30 and self.date < timezone.now()
+
++ python manage.py test blog.tests.ArticleTests
+# OK
+
+# Initialisation de données pour nos tests
+
+* Django n’utilise pas votre base de données de développement pour lancer les tests. 
+* une base de test est créée à chaque fois que les tests sont lancés, puis détruite à la fin
+* but = ne pas ruiner vos données lors de vos tests 
+et d’être maître de l’état de la base lors des tests unitaires
+* Vous pouvez préparer votre suite de tests en créant deux méthodes : 
+- setUpTestData = appelée une seule fois au début de la suite de tests
+- setUp = appelée avant chaque test
+* permettront d’initialiser certaines variables à l’intérieur de votre classe 
+pour les utiliser dans vos tests par la suite
+* but = récupérer ou créer certains objets en base, plutôt que de le faire à chaque test
+class UnTest(TestCase):
+    
+    @classmethod  # <- setUpClass doit être une méthode de classe, attention !
+    def setUpTestData(cls):
+        Categorie.objects.create(titre="Par défaut")
+    
+    def setUp(self):
+        self.une_variable = "Salut !"
+
+    def test_verification(self):
+        self.assertEqual(self.une_variable, "Salut !")
+        self.assertTrue(
+            Categorie.objects.filter(titre="Par défaut").exists()
+        )
+
+# Tests avec avertissements actifs
+Il est conseillé de lancer les tests en activant les avertissements de Python : 
+python -Wa manage.py test. 
+Le drapeau -Wa indique à Python d’afficher les avertissements d’obsolescence. 
+
+
+## - Test de vues -
+
+* il est également possible de tester des vues. 
+* Cela se fait grâce à un serveur web intégré au système de test qui sera lancé tout seul 
+lors de la vérification des tests
+* Pour tester quelques vues, nous allons utiliser l’application mini_url
+* Voici le début de notre mini_url/tests.py, incluant notre premier test :
+from django.test import TestCase
+from django.urls import reverse
+from .models import MiniURL
+
+# crée une redirection, l’enregistre et la retourne
+def creer_url():
+    mini = MiniURL(url="http://foo.bar", code=MiniURL.generer(MiniURL, 6), pseudo="Maxime")
+    mini.save()
+    return mini
+
+
+class MiniURLTests(TestCase):
+    # va s’assurer que lorsque nous créerons une redirection dans la base de données, 
+    # celle-ci sera bien affichée par la vue views.liste
+    def test_liste(self):
+        """ Vérifie si une URL sauvegardée est bien affichée """
+        # crée une redirecton
+        mini = creer_url()
+        # nous demandons ensuite au client intégré au système de test 
+        # d’accéder à la vue liste grâce à la méthode get de self.client
+        reponse = self.client.get(reverse('url_liste'))
+        # Cette méthode prend une URL, c’est pourquoi 
+        # nous utilisons la fonction reverse afin d’obtenir l’URL de la vue spécifiée
+
+        # vérifier que notre vue s’est bien exécutée
+        self.assertEqual(reponse.status_code, 200)
+        # est-ce que l’URL qui vient d’être créée est bien affichée sur la page ?
+        # La méthode renvoie une erreur si la chaîne de caractères n’est pas contenue dans la page
+        self.assertContains(reponse, mini.url)
+        # est-ce que le QuerySetminis contenant toutes les redirections dans notre vue 
+        # (celui que nous avons passé à notre template et qui est accessible depuis reponse.context) 
+        # est égal au QuerySet indiqué en deuxième paramètre ?
+        self.assertQuerysetEqual(reponse.context['minis'], [repr(mini)])
+
+* La classe django.test.Client permet de simuler des requêtes HTTP
+* self.client.get retourne un objet Response dont les principaux attributs sont status_code, 
+un entier représentant le code HTTP de la réponse, content, 
+une chaîne de caractères contenant le contenu de la réponse, et context, 
+le dictionnaire de variables passé au template si un dictionnaire a été utilisé
+* la classe Response : https://docs.djangoproject.com/fr/3.0/topics/testing/tools/#django.test.Response
+* self.client.get procède à une requête GET utilisant le chemin path indiqué et renvoie un objet Response
+* en savoir plus sur client : https://docs.djangoproject.com/fr/3.0/topics/testing/tools/#making-requests
+* Rappel : 200 correspond à une requête correctement déroulée, 302 à une redirection, 
+404 à une page non trouvée et 500 à une erreur côté serveur
+* le deuxième argument de la troisième vérification n’est pas un QuerySet, 
+mais est censé correspondre à la représentation du premier argument grâce à la fonction repr. 
+Autrement dit, il faut que repr(premier_argument) == deuxieme_argument. 
+Voici à quoi ressemble le deuxième argument dans notre exemple : ['<MiniURL : [ALSWM0] http://foo.bar>']
+
++ python manage.py test mini_url.tests
+# OK
+
+* comment faire si nous souhaitons par exemple soumettre un formulaire ? 
+* Une telle opération se fait grâce à la méthode post de self.client, 
+dont voici un exemple à partir de la vue nouveau de notre application, 
+qui permet d’ajouter une redirection :
+# crepes_bretonnes\mini_url\tests.py
+def test_nouveau_redirection(self):
+        """ Vérifie la redirection d'un ajout d'URL """
+        data = {
+            'url': 'http://www.djangoproject.com',
+            'pseudo': 'Jean Dupont',
+        }
+
+        reponse = self.client.post(reverse('url_nouveau'), data)
+        self.assertEqual(reponse.status_code, 302)
+        # vérifie que la réponse est bien une redirection vers l’URL passée en paramètre
+        self.assertRedirects(reponse, reverse('url_liste'))
+
++ python manage.py test mini_url.tests
+# Ran 2 tests in 0.207s
+# OK
+
+* La méthode post fonctionne comme get, si ce n’est qu’elle prend un deuxième argument, 
+à savoir un dictionnaire contenant les informations du formulaire.
+* nous avons utilisé ici une nouvelle méthode de vérification : assertRedirects, 
+qui vérifie que la réponse est bien une redirection vers l’URL passée en paramètre
+
+* si vous gérez des redirections, vous pouvez forcer Django à suivre la redirection directement 
+en indiquant follow=True à get ou post, 
+ce qui fait que la réponse ne contiendra pas la redirection en elle-même, 
+mais la page ciblée par la redirection, comme le montre l’exemple suivant : 
+# crepes_bretonnes\mini_url\tests.py
+def test_nouveau_ajout(self):
+    """
+    Vérifie si après la redirection l'URL ajoutée est bien dans la liste
+    """
+    data = {
+        'url': 'http://www.crepes-bretonnes.com',
+        'pseudo': 'Amateur de crêpes',
+    }
+
+    # on force Django à suivre la redirection directement en indiquant follow=True
+    reponse = self.client.post(reverse('url_nouveau'), data, follow=True)
+    self.assertEqual(reponse.status_code, 200)
+    self.assertContains(reponse, data['url'])
+
++ python manage.py test mini_url.tests
+# Ran 3 tests in 0.111s
+# OK
+
+* si vous souhaitiez tester une vue pour laquelle il faut obligatoirement être connecté 
+à partir d’un compte utilisateur, sachez que vous pouvez vous connecter 
+et vous déconnecter de la façon suivante :
+from django.test import Client
+c = Client()
+c.login(username='utilisateur', password='mot_de_passe')
+reponse = c.get('/une/url/')
+c.logout()  # La déconnexion n'est pas obligatoire
+* en savoir plus sur le client de test : https://docs.djangoproject.com/fr/3.0/topics/testing/tools/#the-test-client
+
+
+## -- DJANGO.CONTRIB -- ##
+
+* Django inclut dans le framework un nombre de modules complémentaires très important
+
+## - Les modules de django.contrib
+
+* l’ensemble des fonctionnalités supplémentaires de Django est situé dans le module django.contrib
+* ces fonctionnalités ne sont pas essentielles au bon déroulement global de Django
+* liste reprenant tous les modules compris dans django.contrib :
+
+Nom du module | Description
+
+admin         | Système d’administration
+auth          | Système utilisateurs
+contenttypes  | Permet d’obtenir la représentation de n’importe quel modèle
+flatpages     | Permet de gérer des pages HTML statiques au sein même de la base de données
+formtools     | Ensemble d’outils pour compléter les formulaires 
+                (par exemple la prévisualisation avant envoi)
+gis           | Bibliothèque complète qui apporte le support de SIG 
+                (système d’information géographique) pour stocker des données géographiques 
+                et les exploiter. Voir http://www.geodjango.org pour plus d’informations
+humanize      | Ensemble de filtres pour les templates,
+                afin de rendre certaines données plus « naturelles », 
+                notamment pour les nombres et les dates
+messages      | Gestion de notifications qui peuvent être affichées au visiteur
+redirects     | Gestion des redirections au sein du projet via une base de données. 
+                Utile si vous changez le schéma de vos URL
+sessions      | Gestion des sessions
+sitemaps      | Génération de sitemaps XML
+sites         | Permet la gestion de différents sites web avec la même base de données 
+                et la même installation de Django
+staticfiles   | Gestion de fichiers statiques dans les templates
+syndication   | Génération de flux RSS et Atom
+webdesign     | Intègre un outil de génération de Lorem ipsum via un unique tag : 
+                {% lorem [nb] [methode] [random] %}
+
+## - Dynamisons nos pages statiques avec flatpages
+
+* Sur la quasi-totalité des sites web, il existe des pages statiques dont le contenu doit parfois 
+être modifié. Nous pouvons citer comme exemples les pages avec des informations de contact, 
+des conditions générales d’utilisation, des foires aux questions, etc.
+* page statique = page visible telle qu'elle' a été conçue
+* Une flatpage est un objet caractérisé par une URL, un titre et un contenu. 
+* Tout cela sera inclus dans un template générique, ou bien dans un template que vous aurez adapté. 
+* Ces informations sont enregistrées dans la base de données et sont éditables à tout moment 
+par l’administration
+
+# Installation du module
+
+https://docs.djangoproject.com/fr/3.0/ref/contrib/flatpages/
+
+* Pour utiliser le module flatpages, il faut l’activer grâce à ces quelques étapes :
+* fichier settings.py :
+- Ajoutez les lignes 'django.contrib.sites' et 'django.contrib.flatpages' dans la liste INSTALLED_APPS, 
+si elles ne sont pas déjà présentes
+- Vérifiez que votre settings.py contient bien une variable SITE_ID.
+Django permet d’héberger plusieurs sites sur une même base de données via cette variable. 
+Habituellement, cette valeur est mise à SITE_ID = 1, 
+mais si vous développez plusieurs sites, cette valeur peut changer !
+
++ python manage.py migrate, pour créer les deux tables nécessaires
+
+* 2 méthodes s’offrent ensuite à vous : 
+- vous pouvez soit spécifier clairement comment accéder à ces pages, 
+- soit activer un middleware, qui, en cas d’erreur 404 (page non trouvée), 
+vérifie si une flatpage correspond à l’URL saisie par l’utilisateur
+
+# - Le cas des URL explicites -
+
+* 2 possibilités sont envisageables. 
+* Vous devrez placer l’un des codes suivants dans le fichier urls.py principal du projet
+
+1. Précisez un chemin précis vers les flatpages. 
+Dans cet exemple, toutes les URL de nos pages statiques commenceront par /pages/  :
+urlpatterns = [
+    path('pages/', include('django.contrib.flatpages.urls')),
+]
+
+2. Vous pouvez également le configurer comme un motif « fourre-tout ». 
+Dans ce cas, il est important de placer le motif à la fin des autres urlpatterns:
+
+from django.contrib.flatpages import views
+
+# Your other patterns here
+urlpatterns += [
+    path('<path:url>', views.flatpage),
+]
+
+3. Une autre configuration courante consiste à utiliser des pages statiques pour un nombre limité 
+de pages connues à l’avance et à figer leurs URL, afin de pouvoir y faire référence 
+avec la balise de gabarit url:
+
+from django.contrib.flatpages import views
+
+urlpatterns += [
+    path('about-us/', views.flatpage, {'url': '/about-us/'}, name='about'),
+    path('license/', views.flatpage, {'url': '/license/'}, name='license'),
+]
+
+# - Utilisation du middleware FlatpageFallbackMiddleware -
+
++ Ajoutez 'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware' au réglage MIDDLEWARE
+
+* laisse FlatpageFallbackMiddleware tout gérer. 
+* Une fois activé et dès qu’une erreur 404 est levée, 
+le middleware vérifie dans la base de données si une page correspond à l’URL qui est demandée
+* Si une page est trouvée, alors il l’affiche, sinon il laisse l’erreur 404 se poursuivre
+* l’ordre de MIDDLEWARE est important. 
+Généralement, vous pouvez mettre FlatpageFallbackMiddleware à la fin de la liste. 
+Cela signifie qu’il s’exécutera en premier lors du traitement de la réponse et 
+garantira que tout autre intergiciel qui traite la réponse voit la réponse de la flatpage 
+plutôt que la 404
+* vérifiez que vos middlewares laissent bien l’erreur 404 arriver jusqu’au middleware de flatpage. 
+Si un autre middleware traite l’erreur et renvoie une exception, 
+la réponse HTTP obtient le code 500 et notre nouveau middleware ne tentera même pas de chercher
+si une page existe
+* solution simple mais qui peut comporter son lot de problèmes
+
+# - Gestion et affichage des pages -
+
+* Maintenant que le module est installé et les tables créées, 
+une nouvelle catégorie est apparue dans votre panneau d’administration : 
+il s’agit du module flatpages, qui contient comme seul lien la gestion des pages statiques
+* l’administration des pages statiques se fait comme pour tout autre objet
+https://docs.djangoproject.com/fr/2.2/ref/contrib/flatpages/#via-the-admin-interface
+
++ ajout d'une' page de contact
+# crepes_bretonnes\crepes_bretonnes\urls.py
+from django.contrib.flatpages import views
+# . . .
+urlpatterns += [
+    path('contact/', views.flatpage, {'url': '/contact/'}, name='contact'),
+]
+# ajout de la flatpage depuis le tableau de bord
+ULR = /contact/
+TITLE = Contactez-nous !
+CONTENT = <p>Pour nous <strong>contacter</strong>, adressez-nous votre demande via nos coordonnées ci-dessous :</p>
+<ul>
+    <li>email : exemple@exemple.com</li>
+    <li>tel : 00.00.00.00.00</li>
+    <li>courrier : adresse</li>
+</ul>
+SITE = example.com
+
+* le champ contenu accepte du HTML pour mettre en forme votre page
+* Puisqu’il est possible de saisir du contenu HTML brut dans la page d’administration d’une flatpage, 
+flatpage.title et flatpage.content sont tous deux marqués comme ne requérant pas d’échappement HTML 
+automatique dans le gabarit
+* Par défaut, chaque page sera traitée avec le template flatpages/default.html de votre projet. 
+Nous allons donc tout d’abord le créer, dans le dossier templates global :
+# crepes_bretonnes\templates\flatpages\default.html
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>{{ flatpage.title }}</title>
+    </head>
+
+    <body>
+        <h1>{{ flatpage.title }}</h1>
+        {{ flatpage.content }}
+    </body>
+
+</html>
+
+* plusieurs options avancées existent :
+- de n’autoriser que les utilisateurs connectés à voir la page (via le module django.contrib.auth) ;
+- d’utiliser un template différent de flatpages/default.html
+https://docs.djangoproject.com/fr/2.2/ref/contrib/flatpages/#via-the-admin-interface
+The clean way to do it :
+1. Set up django.contrib.flatpages as normal.
+2. Create your own app. Name it something other than just flatpages to avoid confusion. 
+Put a new admin.py module in there that replaces the original flatpages admin.
+3. Add your own app to INSTALLED_APPS after the original flatpages. 
+This way the original sets up its admin stuff first for you to replace.
+
+from django.contrib import admin
+from django.contrib.flatpages.admin import FlatPageAdmin
+from django.contrib.flatpages.models import FlatPage
+from django.utils.translation import gettext_lazy as _
+
+# Define a new FlatPageAdmin
+class FlatPageAdmin(FlatPageAdmin):
+    fieldsets = (
+        (None, {'fields': ('url', 'title', 'content', 'sites')}),
+        (_('Advanced options'), {
+            'classes': ('collapse',),
+            'fields': (
+                'enable_comments',
+                'registration_required',
+                'template_name',
+            ),
+        }),
+    )
+
+# Re-register FlatPageAdmin
+admin.site.unregister(FlatPage)
+admin.site.register(FlatPage, FlatPageAdmin)
+
+
+# - Lister les pages statiques disponibles -
+
+* Le module fournit plusieurs tags afin de récupérer ces listes
+* Vous devez donc tout d’abord charger la bibliothèque, via {% load flatpages %}. 
+Après, vous pouvez lister l’ensemble des pages visibles par tous, comme ceci :
+{% load flatpages %}
+{% get_flatpages as flatpages %}
+<ul>
+    {% for page in flatpages %}
+        <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+    {% endfor %}
+</ul>
+
+* Pour afficher celles également disponibles uniquement pour les personnes connectées, 
+il faut spécifier l’utilisateur en cours, grâce au mot-clé for :
+{% get_flatpages for user as flatpages %}
+
+* il est possible de lister les flatpages commençant par une certaine URL uniquement, 
+via un argument optionnel, avant les mots-clés for  et as  :
+{% get_flatpages '/contact/' as contact_pages %}
+{% get_flatpages prefixe_contact as contact_pages %}
+{% get_flatpages '/contact/' for request.user as contact_pages %}
+
+## - Rendons nos données plus lisibles avec humanize
+
+https://docs.djangoproject.com/fr/2.2/ref/contrib/humanize/
+
+* les filtres du module humanize rendent la lecture d’une donnée plus agréable pour l’utilisateur
+* il prend mieux en charge la localisation : 
+la transformation des données s’adapte à la langue de votre projet !
+
++ ajoutez la ligne 'django.contrib.humanize' à votre variable INSTALLED_APPS 
+dans le fichier settings.py
++ vérifier que USE_I18N = True dans settings.py
++ Pour intégrer les filtres présentés par la suite, il faut charger les templatetags du module, 
+via la commande {% load humanize %}
+
+◘ apnumber
+Pour les nombres de 1 à 9, ce filtre va les traduire automatiquement en toutes lettres. 
+Dans les autres cas (nombres supérieurs ou égaux à 10), ils seront affichés en chiffres. 
+{{ 1|apnumber }}   renvoie "un"     <br />
+{{ "2"|apnumber }} renvoie "deux"   <br />
+{{ 10|apnumber }}  renvoie 10.
+
+◘ intcomma
+des séparateurs de milliers, afin de simplifier la lecture
+le séparateur dépend de la langue courante
+ici en français :
+{{ 300|intcomma }}     renvoie 300       <br />
+{{ "9000"|intcomma }}  renvoie 9 000     <br />
+{{ 90000|intcomma }}   renvoie 90 000    <br />
+{{ 9000000|intcomma }} renvoie 9 000 000
+
+◘ intword
+permet de convertir les grands entiers en leur représentation textuelle, 
+de préférence avec des nombres supérieurs à un million
+respecte également la localisation pour le séparateur décimal
+{# Quelques cas classiques #}
+{{ 1000000|intword }}    renvoie 1,0 million.     <br />
+{{ "4525640"|intword }}  renvoie 4,5 millions.    <br />
+{{ 20000000|intword }}   renvoie 20,0 millions.   <br />
+{{ 999999999|intword }}  renvoie 1000,0 millions. <br />
+{{ 5500000000|intword }} renvoie 5,5 milliards.   <br />
+
+{% comment %}
+Et des cas plus extrêmes. On suppose que mon_salaire = 9 * (10 ** 101), 
+ce qui correspond à un 9 suivi de 101 zéros !
+{% endcomment %}
+{{ 1000000000000000000|intword }} renvoie 1,0 quintillion. <br />
+{{ mon_salaire|intword }} renvoie 90,0 gogols.             <br />
+
+{# Ce filtre ne supporte pas les « petits nombres » #}
+{{ 90000|intword }} renvoie 90000.
+
+◘ naturalday
+retourne « aujourd’hui », « hier » ou « demain » si la date est appropriée
+Dans les autres cas, la date sera affichée selon le format fourni en paramètre.
+Par exemple, si la date actuelle est le 4 mars 2130 :
+Portion de notre vue :
+    date_avant_hier = datetime(2130, 3, 2)
+    date_hier = datetime(2130, 3, 3)
+    date_auj = datetime(2130, 3, 4)
+    date_demain = datetime(2130, 3, 5)
+Template associé :
+    {{ date_avant_hier|naturalday:"DATE_FORMAT" }} renvoie "2 mars 2130" <br />
+    {{ date_avant_hier|naturalday:"d/m/Y" }} renvoie "02/03/2130"<br />
+    {{ date_hier|naturalday:"d/m/Y" }} renvoie "hier"            <br />
+    {{ date_auj|naturalday:"d/m/Y" }} renvoie "aujourd'hui"      <br />
+    {{ date_demain|naturalday:"d/m/Y" }} renvoie "demain"        <br />
+
+◘ naturaltime
+Retourne une chaîne de caractères précisant le nombre de secondes, minutes ou heures écoulées 
+depuis la date (ou restantes dans le cas d’une date future)
+Par exemple, en admettant que nous soyons le 4 mars 2130, à 14:20:00 :
+Portion de notre vue :
+    date1 = datetime(2130, 3, 4, 14, 20, 0)
+    date2 = datetime(2130, 3, 4, 14, 19, 30)
+    date3 = datetime(2130, 3, 4, 13, 15, 25)
+    date4 = datetime(2130, 3, 4, 12, 20, 0)
+    date5 = datetime(2130, 3, 3, 13, 10, 0)
+    date6 = datetime(2130, 3, 5, 18, 20, 0)
+Template associé :
+    {{ date1|naturaltime }} renvoie "maintenant"            <br />
+    {{ date2|naturaltime }} renvoie "il y a 29 secondes"    <br />
+    {{ date3|naturaltime }} renvoie "il y a une heure"      <br />
+    {{ date4|naturaltime }} renvoie "il y a une heure"      <br />
+    {{ date5|naturaltime }} renvoie "il y a 1 jour, 1 heure"<br />
+    {{ date6|naturaltime }} renvoie "dans 1 jour, 4 heures" <br />
+
+◘ ordinal
+convertit un entier en chaîne de caractères représentant une place dans un classement
+exemple, encore une fois en français :
+{{ 1|ordinal }}   renvoie 1<sup>er</sup><br />
+{{ "2"|ordinal }} renvoie 2<sup>e</sup><br />
+{{ 98|ordinal }}  renvoie 98<sup>e</sup><br />
