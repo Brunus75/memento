@@ -1892,7 +1892,9 @@ deactivate pour en sortir
 
 # VS Code et les environnements virtuels
 VS Code gère les environnements virtuels
-il suffit de lancer le projet dans VS Code 
+il suffit de lancer le projet dans VS Code
+se placer dans le projet + taper : code . dans git bash
+ou copier-glisser le projet sur l'icône' VS du bureau
 
 
 ## -- L'ORIENTÉ OBJET -- (partie 1) ##

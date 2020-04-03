@@ -3,11 +3,22 @@
 
 ## -- GITHUB -- ##
 
-le fichier settings.py renferme de nombreuses informations privées
-créer settings.py.dist ou settings_public.py
-créer un gitignore à la racine du projet
-un gitignore exhaustif : # https://github.com/github/gitignore/blob/master/Python.gitignore
-créer son gitignore:  # http://gitignore.io/api/django
+1. initialiser le repo
+2. cloner le repo
+3. créer un environnement virtuel dans le repo
+4. lancer l'environnement virtuel', installer django
+dossier_projet/
+    env/
+    projet_django/
+* le fichier settings.py renferme de nombreuses informations privées
++ créer settings.py.dist ou settings_public.py
++ créer un gitignore à la racine du projet
+* un gitignore exhaustif : # https://github.com/github/gitignore/blob/master/Python.gitignore
+* créer son gitignore:  # http://gitignore.io/api/django
+*!* à ne jamais sauvegarder en clair :
+- SECRET_KEY
+- DATABASES
+* Une bonne pratique consiste à avoir une clé secrète différente en développement et en production
 
 
 ## -- BONS PLANS -- ##
@@ -59,6 +70,16 @@ une version de reverse() à exécution différée
 
 ## -- INSTALLATION -- ##
 
+# créer un environnement virtuel
+# se placer dans le dossier principal
+py - 3.7 - m venv env  # -m pour module
+aller dans env/Scripts/
+dans le terminal: source activate
+on est dans l'environnement virtuel'
+which pip pour vérifier si on est dans un environnement virtuel
+deactivate pour en sortir
+
+# installer Django (en global et/ou dans le dossier qui compte le dossier env)
 ouvrir en Administrateur
 pip install Django==2.2 
 
@@ -68,6 +89,12 @@ python -i
 >>> import django
 >>> django.get_version()
 '2.2'
+
+# VS Code et les environnements virtuels
+VS Code gère les environnements virtuels
+il suffit de lancer le projet dans VS Code
+se placer dans le projet + taper: code . dans git bash
+ou copier-glisser le projet sur l'icône' VS du bureau
 
 
 ## -- SQLITE -- ##
@@ -176,6 +203,30 @@ INSTALLED_APPS = [
 
 # LES SGBD
 SQLite3 pour le développement, MySQL ou PostgreSQL en production
+
+# INSTALLER POSTGRESQL
+https: // www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04
++ pip install psycopg2
+psycopg2 est le driver qui connecte à PostgreSQL depuis Python
++ télécharger postgreSQL
+psql pour entrer dans la console postgreSQL
+\q pour en sortir
+* Si vous souhaitez utiliser une interface graphique, 
+autrement dit un logiciel pour visualiser les tables, installez pgAdmin
+https://www.pgadmin.org/download/
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
+        'NAME': 'disquaire', # le nom de notre base de donnees creee precedemment
+        'USER': 'celinems', # attention : remplacez par votre nom d'utilisateur
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '5432',
+    }
+}
+
++ python manage.py migrate
 
 # ORM
 Lorsque vous créez un modèle dans votre application Django, 
@@ -5657,3 +5708,333 @@ exemple, encore une fois en français :
 {{ 1|ordinal }}   renvoie 1<sup>er</sup><br />
 {{ "2"|ordinal }} renvoie 2<sup>e</sup><br />
 {{ 98|ordinal }}  renvoie 98<sup>e</sup><br />
+
+
+## -- DEPLOYER EN PRODUCTION -- ##
+
+https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874623-deployer-votre-application-en-production
+https://docs.djangoproject.com/fr/3.0/howto/deployment/checklist/
+https://docs.djangoproject.com/fr/3.0/howto/deployment/
+
+Voici les variables à modifier :
+- Passez la variable DEBUG à False pour indiquer que le site est désormais en production. 
+Il est très important de le faire, sans quoi les erreurs et des données sensibles seront affichées !
+- Remplissez la variable ALLOWED_HOSTS qui doit contenir les différentes adresses depuis lesquelles 
+il peut être accédé au site. 
+Exemple : ALLOWED_HOSTS = ['www.crepes-bretonnes.com', '.super-crepes.fr']. 
+Le point au début du deuxième élément de la liste permet d’indiquer que tous les sous-domaines 
+sont acceptés, autrement dit, les domaines suivants seront accessibles : 
+super-crepes.fr, www.super-crepes.fr, mobile.super-crepes.fr, etc.
+- Adaptez la connexion à la base de données en fonction de ce que vous souhaitez utiliser en production. 
+Nous vous conseillons d’utiliser PostgreSQL en production, MySQL le cas échéant. 
+N’oubliez pas d’installer les extensions nécessaires si vous souhaitez utiliser autre chose que SQLite.
+- Générez une nouvelle SECRET_KEY, via cet outil en ligne, par exemple. 
+http://www.miniwebtool.com/django-secret-key-generator/
+Cette clé sert à sécuriser plusieurs éléments de Django, il est important qu’elle soit unique et secrète.
+
+ADMINS = (
+    ('Maxime Lorant', 'maxime@crepes-bretonnes.com'),
+    ('Mathieu Xhonneux', 'mathieu@crepes-bretonnes.com'),
+)
+SERVER_EMAIL = 'no-reply@crepes-bretonnes.com'
+
+
+## -- L'UTILITAIRE MANAGE.PY -- ##
+
+https://docs.djangoproject.com/fr/3.0/ref/django-admin/
+
+## - Les commandes de base
+
+* Un argument entre crochets […] indique qu’il est optionnel
+* Certaines commandes possèdent également des options pour modifier leur fonctionnement. 
+Celles-ci commencent généralement toutes par deux tirets -- 
+et s’ajoutent avant ou après les arguments de la commande, s’il y en a.
+
+# Liste des commandes
+runserver [port ou adresse:port]
+python manage.py runserver 9000 # le serveur écoutera sur le port 9000
+python manage.py runserver 192.168.1.6:7000
+python manage.py runserver [2001:0db8:1234:5678 ::9]:7000 # ipv6
+python manage.py runserver -6 # remplace l’adresse locale IPv4 127.0.0.1 par l’adresse locale IPv6 ::1
+python manage.py runserver --noreload 
+# Empêche le serveur de développement de redémarrer à chaque modification du code
+python manage.py runserver --nothreading
+
+python manage.py shell # Lance un interpréteur interactif Python
+python manage.py version # version de Django installée
+python manage.py help <commande>
+
+django-admin.py startproject <nom> [destination]
+django-admin.py startproject crepes_bretonnes /home/crepes/projets/crepes
+# les fichiers seront directement insérés dans le dossier /home/crepes/projets/crepes
+
+django-admin.py startproject --template=/home/mathx/projets/modele_projet crepes_bretonnes
+django-admin.py startproject --template=http://monsite.com/modele_projet.zip crepes_bretonnes
+
+python manage.py startapp <nom> [destination]
+python manage.py startapp --template=/home/mathx/projets/modele_app crepes_bretonnes/blog
+python manage.py startapp --template=http://monsite.com/modele_app.zip crepes_bretonnes
+
+python manage.py diffsettings
+# Indique les variables de votre settings.py qui ne correspondent pas 
+# à la configuration par défaut d’un projet neuf
+python manage.py diffsettings --all
+
+python manage.py check
+# Vérifie votre projet Django pour détecter les problèmes courants
+
+python manage.py test <application ou identifiant de test>
+python manage.py test blog
+python manage.py test blog.tests.BlogUnitTest
+python manage.py test blog.tests.BlogUnitTest.test_lecture_article
+python manage.py test --failfast
+# Arrête le processus de vérification de tous les tests dès qu’un seul test a échoué
+
+python manage.py testserver <fixture fixture …>
+(avec python manage.py loaddata)
+python manage.py testserver --addrport [port ou adresse:port]
+python manage.py testserver --addrport 7000 fixture.json
+python manage.py testserver --addrport 192.168.1.7:9000 fixture.json
+
+## - La gestion de la base de données
+
+* Toutes les commandes de cette section ont une option commune : --database  
+qui permet de spécifier l’alias (indiqué dans votre settings.py) de la base de données 
+sur laquelle la commande doit travailler si vous disposez de plusieurs bases de données. 
+Exemple :
+python manage.py migrate --database=master
+
+python manage.py makemigrations [app1 app2...]
+# Crée et versionne un ensemble de fichiers Python qui décrivent les changements 
+# de la base de données en fonction des précédentes migrations et de l’état actuel de vos models.py
+python manage.py makemigrations [app1 app2...] --empty
+# créer une migration "vide", afin d’écrire soi-même le contenu
+python manage.py makemigrations [app1 app2...] --dry-run
+# visualiser les changements dans vos modèles, sans enregistrer le fichier de migration correspondant
+# En combinant cette option avec  --verbosity 3, vous pouvez voir le fichier qui serait créé
+python manage.py makemigrations [app1 app2...] --merge
+# résoudre les conflits de mises à jour
+
+python manage.py migrate [app1 [nom migraton]]
+# Synchronise votre base de données avec l’état actuel de vos modèles
+* migrate : applique toutes les modifications de toutes les applications installées
+* migrate app : applique toutes les modifications pour l’application concernée et 
+éventuellement ses dépendances en cas de clés étrangères
+* migrate app migration : permet de retourner à l’état de la migration donnée en paramètre. 
+La valeur zero pour ce paramètre permet de défaire toutes les migrations déjà faites
+python manage.py migrate --fake
+# Marque la migration comme appliquée, sans pour autant appliquer les changements SQL
+# réservé aux utilisateurs avancés qui veulent appliquer manuellement les changements
+python manage.py migrate --list, -l
+# Liste les applications installées et marque les migrations, appliquées ou non, avec une croix
+
+python manage.py dbshell
+# Lance le client de gestion de votre base de données en ligne de commande, 
+# selon les paramètres spécifiés dans votre settings.py
+# Pour PostgreSQL, l’utilitaire psql sera lancé
+
+python manage.py dumpdata [application application.Modele …]
+# Affiche toutes les données d’applications ou de modèles spécifiques contenues 
+# dans votre base de données dans un format texte sérialisé
+python manage.py dumpdata blog.Article
+[{"pk": 1, "model": "blog.article", "fields": {"date": "2012-07-11T15:51:08.607Z", "titre": "Les crêpes c’est trop bon", "categorie": 1,
+ "auteur": "Maxime", "contenu": "Vous saviez que les crêpes bretonnes c’est trop bon ? La pêche c’est nul."}},
+ {"pk": 2, "model": "blog.article", "fields": {"date": "2012-07-11T16:25:53.262Z", "titre": "Un super titre d’article !",
+ "categorie": 1, "auteur": "Mathieu", "contenu": "Un super contenu ! (ou pas)"}}]
+python manage.py dumpdata blog.Article blog.Categorie auth
+# les modèles Article et Categorie de l’application blog 
+# et tous les modèles de l’application django.contrib.auth seront sélectionnés 
+# et leurs données affichées
+python manage.py dumpdata --all
+# Force l’affichage de tous les modèles, à utiliser si certains modèles sont filtrés
+python manage.py dumpdata --format <fmt>
+# Utilisez --format xml pour utiliser le format XML, par exemple
+python manage.py dumpdata --indent <nombre d’espace>
+python manage.py dumpdata --exclude
+python manage.py dumpdata blog --exclude blog.Article
+# affiche toutes les données de l’application blog, sauf celles du modèle blog.Article
+python manage.py dumpdata --natural-foreign
+# Utilise une représentation différente pour les relations ForeignKey et ManyToMany
+python manage.py dumpdata --natural-primary
+# Ne précisera pas les clés primaires (l’ID auto-incrémenté)
+python manage.py dumpdata --pks 
+# Permet de définir la liste des clés primaires à afficher, séparées par des virgules
+# disponible uniquement pour l’affichage de modèles précis
+python manage.py dumpdata blog.Article --pks=1 --indent 2
+[
+{
+  "fields": {
+    "date": "2014-07-03T18:53:49.743Z",
+    "titre": "Exemple d'article",
+    "categorie": 1,
+    "auteur": "Maxime L.",
+    "contenu": "Exemple de contenu"
+  },
+  "model": "blog.article",
+  "pk": 1
+}
+]
+
+python manage.py loaddata <fixture fixture …>
+# Enregistre dans la base de données les fixtures passées en argument
+La commande loaddata ira chercher les fixtures dans trois endroits différents :
+- dans un dossier fixtures dans chaque application ;
+- dans un dossier indiqué par la variable FIXTURE_DIRS dans votre settings.py  ;
+- à partir du chemin vers le fichier donné en argument, absolu ou relatif.
+python manage.py loaddata ma_fixture
+# Django ira chercher dans tous les endroits susmentionnés et 
+# prendra toutes les fixtures ayant une terminaison correspondant à un format de fixtures 
+# (.json pour le JSON ou .xml pour le XML, par exemple). 
+# Dès lors, si vous avez un fichier ma_fixture.json  dans un dossier fixtures d’une application, 
+# celui-ci sera sélectionné
+python manage.py loaddata ma_fixture.xml
+# le fichier devra obligatoirement s’appeler ma_fixture.xml pour être sélectionné
+Django peut également gérer des fixtures compressées. 
+Si vous indiquez ma_fixture.json comme fixture à utiliser, 
+Django cherchera ma_fixture.json, ma_fixture.json.zip, ma_fixture.json.gz ou ma_fixture.json.bz2. 
+S’il tombe sur une fixture compressée, il la décompressera, puis lancera le processus de copie
+python manage.py loaddata --app
+# limiter la recherche de fixtures à une application précise via --app
+
+python manage.py inspectdb
+# Inspecte la base de données spécifiée dans votre settings.py 
+# et crée à partir de sa structure un models.py. 
+# Pour chaque table dans la base de données, un modèle correspondant sera créé. 
+# Cette commande construit donc des modèles à partir de tables, 
+# il s’agit de l’opération inverse des commandes makemigrations et migrate
+Voici un extrait d’inspectdb, reprenant le modèle Article de notre application blog :
+class BlogArticle(models.Model):
+    id = models.IntegerField(primary_key=True)    # AutoField?
+    titre = models.CharField(max_length=100) 
+    auteur = models.CharField(max_length=42)
+    contenu = models.TextField(blank=True)
+    date = models.DateTimeField()
+    categorie = models.ForeignKey('BlogCategorie')
+    
+    class Meta:
+        managed = False
+        # Par défaut, les modèles générés sont marqués avec managed = False. 
+        # Cela signifie qu’ils seront ignorés par les commandes makemigrations et migrate. 
+        # Vous pouvez enlever cette ligne si vous souhaitez appliquer des modifications 
+        # à la base après modification de vos modèles.
+        db_table = 'blog_article'
+
+python manage.py flush
+# Réinitialise la base de données et insère les fixtures initial_data. 
+# Vous pouvez utiliser --no-initial-data pour avoir des tables totalement vides
+
+python manage.py sql* application [application …]
+De nombreuses commandes permettent d’afficher les requêtes SQL correspondant à des opérations précises :
+- sql : requêtes de création de tables ;
+- sqlall : requêtes de création de tables et d’ajout des données initiales ;
+- sqlclear : requêtes de suppression des tables ;
+- sqldropindexes : requêtes de suppression des index SQL ;
+- sqlflush : ensemble des requêtes exécutées par la commande flush ;
+- sqlindexes : requêtes de création des index SQL ;
+- sqlmigrate : requêtes d’une migration précise. En plus du nom de l’application, 
+il faut fournir un nom de migration en paramètre ;
+- sqlsequencereset : requêtes pour réinitialiser les index de séquences de certains SGBD 
+(les séquences permettent de déterminer l’index numérique à assigner à la prochaine entrée créée).
+Seules les commandes sqlmigrate et sqlflush marchent avec les tables créées via les migrations Django.
+
+python manage.py sqlcustom application [application …]
+# Affiche des requêtes SQL contenues dans des fichiers. 
+# Django affiche les requêtes contenues dans les fichiers <application>/sql/<modele>.sql  
+# où <application> est le nom de l’application donnée en paramètre et <modele> un modèle quelconque 
+# de l’application.
+# Si nous avons l’application blog incluant le modèle Article, 
+# la commande manage.py sqlcustom blog 
+# affichera les requêtes du fichier blog/sql/article.sql s’il existe, 
+# et y ajoutera toutes les autres requêtes des autres modèles de l’application.
+
+## - Les commandes d’applications
+
+python manage.py clearsessions
+# supprime les sessions expirées de django.contrib.sessions
+
+python manage.py changepassword [pseudo]
+# permet de changer le mot de passe d’un utilisateur en spécifiant son pseudo :
+python manage.py changepassword Mathieu
+
+python manage.py createsuperuser
+# permet de créer un super-utilisateur (un utilisateur avec tous les pouvoirs)
+python manage.py createsuperuser --username  et --email
+# permettent de spécifier directement le nom et l’adresse e-mail de l’utilisateur
+# Si ces deux options sont indiquées, vous devrez spécifier le mot de passe manuellement 
+# par la suite afin que l’utilisateur puisse se connecter
+
+python manage.py makemessages
+# Parcourt tous les fichiers de l’arborescence à partir du dossier actuel 
+# pour déterminer les chaînes de caractères à traduire et crée ou met à jour les fichiers de traduction.
+python manage.py makemessages --all, -a
+# Met à jour les chaînes à traduire pour tous les langages
+python manage.py makemessages --extensions
+python manage.py makemessages --extension=html,txt # …ne prendra que les fichiers HTML et TXT
+# Indique de ne sélectionner que les fichiers qui ont une extension spécifique
+python manage.py makemessages --locale, -l
+# Permet de ne mettre à jour qu’une ou plusieurs seule langue :
+python manage.py makemessages -l fr_FR -l da-dk
+python manage.py makemessages --locale fr_FR
+
+python manage.py makemessages --symlinks
+# Autorise Django à suivre les liens symboliques en explorant les fichiers
+python manage.py makemessages --ignore, -i
+# Permet d’ignorer certains fichiers :
+python manage.py makemessages --ignore=blog/* --ignore=*.html
+# tous les fichiers HTML et du dossier blog seront ignorés
+python manage.py makemessages --no-wrap
+# Empêche Django de répartir les longues chaînes de caractères 
+# en plusieurs lignes dans les fichiers de traduction.
+python manage.py makemessages --no-location
+# Empêche Django d’indiquer la source de la chaîne de caractères dans les fichiers de traduction 
+# (nom du fichier et ligne dans celui-ci)
+python manage.py makemessages compilemessages
+# Compile les fichiers de traduction .po  vers des fichiers .mo  afin que gettext puisse les utiliser
+python manage.py makemessages --locale
+# Permet de ne compiler qu’une seule langue :
+python manage.py compilemessages --locale fr_FR
+
+python manage.py createcachetable nom_de_table
+# Crée une table de cache pour le système de cache
+
+
+## -- MODULES COMPLEMENTAIRES -- ##
+
+## - Django Debug Toolbar
+https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+pip install django-debug-toolbar
+INSTALLED_APPS = [
+    # ...
+    'django.contrib.staticfiles',
+    # ...
+    'debug_toolbar',
+]
+
+STATIC_URL = '/static/'
+
+MIDDLEWARE = [
+    # ...
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # ...
+]
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+
+# urls.py
+from django.conf import settings
+from django.conf.urls import include, url  # For django versions before 2.0
+from django.urls import include, path  # For django versions from 2.0 and up
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+
+        # For django versions before 2.0:
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
+
+    ] + urlpatterns
