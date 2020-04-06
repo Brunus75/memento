@@ -15,6 +15,7 @@
 SELECT * FROM utilisateur WHERE prenom = 'Jesse'
 ```
 * Chaque requête du Query Tool doit être sélectionnée pour être lancée indépendamment (sinon la Query Tool lance toutes les requêtes)
+* bouton "Explain Analyze" (à droite du bouton Execute ►) pour mesurer le temps et le chemin de la requête
 
 ## UTILISATION & LEXIQUE
 
@@ -448,4 +449,585 @@ SELECT MAX(nom) FROM contact
 -- Et le Min ? 
 SELECT MIN(nom) FROM contact 
 -- Il prend la premiere lettre par ordre alphabétique donc le B
+```
+* Les agrégats COUNT, SUM, et GROUP BY
+```sql
+-- COUNT
+-- compter le nombre de lignes
+SELECT COUNT(*) FROM contact -- 16
+SELECT COUNT(nom) FROM contact -- 16
+SELECT COUNT(*) FROM contact WHERE date_naissance IS NOT null -- 15
+
+SELECT * FROM contact ORDER BY prenom -- 16 entrées
+-- on enlève les doublons
+SELECT COUNT(DISTINCT prenom) FROM contact -- 13
+
+-- SUM ne s'applique que sur des colonnes de type numérique
+SELECT SUM(age) FROM contact -- 506
+-- pour la première ligne
+SELECT SUM(1) FROM contact -- 16
+-- les 7 premières lignes
+SELECT SUM(7) FROM contact -- 112
+-- l'âge total des femmes
+SELECT SUM(age) FROM contact WHERE sexe = 'F' -- 222
+
+-- GROUP BY : regrouper des données
+-- compter le nombre d'hommes (dans la colonne total)
+SELECT COUNT(*) AS total FROM contact WHERE sexe = 'M'
+-- les hommes qui sont nés en 1976
+SELECT COUNT(*) AS total, sexe, date_naissance FROM contact
+WHERE sexe = 'M' AND date_naissance::text LIKE '1976%'
+GROUP BY sexe, date_naissance -- obligatoire pour regrouper les données
+-- résultat : 2
+-- vérification
+SELECT * FROM contact WHERE sexe = 'M' AND date_naissance::text LIKE '1976%'
+-- 2 entrées
+```
+* HAVING, le WHERE avec SUM
+```sql
+SELECT COUNT(*) AS total, sexe, age FROM contact
+WHERE sexe = 'M' AND age BETWEEN 20 AND 25
+GROUP BY sexe, age
+-- 3 de 22 ans, 1 de 23 ans
+
+-- si je veux les totaux supérieurs à 2
+SELECT COUNT(*) AS total, sexe, age FROM contact
+WHERE sexe = 'M' AND age BETWEEN 20 AND 25
+GROUP BY sexe, age
+HAVING COUNT(*) > 2 -- HAVING toujours après GROUP BY !
+-- total 3 de 22 ans
+
+-- avec SUM
+SELECT COUNT(*) AS total, sexe, age FROM contact
+WHERE sexe = 'M' AND age BETWEEN 20 AND 25
+GROUP BY sexe, age
+HAVING SUM(1) > 2
+-- total 3 de 22 ans
+```
+* Le CASE WHEN
+```sql
+-- évalue une liste de conditions et retourne une expression de résultat parmi plusieurs possibilités
+
+-- dans l'exemple on va dire que dans la colonne sexe les F sont des Mme 
+-- et que les H sont des Mr
+SELECT  *, 
+	CASE WHEN sexe ='F' THEN 'Mme'
+		WHEN sexe ='M' THEN 'Mr'
+	END
+FROM Contact
+-- crée une colonne case
+
+-- on peut mettre plusieurs CASE WHEN dans la requete et aussi rajouter un ELSE 
+SELECT *,
+	CASE WHEN age BETWEEN 16 AND 20 THEN 'vive la jeunesse' 
+		ELSE 'on a plus 20 ans :)'
+	END
+FROM Contact
+```
+* UNION, UNION ALL, IF/ELSE
+```sql
+-- commande qui permet de concaténer les résultats de 2 requêtes ou plus
+-- Il faut par contre que chacune des requetes a concatener retourne le meme nombre de colonnes.
+
+-- exemple de deux tables, on va creer une autre table contact 
+CREATE TABLE client_1 (nom varchar(20), prenom varchar(20), age int)
+INSERT INTO client_1 VALUES 
+('Marchand','Elisabeth','18'),
+('Truchon','Melanie','18')
+
+CREATE TABLE client_2 (nom varchar(20), prenom varchar(20), age int)
+INSERT INTO client_2 VALUES 
+('Marchand','Elisabeth','18'), -- en doublon
+('Thuillier','olivier','18') 
+
+-- UNION 
+SELECT * FROM client_1
+UNION 
+SELECT * FROM client_2
+-- Concatenation des deux requetes en enlevant le doublon de Mme Marchand
+
+-- à l'inverse UNION ALL prend les doublons
+SELECT * FROM client_1
+UNION ALL
+SELECT * FROM client_2
+
+
+-- L' IF THEN ELSE instruction exécute une commande lorsque la condition est vraie et elle exécute une commande 
+-- alternative lorsque la condition est fausse. Ce qui suit illustre la syntaxe de l' IF THEN ELSE instruction:
+
+DO $$
+DECLARE
+  a integer := 10;
+  b integer := 20;
+BEGIN 
+   IF a > b THEN 
+      RAISE NOTICE 'a is greater than b';
+   ELSE
+      RAISE NOTICE 'a is not greater than b';
+   END IF;
+END $$;
+```
+* UPSERT
+```sql
+-- lorsque vous insérez une nouvelle ligne dans la table, PostgreSQL met à jour la ligne si elle existe déjà, 
+-- sinon, PostgreSQL insère la nouvelle ligne. C'est pourquoi nous appelons l'action UPSERT (mise à jour ou insertion)
+
+-- Creation d'une table 
+CREATE TABLE customers (
+   customer_id serial PRIMARY KEY,
+   name VARCHAR UNIQUE,
+   email VARCHAR NOT NULL,
+   active bool NOT NULL DEFAULT TRUE
+);
+
+--Insertion de nouvelles lignes
+INSERT INTO customers (NAME, email)
+VALUES
+   ('IBM', 'contact@ibm.com'),
+   (
+      'Microsoft',
+      'contact@microsoft.com'
+   ),
+   (
+      'Intel',
+      'contact@intel.com'
+   );
+   
+-- Insertion de nouvelles 
+INSERT INTO customers (NAME, email)
+VALUES
+   (
+      'Microsoft',
+      'hotline@microsoft.com'
+   ) 
+ON CONFLICT ON CONSTRAINT customers_name_key -- Conflit de contrainte on ne fait rien
+DO NOTHING;
+
+SELECT * FROM customers
+-- Pas d'insertion
+   
+-- Par contre on peut lui affilier un UPDATE en cas de conflit 
+INSERT INTO customers (name, email)
+VALUES
+   (
+      'Microsoft',
+      'TITI@microsoft.com'
+   ) 
+ON CONFLICT (name) 
+DO
+UPDATE
+     SET email = EXCLUDED.email
+	 
+-- Que donne le SELECT ? 
+SELECT * FROM customers -- la case email de Microsoft a changé	 
+   
+-- On peut rajouter aussi une autre adresse email a l'interieur
+INSERT INTO customers (name, email)
+VALUES
+   (
+      'Microsoft',
+      'hotline@microsoft.com'
+   ) 
+ON CONFLICT (name) 
+DO
+     UPDATE
+     SET email = EXCLUDED.email || ';' || customers.email;
+	 -- ajoute le nouveau mail à l'original
+   
+  
+SELECT * FROM customers
+```
+* Récapitulatif :
+```sql
+select * from contact
+
+-- nombre de personne dont le prénom est Ludivine
+
+select count(*) as Total from contact where prenom = 'Ludivine'
+
+-- somme de femmes qui sont nées en 1983
+
+select sum(1) from contact where date_naissance::text like '1983%'
+
+-- nombre de femmes qui ont entre 20 et 45 ans dont le nombre est supérieur à 1 en classant l'age par ordre décroissant.
+  
+select count(*) sexe, age from contact 
+where age between 20 and 45 
+group by sexe, age
+having count(*) > 1 
+order by age desc
+-- 2 de 41 ans, 3 de 22 ans
+
+-- comptez les lignes distinctes dans la colonne sexe
+
+select count(distinct sexe) from contact -- 2
+
+-- selectionnez les personnes qui n'ont pas entre 20 et 27 ans
+
+select * from contact where age not between 20 and 27 
+
+-- comptez les personnes qui ont la lettre A dans leur prénom, qui ont entre 18 et 40 ans, de sexe masculin et dont le total est supérieur a 1
+
+select count(*), age, sexe from contact 
+where prenom like '%a%' and age between 18 and 40 and sexe ='M'
+group by age, sexe
+having count (*) > 1
+
+-- construisez une requête avec comme résultat, les personnes qui ont moins 20 ans qu’ils ont toute la vie devant eux. (CASE WHEN). 
+
+select  *, 
+	case when age < 20 then 'Vous avez toute la vie devant vous ' 
+	end  
+from contact
+```
+
+## LES FONCTIONS DE TYPE CHAINE DE CARACTERES
+
+* LENGTH, REPLACE, SUBSTRING
+```sql
+-- Remplace toutes les occurrences d'une valeur de type chaine specifiee par une autre valeur de type chaine.
+
+-- REPLACE (string_expression, string_pattern , string_replacement)  
+
+-- Un exemple tout simple 
+SELECT REPLACE('salut a vous', 'salut', 'Bonjour')
+
+-- remplacer Sandrine par Tata sandrine
+SELECT prenom, REPLACE(prenom, 'Sandrine', 'Tata_sandrine') FROM Contact
+-- crée une colonne replace avec Tata_sandrine
+
+-- LENGHT Retourne le nombre de caracteres de l'expression de type chaine specifiee
+
+SELECT prenom, LENGTH(prenom) AS longueur FROM Contact
+-- prenom    | longueur
+-- Elisabeth | 9
+
+-- SUBSTRING permet d'extraire une chaine de caractere a partir de la longueur specifiee
+-- SUBSTRING(prenom, 2, 4) va commencer aux deux premiers caracteres et va s'arreter au 4eme caractere
+
+-- si on juste juste les prenoms comme initiale 
+
+SELECT SUBSTRING(prenom, 1, 1) AS initiale, prenom FROM contact
+
+-- Et si on veut les deux premieres lettres du prenoms et les trois suivantes ? 
+
+SELECT SUBSTRING(prenom, 2, 3) AS initiale, prenom FROM contact
+-- Elisabeth => lis
+```
+* OVERLAY, POSITION, REVERSE
+```sql
+-- La fonction  OVERLAY (couvrir/recouvrir) est utilisee pour remplacer un texte ou une chaine, par un 
+-- autre texte ou sous chaine 
+
+SELECT OVERLAY('w1234567rce' PLACING 'resou' FROM 3)
+-- w1resou7rce
+-- On part du 3eme caractere et on le remplacer par Resou
+
+SELECT OVERLAY('w1234567rce' PLACING 'resou' FROM 3 FOR 6)
+-- On part du 3eme caractere(inclus), et on remplace  les 6 prochains caracteres par resou
+-- w1resource
+
+
+-- La fonction de POSITION PostgreSQL est utilisee pour trouver l'emplacement d'une sous-chaine dans une chaine specifiee
+
+SELECT POSITION('our' in 'w3resource') -- 6
+
+-- Et si on cherchait la position de la lettre A dans notre table ? 
+SELECT prenom,
+POSITION('a' IN prenom)
+FROM contact
+-- Elisabeth 5
+
+-- REVERSE inverse la chaine de caractere
+SELECT reverse('w3resource')
+```
+* TRIM, LTRIM, RTRIM, UPPER, LOWER
+```sql
+
+-- Supprime le caractère spécifié au début ou à la fin d’une chaîne
+--- a gauche 
+SELECT LTRIM('entreprise','e') -- ntreprise
+--- a droite
+SELECT RTRIM('entreprise','e') -- entrepris
+--- des deux cotés
+SELECT BTRIM('entreprise','e') -- ntrepris
+-- Ou 
+SELECT BTRIM('xyxtrimyyx', 'xy') -- trim
+
+/*******************************************************************************
+********************** UPPER LOWER      ***************************************
+********************************************************************************/
+
+-- permet de transformer un texte en minuscule et en MAJUSCULE
+-- mettons la colonne nom en Majuscule : 
+SELECT UPPER(nom) FROM contact
+-- et en minuscule 
+SELECT LOWER(nom) FROM contact
+```
+* SPLIT_PART, TRANSLATE, CONCAT
+```sql
+-- Va chercher la valeur dans le tableau proposé: 
+
+SELECT SPLIT_PART('A,B,C', ',', 2) -- B
+
+-- CONCAT va concatener une chaine de caractere 
+
+SELECT concat('w', 3, 'r', 'esource', '.', 'com') -- w3resource.com
+
+-- La fonction translate () de PostgreSQL est utilisée pour traduire n'importe quel caractère de la chaîne par un caractère dans replace_string
+
+SELECT TRANSLATE('translate', 'rnlt', '123')
+-- TRANSLATE('mot_a_traduire', 'clé1clé2clé3', 'valeur1valeur2valeur3')
+-- https://w3resource.com/PostgreSQL/translate-function.php
+```
+
+## LES JOINTURES
+
+* Cheatsheet > https://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg
+* INNER JOIN
+```sql
+-- INNER JOIN
+-- jointure interne qui retourne les données quand la condition est vraie dans les 2 tables
+-- synthaxe
+SELECT A.IDClient FROM commande A -- A est un alias de la table commande
+INNER JOIN client B -- jointure interne avec B, alias de la table client
+ON A.IDClient = B.IDClient -- lien
+
+-- creation de deux tables
+CREATE TABLE commande (Numerodecommande int, IDclient int)
+CREATE TABLE client (nom varchar (200), prenom varchar (200), IDclient int, adresse varchar(2000), ville varchar(200))
+
+-- Insertion de valeur dans les tables
+INSERT INTO commande(Numerodecommande, IDclient) VALUES 
+('3712',1),
+('4851',2),
+('6712',3),
+('3215',4),
+('3218',5),
+('3220',6),
+('3221',7),
+('3227',8),
+('3238',9)
+
+INSERT INTO client(nom, prenom, IDclient, adresse, ville) VALUES 
+('Thuillier','Olivier',1,'7 Rue poirier','Dreux'),
+('Thuillier','Luc',3,'78 avenue de paris','Paris'),
+('Thuillier','Théodore',5,'15 Rue asterdam','Asterdam'),
+('Thuillier','Zinédine',12,'7 Rue Prague','Prague'),
+('Thuillier','Lucas',13,'7 Rue Vienne','Vienne')
+
+SELECT* FROM commande
+SELECT* FROM client
+
+-- les clients (id) qui ont un numéro de commande
+SELECT A.IDClient FROM commande A -- A est un alias de commande
+INNER JOIN client B -- jointure interne avec B, alias declient
+ON A.IDClient = B.IDClient -- lien
+-- 1, 3, 5
+
+-- avec le nom et prenom des personnes 
+SELECT A.IDclient, B.nom, B.prenom FROM commande A
+INNER JOIN client B 
+ON A.IDclient = B.IDclient
+ 
+-- le INNER Join est complétement facultatif...
+SELECT A.IDclient, B.nom, B.prenom FROM commande A
+JOIN client B 
+ON A.IDclient = B.IDclient
+```
+* LEFT JOIN, RIGHT JOIN
+```sql
+-- LEFT JOIN
+-- prend toutes les valeurs de la table de gauche, avec la valeurs correspondantes de la table droite
+-- avec le filtre IS NULL, on va juste ramener les lignes de la table de gauche
+-- et qui n'ont aucune correspondance avec la table de doite (flitre excluant)
+-- RIGHT JOIN
+-- prend toutes les valeurs de la table de droite, avec la valeurs correspondantes de la table gauche
+-- avec le filtre IS NULL, on va juste ramener les lignes de la table de droite
+-- et qui n'ont aucune correspondance avec la table de gauche (flitre excluant)
+FROM tableA A
+LEFT JOIN tableB B -- TOUTES les données de la table A + les données correspondantes de la table B
+
+FROM tableA A
+RIGHT JOIN tableB B -- TOUTES les données de la table B + les données correspondantes de la table A
+
+SELECT * FROM commande
+SELECT * FROM client
+
+-- Quel client n'est pas rattaché a un IDCLIENT dans la table commande ? 
+SELECT B.IDclient, B.nom, B.prenom FROM client B
+LEFT JOIN commande A
+on A.IDclient = B.IDclient
+-- ne marche pas
+-- avec le filtre IS NULL pour ramener que les valeurs qui ne correspondent qu'a la table de gauche 
+SELECT B.IDclient, B.nom, B.prenom FROM client B
+LEFT JOIN commande A
+on A.IDclient = B.IDclient
+WHERE A.IDclient IS NULL
+-- ça fontionne
+
+-- On voit parfois la valeur OUTER qui est facultatif (même résultat)
+SELECT B.IDclient, B.nom, B.prenom FROM client B
+LEFT OUTER JOIN commande A
+on A.IDclient = B.IDclient
+WHERE A.IDclient IS NULL
+
+-- la meme operation avec le RIGHT JOIN en inversant les tables
+SELECT B.IDclient, B.nom, B.prenom FROM commande A
+RIGHT JOIN client B
+ON A.IDclient = B.IDclient
+WHERE A.IDclient is NULL
+```
+* FULL OUTER JOIN
+```sql
+-- but : combiner les résultats des 2 tables
+-- les associer grâce à une condition
+-- remplir avec NULL si la condition n'est pas respectée
+-- combine tout
+-- si IS NULL, ne ramène que les valeurs qui n'ont pas de correspondance
+
+SELECT A.IDclient, B.IDclient FROM commande A
+FULL OUTER JOIN client B
+ON A.IDclient = B.IDclient
+-- idclient | idclient
+--        1 | 1
+--        2 | [null]
+-- 	 [null] | 12
+
+SELECT * FROM commande
+SELECT * FROM client
+
+-- On voit qu'il y a toutes les lignes de la table commande qui sont ramenés de 1 a 9 
+-- On voit les 2 NULL en bas car 12 et 13 n'est pas reference dans la table commande (valeur 12 et 13)
+-- On voit qu'il y a toutes les lignes de la table client (1,3,5,12,13)
+-- On voit les 5 NULL qui correspondent a la table commande (2,4,6,8,9)
+
+-- rajouter le IS NULL pour le filtre
+SELECT A.IDclient, B.IDclient FROM commande A
+FULL OUTER JOIN client B
+ON A.IDclient = B.IDclient
+WHERE B.IDclient IS NULL
+-- ramène toutes les valeurs de la table A (commande)
+-- et celles de la table B (client)
+-- exceptées celles qui concordent 
+-- (ramène les commandes des clients non repertoriés)
+-- ramène tous les idclient de la table client qui sont null
+-- ex. => idclient commande 2
+-- idclient commande | idclient client
+--                 1 | 1
+--                 2 | [null]
+-- 	        [null] | 12
+
+-- OUTER est facultatif
+```
+* CROSS JOIN
+```sql
+-- CROSS JOIN = Jointure croisée
+-- pour 2 tables, cela va associer les lignes de la 1ère table à la 2ème
+
+SELECT * FROM commande
+SELECT * FROM client
+
+-- il y a comme colonne en commum l'IDclient
+
+SELECT * FROM commande A
+CROSS JOIN client B
+-- On voit qu'il y a 45 lignes, 9 lignes dans la table commande et 5 lignes dans la table client
+-- donc 9*5 = 45 lignes
+-- on a associé chaque client d'une commande à tous les clients
+-- on voit qu'en faisant un select * de la table commande que Thuillier olivier est multiplié sur sur les 9 premieres lignes de la table client
+
+-- Et si on change l'ordre de jointure ? 
+SELECT * FROM client B
+CROSS JOIN commande A
+-- On voit qu'il y a 45 lignes, 9 lignes dans la table commande et 5 lignes dans la table client
+-- donc 9*5 = lignes
+```
+* JOINTURES SUR PLUSIEURS TABLES
+```sql
+-- Créons un troisiéme table
+CREATE TABLE carte_fidelite (fidele char(3), idclient int)
+
+-- Et insérons quelques valeurs
+INSERT INTO carte_fidelite(fidele, idclient) VALUES 
+('OUI', 1),
+('OUI', 2),
+('NON', 3),
+('OUI', 4),
+('NON', 5),
+('OUI', 6),
+('NON', 7),
+('OUI', 8),
+('OUI', 9),
+('NON', 10),
+('OUI', 11),
+('NON', 12)
+
+-- sélectionner les clients qui ont un numéro de commande
+-- mais aussi qui ont une carte de fidélité 
+SELECT A.IDclient FROM commande A
+INNER JOIN client B 
+ON B.IDclient = A.IDclient
+INNER JOIN carte_fidelite C
+ON B.IDclient = C.IDCLIENT
+WHERE C.fidele = 'OUI'
+-- id 1
+```
+* LEFT JOIN VS NOT IN VS NOT EXISTS
+```sql
+-- Quel client n'est pas rattaché a un IDCLIENT dans la table commande? 
+SELECT * FROM commande
+SELECT * FROM client
+
+SELECT B.IDclient, B.nom, B.prenom FROM client B
+LEFT JOIN commande A
+ON A.IDclient = B.IDclient
+WHERE A.IDclient IS NULL
+
+
+-- Que donne le resultat en NOT IN ? (méthode ancienne) 
+SELECT idclient, nom, prenom 
+FROM client 
+WHERE idclient NOT IN (SELECT idclient 
+					   FROM commande
+					  )
+
+-- Que donne le resultat en NOT EXISTS ? (méthode très ancienne)
+SELECT B.IDclient, B.nom, B.prenom 
+FROM client B
+WHERE NOT EXISTS (	SELECT *
+					FROM commande A 
+					WHERE B.IDclient = A.IDCLIENT
+				 )
+```
+* INTERSECT et EXECPT
+```sql
+----- INNER JOIN
+
+SELECT A.numerodecommande, A.idclient, B.prenom, B.nom FROM commande A
+INNER JOIN client B
+ON A.idclient = B.idclient
+--- idclient : 1, 3, 5
+
+------- INTERSECT = JOINTURE INTERNE (INNER JOIN)
+SELECT idclient   
+FROM commande  
+INTERSECT  
+SELECT idclient  
+FROM client
+ORDER BY idclient
+--- même résultat : idclient : 1, 3, 5
+
+------- EXCEPT = LEFT JOIN
+SELECT idclient   
+FROM client  
+EXCEPT  
+SELECT idclient  
+FROM commande
+ORDER BY idclient
+
+-- équivalent en NOT IN
+SELECT idclient, nom, prenom  
+FROM client 
+WHERE idclient NOT IN (SELECT idclient FROM  commande)
 ```
