@@ -7,6 +7,43 @@
 * D:\Programmes\PostgreSQL\12\data pour l'emplacement des données
 * locale: French, France
 
+## SQL
+
+* Différence DELETE / TRUNCATE
+```
+DROP and TRUNCATE are DDL commands, whereas DELETE is a DML command. Therefore DELETE operations can be rolled back (undone), while DROP and TRUNCATE operations cannot be rolled back. TRUNCATE can be rolled back if wrapped in a transaction
+
++----------------------------------------+----------------------------------------------+
+|                Truncate                |                    Delete                    |
++----------------------------------------+----------------------------------------------+
+| We can't Rollback after performing     | We can Rollback after delete.                |
+| Truncate.                              |                                              |
+|                                        |                                              |
+| Example:                               | Example:                                     |
+| BEGIN TRAN                             | BEGIN TRAN                                   |
+| TRUNCATE TABLE tranTest                | DELETE FROM tranTest                         |
+| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
+| ROLLBACK                               | ROLLBACK                                     |
+| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
++----------------------------------------+----------------------------------------------+
+| Truncate reset identity of table.      | Delete does not reset identity of table.     |
++----------------------------------------+----------------------------------------------+
+| It locks the entire table.             | It locks the table row.                      |
++----------------------------------------+----------------------------------------------+
+| Its DDL(Data Definition Language)      | Its DML(Data Manipulation Language)          |
+| command.                               | command.                                     |
++----------------------------------------+----------------------------------------------+
+| We can't use WHERE clause with it.     | We can use WHERE to filter data to delete.   |
++----------------------------------------+----------------------------------------------+
+| Trigger is not fired while truncate.   | Trigger is fired.                            |
++----------------------------------------+----------------------------------------------+
+| Syntax :                               | Syntax :                                     |
+| 1) TRUNCATE TABLE table_name           | 1) DELETE FROM table_name                    |
+|                                        | 2) DELETE FROM table_name WHERE              |
+|                                        |    example_column_id IN (1,2,3)              |
++----------------------------------------+----------------------------------------------+
+```
+
 ## CONSEILS
 
 * On utilise les 'apostrophes' et non les "guillemets" pour entourer les données
@@ -1030,4 +1067,938 @@ ORDER BY idclient
 SELECT idclient, nom, prenom  
 FROM client 
 WHERE idclient NOT IN (SELECT idclient FROM  commande)
+```
+
+## LES FONCTIONS DE PARTITIONNEMENT
+
+* Les fonctions de fenêtrage
+* Une fonction de fenêtrage fonctionne sur un ensemble de lignes, qui a toujours la clause OVER
+* La clause OVER = un ensemble de lignes spécifié par l'utilisateur dans un jeu de résultats de requête
+* OVER (sélection ordonnée) = par-dessus la sélection ordonnée
+* OVER se fait sur une liste ordonnée par un ORDER BY
+* Les fonctions de fenêtrage apparaissent dans le SELECT et ORDER BY
+* Elles n'apparaissent pas dans FROM, WHERE, GROUP BY, HAVING
+* La clause OVER et PARTITION BY
+```sql
+SELECT * FROM contact -- 3 personnes ont 22, 2 ont 41, 2 ont 47
+-- comment les numéroter ?
+SELECT * , ROW_NUMBER () OVER (ORDER BY AGE) AS rownumber FROM contact
+-- ORDER BY définit sur quoi le classement se base pour classer
+-- on attribut un classement par age
+-- compte les lignes sur la colonne age triée
+-- on peut inverser le tri avec DESC
+SELECT * , ROW_NUMBER () OVER (ORDER BY AGE DESC) AS rownumber FROM contact
+
+--  avec le PARTITION BY
+SELECT * , ROW_NUMBER () OVER (PARTITION BY age ORDER BY age) FROM contact
+-- partitionne la requête sur la colonne age
+-- résultat : 1, 2, 3, pour utilisateur de 22 ans (1), utilisateur de 22 ans (2), 
+-- utilisateur de 22 ans (3)
+-- pour les valeurs uniques => on attribue 1
+-- pour les valeurs multiples (n fois) => on attribue 1, 2, n
+-- partitionner : diviser la table en groupes distinct,
+-- avec les critères de sélecton à l'intérieur de chaque groupe
+
+-- avec plusieurs colonnes :
+SELECT * , 
+	ROW_NUMBER () OVER (PARTITION BY age, date_naissance ORDER BY age)
+FROM contact
+-- partitionne les utilisateurs qui ont en commun age ET date de naissance
+```
+* RANK, DENSE RAN, NTILE
+```sql
+-- creation d'une table
+CREATE TABLE ranks (
+   c VARCHAR(10)
+);
+
+-- Insertion de valeurs
+INSERT INTO ranks(c)
+VALUES('A'),('A'),('B'),('B'),('B'),('C'),('E');
+
+-- Essayons le RANK 
+SELECT c,
+	RANK () OVER (ORDER BY c) rank_number 
+FROM ranks
+-- A, A => rank_number de 1 (1ère place et même valeur)
+-- B, B, B => rank_number de 3 (car la lettre B démarre à la troisième place)
+-- C => rank_number de 6 (il arrive à la sixième place, derrière les A et les B)
+
+-- DENSE_RANK : 
+SELECT c,
+	DENSE_RANK () OVER (ORDER BY c) as dense_number
+FROM ranks
+-- DENSE RANK ne compte pas le nombre de références
+-- A, A => rank_number de 1 (1ère place et même valeur)
+-- B, B, B => rank_number de 2 (car la lettre B est à la 2ème place)
+-- C => rank_number de 3 (3ème place)
+
+-- NTILE DECOUPE EN X GROUPES LES RESULTATS
+SELECT c,
+	NTILE (4) OVER (ORDER BY c) as NTILES
+FROM ranks
+-- ici découpe le résultat en 4
+-- 7 résultats découpés en 4
+-- A, A => 1
+-- B, B => 2
+-- B, C => 3
+-- D => 4
+```
+* ROWS RANGE UNBOUNDED PRECEDING, FIRST VALUES, LAST VALUES
+```sql
+-- UNBOUNDED PRECEDING, toutes les lignes avant la ligne actuelle
+-- UNBOUNDED FOLLOWING, toutes les lignes apres la ligne actuelle
+-- x PRECEDING les lignes avant la ligne actuelle
+-- y FOLLOWING les lignes apres les lignes actuelles
+
+CREATE TABLE salaire (group_id int, salaire int);
+
+INSERT INTO salaire VALUES 
+(1,126),
+(2,63),
+(3,43),
+(4,9),
+(4,24),
+(4,30),
+(7,33),
+(8,33),
+(9,50),
+(10,41),
+(11,41),
+(11,42)
+
+-- chaque salaire appartient à un group_id numéroté
+SELECT group_id, salaire,
+	SUM(salaire) OVER (ORDER BY group_id ROWS UNBOUNDED PRECEDING) AS CumulativeSumByRows,
+	-- cumule les salaires de la ligne précédente
+	SUM(salaire) OVER (ORDER BY group_id RANGE UNBOUNDED PRECEDING) AS CumulativeSumByRange
+	-- cumule les salaires du groupe précédent (cumul des salaires des group_id)
+FROM salaire
+
+/*******************************************************************************
+***********************     FIRST et LASTE VALUES      ************************
+********************************************************************************/
+
+-- FIRST_VALUES : Retourne la premiere valeur dans un jeu de valeurs ordonnee
+-- LAST_VALUES : Retourne la derniere valeur dans un jeu de valeurs ordonnee
+
+SELECT group_id, salaire,
+	FIRST_VALUE(salaire) OVER (PARTITION BY group_id ORDER BY group_id) AS FirstOrderTotal,
+	-- retourne le premier salaire du group_id
+	LAST_VALUE(salaire) OVER (PARTITION BY group_id ORDER BY group_id) AS LastOrderTotal
+	-- retourne le dernier salaire du group_id
+FROM salaire 
+```
+* LAG, LEAD, NTHVALUE
+```sql
+-- LAG : accede aux donnees d'une ligne precedente dans le meme jeu de resultats 
+-- LEAD : accede aux donnees a partir d'une ligne ulterieure dans le meme jeu de resultats
+
+SELECT * FROM products
+
+-- Commencons par le LAG :
+SELECT product_id, product_name, price, 
+	LAG(price, 1, 0) OVER (ORDER BY product_id) AS resultat_precedent 
+FROM products
+-- LAG(colonne, ligne_depart, nombre_départ)
+-- affiche la valeur precedente dans la colonne resultat_precedent
+
+
+
+-- Et le LEAD
+SELECT product_id, product_name, price, 
+	LEAD(price, 1, 0) OVER (ORDER BY product_id) AS resultat_precedent 
+FROM products
+-- LEAD(colonne, ligne_depart, nombre_départ)
+-- affiche la valeur suivante dans la colonne resultat_precedent
+
+
+/*******************************************************************************
+*************               NTH _VALUE    ************************************
+********************************************************************************/
+
+-- NTH_VALUE permet de récupérer une valeur selon sa place dans une liste ordonnée
+
+CREATE TABLE produit (product_id INTEGER, product_name VARCHAR (250), price INT)
+
+INSERT INTO produit VALUES 
+(1,'Microsoftlumia',200), -- doublon
+(1,'Microsoftlumia',400),
+(1,'Microsoftlumia',800),
+(2,'HTC ONE',400),
+(3,'Nexus',500),
+(4,'iphone',900),
+(5,'HPElite',1200),
+(6,'Lenovo Thinkpad',700),
+(7,'Sony VAIO',700),
+(8,'Dell Vostro',800),
+(9,'Ipad',700),
+(10,'Kindle fire',150),
+(10,'Kindle fire',300),
+(10,'Kindle fire',600),
+(11,'Samsung galaxy Tab',200)
+
+SELECT * FROM produit
+
+-- Comment je fais pour avoir une colonne avec le 2eme prix le plus cher ?
+SELECT 
+    product_id,
+    product_name,
+    price,
+    NTH_VALUE(product_name, 2) 
+    OVER (ORDER BY price DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)
+FROM produit
+-- RANGE obligatoire pour éviter un débordement
+-- la colonne nth_value renvoie le produit voulu : iphone
+-- La clause RANGE definit le debut du cadre a la ligne de debut 
+-- et la fin a la ligne de fin de l'ensemble de resultats.
+```
+* L'agregation avec les fonctions de partitionnement
+```sql
+-- Creation d'une simple table :
+
+CREATE TABLE produit (product_id INTEGER,product_name VARCHAR (250), price INT)
+
+INSERT INTO produit VALUES 
+(1,'Microsoftlumia',200), -- doublon
+(1,'Microsoftlumia',400),
+(1,'Microsoftlumia',800),
+(2,'HTC ONE',400),
+(3,'Nexus',500),
+(4,'iphone',900),
+(5,'HPElite',1200),
+(6,'Lenovo Thinkpad',700),
+(7,'Sony VAIO',700),
+(8,'Dell Vostro',800),
+(9,'Ipad',700),
+(10,'Kindle fire',150),
+(10,'Kindle fire',300),
+(10,'Kindle fire',600),
+(11,'Samsung galaxy Tab',200)
+
+SELECT * FROM produit
+
+-- sélectionner les produits Microsoftlumia
+SELECT product_name, price FROM produit 
+WHERE product_name = 'Microsoftlumia'
+GROUP BY product_name, price
+
+-- afficher le nombre de produits communs dans une colonne nb_produit
+-- Microsoftlumia > nb_produit : 3
+-- Kindle fire > nb_produit : 3
+SELECT product_id, product_name, price, 
+COUNT (*) OVER (PARTITION BY product_name ORDER BY product_id) AS nb_produit
+FROM produit 
+
+-- afficher la moyenne des prix des produits 
+SELECT product_id, product_name, price, 
+	AVG(price) OVER(PARTITION BY product_name ORDER BY product_id) AS prix_moyen_produit
+FROM produit
+-- Kindle fire (300, 150, 600 en prix) => 350 en moyenne
+```
+
+## VUES, PROCEDURES STOCKEES, TRIGGERS & FONCTIONS
+
+* Vue = table virtuelle
+* Vue = contient le résultat d'une requête SQL (définie lors de la création de la vue)
+* Le résultat est dynamique = tout changement dans la table se repercute dans la vue
+* On enregistre donc une structure de requête (et non le résultat)
+* Vue = s'utilise comme une table
+```sql
+-- SYNTAXE :
+CREATE VIEW simple_vue
+AS
+SELECT ma_selection
+
+-- J'ai la requete ci dessous : 
+SELECT COUNT(*) AS total, sexe, date_naissance FROM contact
+WHERE date_naissance::text LIKE '%1976%' AND sexe LIKE 'M'
+GROUP BY sexe, date_naissance
+
+-- Le probleme c'est que je dois a chaque soit sauvegarder la requete 
+-- ou soit la retaper a la main, c'est un peu fastidieux n'est ce pas ? 
+-- Pour solutionner ce probleme = creer une vue
+
+CREATE VIEW simple_vue
+AS
+SELECT COUNT(*) AS total, sexe, date_naissance FROM contact
+WHERE date_naissance::text LIKE '%1976%' AND sexe LIKE 'M'
+GROUP BY sexe, date_naissance
+-- crée une vue sur sur Pgadmin
+
+-- pour retrouver le résultat de la requête, il faut juste faire un select de la vue 
+SELECT * FROM simple_vue
+
+-- je peux aussi mettre des filtres dans ma vue 
+-- et je peux appeler juste une colonne
+SELECT total FROM simple_vue 
+-- Plus besoin de retaper la requete elle est maintenant enregistrée par une vue.
+
+-- Cas pratique : 
+-- Je veux que par exemple Sebastien ne voit que les personnes qui ont moins de 30 ans
+-- par contre je veux que par exemple Bruno voit les personnes qui ont plus de 30 ans
+
+-- creation de la vue pour sebastien
+CREATE VIEW vue_sebastien
+AS
+SELECT * FROM contact WHERE age < 30 
+-- Que donne le select de la vue pour Sebastien ? 
+SELECT * FROM vue_sebastien
+-- Sebastien ne voit bien que les personnes qui ont moins de 30 ans
+
+-- creation de la vue pour Bruno
+CREATE VIEW vue_bruno
+AS
+SELECT * FROM contact WHERE age > 30 
+-- Que donne le select de la vue pour Bruno ? 
+SELECT * FROM vue_bruno
+-- Bruno ne voit bien que les personnes qui ont plus de 30 ans
+
+-- mettre un UPDATE dans une Vue = impossible
+create view test_update 
+as 
+update contact set nom ='marchand_2' where nom ='marchand'
+
+-- mettre un DELETE dans une Vue = impossible
+create view test_delete
+as 
+delete contact where nom ='marchand'
+
+-- mettre un INSERT dans une Vue = impossible
+create view test_delete
+as 
+insert into  contact values ('test','test',250,'2070-2-15')
+
+
+-- changer un morceau de ma requete dans ma vue = impossible
+-- par ex. changer le sexe dans ma requête
+-- impossible sur Postgres (possible sur SQL server)
+-- il faut supprimer la vue et la recreer
+ALTER VIEW simple_vue
+AS
+SELECT COUNT(*) AS total, sexe, date_naissance FROM contact
+WHERE date_naissance::text LIKE '%1976%' AND sexe LIKE 'M'
+GROUP BY sexe, date_naissance
+
+-- renommer ma vue = ALTER VIEW
+ALTER VIEW simple_vue RENAME TO simple_vue2
+-- La vue a été renommée en simple_vue2
+
+-- Suppression de la vue par la commande DROP VIEW :
+DROP VIEW simple_vue2
+```
+* Les procédures stockées
+```sql
+-- Postgresql ne supporte les procedures stockees que depuis postgresSQL 11
+-- procedure stockee = ensemble d'instructions compilées dans la BDD
+-- peut contenir les instructions DELETE, UPDATE et INSERT (contrairement à la vue)
+-- simplification du code SQL
+
+SELECT * FROM contact
+
+-- Cas pratique : Je n'ai pas envie de taper tous les jours un script d'insert de 3 lignes ?
+-- et si je l'integrais a une procedure stockee ? 
+
+-- creation de la procedure avec un INSERT : 
+
+CREATE OR REPLACE PROCEDURE Ps_insert_data(_nom text, _prenom text, _age integer,
+                          _sexe text, _date_naissance date) -- _variable
+LANGUAGE SQL -- Langage utilise SQL ou PLpsSQL
+AS $$ -- on peut l'appeler TOTO aussi
+INSERT INTO contact(nom, prenom, age, sexe, date_naissance)
+VALUES(_nom, _prenom, _age, _sexe, _date_naissance);
+$$; --Fin de la procedure
+-- une procédure ps_insert_data a été crée dans le Schema
+
+-- Lancons la PS par un CALL: 
+CALL Ps_insert_data ('Bouchon', 'damien', 25, 'M', '1983-05-06')
+
+--Que donne le SELECT ? 
+SELECT * FROM contact -- l'utilisateur a été ajouté
+
+-- creation de la procedure avec un UPDATE :
+CREATE OR REPLACE PROCEDURE Ps_update_data(_nom text, _prenom text)                     
+LANGUAGE SQL 
+as $$ 
+UPDATE contact set nom = _nom WHERE prenom= _prenom
+$$;
+
+CALL Ps_update_data ('Bouchon_2', 'damien')
+select * from contact -- changement pris en compte
+
+-- creation de la procedure avec un DELETE  :
+CREATE OR REPLACE PROCEDURE Ps_delete_data(_nom text)                    
+LANGUAGE SQL 
+as $$ 
+DELETE FROM contact WHERE nom = _nom
+$$;
+
+CALL Ps_delete_data ('Bouchon_2')
+SELECT * FROM contact -- utilisateur supprimé
+```
+* Le Block Structure
+```sql
+-- Qu'est ce que le Block structure ? 
+-- Chaque Bloc a deux sections : declaration et corps
+-- La Section declaration est facultative, la section de corps est obligatoire
+
+DO $$ 
+<<TOTO>> -- Debut du block 
+DECLARE
+  counter integer = 0; -- Compteur à 0 
+BEGIN -- debut
+   counter := counter + 1;-- + 1 
+   RAISE NOTICE 'La valeur courante est  %', counter; -- gestion des erreurs,  comme print en SQL 
+END TOTO $$; -- Fin du bloc 
+
+-- Le bloc se termine par un ;
+-- Le double $$ est un delimiteur que l'on utilise pour indiquer 
+-- ou commence et se termine la definition de la Transaction
+
+
+-- Allons plus loin,on peut meme creer des sous blocs : 
+DO $$ 
+<<Premier_bloc>>
+DECLARE -- 1er bloc
+  counter integer := 0;
+BEGIN 
+   counter := counter + 1;
+   RAISE NOTICE 'La valeur courante est %', counter; -- 1
+ 
+   DECLARE -- Sous bloc
+       counter integer := 0;
+   BEGIN 
+       counter := counter + 10;
+       RAISE NOTICE 'La valeur courante du sous bloc est %', counter; -- 10
+       RAISE NOTICE 'La valeur courante du premier bloc est %', Premier_bloc.counter; -- 1
+   END;
+ 
+   RAISE NOTICE 'La valeur courante du premier bloc est %', counter; -- 1
+   
+END Premier_bloc $$;
+
+-- NOTICE:  La valeur courante est 1
+-- NOTICE:  La valeur courante du sous bloc est 10
+-- NOTICE:  La valeur courante du premier bloc est 1
+-- NOTICE:  La valeur courante du premier bloc est 1
+-- DO
+```
+* TRIGGER
+```sql
+-- Un déclencheur (trigger) PostgreSQL est une fonction invoquée automatiquement
+-- chaque fois qu'un événement associé à une table se produit. 
+-- Un événement peut être l'un des suivants: INSERT , UPDATE , DELETE ou TRUNCATE .
+
+-- Un déclencheur est une fonction spéciale définie par l'utilisateur associée à une table.
+
+-- Pour créer un nouveau déclencheur, vous devez d'abord définir une fonction de déclencheur, 
+-- puis lier cette fonction de déclencheur à une table.
+
+-- Tout d'abord, créez une fonction de déclenchement à l'aide de CREATE FUNCTION
+-- Ensuite liez la fonction au trigger
+
+-- Creation de deux tables : 
+-- Creation de la table employé ; 
+CREATE TABLE employees(
+   id SERIAL PRIMARY KEY,
+   first_name VARCHAR(40) NOT NULL,
+   last_name VARCHAR(40) NOT NULL
+);
+
+-- Creation de la table des audits des employés (avec une colonne en date):
+CREATE TABLE employee_audits (
+   id SERIAL PRIMARY KEY,
+   employee_id INT NOT NULL,
+   last_name VARCHAR(40) NOT NULL,
+   changed_on TIMESTAMP(6) NOT NULL
+)
+
+-- Creation de la fonction : 
+-- CREATE OR REPLACE FUNCTION nom_fonction RETURNS TRIGGER AS ALIAS
+-- idée : enregister l'ancien nom et la date de modifcation
+-- lorsqu'un employé change de nom
+CREATE or REPLACE FUNCTION log_last_name_changes() RETURNS trigger AS $emp_stamp$
+   BEGIN
+   IF NEW.last_name <> OLD.last_name THEN -- si last_name a été modifié
+       INSERT INTO employee_audits(employee_id, last_name, changed_on) -- insertion dans la table d'audit des variables
+       VALUES(OLD.id, OLD.last_name, NOW()); 
+	   -- avec comme valeurs l'ancienne valeur de la colonne ID, le nouveau last name et la date du jour 
+   END IF; -- Fin du IF
+        RETURN NEW;
+    END;
+$emp_stamp$ LANGUAGE plpgsql;
+
+-- Creation du trigger : 
+CREATE TRIGGER last_name_changes
+  BEFORE UPDATE -- avant la MAJ => sera exécuté à chaque UPDATE
+  ON employees -- sur la table employé
+  FOR EACH ROW -- pour chaque ligne 
+  EXECUTE PROCEDURE log_last_name_changes(); -- Execute la fonction 
+ 
+ -- Insertion de deux valeurs : 
+INSERT INTO employees (first_name, last_name)
+VALUES ('John', 'Doe');
+INSERT INTO employees (first_name, last_name)
+VALUES ('Lily', 'Brown');
+
+-- que donne le SELECT : 
+SELECT * FROM employees
+
+-- Lily Brown se marie et change son nom de famille en Lily Bush. 
+-- Nous pouvons mettre à jour son nom de famille comme indiqué dans la requête suivante:
+UPDATE employees
+SET last_name = 'Brown'
+WHERE ID = 2;
+
+-- que donne le SELECT : 
+SELECT * FROM employees
+-- le nom de famille de Lily a été mis à jour. 
+-- Vérifions le contenu du employee_audits tableau:
+SELECT * FROM employee_audits
+-- le tableau a une nouvelle ligne avec l'ancien nom de Lily
+-- à chaque changement de nom, une nouvelle ligne sera ajoutée
+-- avec le nom précédent
+-- le trigger a été rajouté à la table employees
+-- + à l'onglet Trigger Functions du Schema
+```
+
+## CONTRAINTES ET CLÉS
+
+* Contrainte CHECK et UNIQUE
+```sql
+-- CHECK : contrainte de valeur
+
+--- Creation d'une table classique 
+CREATE TABLE Personne (
+    Nom varchar(255) NOT NULL,
+    Prenom varchar(255),
+    Age int,
+    CHECK (Age < 5) -- Contrainte CHECK
+)
+
+INSERT INTO Personne VALUES ('Thuillier', 'Olivier', 4) -- OK
+INSERT INTO Personne VALUES ('Thuillier', 'Olivier', 5) 
+-- ERROR:  ERREUR:  la nouvelle ligne de la relation « personne » viole la contrainte 
+-- de vérification « personne_check »
+-- DETAIL:  La ligne en échec contient (Thuillier, Olivier, 5) 
+INSERT INTO Personne VALUES ('Thuillier', 'Olivier', NULL) -- OK  
+
+-- Supression de la contrainte 
+ALTER TABLE Personne DROP CONSTRAINT personne_age_check
+
+-- rajouter la contrainte sur une table existante ? 
+ALTER TABLE Personne ADD CHECK (Age  < 10)
+
+-- Supprimons la table
+DROP TABLE Personne
+
+-- ajouter une contrainte pour une valeur donnée 
+CREATE TABLE valeur_donnee (valeur varchar (200), CHECK (valeur in ('TOTO','TITI')))
+
+-- Insertion de valeurs 
+INSERT INTO valeur_donnee values ('TITI') -- OK
+INSERT INTO valeur_donnee values ('TUTU')
+-- ERROR:  ERREUR:  la nouvelle ligne de la relation « valeur_donnee » viole la contrainte de vérification « valeur_donnee_valeur_check »
+-- DETAIL:  La ligne en échec contient (TUTU)
+
+-- une contrainte CHECK sur plusieurs colonnes 
+CREATE TABLE Personne (
+    Nom varchar(255) NOT NULL,
+    Prenom varchar(255),
+    Age int,
+    CHECK (Age BETWEEN 5 AND 10 AND Nom = 'THUILLIER' ) -- Contrainte CHECK sur deux colonnes
+)
+-- Insertion de valeurs
+INSERT INTO Personne VALUES ('THUILLIER', 'Olivier', 5) -- OK
+INSERT INTO Personne VALUES ('THUILLIERZ', 'Olivier', 5)
+-- ERROR:  ERREUR:  la nouvelle ligne de la relation « personne » viole la contrainte 
+-- de vérification « personne_check »
+-- DETAIL:  La ligne en échec contient (THUILLIERZ, Olivier, 5)
+INSERT INTO Personne VALUES ('THUILLIER', 'Olivier', 11) -- même message d'erreur
+
+-- UNIQUE : imposer l'unicité d'une valeur
+
+CREATE TABLE nom_unique (nom varchar (200) NULL UNIQUE, prenom varchar (200))
+
+INSERT INTO nom_unique VALUES ('Thuillier', 'Olivier') -- OK
+INSERT INTO nom_unique VALUES ('Thuillier', 'Bruno')
+-- ERROR:  ERREUR:  la valeur d'une clé dupliquée rompt la contrainte unique « nom_unique_nom_key »
+-- DETAIL:  La clé « (nom)=(Thuillier) » existe déjà
+INSERT INTO nom_unique VALUES (NULL, 'Bruno') -- OK
+
+-- créer plusieurs contraintes par table
+-- Peut on creer une table avec une colonne UNIQUE et un DEFAULT ? 
+CREATE TABLE unique_default (
+Nom varchar (200) NULL UNIQUE ,
+prenom varchar (200) DEFAULT 'TOTO' 
+)
+
+INSERT INTO UNIQUE_DEFAULT values ('olivier', DEFAULT)
+-- olivier TOTO
+
+-- creer plusieurs colonnes UNIQUE dans une table 
+CREATE TABLE UNIQUE_2 (
+Nom varchar (200) NULL UNIQUE ,
+prenom varchar (200) UNIQUE
+)
+	
+-- La contrainte UNIQUE ne cree pas d'index non clustered par defaut (comme sur SQL Server)
+```
+* La contrainte DEFAULT
+```sql
+-- DEFAULT: créer une valeur par défaut
+
+--- Creation de la table avec la valeur DEFAULT
+CREATE TABLE test_default (test varchar(200) DEFAULT 'TOTO', email varchar (200))
+
+INSERT INTO test_default VALUES ('olivier', 'defaut@defaut.com')
+INSERT INTO test_default VALUES (DEFAULT, 'defaut@defaut.com')
+
+-- Ajout d'un defaut sur une table existante
+ALTER TABLE test_default ALTER COLUMN email SET DEFAULT 'aucune adresse email'
+
+INSERT INTO test_default VALUES (DEFAULT, DEFAULT)
+-- TOTO | aucune adresse email
+```
+* La contrainte PRIMARY KEY
+```sql
+-- La Primary Key est recommandée sur chaque table, elle la représente
+-- La PK n’accepte pas les doublons ni les NULL
+-- (contrairement a UNIQUE qui accepte les NULL, mais non les doublons)
+-- Une table ne peut contenir qu’une seule PK
+
+--- Creation d'une table classique avec la PK
+CREATE TABLE table_ex
+(  
+   nom varchar (200) PRIMARY KEY, -- ajout dans les contraintes ►◄ de la table
+   personne varchar (200)
+)
+
+INSERT INTO table_ex VALUES (NULL,'TOTO')
+-- ERROR:  ERREUR:  une valeur NULL viole la contrainte NOT NULL de la colonne « nom »
+-- DETAIL:  La ligne en échec contient (null, TOTO)
+INSERT INTO table_ex VALUES ('Thuillier', 'Olivier')
+INSERT INTO table_ex VALUES ('Thuillier', 'Olivier')
+-- ERROR:  ERREUR:  la valeur d'une clé dupliquée rompt la contrainte unique « table_ex_pkey »
+-- DETAIL:  La clé « (nom)=(Thuillier) » existe déjà
+ 
+DROP TABLE table_ex
+
+-- ajouter une contrainte unique à primary key
+CREATE TABLE table_ex
+(  
+   Nom varchar (200) UNIQUE PRIMARY KEY -- possible (intérêt ?)  
+)
+
+
+DROP TABLE table_ex
+
+--- ajout de la contrainte CHECK sur une PK 
+CREATE TABLE table_ex
+(  
+   nom varchar (200) PRIMARY KEY CHECK (nom in ('THUILLIER')) 
+ )
+
+INSERT INTO table_ex VALUES ('OLIVIER')
+-- ERROR:  ERREUR:  la nouvelle ligne de la relation « table_ex » viole la contrainte de vérification « table_ex_nom_check »
+-- DETAIL:  La ligne en échec contient (OLIVIER)
+
+DROP TABLE table_ex
+
+--- ajout de la contrainte DEFAULT sur une PK
+CREATE TABLE table_ex
+(  
+   nom varchar (200) DEFAULT 'TOTO' PRIMARY KEY -- Rajout de la contrainte DEFAULT
+)
+
+INSERT INTO table_ex VALUES (DEFAULT) -- TOTO
+```
+* La contrainte FOREIGN KEY
+```sql
+-- FOREIGN KEY : garantit l'intégrité référentielle entre 2 tables
+-- les tables sont liées par la relation PK/FK
+-- on parle d'une relation parent/enfant
+
+--- Creation d'une table classique avec la PK
+CREATE TABLE Parent
+(  
+   nom varchar (200) PRIMARY KEY,  
+   prenom varchar (200),
+   adresse varchar (200)
+)
+
+-- Inserons des valeurs dans cette table 
+INSERT INTO parent VALUES ('Martin', 'Jean', '7 rue des Coquelicots')
+
+-- Creation d'une table classique avec la FK
+CREATE TABLE Enfant
+(  
+   prenom varchar (200),
+   nom varchar (200),  
+	FOREIGN KEY (nom) REFERENCES parent(Nom) -- référence la table Parent
+   -- ajout de la contrainte dans la table
+)
+
+-- Inserons des valeurs dans cette table 
+INSERT INTO enfant VALUES ('Liam','Martin')
+INSERT INTO enfant VALUES ('Liam', 'Martine') -- nom NON Present dans la table Parent
+-- ERROR:  ERREUR:  une instruction insert ou update sur la table « enfant » 
+-- viole la contrainte de clé étrangère « enfant_nom_fkey »
+-- DETAIL:  La clé (nom)=(Martine) n'est pas présente dans la table « parent »
+
+-- Que se passe t il si je modifie la valeur dans la PK 
+UPDATE parent SET nom = 'Saucisse' WHERE nom ='Martin'
+-- ERROR:  ERREUR:  UPDATE ou DELETE sur la table « parent » viole la contrainte de clé étrangère « enfant_nom_fkey » de la table « enfant »
+-- DETAIL: La clé (nom)=(Martin) est toujours référencée à partir de la table « enfant »
+-- On ne peut pas modifier la table parent, par le simple fait qu'elle a une relation enfant
+
+-- et si je modifiais la table enfant ? 
+UPDATE enfant SET nom = 'Saucisse' WHERE nom ='Martin'
+-- ERROR:  ERREUR:  une instruction insert ou update sur la table « enfant » viole la contrainte de clé
+-- étrangère « enfant_nom_fkey »
+-- DETAIL:  La clé (nom)=(Saucisse) n'est pas présente dans la table « parent »
+-- On ne peut pas modifier la table enfant, par le simple fait qu'elle a une relation parent
+
+-- Mais alors comment sortir de cette impasse ? 
+-- il faut desactiver la contrainte sur la FK, pour pouvoir modifier la table soit parent soit enfant
+ALTER TABLE enfant DISABLE TRIGGER ALL -- désactive toutes les contraintes
+UPDATE enfant SET nom = 'Saucisse' WHERE nom ='Martin' -- OK
+UPDATE parent SET nom = 'Saucisse' WHERE nom ='Martin'
+
+-- Pour reactiver la contrainte 
+ALTER TABLE enfant ENABLE TRIGGER ALL
+
+-- et si je reessaye un UPDATE ? 
+UPDATE enfant SET nom = 'Poireau' WHERE nom ='Saucisse'
+-- ERROR:  ERREUR:  une instruction insert ou update sur la table « enfant » viole la contrainte de clé
+-- étrangère « enfant_nom_fkey »
+-- DETAIL:  La clé (nom)=(Poireau) n'est pas présente dans la table « parent »
+
+-- supression : ORDRE important
+DROP TABLE enfant -- PK
+DROP TABLE parent -- FK
+```
+* La cascade d'integrite referentielle
+```sql
+--- Creation de deux tables
+CREATE TABLE test1 (
+    id SERIAL PRIMARY KEY, -- AUTO_INCREMENT
+    nom varchar(200) NOT NULL,
+    prenom varchar(200)
+)
+
+CREATE TABLE test2 (
+    id SERIAL PRIMARY KEY, -- AUTO_INCREMENT
+    nom varchar(200) NOT NULL,
+    prenom varchar(200)
+)
+
+-- insertion d'un simple ligne classique sur les deux tables
+INSERT INTO test1(prenom, nom) VALUES ('Jean', 'Bon')
+INSERT INTO test2(prenom, nom) VALUES ('Jean', 'Bon')
+
+-- rajout des FK
+ALTER TABLE test2 ADD CONSTRAINT test2 FOREIGN KEY (id) REFERENCES test1(id)
+
+DELETE FROM test1 WHERE id = 1
+-- ERROR:  ERREUR:  UPDATE ou DELETE sur la table « test1 » viole la contrainte de clé étrangère « test2 » de la table « test2 »
+-- DETAIL:  La clé (id)=(1) est toujours référencée à partir de la table « test2 »
+-- UPDATE : même erreur
+
+-- Suppresion de  la contrainte 
+ALTER TABLE test2 DROP CONSTRAINT test2
+
+-- rajout des FK avec le DELETE CASCADE : 
+ALTER TABLE test2 ADD CONSTRAINT test2 FOREIGN KEY (id) REFERENCES test1(id) ON DELETE CASCADE
+-- applique un effet cascade > DELETE Parent > DELETE Enfant
+
+BEGIN TRANSACTION -- crée une requête ouverte
+
+DELETE FROM test1 WHERE id = 1 -- OK
+SELECT * FROM test1 -- vide
+SELECT * FROM test2 -- vide
+
+ROLLBACK -- reviens en arriere
+-- COMMIT -- sauvegarde la transaction
+
+UPDATE test1 SET id = 2 WHERE id = 1 -- ERREUR
+
+-- Suppresion de la contrainte 
+ALTER TABLE test2 DROP CONSTRAINT test2
+
+-- On vide les tables 
+TRUNCATE TABLE test1
+TRUNCATE TABLE test2
+truncate table Test_on_cascade_2
+
+-- insertion d'un simple ligne classique sur les deux tables
+INSERT INTO test1(prenom, nom) VALUES ('Jean', 'Bon')
+INSERT INTO test2(prenom, nom) VALUES ('Jean', 'Bon')
+
+-- ajout de la contrainte UPDATE et DELETE 
+ALTER TABLE test2 ADD CONSTRAINT test2 FOREIGN KEY (id) REFERENCES test1(id) 
+ON UPDATE CASCADE ON DELETE CASCADE
+
+UPDATE test1 SET id = 3 -- OK
+-- id test1 = 3
+-- id test2 = 3
+
+-- supprimer les tables : respecter l'ordre
+DROP TABLE test2 -- d'abord table enfant
+DROP TABLE test1 -- puis table parent
+-- ou
+DROP TABLE test1 CASCADE -- supprime table 1
+```
+
+## LA SEQUENCE & L'IDENTITY
+
+* L'IDENTITY sur les tables
+```sql
+-- nouvelle fonctionnalité Postgres 10
+-- appelée GENERATED ALWAYS AS IDENTITY
+-- contrainte qui permet d'attribuer automatiquement une valeur unique à une colonne
+-- types : SMALLINT, INT, BIGINT
+
+CREATE TABLE color (
+	id INT GENERATED ALWAYS AS IDENTITY, -- sera toujours généré par Postgres
+	name VARCHAR NOT NULL
+)
+
+INSERT INTO color (name) VALUES ('rouge')
+-- id = 1
+-- il est IMPOSSIBLE du coup d'imposer son id
+
+-- pour surcharger
+INSERT INTO color (id, name)
+OVERRIDING SYSTEM VALUE
+VALUES (2, 'vert')
+
+DROP TABLE color
+
+CREATE TABLE color (
+	id INT GENERATED BY DEFAULT AS IDENTITY, -- généré par défaut par Postgres
+	name VARCHAR NOT NULL
+)
+
+INSERT INTO color (name) VALUES ('rouge') -- OK
+INSERT INTO color (id, name) VALUES (3, 'vert') -- OK
+
+DROP TABLE color
+
+CREATE TABLE color (
+	id INT GENERATED BY DEFAULT AS IDENTITY
+	(START WITH 10 INCREMENT BY 10),
+	name VARCHAR NOT NULL
+)
+
+INSERT INTO color (name) VALUES ('rouge')
+-- id = 10
+INSERT INTO color (name) VALUES ('hugfstsrebene')
+-- id = 20
+```
+* Une SEQUENCE
+```sql
+-- prolongation de l'identity
+-- sur deux tables distinctes, ça va incrémenter indépendemment les numéros
+-- sequence = liste ordonnee d'entiers. Les ordres de nombres dans la sequence sont importants. 
+-- Par exemple, {1,2,3,4,5} et {5,4,3,2,1} sont des sequences entiÃ¨rement differentes.
+
+-- Une sequence dans PostgreSQL est un objet lie au schema defini par l'utilisateur qui genere une sequence d'entiers basee sur une specification specifiee.
+
+-- Une sequence est une sorte de table particuliere qui permet de generer un nombre proprement.
+-- Les nombres generes proviennent d'une suite que l'on aura au prealable parametree dans la sequence.
+
+--- creation d'une sequence simple, avec un increment de 5 et qui demarre a 100
+CREATE SEQUENCE masequence -- à retrouver dans le Schema
+INCREMENT 5 
+START 100
+
+-- pour voir la prochaine valeur de la sequence
+SELECT NEXTVAL('masequence') -- 100
+
+-- Creation d'une autre sequence 
+CREATE SEQUENCE three
+INCREMENT -1
+MINVALUE 1 
+MAXVALUE 3
+START 3
+CYCLE
+
+SELECT NEXTVAL('three') -- 3
+
+-- attacher une sequence a une table
+CREATE TABLE order_details(
+    order_id SERIAL,
+    item_id INT NOT NULL,
+    product_id VARCHAR(200) NOT NULL,
+    price DEC(10,2) NOT NULL,
+    PRIMARY KEY(order_id, item_id)
+)
+
+-- Et rattacher cette sequence a la table : 
+CREATE SEQUENCE order_item_id
+START 10 -- Debut de l'increment
+INCREMENT 10 -- Par saut de 10
+MINVALUE 10 -- Valeur minimum
+OWNED BY order_details.item_id;
+
+INSERT INTO 
+    order_details(order_id, item_id, product_id, price)
+VALUES
+    (100, nextval('order_item_id'),'DVD Player',100), -- item_id = 10
+    (100, nextval('order_item_id'),'Android TV',550), -- 20
+    (100, nextval('order_item_id'),'Speaker',250); -- 30
+
+
+-- On peut le creer aussi sur une autre table
+CREATE TABLE order_details_2 (
+    order_id SERIAL,
+    item_id INT NOT NULL,
+    product_id VARCHAR(200) NOT NULL,
+    price DEC(10,2) NOT NULL,
+    PRIMARY KEY(order_id, item_id)
+)
+
+INSERT INTO 
+    order_details_2(order_id, item_id, product_id, price)
+VALUES
+    (100, nextval('order_item_id'),'DVD Player',100), -- item_id = 40
+    (100, nextval('order_item_id'),'Android TV',550), -- 50
+    (100, nextval('order_item_id'),'Speaker',250); -- 60
+	
+-- Il a pris les valeurs suivantes 40, 50, 60
+
+-- Quelle sera sa prochaine valeur ?
+SELECT nextval('order_item_id') -- 70
+
+-- une Sequence peut etre modifiee 
+ALTER SEQUENCE order_item_id
+INCREMENT BY 10 -- + 10
+
+SELECT nextval('order_item_id') -- 80
+
+-- Et si je veux repartir a 10 ?
+ALTER SEQUENCE order_item_id
+restart 10
+
+SELECT nextval('order_item_id') --40
+
+-- On peut aussi lui affilier une valeur MAX :
+CREATE SEQUENCE order_max
+START 1 -- Debut de l'increment
+INCREMENT 1 -- Par saut de 10
+MaxVALUE 2 -- Valeur minimum
+OWNED BY order_details.item_id;
+
+TRUNCATE TABLE order_details
+
+
+INSERT INTO 
+    order_details(order_id, item_id, product_id, price)
+VALUES
+    (100, nextval('order_max'),'DVD Player',100),
+    (100, nextval('order_max'),'Android TV',550),
+    (100, nextval('order_max'),'Speaker',250);
+
+-- ERROR:  ERREUR:  nextval : valeur maximale de la sÃ©quence Â« order_max Â» (2) atteinte
 ```
