@@ -46,16 +46,71 @@ DROP and TRUNCATE are DDL commands, whereas DELETE is a DML command. Therefore D
 
 ## CONSEILS
 
+* Database Superuser = postgres (équivalent de root sur MySQL)
+* SQL = Structured Query Language
 * On utilise les 'apostrophes' et non les "guillemets" pour entourer les données
 ```sql
 -- en détail
 SELECT * FROM utilisateur WHERE prenom = 'Jesse'
 ```
+* VARCHAR = Character Varying (varchar est l'alias)
+```sql
+            "Name"           |           "Alias"
+character varying [ (n) ] 	         varchar [ (n) ]
+```
+* 'fait référence à un string' (apostrophe, single quote)
+* 'permet d''écrire un apostrophe dans un string'
+* "fait référence à un nom dans la base de donnée (base de donnée, table, colonne)" (quotation marks, double quote) - permet aussi d'utiliser des noms réservés, et de mettre des majuscules dans les noms de tables et de colonnes
+* Exemple : 
+```sql
+INSERT INTO exemple ("name", "email") VALUES ('Mary Brown', 'mary@brown.com')
+INSERT INTO exemple ("name", "email") VALUES ('Vana''ima', 'vaima@brown.com')
+-- Vana'ima
+
+SELECT index -- invalid, reserved name
+FROM YourTable -- invalid, capital letters
+
+-- And this is valid:
+SELECT "index"
+FROM "YourTable"
+```
+* Les types de données de Postgres > https://www.postgresql.org/docs/9.5/datatype.html
 * Chaque requête du Query Tool doit être sélectionnée pour être lancée indépendamment (sinon la Query Tool lance toutes les requêtes)
 * bouton "Explain Analyze" (à droite du bouton Execute ►) pour mesurer le temps et le chemin de la requête
+* DON'T DO THIS > https://wiki.postgresql.org/wiki/Don%27t_Do_This
+```
+- Don't use NOT IN
+- Don't use UPPER CASE table or column names
+(Don't use NamesLikeThis, use names_like_this)
+PostgreSQL folds all names - of tables, columns, functions and everything else - to lower case unless they're "double quoted"
+- Don't use BETWEEN (especially with timestamps)
+BETWEEN is safe for discrete quantities like integers or dates, as long as you remember that both ends of the range are included in the result. But it's a bad habit to get into
+SELECT * FROM blah WHERE timestampcol BETWEEN '2018-06-01' AND '2018-06-08'
+Instead, do:
+SELECT * FROM blah WHERE timestampcol >= '2018-06-01' AND timestampcol < '2018-06-08'
+- Don't use timestamp (without time zone) (use timestamptz (also known as timestamp with time zone) instead)
+- Don't use timestamp (without time zone) to store UTC times (Use timestamp with time zone instead)
+- Don't use the timetz type. You probably want timestamptz instead
+- Don't use timestamp(0) or timestamptz(0). Use date_trunc('second', blah) instead.
+- Don't use the type char(n). You probably want text.
+- Don't use char(n) even for fixed-length identifiers. Use text, or a domain over text, with CHECK(length(VALUE)=3) or CHECK(VALUE ~ '^[[:alpha:]]{3}$') or similar. char(n) doesn't reject values that are too short, it just silently pads them with spaces
+(!) There is no performance benefit whatsoever to using char(n) over varchar(n)
+- Don't use the type varchar(n) by default. Consider varchar (without the length limit) or text instead
+- Don't use money. Numeric, or (rarely) integer may be better.
+- Don't use serial. For new applications, identity columns should be used instead (Bizarrement, Postgres utilise SERIAL, donc à constraster)
+- Don't use trust authentication over TCP/IP (host, hostssl)   
+```
+* Best practices > http://www.jancarloviray.com/blog/postgres-quick-start-and-best-practices/
+```sql
+-- Text
+'Use' TEXT 'and avoid' VARCHAR 'or' CHAR 'and especially' VARCHAR(n) 'unless you specifically want to have a hard limit. Read this. Performance wise, TEXT is faster'.
+-- Numbers
+INT 'is a typical choice for integers. There are more choices here if needed for your use case.'
+```
 
 ## UTILISATION & LEXIQUE
 
+* En ligne de commande, avec SQL Shell
 * Depuis raccourci Windows, taper "pgadmin"
 * Ajouter le mot de passe sauvegardé
 * Architecture = 
@@ -82,6 +137,8 @@ DROP TABLE public.ma_table
 * Utiliser PostgreSQL selon un langage/framework > https://www.enterprisedb.com/postgres-tutorials
 * PostgreSQL & Django > https://www.enterprisedb.com/postgres-tutorials/how-use-postgresql-django
 * Tutoriel SQL > https://www.postgresqltutorial.com/
+* Intro To PostgreSQL Databases With PgAdmin For Beginners > https://www.youtube.com/watch?v=Dd2ej-QKrWY
+* How to Insert Data Into A PostgreSQL Table > https://kb.objectrocket.com/postgresql/how-to-insert-data-into-a-postgresql-table-746
 
 ## CREER UNE BDD
 
@@ -99,9 +156,39 @@ CREATE DATABASE formation
 ALTER DATABASE formation RENAME TO formation_udemy;
 ```
 
+## IMPORT/EXPORT DE LA BDD
+
+* Import = créer une BDD > clic-droit > Restore
+* Export = clic-droit sur la table > Backup
+* https://www.windows8facile.fr/postgresql-importer-exporter-base-pgadmin/
+
 ### CREER, MODIFIER, SUPPRIMER UNE TABLE
 
 * Solution simple = formation > Schemas > Table > clic-droit > Create > Table
+```sql
+-- exemple
+Name      |        Data Type     |     Length/Precision      | Scale | Not NULL ? | Primary Key ?
+id                   serial                                               Yes           Yes
+name      character varying (Postgres VARCHAR)
+
+CREATE TABLE public.exemple
+(
+    id serial NOT NULL,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE public.exemple
+    OWNER to postgres;
+```
+* Voir le contenu de la table = formation > Schemas > Tables > ma_table > clic-droit > View/Edit Data > All Rows
+* Créer une colonne = formation > Schemas > Tables > ma_table > Columns > clic-droit > Create > Column
+```sql
+Name      |        Data Type     |     Length/Precision      | Scale | Not NULL ? | Primary Key ?
+name           character varying             255
+
+ALTER TABLE public.exemple
+    ADD COLUMN name character varying(255);
+```
 * Solution SQL = ouvrir la query Tool de Postgres :small_red_triangle:
 * :exclamation: Query Tool se trouve à gauche des onglets de Postgres
 ```sql
@@ -130,12 +217,14 @@ DROP TABLE public.ma_table2
 
 ## INTERAGIR AVEC LES DONNEES
 
+* Insérer des données à la main : ma_table > Edit/View > remplir les cases > Save Data Changes (haut à droite de la Query Tool)
 * Insérer des données avec INSERT INTO
 ```sql
 -- création de la table
 CREATE TABLE utilisateur (nom varchar (200), prenom varchar (200))
 -- insertion d'une nouvelle entrée
-INSERT INTO utilisateur VALUES ('Pan', 'Peter')
+INSERT INTO exemple ("name", "email") VALUES ('Mary Brown', 'mary@brown.com') -- champs précisés
+INSERT INTO utilisateur VALUES ('Pan', 'Peter') -- tous les champs
 --  deux lignes
 INSERT INTO utilisateur VALUES ('White', 'Walter'), ('Pinkman', 'Jesse')
 ```
@@ -147,6 +236,8 @@ SELECT * FROM utilisateur WHERE prenom = 'Jesse'
 SELECT prenom FROM utilisateur
 -- tout
 SELECT * FROM utilisateur
+-- avec un pseudo
+SELECT name "customer names" FROM exemple -- la colonne name est renommée "customer names" 
 ```
 * Mettre à jour avec UPDATE
 ```sql
@@ -209,16 +300,22 @@ SELECT nom || ' ' || prenom AS nom_prenom FROM contact
 ```
 * L'opérateur LIKE (contient)
 ```sql
-SELECT nom FROM contact WHERE nom='Marchand'
+SELECT nom FROM contact WHERE nom='Marchand' -- contient exactement
 -- même résultat :
 SELECT nom FROM contact WHERE nom LIKE 'Marchand'
 -- sélectionne tous les noms qui contiennent la lettre V
-SELECT nom FROM contact WHERE nom LIKE '%V%'
+SELECT nom FROM contact WHERE nom LIKE '%V%' -- contient au moins
 -- sélectionne tous les contacts dont la date de naissance contient 08
 -- fais une conversion pour formater les dates en texte
+-- % veut dire "tout"
+-- % est sensible à la casse
+-- %mot% va chercher tout + le mot + tout
+SELECT * FROM exemple WHERE email LIKE '%@%' -- renvoie tout, car tous les emails ont un @
 SELECT * FROM contact WHERE date_naissance::text LIKE '%08%'
 -- qui finit par un e
 SELECT prenom FROM contact WHERE prenom LIKE '%e'
+-- qui commence par un e
+SELECT prenom FROM contact WHERE prenom LIKE 'e%'
 -- qui ont un a en 2e position et finissent par un e
 SELECT prenom FROM contact WHERE prenom LIKE '_a%e'
 -- idem avec un n en 3e position
