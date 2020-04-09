@@ -46,6 +46,7 @@ DROP and TRUNCATE are DDL commands, whereas DELETE is a DML command. Therefore D
 
 ## CONSEILS
 
+* Ouvrir la page pgAdmin n'importe où = clic-droit sur l'icône pgAdmin > Copy server URL
 * Database Superuser = postgres (équivalent de root sur MySQL)
 * SQL = Structured Query Language
 * On utilise les 'apostrophes' et non les "guillemets" pour entourer les données

@@ -3101,7 +3101,7 @@ public class VaisseauCivil extends Vaisseau {
 }
 
 
-// XI) SCENARIOS ALTERNANTIFS
+// XI) SCENARIOS ALTERNATIFS
 
 // • La classe Exception, le mot clé throws
 
@@ -3495,4 +3495,28 @@ public class HelloUniverse {
     }
 }
 
+// XII) JAVA DANS LE WEB
 
+// Applet est un programme Java qui est incruté dans du code HTML
+// ex. : 
+// A Hello World Applet
+// Save file as HelloWorld.java
+
+// import java.applet.Applet;
+// import java.awt.Graphics;
+
+// HelloWorld class extends Applet
+public class HelloWorld extends Applet {
+    // Overriding paint() method
+    @Override
+    public void paint(Graphics g) {
+        g.drawString("Hello World", 20, 20);
+    }
+
+}
+
+// Using APPLET, here is the HTML file that executes HelloWorld :
+<applet code="HelloWorld" width=200 height=60></applet>
+
+// En savoir plus
+https://www.geeksforgeeks.org/java-applet-basics/

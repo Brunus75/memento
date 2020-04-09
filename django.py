@@ -48,6 +48,13 @@ reverse('arch-summary', args=[1945])
 # avec des **kwargs :
 reverse('admin:app_list', kwargs={'app_label': 'auth'})
 
+* """
+PostgreSQL is the most capable of all the databases here in terms of schema support; 
+the only caveat is that adding columns with default values will cause a full rewrite of the table, 
+for a time proportional to its size.
+For this reason, it’s recommended you always create new columns with null=True, 
+as this way they will be added immediately.
+"""
 
 ## -- LEXIQUE -- ##
 
@@ -217,16 +224,50 @@ https://www.pgadmin.org/download/
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
-        'NAME': 'disquaire', # le nom de notre base de donnees creee precedemment
-        'USER': 'celinems', # attention : remplacez par votre nom d'utilisateur
-        'PASSWORD': '',
-        'HOST': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # on utilise l'adaptateur postgresql
+        'NAME': 'crepes', # le nom de notre base de donnees creee precedemment
+        'USER': 'postgres', # nom d'utilisateur, par défaut postgres
+        'PASSWORD': '*****',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
 
 + python manage.py migrate
+
+# FAIRE UNE MIGRATION SUR POSTGRES (AVEC DATA)
+https://dev.to/coderasha/how-to-migrate-data-from-sqlite-to-postgresql-in-django-182h
+
+0. Sauvegarder la BDD existante (en cas de problème)
+0.1. Créer la Base de données équivalente sur PostgreSQL
+1. Dump existing data :
+python manage.py dumpdata > datadump.json
+# enregistre toutes les données d’applications ou de modèles spécifiques contenues
+# dans votre base de données dans un format texte sérialisé
+# dans mon_projet/datadump.json
+# équivalent d'un copier-coller (plutôt que couper-coller)
+2. change settings.py :
+DATABASES = {
+    'default': {
+        # on utilise l'adaptateur postgresql
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'crepes',  # le nom de notre base de donnees creee precedemment
+        'USER': 'postgres',  # nom d'utilisateur, par défaut postgres
+        'PASSWORD': '*****',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+3. Lancer pgAdmin
+4. python manage.py migrate --run-syncdb
+# permet de créer les tables des applications sans migrations
+5. python manage.py shell
+>>> from django.contrib.contenttypes.models import ContentType
+>>> ContentType.objects.all().delete()
+>>> quit()
+6. python manage.py loaddata datadump.json
+# Enregistre dans la base de données les fixtures passées en argument
+7. TADAM !
 
 # ORM
 Lorsque vous créez un modèle dans votre application Django, 

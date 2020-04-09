@@ -661,9 +661,11 @@ liste = sorted(liste)
 
 # Muable et Immuable (mutable ou immutable)
 # 2 catégories d'objets :
-# muable : modifiables : listes, dictionnaire, sets
-# immuable : on peut les modifier directement : string, nombres
+# muable : modifiables : listes, dictionnaires, sets 
+# => garde le même objet en mémoire à chaque modification
+# immuable : on ne peut les modifier directement : string, nombres, booleens
 # il faut créer une nouvelle variable pour récupérer l'élément changé
+# => chaque modification crée un nouvel objet en mémoire
 
 # fonctions supplémentaires
 len("Python") # 6
@@ -2418,7 +2420,8 @@ with open(fichier, "w") as f: # réécriture du dictionnaire
 }
 """
 
-# SQLite
+## - SQLite
+
 import sqlite3 # module de base de Python 3
 
 # si fichier n'existe pas, Python va le créer
@@ -2535,6 +2538,171 @@ conn.close()
 
 # ouvrir une Base de données avec DB Browser
 https://sqlitebrowser.org/
+
+
+## - POSTGRES
+
+# Ressources
+https://www.youtube.com/watch?v=2PDkXviEMD0
+https://www.postgresqltutorial.com/postgresql-python/
+https://pynative.com/python-postgresql-tutorial/
+
+# installer psycopg2
+pip install psycopg2
+
+# - à retenir -
+conn = psycopg2.connect(**params)  # connexion à la BDD
+cur = conn.cursor() # création d'un agent de requête
+cur.execute(requête, (value1, value2)) # ne jamais mettre les données dans la requête !
+id = cur.fetchone()[0]
+conn.commit() # enregistre les changements dans BDD
+cur.close() # libère l'agent
+conn.close() # ferme la connexion
+
+# - basic script -
+import psycopg2 # indispensable
+
+# connect to the DB
+con = psycopg2.connect(
+    host="localhost",
+    database="formation",
+    user="postgres", # par défaut
+    password="*****" # mot de passe de la BDD
+)
+# s'il y a une erreur, psycopg2 vous indique la ligne de l'erreur
+
+if con:
+    print("Connecté !")
+else:
+    print("Problème de connexion...")
+
+# cursor : command
+cur = con.cursor()
+
+# execute query (with safety to avoid SQL injection)
+cur.execute("INSERT INTO exemple(name, email) VALUES(%s, %s)",
+            ('Graveyard', 'graveyard@fun.com'))
+
+cur.execute("SELECT * FROM exemple")
+
+rows = cur.fetchall()
+for id, name, email in rows:
+    print(f"id: {id}, name: {name}, email: {email}")
+# id: 1, name: Smith, email: smith@smith.com
+# id: 2, name: Mary Brown, email: mary@brown.com
+# id: 3, name: Vana'ima, email: vaima@brown.com
+# id: 5, name: Graveyard, email: graveyard@fun.com (5 car le précédent n'avais pas passé le commit)
+
+# enregistrer les requêtes (important pour les requêtes autres que SELECT)
+con.commit()
+
+# always close the cursor when query complete
+cur.close()
+
+# always close the connection
+con.close()
+
+# - script un peu plus avancé - #
+https://www.postgresqltutorial.com/postgresql-python/insert/
+
+import psycopg2
+from config import config
+
+# insert one vendor
+insert_vendor("3M Co.")
+
+def insert_vendor(vendor_name):
+    """ insert a new vendor into the vendors table """
+    sql = """INSERT INTO vendors(vendor_name)
+                VALUES(%s) RETURNING vendor_id;"""
+    conn = None
+    vendor_id = None
+    try:
+        # read database configuration
+        params = config()
+        # connect to the PostgreSQL database
+        conn = psycopg2.connect(**params)
+        # create a new cursor
+        cur = conn.cursor()
+        # execute the INSERT statement
+        cur.execute(sql, (vendor_name,))
+        # get the generated id back
+        vendor_id = cur.fetchone()[0]
+        # commit the changes to the database
+        conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+    return vendor_id
+
+# insert multiple vendors
+insert_vendor_list([
+    ('AKM Semiconductor Inc.',),
+    ('Asahi Glass Co Ltd.',),
+    ('Daikin Industries Ltd.',),
+    ('Dynacast International Inc.',),
+    ('Foster Electric Co. Ltd.',),
+    ('Murata Manufacturing Co. Ltd.',)
+])
+
+def insert_vendor_list(vendor_list):
+    """ insert multiple vendors into the vendors table  """
+    sql = "INSERT INTO vendors(vendor_name) VALUES(%s)"
+    conn = None
+    try:
+        # read database configuration
+        params = config()
+        # connect to the PostgreSQL database
+        conn = psycopg2.connect(**params) # un dictionnaire avec les paramètres
+        # create a new cursor
+        cur = conn.cursor()
+        # execute the INSERT statement
+        cur.executemany(sql,vendor_list) # vendor_list = tuple
+        # noter le executemany
+        # commit the changes to the database
+        conn.commit()
+        # close communication with the database
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+
+# - un dernier exemple pour la route - #
+import psycopg2
+
+try:
+   connection = psycopg2.connect(user="sysadmin",
+                                  password="pynative@#29",
+                                  host="127.0.0.1",
+                                  port="5432",
+                                  database="postgres_db")
+   cursor = connection.cursor()
+
+   postgres_insert_query = """ INSERT INTO mobile (ID, MODEL, PRICE) VALUES (%s,%s,%s)"""
+   record_to_insert = (5, 'One Plus 6', 950)
+   cursor.execute(postgres_insert_query, record_to_insert)
+
+   connection.commit()
+   count = cursor.rowcount
+   print (count, "Record inserted successfully into mobile table")
+
+except (Exception, psycopg2.Error) as error :
+    if(connection):
+        print("Failed to insert record into mobile table", error)
+
+finally:
+    #closing database connection.
+    if(connection):
+        cursor.close()
+        connection.close()
+        print("PostgreSQL connection is closed")
 
 
 ## -- ARCHITECTURE -- ##
@@ -2829,6 +2997,100 @@ app.exec_() # lance l'appli
 
 ## ---------- PYTHON AVANCÉ ---------- ##
 
+## -- OBJETS MUABLES & IMMUABLES -- ##
+
+# Rappel : 2 catégories d'objets :
+# muables : modifiables : listes, dictionnaires, sets 
+# => garde le même objet en mémoire à chaque modification
+# immuables : on ne peut les modifier directement : string, nombres, booleens
+# il faut créer une nouvelle variable pour récupérer l'élément changé
+# => chaque modification crée un nouvel objet en mémoire
+
+# Pourquoi c'est important
+import time
+
+liste = range(999999)
+a = time.time()
+
+# 1ère solution avec un objet immuable (string)
+# on crée un objet à chaque boucle !
+resultat = ''
+for nombre in liste:
+    resultat += str(nombre)
+
+# 2eme solution avec un objet muable (liste)
+# on utilise le même objet dans la mémoire
+resultat = []
+for nombre in liste:
+    resultat.append(str(nombre))
+resultat_final = ''.join(resultat)
+
+b = time.time()
+
+print("Temps d'execution: {}".format(b - a))
+# Solution 1 : Temps d'execution: 2.4922115802764893
+# Solution 2 : Temps d'execution: 0.46729564666748047
+
+
+## -- LES FONCTIONS ANONYMES -- ##
+
+fonction_anonyme = "une fonction jetable, qui n'a pas de nom"
+but = "alléger le code et le rendre plus lisible"
+
+def multiplication(a, b):
+	return a * b
+
+multiplication = lambda a, b: a * b # déclarée sur une ligne
+# possible de l'assigner à une variable
+resultat = multiplication(5, 10) # puis l'utiliser comme une fonction
+print(resultat)
+
+
+def print_bonjour():
+	print('Bonjour')
+
+print_bonjour() # Bonjour
+
+# Fonctionne uniquement avec Python 3.x !
+print_bonjour = lambda: print('Bonjour')
+print_bonjour()
+
+print_mot = lambda m: print(m) # assignée à une fonction
+print_mot('Udemy') # Udemy
+
+# Exemples concrets
+import os
+fichiers = ['/H/Projets/fichier1.py',
+		    '/H/Projets/fichier2.pptx',
+		    'Y/Dossiers/fichier3.txt']
+
+get_fichier = lambda f: os.path.split(f)[-1] # fichier.py
+get_ext = lambda f: os.path.splitext(f)[-1] # .py
+del_point = lambda f: f.replace('.', '') # py
+process = lambda f: del_point(get_ext(get_fichier(f)))
+
+# sans lambda
+fichiers_extensions = [os.path.splitext(os.path.split(f)[-1])[-1].replace('.', '') for f in fichiers]
+# avec lambda
+fichiers_extensions = [process(f) for f in fichiers]
+
+print(fichiers_extensions)
+
+# autre exemple on le lambda s'impose
+utilisateurs = [('User1', 'Etienne'),
+                ('User4', 'Arnaud'),
+                ('User3', 'Camille'),
+                ('User5', 'Bernard'),
+                ('User2', 'Didier')]
+# fonction jetable : on ne l'utilise qu'une fois
+utilisateurs.sort(key=lambda x: x[1]) # sort(key=comment_trier)
+# la fonction anonyme va s'appliquer sur chaque tuple, va trier sur le deuxième élément
+print(utilisateurs) # renvoie par ordre alphabétique
+
+# autres exemples
+button.clicked.connect(lambda: self.afficher_mot('Bonjour'))
+
+
 ## -- LA FONCTION ENUMERATE -- ## 
 
 # sans enumerate
@@ -2914,3 +3176,57 @@ print("hello %s" % (name,))
 "{'s1': 'hello', 's2': 'sibal'}"
 '%s' %name['s1']
 # 'hello'
+
+
+## ---------- PYTHON & HTML ---------- ##
+
+1. Il faut utiliser la CGI, une interface qui va servir d'intermédiaire' entre le serveur 
+et le programme Python. C'est' une vieille interface, prise en compte par la plupart des serveurs web.
+
+"""
+L'interface CGI (pour Common Gateway Interface) est un composant de la plupart
+des logiciels serveurs de pages web. 
+Il s'agit d'une passerelle qui leur permet de communiquer avec d'autres logiciels 
+tournant sur le même ordinateur. 
+Avec CGI, vous pouvez écrire des scripts dans différents langages (Perl, C, Tcl, PHP, Python ...).
+"""
+
+* Pour utiliser la CGI il faut un serveur
+* Ensuite, il faut mettre ce code dans le .htaccess 
+situé à la racine du serveur pour faire fonctionner la CGI:
+    AddHandler cgi-script .py
+    Options +ExecCGI
+* Puis par exemple tu peux créer ce fichier python (qui contient donc un formulaire) 
+où ont peut mettre les algorithmes souhaités:
+#!/usr/bin/python
+import cgi
+ 
+print 'Content-type: text/html'
+ 
+print
+ 
+formulaire = cgi.FieldStorage()
+ 
+if formulaire.getvalue('nom') == None:
+ 
+    print '''
+ 
+Veuillez remplir le formulaire :
+ 
+<form action="formulaire.py" method="post">
+ 
+<input type="text" name="nom" />
+ 
+<input type="submit"></form>
+ 
+    '''
+ 
+else:
+ 
+    print 'Ainsi, vous vous appelez',cgi.escape(formulaire.getvalue('nom')),' ?'<br><br>
+
+# Ressources
+https://docs.python.org/2/howto/webservers.html
+https://python.developpez.com/cours/TutoSwinnen/?page=Chapitre17
+http://pub.phyks.me/sdz/sdz/apercu-de-la-cgi-avec-python.html
+https://fr.wikibooks.org/wiki/Programmation_Python/L%27interface_CGI
