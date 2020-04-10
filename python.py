@@ -42,11 +42,23 @@ DB Browser
 
 
 ## -- SPECIFICITES PYTHON -- ##
+
+* Avec Python3, input renvoie systematiquement une "chaine de caractères"
 * Le point-virgule n'est JAMAIS utilisé en Python'
 * None # équivalent de Null
 * un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
 et le terme librairie quant à lui est souvent utilisé pour parler de packages
 * rien n'est' privé en python, tout est public
+* 'single quote' est équivalent à "double quote"
+"""
+    Generally, double quotes are used for string representation 
+    and single quotes are used for regular expressions, dict keys or SQL. 
+    Hence both single quote and double quotes depict string in python 
+    but it's sometimes our need to use one type over the other.
+    Pick a rule and stick to it.
+    When a string contains single or double quote characters, however, 
+    use the other one to avoid backslashes in the string.
+"""
 
 
 ## -- LEXIQUE -- ##
@@ -127,9 +139,6 @@ python3 test.py
 /usr/local/bin/python3 test.py
 # sur VS Code, pour exécuter un terminal sur un fichier précis
 clic-droit sur le fichier ou dossier => Run in Terminal
-
-## -- SPECIFICITES -- ##
-* Avec Python3, input renvoie systematiquement une "chaine de caractères"
 
 
 ## -- LES BASES -- ##
@@ -3176,6 +3185,364 @@ print("hello %s" % (name,))
 "{'s1': 'hello', 's2': 'sibal'}"
 '%s' %name['s1']
 # 'hello'
+
+
+## -- LES COMPREHENSIONS DE LISTE -- ##
+
+# List compréhension : definition & syntaxe
+boucle for sur une ligne
+
+[-3, -2, -1, 0, 1, 2, 3] # début
+[i for i in liste] # syntaxe
+        ↓
+[-3, -2, -1, 0, 1, 2, 3] # résultat
+
+[-3, -2, -1, 0, 1, 2, 3]
+[expression for i in liste]
+    i + 1 # exemple
+        ↓
+[-2, -1, 0, 1, 2, 3, 4]
+
+[-3, -2, -1, 0, 1, 2, 3]
+[expression for i in liste if condition]
+    i + 1                       i > 0
+    ↓
+[2, 3, 4]
+
+[-3, -2, -1, 0, 1, 2, 3]
+[expression if condition else expression for i in liste]
+    i + 1       i >= 0          i-1
+        ↓
+[-4, -3, -2, 1, 2, 3, 4]
+
+# Exemples
+# 1. doubler les élements d'une liste
+# 1.1 avec un for classique
+liste = [1, 2, 3, 4, 5]
+liste_double = []
+for i in liste:
+    liste_double.append(i*2)
+liste = liste_double[:] # le slice permet de créer une nouvelle liste (nouvel objet dans la mémoire)
+# et l'assigner à la variable liste
+# sinon liste_double et liste auront le même id (chaque changement sur l'un se répercutera sur l'autre)
+# aussi possible avec list(list_double)
+# 1.2 avec une compréhension de liste
+liste = [1, 2, 3, 4, 5]
+liste = [i*2 for i in liste] # [2, 4, 6, 8, 10]
+# (pas de variable intermediaire, on assigne directement le résultat à la variable)
+# 1.2 avec un if
+liste = [1, 2, 3, 4, 5]
+liste = [i*2 for i in liste if i % 2 == 0] # [4, 8]
+# 1.3 avec un if/else
+liste = [1, 2, 3, 4, 5]
+liste = [i*2 if i % 2 == 0 else i for i in liste] # [1, 4, 3, 8, 5]
+
+# Map et Filter : l'ancienne façon de faire
+liste = [1, 2, 3, 4, 5]
+
+# Avec map
+r = map(lambda x: x*x, liste) # applique une fonction sur chaque element de la liste
+print(list(r))
+
+# Avec les listes en compréhension
+r = [i*i for i in liste]
+print(r)
+
+# Avec filter
+r = filter(lambda x: x % 2 == 0, liste) # récupère les éléments selon la condition
+print(list(r))
+
+# Avec les listes en compréhension
+r = [i for i in liste if i % 2 == 0]
+print(r)
+
+
+## - LES ITERATEURS -- ##
+
+# Définition et syntaxe
+# itérable = sur lequel on peut faire une boucle
+# itérer qqc = passer à travers chacun de ses élément
+for i in [1, 2, 3, 4, 5]:
+    print(i)
+for l in "Udemy":
+    print(l)
+for key in {'user_1': 'Paul', 'user_2': 'Pierre'}:
+    print(key)
+
+iterateur = iter('Udemy')
+print(iterateur) # <str_iterator object at 0x000001B466613940>
+# iterateur = objet = version itérable de notre objet de base
+print(next(iterateur)) # U (on commence à consumer notre itérateur)
+print(next(iterateur)) # d (on peut faire : iterateur.__next__())
+
+# Recréer la fonction range avec un iterateur
+# iterateur = classe avec des méthodes à définir
+# itérateur basique
+class custom_range:
+    def __init__(self, maximum):
+        self.i = 0 
+        # self.i = 1 si l'on veut que la liste commence à 1
+        # self.max = maximum + 1 pour finir sur le maximum
+        # custom_range(10) donnerait 1,2,3... 10
+        self.max = maximum
+
+    def __iter__(self): # permet de rendre l'objet itérable
+        return self
+
+    def __next__(self):
+        if self.i < self.max:
+            i = self.i # car i démarre à 0
+            self.i += 1
+            return i
+        else:
+            raise StopIteration()
+
+a = custom_range(10)
+print(a.__next__()) # 0
+print(a.__next__()) # 1
+for i in a:
+    print(i) # 2, 3, ect, 9.
+
+# Mélanger une chaine de caracteres avec un itérateur
+from random import randint
+
+class random_letter:
+    def __init__(self, name):
+        self.i = 0
+        self.max = len(name)
+        self.remaining_letters = list(name) # ['B', 'o', 'n', 'j', 'o', 'u', 'r']
+
+    def __iter__(self): # permet de rendre l'objet itérable
+        return self
+
+    def __next__(self):
+        if self.i < self.max:
+            letter = self.remaining_letters.pop(randint(0, len(self.remaining_letters) - 1))
+            # pop enlève et retourne un élément selon son index (randint(0, taille du tableau))
+            self.i += 1
+            return letter
+        else:
+            raise StopIteration()
+
+name = "Bonjour"
+random_name = random_letter(name)
+print(random_name) # <__main__.random_letter object at 0x000002A8736B3940>
+for letter in random_name:
+    print(letter)
+# j
+# r
+# u
+# o
+# B
+# o
+# n
+# avec une compréhension de liste
+random_name_2 = [l for l in random_name]
+print(''.join(random_name_2)) # juoBron
+
+
+## -- LES GENERATEURS -- ##
+
+# Définition et syntaxe
+# générateur = itérateur simplifié (à préférer pour la simplicité du code)
+def exemple_generateur():
+    yield 1 # sorte de return
+    yield 2 # retourne l'élément et met la fonction en pause
+    yield 3 # permet de retourner plusieurs valeurs
+
+generateur = exemple_generateur()
+print(type(generateur)) # <class 'generator'>
+print(next(generateur)) # retourne 1 (yield 1)
+# se met en pause
+print(generateur.__next__()) # retourne 2
+print(generateur.__next__()) # retourne 3
+print(generateur.__next__()) # StopIteration
+
+# Recréer la fonction range avec un générateur
+def custom_range(n):
+    for i in range(1, n + 1):
+        yield i
+
+generateur = custom_range(10)
+print(type(generateur)) # <class 'generator'>
+for i in generateur:
+    print(i)
+# 1
+# 2
+# 3
+# 4
+# 5
+# 6
+# 7
+# 8
+# 9
+# 10
+
+# Mélanger une chaine de caractères avec un générateur
+from random import randint
+
+def random_letter(name):
+    letters = list(name)
+    for i in range(len(name)): # pour boucler autant de fois qu'il y a de lettres d'origine
+        rand_index = randint(0, len(letters) - 1)
+        yield letters.pop(rand_index)
+
+for letter in random_letter("Bonjour"):
+    print(letter)
+
+# pour débuguer :
+# a = random_letter("Bonjour")
+# print(a.__next__())
+# print(a.__next__())
+
+mixed_name = "".join([letter for letter in random_letter("Bonjour")])
+print(mixed_name.capitalize()) # Uoonbrj
+
+
+## - OPERATEURS TERNAIRES
+
+# structure conditionnelle sur une ligne
+
+# syntaxe
+if condition:
+    expression
+else: 
+    expression
+    ↓
+expression if condition else expression
+
+if age >= 18: 
+    r = "Majeur"
+else: r = "Mineur"
+        ↓
+r = "Majeur" if age >= 18 else "Mineur"
+
+# sans les OT
+a = 5
+if a > 0:
+	a_positif = True
+elif a < 0:
+	a_positif = False
+
+print(a_positif)
+
+# avec les OT
+a = 5
+a_positif = True if a > 0 else False
+print(a_positif)
+
+age = 20
+majeur = True if age >= 18 else False
+print(majeur)
+
+# limitations
+a = 19
+
+if a >= 18:
+	print('Vous etes majeur')
+else:
+	print('Vous etes mineur')
+
+# Possible avec Python 3.x mais pas avec 2.x
+print('Vous etes majeur') if a >= 18 else print('Vous etes mineur')
+
+# Avec Python 2.x
+majeur_ou_mineur = 'majeur' if a >= 18 else 'mineur'
+print('Vous etes {}'.format(majeur_ou_mineur))
+
+# avant Python 2.5
+""" 
+Avant la version 2.5 de Python, les opérateurs ternaires étaient inexistants.
+Il était cependant possible de faire le même genre d'opération avec une syntaxe cependant plus complexe :
+"""
+    a = 5
+    # associer la condition à un tuple, 
+    # le premier élément du Tuple étant retourné si la condition est fausse et 
+    # le deuxième élément étant retourné si la condition est vraie
+    a_positif = (False, True)[a > 0]
+    print(a_positif)
+
+"Cette méthode gérait mal les erreurs :"
+    a = 5
+    a_positif = (1 / 0, True)[a > 0]
+    print(a_positif)
+    >>> ZeroDivisionError: integer division or modulo by zero
+# cette méthode avec le Tuple exécute les deux expressions à l'intérieur du Tuple, 
+# même si la condition ne nécessite pas l'exécution du premier élément du tuple
+
+# Avec les opérateurs ternaires, l'exception ZeroDivisionError ne sera levée que si a est négatif.
+    a_positif = True if a > 0 else 1 / 0
+
+
+## -- LA FONCTION ZIP -- ##
+
+# explications
+# crée une liste de tuple à partir de un ou plusieurs itérables
+[1, 2, 3, 4]    ['un', 'deux', 'trois']
+             ↓
+[(1, 'un'), (2, 'deux'), (3, 'trois')] # le 4 est ignoré car on se base sur la liste la + courte
+
+[1, 2, 3]   ['un', 'deux', 'trois']   ['Julien', 'Marie']
+                        ↓
+[(1, 'un', 'Julien'), (2, 'deux', 'Marie')]
+
+# exemples
+liste_01 = [1, 2, 3]
+liste_02 = ['un', 'deux', 'trois']
+
+# list(zip objet (generator)) pour convertir en liste
+combinaison = list(zip(liste_01, liste_02))
+print(combinaison)
+# [(1, 'un'), (2, 'deux'), (3, 'trois')]
+
+
+liste_01 = [1, 2, 3, 4]
+liste_02 = ['un', 'deux', 'trois']
+
+combinaison = list(zip(liste_01, liste_02))
+print(combinaison)
+
+
+## -- L'INTROSPECTION -- ##
+
+# - la fonction Help => afficher la doc
+
+# dans le module :
+import random
+help(random) # général = module
+help(random.randint) # précis = fonction du module
+
+# dans la commande :
+$ python -i
+>>> help
+Type help() for interactive help, or help(object) for help about object.
+>>> help()
+"""
+To get a list of available modules, keywords, symbols, or topics, type
+"modules", "keywords", "symbols", or "topics".  Each module also comes
+with a one-line summary of what it does; to list the modules whose name
+or summary contain a given string such as "spam", type "modules spam".
+"""
+help> "modules" # recherche tous les modules
+help> "modules time" # tous les modules sur le mot-clé time
+help> "modules timeit" # recherche pour le module timeit
+help> "keywords" # mots-clés réservés de Python
+
+# - le module sys, pour inspecter le système d'exploitation
+
+# 
+import sys
+
+print(sys.version)
+print(sys.version_info.major)
+print(sys.version_info.minor)
+print(sys.platform)
+print(sys.path)
+print(sys.getwindowsversion().major)
+print(sys.executable)
+print(sys.argv)
+
+
 
 
 ## ---------- PYTHON & HTML ---------- ##
