@@ -1760,6 +1760,13 @@ lignes
 # servent à documenter notre code à certains endroits spécifiques, 
 # comme à l'intérieur d'une fonction ou au début d'un module.
 
+# exemples d'utilisation
+import random
+
+print(random.__doc__) # récupère le docstring associé
+print(random.randint.__doc__)
+# Return random integer in range [a, b], including both end points.
+
 # principaux formats docstring
 * Epytext
 * reST 
@@ -1854,20 +1861,24 @@ logging.critical("Erreur critique")
 
 ## -- INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP -- ## 
 
+# documentation : https://pip.pypa.io/en/stable/
 # pip (Pip Installs Packages)
 # petit utilitaire qu'on appelle 'gestionnaire de paquets' 
 # et qui nous permet d'installer des 'paquets' (packages en anglais)
 # On peut donc l'utiliser pour télécharger facilement en ligne de commande des packages
-#  qui sont hébergés sur le site http://pypi.org
+# qui sont hébergés sur le site http://pypi.org
 
 Ouvrir GitBash (ou Cmder)
 taper pip3.7 (c'est un alias') # sinon utiliser le chemin .../Python/Scripts/pip3.7.exe
+(!) taper pip (tout seul) si une seule version de Python est installée
 
 # Chercher des packages sur PyPI et avec pip
 https: // pypi.org/search 
 pip3.7 search requête(nom du module ou description)
+pip search pyside # dans le nom ou description du module
 
 # mettre à jour pip sur Windows
+# ne jamais MAJ pip, la version est associée à la version Python
 pip3.7 install --upgrade --user pip # NE PAS UTILISER CETTE SYNTAXE! 
 # erreur
 python -m pip lescriptaxecuter
@@ -1877,13 +1888,17 @@ To fix the PATH run Command Prompt as administrator:
 pip install --upgrade --force-reinstall --ignore-installed pip
 
 # installer un package avec pip
-pip3.7 install requests
-sudo pip3.7 install requests # si l'OS refuse de l'installer
+pip install package
+pip3.7 install requests # toujours en mode admin sur Windows
+sudo pip3.7 install requests # pour Linux/Mac
 
 # lister les packages avec pip
-pip3.7 'list' # sans les apostrophes 
+pip 'list' # sans les apostrophes
+pip 'list' -o # lesquels ne sont plus à jour ?
+pip3.7 'list' 
 
 # désinstaller un package avec pip
+pip uninstall package
 pip3.7 uninstall nomDuPackage
 
 
@@ -3530,7 +3545,6 @@ help> "keywords" # mots-clés réservés de Python
 
 # - le module sys, pour inspecter le système d'exploitation
 
-# 
 import sys
 
 print(sys.version)
@@ -3542,6 +3556,426 @@ print(sys.getwindowsversion().major)
 print(sys.executable)
 print(sys.argv)
 
+# - la fonction dir et __doc__
+
+# dir: introspecter tous les attributs et méthodes disponibles sur un objet
+import os
+from pprint import pprint
+
+pprint(dir()) # éléments contenus dans le scope local
+pprint(dir(os)) # méthodes et attributs du module os
+# je vois qu'il y a la méthode mkdir
+help(os.mkdir) # je vais chercher la doc avec help
+# on peut aussi appliquer dir sur des objets Python
+pprint(dir([])) # méthodes et attributs de l'objet [] (liste vide)
+# on aperçoit notamment la méthode append
+pprint(dir("")) # pareil pour un string
+
+# __doc__ permet de récupérer la documentation docstring
+print([].append.__doc__) 
+# réponse : Append object to the end of the list
+# help est un peu plus exhaustif
+help([].append)
+"""
+Help on built-in function append:
+
+append(object, /) method of builtins.list instance
+    Append object to the end of the list.
+"""
+
+# - la fonction type = savoir quel est le type d'un objet
+import os
+import json
+import pprint
+print(type(pprint)) # <class 'module'>
+print(type(pprint.pprint)) # <class 'function'>
+print(type(type)) # <class 'type'> (tout est objet en Python)
+
+# exemple d'utilisation
+# le fichier json contient "False"
+# il est dans le même dossier que le fichier présent
+fichier = os.path.join(os.path.dirname(__file__), 'variable.json')
+
+with open(fichier, 'r') as f:
+	variable = json.load(f) # je récupère le fichier
+
+print(type(variable)) # <class 'str'>
+variable = True if variable == 'True' else False
+print(type(variable)) # <class 'bool'>
+
+if type(variable) == bool:
+	print('La variable est un boolean') # La variable est un boolean
+elif type(variable) == str:
+	print('La variable est une chaine de caractere')
+
+# - la fonction id = retourne l'adresse en mémoire d'une variable
+
+# exemple : dupliquer une liste de la mauvaise façon
+liste_originale = [1, 2, 3, 4]
+liste_duplique = liste_originale
+
+liste_originale.append(5)
+
+print(liste_duplique) # elle contient également 5 !
+
+print(id(liste_originale)) # 2167383220872
+print(id(liste_duplique)) # 2167383220872
+# elles pointent en mémoire vers la même valeur = elles sont identiques
+
+# bonne façon de faire : ajouter un slice
+# crée une copie DIFFERENTE de la liste d'origine
+liste_duplique_unique = liste_originale[:]
+
+liste_originale.append(6)
+print(liste_duplique_unique) # [1, 2, 3, 4, 5], les changements n'ont pas été appliqués
+print(id(liste_originale)) # 2167383220872
+print(id(liste_duplique)) # 2167383220872
+print(id(liste_duplique_unique)) # 2167383719240
+
+
+## -- LES FONCTIONS ANY & ALL -- ## 
+
+# but = vérfier si une ou toutes les variables sont vraies
+# syntaxe
+# any : au moins un élément dans un itérable est vrai
+# all : tous les éléments sont vrais
+exemple_any = any([False, False, True, False])
+print(exemple_any) # True
+
+exemple_any = any([False, False, False, False])
+print(exemple_any) # False
+
+exemple_all = all([True, True, True, True])
+print(exemple_all) # True
+
+exemple_all = all([True, False, True, True])
+print(exemple_all) # False
+
+# Avec Any
+age_invites = [5, 15, 12, 16, 20, 17]
+
+# En France
+autorisation = any(a >= 18 for a in age_invites)
+# la compréhension de liste renvoie une liste de True et/ou False
+print(autorisation) # True
+
+# Aux USA
+autorisation = any(a >= 21 for a in age_invites)
+print(autorisation) # False
+
+# Avec All
+autorisation = all(a >= 18 for a in age_invites)
+print(autorisation) # False
+
+age_invites = [19, 20, 22, 41, 18, 25]
+autorisation = all(a >= 18 for a in age_invites)
+print(autorisation) # True
+
+
+## -- ARGS & KWARGS -- ##
+
+# - l'unpacking
+import sys
+from PySide import QtGui, QtCore
+
+couleur_bouton = (255, 0, 0)
+couleur_bouton_dict = {'rouge': 255, 'vert': 0, 'bleu': 0}
+
+class InterfaceBasique(QtGui.QPushButton):
+	def __init__(self, text='Clique!'):
+		super(InterfaceBasique, self).__init__(text)
+
+        # figuration basique = problème = c'est verbeux
+		self.setStyleSheet('background-color: rgb({},{},{})'.format(couleur_bouton[0], 
+            couleur_bouton[1], couleur_bouton[2]))
+        # avec l'unpacking =  va prendre les valeurs et les associer aux accolades
+		self.setStyleSheet('background-color: rgb({},{},{})'.format(*couleur_bouton))
+        # avec un dictionnaire = unpacking + explicite
+		self.setStyleSheet('background-color: rgb({rouge},{vert},{bleu})'.format(**couleur_bouton_dict))
+		self.show()
+
+
+app = QtGui.QApplication([])
+bouton = InterfaceBasique()
+bouton.show()
+sys.exit(app.exec_())
+
+# - définition et syntaxe
+
+# args : arguments
+# kwargs : keyword arguments
+
+# basique et limité à 2 nombres
+def addition(a, b):
+    return a + b
+
+print(addition(5, 2))
+
+# avec args : arguments illimités et non nommés
+def addition_arg(*args):
+    # args = un tuple des arguments. ex. (5, 2, 6, 10)
+    return sum(args)
+
+print(addition_arg(5, 2, 6, 10))
+
+# exemples approfondis
+def liste_invites(invite_vip, *args):
+    print("{} est un VIP".format(invite_vip))
+    for invite in args:
+        print("{} est un invité normal".format(invite))
+
+liste_invites("Paul", "Pierre", "Marie", "Max")
+# Paul est un VIP
+# Pierre est un invité normal
+# Marie est un invité normal
+# Max est un invité normal
+
+def liste_invites2(invite_vip, *args, **kwargs):
+    print("{} est un VIP".format(invite_vip))
+    for invite in args:
+        print("{} est un invité normal".format(invite))
+
+    # kwargs est un dictionnaire : {'indesirables': ['Simon', 'Jean', 'Julie']}
+    print(kwargs)
+    indesirables = kwargs.get('indesirables')
+    if indesirables:
+        print("Ces invités sont indésirables : {}".format(", ".join(indesirables)))
+
+liste_invites2("Paul", "Pierre", "Marie", "Max", indesirables=["Simon", "Jean", "Julie"])
+# Paul est un VIP
+# Pierre est un invité normal
+# Marie est un invité normal
+# Max est un invité normal
+# Ces invités sont indésirables: Simon, Jean, Julie
+
+# dans l'autre sens = kwargs dans les arguments
+import os
+
+def chemin(dossier, fichier, extension='txt'):
+    return os.path.join(dossier, '{}.{}'.format(fichier, extension))
+
+data = {'dossier': 'chemin\du\dossier', 'fichier': 'tutoriel', 'extension': 'py'}
+print(chemin(**data)) # chemin\du\dossier\tutoriel.py
+
+data2 = {'dossier': 'chemin\du\dossier', 'fichier': 'tutoriel'}
+print(chemin(**data2)) # chemin\du\dossier\tutoriel.txt
+
+
+## -- LES SETS -- ##
+
+# - Définition et syntaxe
+"""
+Un set = collection d'éléments mais uniques
+différence avec une liste = les élements sont uniques et immuables
+on ne peut ajouter que des éléments immuables dans le set (string, tuple, ect.)
+le set est muable
+set = {elemet1, element2, ect.}
+un set n'est pas ordonné
+"""
+mon_set = {1, 2, 3, 3, "Julien", "Julien", (255, 0, 0), (255, 0, 0)}
+print(mon_set) # {1, 2, 3, 'Julien', (255, 0, 0)}
+mon_set.add(5)
+print(mon_set) # {1, 2, 3, 5, (255, 0, 0), 'Julien'}
+# ajouter une liste d'élément
+mon_set.update(["Pierre", 6])
+print(mon_set) # {1, 2, 3, 5, 6, 'Pierre', (255, 0, 0), 'Julien'}
+mon_set.remove("Julien")
+print(mon_set) # {1, 2, 3, 5, 6, (255, 0, 0), 'Pierre'}
+mon_set.remove("Jules") # KeyError
+# façon de pallier ce problème :
+mon_set.discard("Julien")
+mon_set.discard("Jules") 
+
+# utilisation = filtrer les éléments doubles d'une liste
+liste = [99, 1, 2, 4, 5, 6, 7, 5, 4, 1, 3, 2, 1, 1, 2, 1, 34, 20]
+print(sorted(list(set(liste)))) # [1, 2, 3, 4, 5, 6, 7, 20, 34, 99]
+# liste => un set => une liste => liste triée
+
+# - Opérations sur les sets
+# union = assemble tous les éléments
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.union(b)) # {1, 2, 3, 4, 5, 6}
+# un set ne contient que des éléments uniques, 3 et 4 ne sont pas doublés
+print(a | b) # {1, 2, 3, 4, 5, 6}
+
+# intersection = éléments présents SEULEMENT dans a ET dans b
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.intersection(b)) # {3, 4}
+print(a & b) # {3, 4}
+
+# différence = les élements de a MOINS les éléments présents dans b
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.difference(b)) # {1, 2}
+print(a - b) # {1, 2}
+print(b - a) # {5, 6}
+
+# difference symetrique = éléments présents dans une seule variable
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.symmetric_difference(b)) # {1, 2, 5, 6}
+print(a ^ b)  # {1, 2, 5, 6}
+
+
+## -- EXPRESSIONS REGULIERES -- ##
+
+# regex : regular expression
+# exemple : nombre de téléphone français valide ?
+^[0]{1}[1-7]{1}(-[0-9]{2}){4}$
+06-12-23-12-23
+# 2 choses à savoir : 
+# 1) quoi chercher
+# 2) combien de fois
+
+# 1) trouver un caractère :
+# .				Le point correspond à tous les caractères possibles (incluant symboles)
+# [A-F]			Correspond à une liste de caractères possibles. ici de A à F
+# [AF]          A ou F
+# (python|c++)	L'un ou l'autre
+# ^				Le contraire de ce qu'on veut.
+# \d 			Uniquement des chiffres. équivalent à [0-9]
+# \D 			Tout sauf des chiffres. équivalent à [^0-9]
+# \s 			Un espace
+# \w 			Un caractère alphanumérique. équivalent à [a-zA-Z0-9_]
+# \W 			Tout sauf un caractère alphanumérique. équivalent à [^a-zA-Z0-9_]
+# \ 			Comme en Python, pour échapper un caractère. (\. pour chercher un point)
+
+# 2) compter un caractère :
+# ? 		0 ou 1 fois
+# *	    	0 à l'infini
+# +	    	de 1 à l'infini
+# {3} 		exactement 3
+# {3,}  	de 3 à l'infini
+# {,3}  	de 0 à 3 fois
+# {3,6} 	de 3 à 6 fois
+# ()        dans une séquence
+
+# - la fonction match
+
+import re # module regex
+
+# Pourquoi on met un 'r'
+print('\tBonjour') # évalue comme une chaine de caractères : '  Bonjour' (avec le tab de \t)
+print(r'\tBonjour') # évalue comme un regex : '\tBonjour'
+
+# match = trouver une concordance en partant du DEBUT du string
+# a = re.match(r'\s', 'Pierre Dupont') => non valide, car l'espace n'est pas au début
+# a = None dans ce cas
+a = re.match(r'.', 'Pierre Dupont')
+print(a) # <re.Match object; span=(0, 1), match='P'>
+print(a.group()) # P, car c'est le premier match
+a = re.match(r'.+', 'Pierre Dupont')
+print(a.group()) # Pierre Dupont
+
+# récupérer les groupes
+a = re.match(r'(\w+)(\s)(\w+)', 'Pierre Dupont')
+#               g1   g3  g2
+print(a.group(0)) # Pierre Dupont, entièreté du match
+print(a.group(1)) # Pierre
+print(a.group(2)) # 
+print(a.group(3)) # Dupont
+
+# définir des noms pour les groupes
+# (?P<nom_groupe>regex)
+a = re.match(r'(?P<prenom>\w+) (?P<nom>\w+)', 'Pierre Dupont')
+# le \s est remplacé par un simple espace
+print(a.group('prenom')) # Pierre
+print(a.group('nom')) # Dupont
+
+print(a.groups()) # retourne les groupes en tuple => ('Pierre', 'Dupont')
+# retourne les groupes en dictionnaire => {'prenom': 'Pierre', 'nom': 'Dupont'}
+# ↓
+print(a.groupdict())
+
+# exercices
+import re
+
+# Match valide : retourne 'item01'
+re.match(r'[a-z]+\d{2}', 'item01')
+
+# Match valide : retourne 'Pierre Dupont'
+re.match(r'[a-zA-Z]+\s\w+', 'Pierre Dupont')
+
+# Match invalide : on cherche un espace au début de la chaîne de caractère, 
+# mais elle commence par une lettre.
+re.match(r'\s+', 'pierre dupont')
+
+# Match valide : retourne 'pierre'
+re.match(r'\w+', 'pierre dupont')
+
+# Match valide : retourne 'pierre-'
+re.match(r'\w+([-+=]?)', 'pierre-dupont')
+
+# Match valide : retourne 'pierre'
+re.match(r'\w+([-+=]?)', 'pierre/dupont')
+
+# Match invalide : le + cherche si les caractères -, 
+# + ou = sont présents au moins une fois ou plus dans la chaîne de caractère.
+# Aucun de ses éléments ne se retrouve dans la chaîne de caractère 
+# au moins une fois et donc le match n'est pas valide.
+re.match(r'\w+([-+=]+)', 'pierre/dupont')
+
+# - chercher avec search
+# contrairement à match, va chercher dans l'entiereté du string
+import re
+
+a = re.search(r'\s', 'Pierre Dupont + Paul Martin')
+print(a) # retourne un match <re.Match object; span=(6, 7), match=' '>
+# (même si l'espace n'est pas au début du string)
+
+# trouver si le + est présent :
+a = re.search(r' \+ ', 'Pierre Dupont + Paul Martin')
+print(a) # <re.Match object; span=(13, 16), match=' + '>
+# span = position du match
+print(a.group()) # +
+
+# - la fonction split
+import re
+
+# spliter facilement un string avec un regex
+texte = 'item01 | item02 - item03 - item04 | item05'
+
+a = re.split(r' \| | - ', texte)
+#                | OU -
+print(a) # ['item01', 'item02', 'item03', 'item04', 'item05']
+
+# ex. Vérifier la validité d'un numéro de téléphone
+import re
+# 0 => 1 fois
+# 1 à 7 => 1 fois
+# un -, 2 nombres de 0 à 9 => 4 fois 
+# (une séquence)
+numeros_de_telephone = ['06-71-45-34-23',
+                        '02-12-33-75-12',
+                        '00-23-14-52-44',
+                        '514-235-0293',
+                        '03-52-31-56-34']
+
+for tel in numeros_de_telephone:
+    match = re.search(r'0{1}[1-7]{1}(-[0-9]{2}){4}', tel)
+    print('Le numero {} est {}'.format(tel, 'valide' if match else 'invalide'))
+
+# ex. Vérifier la validité d'une adresse email
+import re
+
+adresses_mail = ['christian_martin@gmail.com',
+                 'JaiOublieLarobasegmail.com',
+                 'MarieHutchinson03523@yahoo.co.uk',
+                 'UnEaDreSSeMail!38BIZarre@unSiTeBizarre.com',
+                 'ceciNestPasUneDresseMail']
+
+for mail in adresses_mail:
+    adresse_valide = re.search(r'.+@[a-zA-Z0-9-]+\.[a-zA-Z-.]+', mail)
+    # .+ = n'importe quel caractère, illimité
+    # + = de 1 à l'infini
+    print("L'adresse {} est {}".format(mail, 'valide' if adresse_valide else 'invalide'))
+
+# - Tester ses expressions régulières avec Regex101.com
+# Regarder Quick Reference pour bâtir ses regex
+https://regex101.com/
+https://regexr.com/
 
 
 
