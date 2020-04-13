@@ -1,6 +1,11 @@
 ## ---------- MEMENTO PYTHON ---------- ##
 
 
+## -- RESSOURCES -- ##
+
+https://realpython.com/pointers-in-python/
+
+
 ## -- INSTALLATION -- #
 
 https://www.python.org/downloads/
@@ -640,10 +645,66 @@ all([False, False, True, False]) # renvoie False
 all([f.endswith(".jpg") for f in files])
 # vérifie si tous les fichiers se finissent en .jpg
 
+
 ## -- LES SETS -- ##
 
 liste qui n'accepte' que des valeurs uniques
 set_exemple = {'FRA', 'GER', 'AUS', 'US'}
+
+# - Définition et syntaxe
+"""
+Un set = collection d'éléments mais uniques
+différence avec une liste = les élements sont uniques et immuables
+on ne peut ajouter que des éléments immuables dans le set (string, tuple, ect.)
+le set est muable
+set = {elemet1, element2, ect.}
+un set n'est pas ordonné
+"""
+mon_set = {1, 2, 3, 3, "Julien", "Julien", (255, 0, 0), (255, 0, 0)}
+print(mon_set) # {1, 2, 3, 'Julien', (255, 0, 0)}
+mon_set.add(5)
+print(mon_set) # {1, 2, 3, 5, (255, 0, 0), 'Julien'}
+# ajouter une liste d'élément
+mon_set.update(["Pierre", 6])
+print(mon_set) # {1, 2, 3, 5, 6, 'Pierre', (255, 0, 0), 'Julien'}
+mon_set.remove("Julien")
+print(mon_set) # {1, 2, 3, 5, 6, (255, 0, 0), 'Pierre'}
+mon_set.remove("Jules") # KeyError
+# façon de pallier ce problème :
+mon_set.discard("Julien")
+mon_set.discard("Jules") 
+
+# utilisation = filtrer les éléments doubles d'une liste
+liste = [99, 1, 2, 4, 5, 6, 7, 5, 4, 1, 3, 2, 1, 1, 2, 1, 34, 20]
+print(sorted(list(set(liste)))) # [1, 2, 3, 4, 5, 6, 7, 20, 34, 99]
+# liste => un set => une liste => liste triée
+
+# - Opérations sur les sets
+# union = assemble tous les éléments
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.union(b)) # {1, 2, 3, 4, 5, 6}
+# un set ne contient que des éléments uniques, 3 et 4 ne sont pas doublés
+print(a | b) # {1, 2, 3, 4, 5, 6}
+
+# intersection = éléments présents SEULEMENT dans a ET dans b
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.intersection(b)) # {3, 4}
+print(a & b) # {3, 4}
+
+# différence = les élements de a MOINS les éléments présents dans b
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.difference(b)) # {1, 2}
+print(a - b) # {1, 2}
+print(b - a) # {5, 6}
+
+# difference symetrique = éléments présents dans une seule variable
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+print(a.symmetric_difference(b)) # {1, 2, 5, 6}
+print(a ^ b) # {1, 2, 5, 6}
 
 
 ## -- METHODES ET FONCTIONS UTILES -- ##
@@ -3761,64 +3822,6 @@ data2 = {'dossier': 'chemin\du\dossier', 'fichier': 'tutoriel'}
 print(chemin(**data2)) # chemin\du\dossier\tutoriel.txt
 
 
-## -- LES SETS -- ##
-
-# - Définition et syntaxe
-"""
-Un set = collection d'éléments mais uniques
-différence avec une liste = les élements sont uniques et immuables
-on ne peut ajouter que des éléments immuables dans le set (string, tuple, ect.)
-le set est muable
-set = {elemet1, element2, ect.}
-un set n'est pas ordonné
-"""
-mon_set = {1, 2, 3, 3, "Julien", "Julien", (255, 0, 0), (255, 0, 0)}
-print(mon_set) # {1, 2, 3, 'Julien', (255, 0, 0)}
-mon_set.add(5)
-print(mon_set) # {1, 2, 3, 5, (255, 0, 0), 'Julien'}
-# ajouter une liste d'élément
-mon_set.update(["Pierre", 6])
-print(mon_set) # {1, 2, 3, 5, 6, 'Pierre', (255, 0, 0), 'Julien'}
-mon_set.remove("Julien")
-print(mon_set) # {1, 2, 3, 5, 6, (255, 0, 0), 'Pierre'}
-mon_set.remove("Jules") # KeyError
-# façon de pallier ce problème :
-mon_set.discard("Julien")
-mon_set.discard("Jules") 
-
-# utilisation = filtrer les éléments doubles d'une liste
-liste = [99, 1, 2, 4, 5, 6, 7, 5, 4, 1, 3, 2, 1, 1, 2, 1, 34, 20]
-print(sorted(list(set(liste)))) # [1, 2, 3, 4, 5, 6, 7, 20, 34, 99]
-# liste => un set => une liste => liste triée
-
-# - Opérations sur les sets
-# union = assemble tous les éléments
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-print(a.union(b)) # {1, 2, 3, 4, 5, 6}
-# un set ne contient que des éléments uniques, 3 et 4 ne sont pas doublés
-print(a | b) # {1, 2, 3, 4, 5, 6}
-
-# intersection = éléments présents SEULEMENT dans a ET dans b
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-print(a.intersection(b)) # {3, 4}
-print(a & b) # {3, 4}
-
-# différence = les élements de a MOINS les éléments présents dans b
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-print(a.difference(b)) # {1, 2}
-print(a - b) # {1, 2}
-print(b - a) # {5, 6}
-
-# difference symetrique = éléments présents dans une seule variable
-a = {1, 2, 3, 4}
-b = {3, 4, 5, 6}
-print(a.symmetric_difference(b)) # {1, 2, 5, 6}
-print(a ^ b)  # {1, 2, 5, 6}
-
-
 ## -- EXPRESSIONS REGULIERES -- ##
 
 # regex : regular expression
@@ -3976,6 +3979,486 @@ for mail in adresses_mail:
 # Regarder Quick Reference pour bâtir ses regex
 https://regex101.com/
 https://regexr.com/
+
+
+## -- 10 ERREURS DU DEBUTANT -- ##
+
+## -- Récupérer une clé inexistant d'un dictionnaire
+dic = {'Pierre': 'Serveur',
+       'Julien': 'Libraire',
+       'Marie': 'Ingenieure'}
+
+prenom = 'Paul'
+# Mauvaise façon de faire
+profession = dic[prenom] # KeyError: 'Paul'
+# Bonne façon de faire
+profession = dic.get(prenom)
+print(profession) # None
+profession = dic.get(prenom, "{} n'est pas dans le registre.".format(prenom))
+# dict.get(key, default)
+print(profession) # Paul n'est pas dans le registre (exécuté que si erreur)
+
+## -- Utiliser une liste vide comme argument d'une fonction
+import random
+
+def generateur_liste(liste=[]):
+    # ajout à la liste de 5 nombres aléatoire entre 1 et 100
+    liste.extend([random.randint(1, 100) for i in range(5)])
+    return liste
+
+# on veut créer 5 listes aléatoires
+for i in range(5):
+	print(generateur_liste())
+# [80, 77, 75, 13, 9]
+# [80, 77, 75, 13, 9, 38, 49, 98, 85, 84]
+# [80, 77, 75, 13, 9, 38, 49, 98, 85, 84, 83, 17, 32, 51, 7]
+# la liste n'est plus aléatoire, elle s'aggrandit !
+# on utilise toujours la même liste (passée en argument) en mémoire
+
+# solution
+def generateur_liste(liste=None):
+    if liste is None:
+        liste = [] # redéfinie à chaque fois que l'on exécute la fonction
+        # définie seulement dan le scope de la fonction
+    liste.extend([random.randint(1, 100) for i in range(5)])
+    return liste
+
+for i in range(5):
+    print(generateur_liste())
+# [50, 18, 26, 13, 43]
+# [95, 42, 74, 25, 4]
+# [44, 32, 26, 97, 92]
+# [26, 54, 4, 80, 89]
+# [8, 17, 74, 47, 3]
+
+## -- Mélanger espaces et tabulations
+
+## -- Récupérer un élément inexistant d'une liste
+liste = range(10)
+
+index = 10
+print(liste[index]) # IndexError: range object index out of range
+
+# 1ère façon de faire
+try:
+	r = liste[index]
+	print(r)
+except IndexError:
+	print("L'index {} n'existe pas.".format(index))
+    # L'index 10 n'existe pas
+
+# 2ème façon de faire = opérateur ternaire
+r = liste[index] if len(liste) > index else None
+print(r) # None
+
+## -- Modifier une liste en itérant dedans
+# exemple
+prenoms = ['Pierre', 'Julien', 'Marie', 'Paul']
+for i in range(len(prenoms)):
+	if prenoms[i] == 'Julien': # IndexError: list index out of range
+		del prenoms[i] # on itère sur un range(4) alors qu'il n'y a plus que 3 éléments
+
+# solution : compréhension de liste
+prenoms = ['Pierre', 'Julien', 'Marie', 'Paul']
+prenoms_sans_julien = [p for p in prenoms if p != 'Julien']
+print(prenoms_sans_julien) # ['Pierre', 'Marie', 'Paul'] 
+
+## -- Copier une liste
+# mauvaise exemple : pointer vers l'ancienne liste
+liste = [1, 2, 3]
+liste_copie = liste
+
+liste.append(5)
+
+print(liste) # [1, 2, 3, 5]
+print(liste_copie) # [1, 2, 3, 5]
+
+print(id(liste)) # 1760289776264
+print(id(liste_copie)) # 1760289776264 : ce sont les mêmes listes en mémoire
+
+# bonnes solution :
+liste = [1, 2, 3]
+liste_copie = liste[:] # copier avec un slice vide
+liste_copie = list(liste) # avec la fonction list
+liste_copie = liste.copy() # avec la méthode copy
+
+liste.append(5)
+
+print(liste) # [1, 2, 3, 5]
+print(liste_copie) # [1, 2, 3]
+
+print(id(liste)) # 1760290274696
+print(id(liste_copie)) # 1760290273864
+
+## -- L'égalité avec is et ==
+# is vérifie si l'adresse en mémoire est la même
+# == vérifie si la valeur des variables est la même
+a = 5
+b = 5
+print(a == b) # True
+# # Juste fonctionnel de -5 à 256
+# # on la même adresse en mémoire pour optimisation
+print(a is b) # True
+print(id(a)) # 140708880868112
+print(id(b)) # 140708880868112
+
+a = -2364
+b = -2364
+print(a == b) # True
+print(a is b) # True (!)
+print(id(a)) # 1797946717680
+print(id(b)) # 1797946717680
+
+a = [1, 2, 3, 4, 5]
+b = [1, 2, 3, 4, 5]
+print(a == b) # True
+print(a is b) # False
+print(id(a)) # 2269659947656
+print(id(b)) # 2269659947720
+
+a = [1, 2, 3, 4, 5]
+b = a
+print(a == b) # True
+print(a is b) # True 
+print(id(a)) # 2101972066952
+print(id(b)) # 2101972066952
+
+## -- Utiliser des noms de variables réservés
+
+## -- from module import * (tout importer)
+path = 'C:/mon_fichier.txt'
+
+from os import *
+
+print(path) # import avec * = pas besoin de préfixer la fonction avec le nom du module
+# <module 'ntpath' from 'C:\\Program Files\\Python37\\lib\\ntpath.py'>
+# mais du coup, ici, on print la fonction path, et non la variable !
+
+# il est préférable d'importer le module directement
+# pour éviter tout conflit
+import os
+print(path) # print la variable
+print(os.path) # print la fonction path du module 
+
+## -- Les erreurs de scope
+variable = 'Bonjour'
+
+def ma_fonction():
+	print(variable) # pas de soucis
+	variable += ' tout le monde'
+    # on fait une opération sur la variable
+    # elle devient donc considérée comme locale
+    # Retourne une erreur car 'variable' n'a
+	# jamais été déclarée à l'intérieur de 
+	# la fonction
+
+ma_fonction()
+
+
+## -- ASTUCES -- ##
+
+## -- Trouver le chemin vers un module
+import os
+# où se trouve le module sur le disque ?
+print(os.__file__) # C:\Program Files\Python37\lib\os.py
+# quel est le chemin de mon script actuel ?
+print(__file__) # d:/Documents/WEB DEV/PYTHON/exercices.py
+# et le dossier associé ?
+dossier_courant = os.path.dirname(__file__)
+print(dossier_courant) # d:/Documents/WEB DEV/PYTHON
+
+## -- La fonction join
+tags_photo = ['vacances', 'italie', 'juin', '2018']
+
+nom_fichier = '_'.join(tags_photo)
+print(nom_fichier) # vacances_italie_juin_2018
+
+# erreur levée si on rajoute un élément de type None
+tags_photo2 = ['vacances', 'italie', 'juin', '2018', None]
+# solution : la fonction filter
+# avec None en 1er paramètre, il retourne que les éléments True
+nom_fichier2 = '_'.join(filter(None, tags_photo2))
+# équivalent de '_'.join([i for i in tags_photo2 if i])
+print(nom_fichier2) # vacances_italie_juin_2018
+
+## -- Chaîner les comparateurs
+n = 25
+if 1 < n < 50:
+    print("Le nombre est compris entre 1 et 50.")
+
+## -- For Else
+invites = ['Julien', 'Marie', 'Pierre', 'Pascal']
+
+for invite in invites:
+    if invite == 'Pascal':
+        print("Pascal a déjà été invité !")
+        break # sort de la boucle et n'atteint pas le else
+# on a épuisé la boucle
+else:
+    print("Pascal n'a pas été invité !")
+
+## -- Ordoner le code : couper-coller dans VSCode
+
+## -- Inverser les clés et valeurs d'un dictionnaire
+from pprint import pprint
+
+# accéder à la définition longue via un raccourci
+LONG_NAMES = {'anm_scn': 'Animation Scene',
+              'anm_out': 'Animation Publish',
+              'sim_scn': 'Simulation Scene',
+              'sim_out': 'Simulation Publish'}
+
+pprint(list(zip(LONG_NAMES.values(), LONG_NAMES.keys())))
+# zip(values avant les clés, qui va crée une liste de tuple), 
+# puis on en fait une liste :
+# [('Animation Scene', 'anm_scn'),
+#  ('Animation Publish', 'anm_out'),
+#  ('Simulation Scene', 'sim_scn'),
+#  ('Simulation Publish', 'sim_out')]
+SHORT_NAMES = dict(zip(LONG_NAMES.values(), LONG_NAMES.keys()))
+# dict(notre liste de tuple)
+pprint(SHORT_NAMES)
+# {'Animation Publish': 'anm_out',
+#  'Animation Scene': 'anm_scn',
+#  'Simulation Publish': 'sim_out',
+#  'Simulation Scene': 'sim_scn'}
+print(LONG_NAMES.get('anm_scn')) # Animation Scene
+print(SHORT_NAMES.get('Animation Scene')) # anm_scn
+
+## -- Aplatir une liste et enlever les doublons
+# faire une seule liste à partir de plusieurs listes
+liste = [[1, 7, 3], [3, 4], [12, 1, 4, 8], [1, 3, 3]]
+
+liste_aplatie = sum(liste, [])
+# sum(liste, nombre de départ de la sommme (0 par défaut))
+# ici, 0 est remplacé par [], et tous les nombres viennent s'y ajouter
+print(liste_aplatie) # [1, 7, 3, 3, 4, 12, 1, 4, 8, 1, 3, 3] 
+
+liste_aplatie_sans_doublons = sorted(list(set(liste_aplatie)))
+# liste aplatie => set => liste => ordonnée
+print(liste_aplatie_sans_doublons) # [1, 3, 4, 7, 8, 12]  
+
+## -- Enlever certains éléments d'une liste
+prenom = "Pierre"
+nom = "Dupont"
+id_membre = "142352"
+
+liste = [id_membre, nom, prenom]
+nom_complet = '_'.join(liste) # s'attend à que des éléments True
+print(nom_complet) # 142352_Dupont_Pierre
+
+prenom2 = "Pierre"
+nom2 = "Dupont"
+id_membre2 = None
+
+# liste2 = [id_membre2, nom2, prenom2]
+# nom_complet2 = '_'.join(liste2) 
+# # TypeError: sequence item 0: expected str instance, NoneType found
+# print(nom_complet2)
+
+# solution : trier les éléments de la liste
+# avec filter
+# retourne tous les éléments autres que None
+liste3 = filter(None, [id_membre2, nom2, prenom2])
+nom_complet3 = '_'.join(liste3)
+print(nom_complet3) # Dupont_Pierre
+# avec une compréhension de liste
+liste4 = [e for e in [id_membre2, nom2, prenom2] if e]
+nom_complet4 = '_'.join(liste4)
+print(nom_complet4) # Dupont_Pierre 
+
+## -- Utiliser les defaultdict et OrderedDict
+from collections import OrderedDict
+from collections import defaultdict
+
+# but : trouver le nombre de fois qu'une lettre apparait dans un string
+# et associer la lettre à son nombre d'occurences
+
+mot = 'anticonstitutionnellement'
+# Retourne une erreur car la clé n'existe pas
+d = {}
+for lettre in mot:
+	d[lettre] += 1
+
+print(d.items())
+
+
+# Fonctionne mais nécessite une structure conditionnelle
+mot = 'anticonstitutionnellement'
+
+d = {}
+for lettre in mot:
+	if not d.get(lettre): # si lettre non présente dans le dico
+	    d[lettre] = 1
+	else:
+	    d[lettre] += 1
+
+print(d.items())
+# dict_items([('a', 1), ('n', 5), ('t', 5), ('i', 3), ('c', 1), ('o', 2), ('s', 1), 
+# ('u', 1), ('e', 3), ('l', 2), ('m', 1)])
+
+# Code allégé grâce au defaultdict()
+mot = 'anticonstitutionnellement'
+# quelle est le type de valeur attendue ?
+# int = valeur crée par défaut si une clé n'existe pas
+# si la lettre n'existe pas dans les clés,
+# il va initialiser une valeur par défaut
+# donc integer par défaut, soit 0
+d = defaultdict(int)
+for lettre in mot:
+    d[lettre] += 1
+
+print(d.items())
+# dict_items([('a', 1), ('n', 5), ('t', 5), ('i', 3), ('c', 1), ('o', 2), 
+# ('s', 1), ('u', 1), ('e', 3), ('l', 2), ('m', 1)])
+ 
+# OrderedDict, pour faire des dictionnaires ordonnés
+# depuis Python 3.7, le simple dictionnaire garde l'ordre
+
+mon_dict = OrderedDict()
+# mon_dict = {} = même effet pour Python 3.7+
+
+mon_dict['Un'] = 'Pierre'
+mon_dict['Deux'] = 'Paul'
+mon_dict['Trois'] = 'Marie'
+mon_dict['Quatre'] = 'Jacques'
+mon_dict['Cinq'] = 'Julie'
+
+print(mon_dict.items())
+# dict_items([('Un', 'Pierre'), ('Deux', 'Paul'), ('Trois', 'Marie'), 
+# ('Quatre', 'Jacques'), ('Cinq', 'Julie')]) 
+
+## -- Pretty Print avec le module pprint
+# but : afficher des données longues de façon lisible
+from pprint import pprint # ++
+pprint(variable, indent=2)
+
+## -- Utilisation avancée de la fonction format
+# Un site web qui répertorie toutes les utilisations avancées de la fonction format :
+https://pyformat.info/ 
+# exemples
+text = "{} {}".format("Pierre", "Dupont")
+print(text)
+# Pierre Dupont
+
+text = "{0} {1}".format("Pierre", "Dupont")
+print(text)
+# Pierre Dupont
+
+text = "{1} {0}".format("Pierre", "Dupont")
+print(text)
+# Dupont Pierre
+
+text = "{0} {0}".format("Pierre", "Dupont")
+print(text)
+# Pierre Pierre
+
+text = "{} a {} ans".format("Pierre", 18)
+print(text)
+# Pierre a 18 ans
+
+# espace réservé pour 10 caractères
+# les remplit (à la fin) d'espace si vide
+text = "{:10} {}".format("Début", "Fin")
+print(text)
+# Début      Fin
+
+# espace réservé pour 10 caractères
+# les remplit (au début) d'espace si vide
+text = "{:>10} {}".format("Début", "Fin")
+print(text)
+#      Début Fin
+
+# espace réservé pour 10 caractères
+# les remplit (au début) avec "=" si vide
+text = "{} {:=>10}".format("Début", " Fin")
+print(text)
+# Début ====== Fin
+
+# espace réservé pour 25 caractères
+# les remplit (au début) avec "+" si vide
+# avant et après grâce au caractère ^
+text = "{:+^25}".format(" Partie 01 ")
+print(text)
+# +++++++ Partie 01 +++++++
+
+# tronquer le résultat
+# :.nombre_caractères_voulus
+text = "{:.3}".format("Pierre")
+print(text)
+# Pie
+
+text = "{:.3}".format(2.51458)
+print(text)
+# 2.51
+
+user = {'prenom': 'Pierre', 'nom': 'Dupont'}
+text = "Bonjour, je m'appelle {d[prenom]} {d[nom]}".format(d=user)
+print(text)
+# Bonjour, je m'appelle Pierre Dupont
+
+class MaVoiture(object):
+    def __init__(self):
+        self.couleur = "rouge"
+        self.marque = "Mercedes"
+
+text = "J'ai une {o.marque} de couleur {o.couleur}".format(o=MaVoiture())
+print(text)
+# J'ai une Mercedes de couleur rouge 
+
+## -- faire un join avec la fonction print avec Python 3+
+rangees = [1, None, 3, 4, 5, 12, 4, 3, 8]
+# sep : string inserted between values
+print(*rangees, sep=", ")
+# 1, None, 3, 4, 5, 12, 4, 3, 8
+# équivalent de print(", ".join([str(r) for r in rangees]))
+
+## -- Eviter trop de niveaux de tabulation
+import os 
+
+# trop d'imbrications
+def verifier_fichier(fichier):
+    if fichier.endswith(".py"):
+        if len(fichier) > 3:
+            if fichier.startswith("C:/"):
+                return True 
+
+print(verifier_fichier("C:/mon_programme/test.py"))
+
+# solution : instructions chaînées
+def verifier_fichier2(fichier):
+    if fichier.startswith("C:/") and fichier.endswith(".py") and len(fichier) > 3:
+        return True
+    return False
+
+print(verifier_fichier2("C:/mon_programme/test.py"))
+
+# exemple 2
+
+# le code décideur est identé, n'est pas au premier niveau de tabulation
+def recuperer_extension(fichier):
+    if fichier.startswith("C:/"):
+        fichier, extension = os.path.splitext(fichier)
+        extension = extension.replace(".", "")
+        return extension
+    return None
+
+print(recuperer_extension("C:/mon_programme/test.py"))
+# py
+
+# bonne solution : inverser la condition
+# mettre le moins conséquent au début
+# mettre le code décideur au 1er niveau d'indentation
+def recuperer_extension2(fichier):
+    if not fichier.startswith("C:/"):
+        return None
+
+    fichier, extension = os.path.splitext(fichier)
+    extension = extension.replace(".", "")
+    return extension
+
+print(recuperer_extension("C:/mon_programme/test.py")) 
+# py
 
 
 
