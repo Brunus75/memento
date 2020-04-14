@@ -52,7 +52,9 @@ Il est constitué d'un répertoire de 137 929 caractères, couvrant une centaine
 
 * :electric_plug: **Pilote informatique** : programme informatique destiné à permettre à un autre programme (souvent un système d'exploitation) d'interagir avec un périphérique
 
-* :car: :truck: :tractor: **Polymorphisme** : objet peut revêtir différentes formes, différents types (classe parent, classe objet, classe interface) : forme d’héritage : on utilise le polymorphisme pour éviter la duplication de code, car l’objet peut revêtir sa force la plus générale (sa classe parent) et on l’affine pour des besoins plus précis. Les formes sont interchangeables à tout moment. 
+* :car: :truck: :tractor: **Polymorphisme** : un même objet peut revêtir différentes formes, différents types (classe parent, classe objet, classe interface) : forme d’héritage : on utilise le polymorphisme pour éviter la duplication de code, car l’objet peut revêtir sa forme la plus générale (sa classe parent) et on l’affine pour des besoins plus précis. Les formes sont interchangeables à tout moment. C’est aussi un concept qui indique que l’on peut utiliser les méthodes de la classe mère de la même façon chez les classes filles => la méthode peut donc avoir différentes entités
+
+* :question: **Pattern** : exprime une solution générale à un problème de conception commun
 
 * :family_man_boy: **Métaclasse** : classe dont les instances sont des classes. Autrement dit, une métaclasse est la classe d'une classe.
 
@@ -80,3 +82,5 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 * :1234: **Sérialisation** : processus de conversion d'un objet en un flux d'octets pour stocker l'objet ou le transmettre à la mémoire, à une base de données, ou dans un fichier. La sérialisation de données est le concept de conversion de données structurées dans un format qui lui permet d’être partagé ou stocké de manière à ce que sa structure d’origine puisse être récupérée.
 
 * :arrows_clockwise: **AJAX** : Asynchronous JavaScript and XML : ensemble de technologies destinées à réaliser de rapides mises à jour du contenu d'une page Web, sans qu'elles nécessitent le moindre rechargement de la page Web. L'AJAX est un moyen de charger des données sans recharger la page, en utilisant le JavaScript.
+
+* :world_map: **Pointeur** : variable qui contient l’adresse d’une donnée contenue en mémoire

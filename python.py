@@ -3,7 +3,21 @@
 
 ## -- RESSOURCES -- ##
 
+https://www.udemy.com/course/formation-complete-python/
+https://www.udemy.com/course/cours-python-avance/
 https://realpython.com/pointers-in-python/
+https://realpython.com/primer-on-python-decorators/
+https://realpython.com/tutorials/django/
+https://openclassrooms.com/fr/courses/4302126-decouvrez-la-programmation-orientee-objet-avec-python
+https://openclassrooms.com/fr/courses/4425111-perfectionnez-vous-en-python
+https://openclassrooms.com/fr/courses/4425126-testez-votre-projet-avec-python
+https://www.geeksforgeeks.org/access-modifiers-in-python-public-private-and-protected/
+https://wiki.python.org/moin/PythonDecoratorLibrary
+https://diveintopython3.net/special-method-names.html
+https://code.visualstudio.com/docs/python/linting
+https://docs.python-guide.org/
+http://www.blog.pythonlibrary.org/
+https://github.com/trending/python 
 
 
 ## -- INSTALLATION -- #
@@ -51,9 +65,24 @@ DB Browser
 * Avec Python3, input renvoie systematiquement une "chaine de caractères"
 * Le point-virgule n'est JAMAIS utilisé en Python'
 * None # équivalent de Null
-* un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
+* Un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
 et le terme librairie quant à lui est souvent utilisé pour parler de packages
-* rien n'est' privé en python, tout est public
+* Rien n'est' privé en Python, tout est public
+* Les méthodes privées sont pensées pour une utilisation en interne
+* Il y a une convention pour les méthodes privées
+class Classe:
+    def _methode_privee(self): # techniquement elle est protégée
+        # ce qui dit à l'utilisateur : n'y touche pas
+        # on ne parle pas de privé, mais de non public
+        print("Je suis une méthode privée !")
+* les_noms_minuscules_avec_underscore_sont_vivement_encourages
+* Tout est objet en Python
+* With Python, you don’t assign variables. Instead, you bind names to references (Python objects)
+Ce qui explique ceci :
+>>> x = 1000
+>>> y = 1000
+>>> x is y
+True
 * 'single quote' est équivalent à "double quote"
 """
     Generally, double quotes are used for string representation 
@@ -64,6 +93,78 @@ et le terme librairie quant à lui est souvent utilisé pour parler de packages
     When a string contains single or double quote characters, however, 
     use the other one to avoid backslashes in the string.
 """
+
+
+## -- BONNES PRATIQUES-- ##
+
+* La PEP 8 a pour objectif de définir des règles de développement communes entre développeurs
+>>> http://pep8.org/
+* Une ligne doit contenir 80 caractères maximum.
+* L'indentation doit être de 4 espaces.
+* Ajoutez deux lignes vides entre deux éléments de haut niveau, des classes par exemple, 
+pour des questions d'ergonomie.
+* Séparez chaque fonction par une ligne vide.
+* Les noms (variable, fonction, classe, ...) ne doivent pas contenir d'accent. 
+Que des lettres ou des chiffres !
+* Selon la PEP 8, chaque partie de votre code devrait contenir une Doctring :
+- tous les modules publics
+- toutes les fonctions
+- toutes les classes
+- toutes les méthodes de ces classes
+* Les imports sont à placer au début d'un script.
+* Ils précèdent les Docstrings.
+* Une ligne par librairie. 
+Exemple : import os
+* Une ligne peut néanmoins inclure plusieurs composantes. 
+Exemple : from subprocess import Popen, PIPE
+* L'import doit suivre l'ordre suivant : 
+Bibliothèques standard, Bibliothèques tierces et imports locaux. 
+Sautez une ligne entre chacun de ces blocs.
+* Pas d'espace avant":" mais un après. 
+Exemple: {oeufs: 2}
+* Aucun espace avant et après un signe = lorsque vous assignez la valeur 
+par défaut du paramètre d'une fonction. 
+Exemple: def elephant(trompe=True, pattes=4)
+* commentaires : ne décrivez pas le code, expliquez plutôt à quoi il sert.
+Il doit être en anglais.
+* Modules : nom court, tout en minuscules, tiret du bas si nécessaire. great_module
+* paquets : nom court, tout en minuscules, tirets du bas très déconseillés. paquet
+* classes : lettres majuscules en début de mot. MyGreatClass
+* exceptions : similaire aux classes mais avec un Error à la fin. MyGreatError
+* fonctions : minuscules et tiret du bas : my_function()
+* méthodes : minuscules, tiret du bas et self en premier paramètre : my_method(self)
+* arguments des méthodes et fonctions : identique aux fonctions. my_function(param=False)
+* variables : identique aux fonctions.
+* constantes : tout en majuscules avec des tirets si nécessaire. I_WILL_NEVER_CHANGE
+* privé : précédé de deux tirets du bas : __i_am_private
+* protégé : précédé d'un tiret du bas : _i_am_protected
+* il est mieux d'utiliser is ou is not lors d'une comparaison avec None. 
+Par exemple:
+if datafile is None:
+    print("I'm pythonic")
+* Les 19 aphorismes de la PEP20
+"""
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+"""
+Exemple > https://gist.github.com/evandrix/2030615
 
 
 ## -- LEXIQUE -- ##
@@ -1710,6 +1811,21 @@ uniform(2,5) # utilisation de la fonction seule
 ++ mon_module.py 
 ++ script.py # les deux fichiers sont au même niveau
 
+# Ajoutez deux lignes en haut de votre script :
+#! /usr/bin/env python3
+# coding: utf-8
+"""
+    #! /usr/bin/env python3 : ce commentaire conditionnel indique que ce script doit être exécuté 
+à l'aide de Python 3. Cela permet au système d'exploitation de connaître le chemin *
+d'accès vers l'interpréteur Python. 
+Sans cette ligne, vous pouvez rencontrer des problèmes lors de l'exécution du script.
+    #coding: utf-8 : cette ligne spécifie l'encodage du code source de notre script. 
+Afin de prendre en compte les accents de notre chère langue fraaaançaise, 
+nous utilisons le très commun utf-8. 
+C'est souvent inutile si vous utilisez Python 3, car cette version utilise par défaut UTF 8,
+mais nécessaire avec Python 2.
+"""
+
 mon_module.py
 a = 5
 
@@ -2342,6 +2458,103 @@ porsche = Voiture.porsche()
 Voiture.afficher_nombre_voitures()
 # Vous avez 2 voitures dans votre garage.
 
+# le décorateur @property, qui transforme une méthode en attribut
+# The @property decorator is used to customize getters and setters for class attributes
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property # plus besoin de () pour l'appeler : 
+    # la méthode est considérée comme une propriété
+    # ex. c = Circle(5)
+    # c.radius => 5
+    def radius(self):
+        """Get value of radius"""
+        return self._radius
+
+    # However, by defining a setter method, we can do some error testing 
+    # to make sure it’s not set to a nonsensical negative number
+    @radius.setter
+    def radius(self, value):
+        """Set radius, raise error if negative"""
+        if value >= 0:
+            self._radius = value
+        else:
+            raise ValueError("Radius must be positive")
+
+    @property
+    def area(self):
+        """Calculate area inside circle"""
+        return self.pi() * self.radius**2
+
+    def cylinder_volume(self, height):
+        """Calculate volume of cylinder with circle as base"""
+        return self.area * height
+
+    @classmethod
+    def unit_circle(cls):
+        """Factory method creating a circle with radius 1"""
+        return cls(1)
+
+    @staticmethod
+    def pi():
+        """Value of π, could use math.pi instead though"""
+        return 3.1415926535
+
+# créer ses propres décorateurs
+# un @decorator est une fonction qui prend en paramètre une fonction
+# et renvoie une autre fonction
+
+# notre décorateur
+# son but =  afficher le nom de la méthode
+def name(func):
+    # un décorateur doit être générique, d'où les args et kwargs
+    def inner(*args, **kwargs):
+        print('Running this method:', func.__name__)
+        return func(*args, **kwargs)
+    return inner
+
+class CoffeeMachine():
+    
+    water_level = 100
+    
+    @name   
+    def _start_machine(self):
+      # Start the machine
+      if self.water_level > 20:
+          return True
+      else:
+          print("Please add water!")
+          return False
+    
+    @name
+    def __boil_water(self):
+        return "boiling..."
+    
+    @name
+    def make_coffee(self):
+        # Make a new coffee!
+        if self._start_machine():
+            self.water_level -= 20
+            print(self.__boil_water())
+            print("Coffee is ready!")
+
+
+machine = CoffeeMachine()
+for i in range(0, 5):
+    machine.make_coffee()
+
+machine.make_coffee()
+machine._start_machine()
+machine._CoffeeMachine__boil_water()
+# Running this method: make_coffee
+# Running this method: _start_machine
+# Running this method: __boil_water
+# boiling...
+# Coffee is ready!
+# Running this method: make_coffee
+# etc.
+
 # la méthode __str__
 # définit l'affichage que l'on veut avoir quand on print notre instance
 # ou quand on la convertit en string avec la fonction str()
@@ -2358,6 +2571,34 @@ porsche = Voiture("Porsche", 200)
 print(porsche) # Voiture de marque Porsche avec vitesse maximale de 200.
 affichage = str(porsche)
 print(affichage) # Voiture de marque Porsche avec vitesse maximale de 200.
+
+# les méthodes spéciales (ou magiques)
+# comme le cas de __str__ un peu plus haut
+# permet de changer le comportement d'une méthode déjà définie par Python
+# les méthodes spéciales sont pensées pour être exécutées par l'interpréteur Python 
+# et non par vous
+# vous devez définir ces méthodes spéciales dans une classe
+>>> class Hack:
+...    def __len__(self): # redéfinition de la méthode len
+...        print('Wow, I just hacked Python!')
+...        return 5
+...
+>>> a = Hack()
+>>> print(len(a))
+Wow, I just hacked Python!
+5
+# Les autres méthodes spéciales :
+{
+    'Représentation': [__repr__, __str__, __format__, __bytes__],
+    'Conversion en nombre': [__abs__, __bool__, __complex__, __int__, __float__, __hash__, __index__],
+    'Collections': [__len__, __getitem__, __setitem__, __delitem__, __contains__],
+    'Itérateurs': [__iter__, __reversed__, __next__],
+    'Création et destruction d\'instances': [__new__, __init__, __del__],
+    'Gestion des attributs': [__getattr__, __getattribute__, __setattr__, __delattr__, __dir__],
+    'Comparaison': [__lt__<, __le__<=, __eq__==, __ne__!=, __gt__>=, __ge__>=],
+    'Opérateurs arithmétiques': [__add__+, __sub__-, __mul__*, __truediv__/, __floordiv__//, __mod__ %, __round__]
+}
+
 
 # l'héritage
 projets = ["pr_GameOfThrones", "HarryPotter", "pr_Avengers"]
@@ -2459,12 +2700,99 @@ a.avance()
 # Le véhicule démarre
 # L'avion vole
 
-# le méthodes privées
-Rappel : rien n'est' privé en Python 
-Il y a une convention pour les méthodes privées
-class Classe:
-    def _methode_privee(self):
-        print("Je suis une méthode privée !")
+# __méthodes_privées (accessibles seulement à l'INTERIEUR de la classe)
+# et _méthodes_protegees (accesibles à la classe et ses enfants)
+"""Selon le principe de l'encapsulation, un objet ne présente aux autres objets du programme 
+que les attributs et les méthodes nécessaires à leurs interactions. 
+Certaines méthodes restent privées et ne doivent être utilisées qu'à l'intérieur d'une classe.
+Les méthodes privées sont pensées pour une utilisation en interne, 
+autrement dit dans une classe et non pas au niveau d'une instance. 
+En Python, il n'est pas recommandé d'accéder à une méthode privée ou protégée au niveau de l'instance, 
+même si le langage le permet.
+"""
+
+class CoffeeMachine():
+    WATER_LEVEL = 100
+
+    # méthode protégée
+    # indique qu'elle est réservée à la classe et ses enfants
+    def _start_machine(self):
+        # Start the machine
+        if self.WATER_LEVEL > 20:
+            return True
+        else:
+            print("Please add water!")
+            return False
+
+    # méthode privée
+    # indique qu'elle est réservée à la classe
+    def __boil_water(self):
+        return "boiling..."
+
+    def make_coffee(self):
+        # Make a new coffee!
+        if self._start_machine():
+            self.WATER_LEVEL -= 20
+            print(self.__boil_water())
+            print("Coffee is ready!")
+
+
+machine = CoffeeMachine()
+print("Make Coffee: Public", machine.make_coffee())
+# méthode publique : accessible depuis l'extérieur
+print("Start Machine: Protected", machine._start_machine())
+# méthode protégée : idem
+print("Boil Water: Private", machine.__boil_water())
+# méthode privée va renevoyer une erreur
+# on peut tout de même y accéder avec la syntaxe _MaClasse__methode_privee()
+print("Boil Water: Private", machine._CoffeeMachine__boil_water())
+# boiling...
+# Coffee is ready!
+# Make Coffee: Public None
+# Start Machine: Protected True
+# Traceback (most recent call last):
+#   File "d:/Documents/WEB DEV/PYTHON/exercices.py", line 27, in <module>
+#     print("Boil Water: Private", machine.__boil_water())
+# AttributeError: 'CoffeeMachine' object has no attribute '__boil_water'
+# Boil Water: Private boiling...
+
+# en résumé :
+class Super: 
+      
+    # public data member 
+    var1 = None
+  
+    # protected data member 
+    _var2 = None
+       
+    # private data member 
+    __var3 = None
+      
+    # constructor 
+    def __init__(self, var1, var2, var3):   
+        self.var1 = var1 
+        self._var2 = var2 
+        self.__var3 = var3 
+      
+    # public member function    
+    def displayPublicMembers(self): 
+        # accessing public data members 
+        print("Public Data Member: ", self.var1) 
+        
+    # protected member function    
+    def _displayProtectedMembers(self): 
+        # accessing protected data members 
+        print("Protected Data Member: ", self._var2) 
+    
+    # private member function    
+    def __displayPrivateMembers(self): 
+        # accessing private data members 
+        print("Private Data Member: ", self.__var3) 
+
+    # public member function 
+    def accessPrivateMembers(self):      
+        # accessing private memeber function 
+        self.__displayPrivateMembers()
 
 
 ## -- LES BASES DE DONNEES -- ##
@@ -4096,18 +4424,35 @@ print(id(liste_copie)) # 1760290273864
 a = 5
 b = 5
 print(a == b) # True
-# # Juste fonctionnel de -5 à 256
-# # on la même adresse en mémoire pour optimisation
+# Juste fonctionnel de -5 à 256
+# sont assigné à des objets internes
+# qui ont la même adresse en mémoire pour optimisation
 print(a is b) # True
 print(id(a)) # 140708880868112
 print(id(b)) # 140708880868112
 
+# deux integers semblables pointent vers le même objet Python
 a = -2364
 b = -2364
 print(a == b) # True
 print(a is b) # True (!)
 print(id(a)) # 1797946717680
 print(id(b)) # 1797946717680
+
+# pour une opération, on crée un nouvel objet combinant les 2 objets,
+# et le résultat est différent :
+>>> x = 1000
+>>> y = 499 + 501 # objet1 + objet2 = objet3
+>>> x is y
+False
+
+# si l'opération concerne des nombres entre -5 et 256, pas de soucis
+# puisqu'ils ont tous la même adresse :
+>>> x = 20
+>>> y = 19 + 1
+>>> x is y
+True
+
 
 a = [1, 2, 3, 4, 5]
 b = [1, 2, 3, 4, 5]
@@ -4122,6 +4467,23 @@ print(a == b) # True
 print(a is b) # True 
 print(id(a)) # 2101972066952
 print(id(b)) # 2101972066952
+
+# pour les strings, les objets internes existent aussi :
+# Strings that are less than 20 characters and contain ASCII letters, digits, or underscores
+# will be interned
+>>> s1 = "realpython"
+>>> id(s1)
+140696485006960
+>>> s2 = "realpython"
+>>> id(s2)
+140696485006960
+>>> s1 is s2
+True
+>>> s1 = "Real Python!" # à cause du "!"
+>>> s2 = "Real Python!"
+>>> s1 is s2
+False
+  
 
 ## -- Utiliser des noms de variables réservés
 

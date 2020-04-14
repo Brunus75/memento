@@ -1,6 +1,12 @@
 ## ---------- MEMENTO DJANGO ---------- ##
 
 
+## -- RESSOURCES -- ##
+
+https://realpython.com/tutorials/django/
+
+
+
 ## -- GITHUB -- ##
 
 1. initialiser le repo
