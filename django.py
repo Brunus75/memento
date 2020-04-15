@@ -25,6 +25,11 @@ dossier_projet/
 - SECRET_KEY
 - DATABASES
 * Une bonne pratique consiste à avoir une clé secrète différente en développement et en production
++ créer un requirements.txt
+"""
+pour installer les dépendances listées dans requirements.txt :
+pip install -r requirements.txt 
+"""
 
 
 ## -- BONS PLANS -- ##

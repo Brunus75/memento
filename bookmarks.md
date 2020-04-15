@@ -55,3 +55,4 @@
 ## SEO
 
 * Open Graph Meta Tags: Everything You Need to Know : https://ahrefs.com/blog/open-graph-meta-tags/
+* Alt Text for SEO: How to Optimize Your Images : https://ahrefs.com/blog/alt-text/

@@ -6,18 +6,25 @@
 https://www.udemy.com/course/formation-complete-python/
 https://www.udemy.com/course/cours-python-avance/
 https://realpython.com/pointers-in-python/
-https://realpython.com/primer-on-python-decorators/
-https://realpython.com/tutorials/django/
 https://openclassrooms.com/fr/courses/4302126-decouvrez-la-programmation-orientee-objet-avec-python
 https://openclassrooms.com/fr/courses/4425111-perfectionnez-vous-en-python
-https://openclassrooms.com/fr/courses/4425126-testez-votre-projet-avec-python
-https://www.geeksforgeeks.org/access-modifiers-in-python-public-private-and-protected/
-https://wiki.python.org/moin/PythonDecoratorLibrary
-https://diveintopython3.net/special-method-names.html
-https://code.visualstudio.com/docs/python/linting
-https://docs.python-guide.org/
-http://www.blog.pythonlibrary.org/
-https://github.com/trending/python 
+https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/235263-de-bonnes-pratiques 
+https://github.com/trending/python
+~ https://realpython.com/python3-object-oriented-programming/ 
+~ https://realpython.com/primer-on-python-decorators/
+~ https://realpython.com/tutorials/django/
+~ https://openclassrooms.com/fr/courses/4425126-testez-votre-projet-avec-python
+~ https://www.geeksforgeeks.org/access-modifiers-in-python-public-private-and-protected/
+~ https://wiki.python.org/moin/PythonDecoratorLibrary
+~ https://diveintopython3.net/special-method-names.html
+~ https://code.visualstudio.com/docs/python/linting
+~ https://docs.python-guide.org/
+~ http://www.blog.pythonlibrary.org/
+~ https://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/ 
+~ https://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide
+~ https://www.tutorialsteacher.com/python/database-crud-operation-in-python
+~ https://realpython.com/oop-in-python-vs-java/
+~ https://docs.python.org/3/tutorial/classes.html    
 
 
 ## -- INSTALLATION -- #
@@ -68,16 +75,23 @@ DB Browser
 * Un package peut parfois consister en une seul fichier (on parle donc dans ce cas de module), 
 et le terme librairie quant à lui est souvent utilisé pour parler de packages
 * Rien n'est' privé en Python, tout est public
-* Les méthodes privées sont pensées pour une utilisation en interne
-* Il y a une convention pour les méthodes privées
+* In Python you don't strictly need getters and setters because you can access the attributes 
+of the object directly (e.g. you could just print(kitchen. description))
+* Les méthodes privées sont pensées pour une utilisation en interne (réservé à l'intérieur de la classe')
+* Il y a une convention pour les _méthodes privées
 class Classe:
     def _methode_privee(self): # techniquement elle est protégée
         # ce qui dit à l'utilisateur : n'y touche pas
+        # tu peux seulement l'utiliser à l'intérieur de la classe Mère
+        # ou à l'intérieur de l'une de ses instances
+        # mais pas depuis l'extérieur !
+        # (principe de la boîte noire)
         # on ne parle pas de privé, mais de non public
         print("Je suis une méthode privée !")
 * les_noms_minuscules_avec_underscore_sont_vivement_encourages
 * Tout est objet en Python
 * With Python, you don’t assign variables. Instead, you bind names to references (Python objects)
+En Python, une variable est un nom identifiant, pointant vers une référence d'un objet Python
 Ce qui explique ceci :
 >>> x = 1000
 >>> y = 1000
@@ -120,6 +134,11 @@ Exemple : from subprocess import Popen, PIPE
 * L'import doit suivre l'ordre suivant : 
 Bibliothèques standard, Bibliothèques tierces et imports locaux. 
 Sautez une ligne entre chacun de ces blocs.
+* Dans vos directives d'importation, utilisez des chemins absolus plutôt que relatifs. 
+Autrement dit:
+from paquet.souspaquet import module
+# Est préférable à
+from . import module
 * Pas d'espace avant":" mais un après. 
 Exemple: {oeufs: 2}
 * Aucun espace avant et après un signe = lorsque vous assignez la valeur 
@@ -142,7 +161,16 @@ Il doit être en anglais.
 Par exemple:
 if datafile is None:
     print("I'm pythonic")
-* Les 19 aphorismes de la PEP20
+* Si vous devez découper une ligne trop longue, faites la césure après l'opérateur, pas avant.
+# Oui
+un_long_calcul = variable + \
+    taux * 100
+# Non
+un_long_calcul = variable \
+    + taux * 100
+* à partir de Python 3.0, il est conseillé d'utiliser, dans du code comportant des accents, 
+l'encodage Utf-8
+* Les 19 aphorismes de la PEP20:
 """
 Beautiful is better than ugly.
 Explicit is better than implicit.
@@ -1628,83 +1656,6 @@ with open("/Users/thibh/Documents/prenoms_final.txt", "w") as f:
     f.write("\n".join(sorted(prenoms_final)))
 
 
-## -- LA GESTION D'ERREURS AVEC LES EXCEPTIONS -- ##
-
-a = 5
-b = 0
-
-try:
-    print(a / b) # erreur car ne peut diviser par 0
-except:
-    print("Division par zéro impossible !")
-
-# préciser le type d'erreur
-a = 5
-b = "0"
-
-try:
-    print(a / b) # erreur car ne peut diviser par 0
-except ZeroDivisionError:
-    print("Division par zéro impossible !")
-except TypeError: # ex. 5 / "0"
-    print("Opération avec un autre type que int impossible !")
-
-# trouver le type d'erreur :
-# faire appel à l'erreur
-a = 5
-print(a / b) # b n'est pas définie
-# NameError: name 'b' is not defined
-try:
-    print(a / b) # erreur car ne peut diviser par 0
-except ZeroDivisionError:
-    print("Division par zéro impossible !")
-except TypeError: # ex. 5 / "0"
-    print("Opération avec un autre type que int impossible !")
-except NameError: # ++
-    print("Une variable n'est pas définie.")
-
-# spécifier une erreur
-try:
-    print(a / b)
-except NameError as e:
-    print("Erreur : ", e) # Erreur :  name 'b' is not defined
-
-# gérer la fin du try avec else et finally
-a = 5
-b = 10
-
-try:
-    resultat = a / b # erreur car ne peut diviser par 0
-except NameError as e:
-    print("Erreur : ", e)
-else: # exécuté que si le try réussit
-    print(resultat) # 0.5
-finally: 
-    print("Je suis exécuté quelque soit le résultat !")
-
-# ex. tenter d'ouvrir et lire un fichier, en gérant les erreurs
-"""
-Gérer l'erreur qui arrive quand l'utilisateur rentre un chemin 
-vers un fichier qui n'existe pas sur le disque.
-Gérer l'erreur qui arrive quand Python n'arrive pas à lire le contenu du fichier 
-qui est passé par l'utilisateur.
-"""
-fichier1 = "D:/Documents/WEB DEV/PYTHON/sources/readme.txt"
-fichier2 = "D:/Documents/WEB DEV/PYTHON/sources/fichier_invalide.abc"
-
-fichier = input("Quel fichier souhaitez-vous ouvrir ? ")
-
-try:
-    f = open(fichier, "r") # le bloc à executer
-    print(f.read()) # pour lever une erreur de type UnicodeDecodeErrror en amont
-except FileNotFoundError as fnf:
-    print("Le chemin entré est incorrect : ", fnf)
-except UnicodeDecodeError as ude:
-    print("Le fichier ne peut être ouvert par Python : ", ude)
-else: # pas d'erreurs, on exécute ce bloc
-    f.close()
-
-
 ## -- LES FONCTIONS -- ##
 
 def funcname(parameter_list):
@@ -1923,6 +1874,8 @@ fichier qui importe le module users
 import users 
 package.users.get_users() # s'exécute car l'import fait appel au fichier __init__
 # qui importe à son tour la fonction demandée
+----
+Créer une librairie > https://python-packaging.readthedocs.io/en/latest/minimal.html 
 
 
 ## -- DOCUMENTER SON CODE -- ##
@@ -1990,6 +1943,150 @@ def fonction_exemple(nom, age):
         list: liste de nombres
     """
     return [1, 2, 3]
+
+
+## -- TESTER SON CODE AVEC PDB
+
+import pdb # Python Debugger, librairie qui permet de déboguer
+
+def fonction_1():
+    pdb.set_trace() # va lancer une console ici
+    # si l'on supprime la fonction pdb, il faut supprimer le module avec
+    # on peut ainsi voir : import pdb ; pdb.set_trace()
+
+Docs > https://docs.python.org/3/library/pdb.html
+https://realpython.com/python-debugging-pdb/ 
+
+
+## -- LA GESTION D'ERREURS AVEC LES EXCEPTIONS -- ##
+
+La liste des exceptions > https://docs.python.org/3.7/library/exceptions.html 
+
+a = 5
+b = 0
+
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except:
+    print("Division par zéro impossible !")
+
+# préciser le type d'erreur
+a = 5
+b = "0"
+
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except ZeroDivisionError:
+    print("Division par zéro impossible !")
+except TypeError: # ex. 5 / "0"
+    print("Opération avec un autre type que int impossible !")
+
+# trouver le type d'erreur :
+# faire appel à l'erreur
+a = 5
+print(a / b) # b n'est pas définie
+# NameError: name 'b' is not defined
+try:
+    print(a / b) # erreur car ne peut diviser par 0
+except ZeroDivisionError:
+    print("Division par zéro impossible !")
+except TypeError: # ex. 5 / "0"
+    print("Opération avec un autre type que int impossible !")
+except NameError: # ++
+    print("Une variable n'est pas définie.")
+
+# spécifier une erreur
+try:
+    print(a / b)
+except NameError as e:
+    print("Erreur : ", e) # Erreur :  name 'b' is not defined
+
+# gérer la fin du try avec else et finally
+a = 5
+b = 10
+
+try:
+    resultat = a / b # erreur car ne peut diviser par 0
+except NameError as e:
+    print("Erreur : ", e)
+else: # exécuté que si le try réussit
+    print(resultat) # 0.5
+finally: 
+    print("Je suis exécuté quelque soit le résultat !")
+
+# ex. tenter d'ouvrir et lire un fichier, en gérant les erreurs
+"""
+Gérer l'erreur qui arrive quand l'utilisateur rentre un chemin 
+vers un fichier qui n'existe pas sur le disque.
+Gérer l'erreur qui arrive quand Python n'arrive pas à lire le contenu du fichier 
+qui est passé par l'utilisateur.
+"""
+fichier1 = "D:/Documents/WEB DEV/PYTHON/sources/readme.txt"
+fichier2 = "D:/Documents/WEB DEV/PYTHON/sources/fichier_invalide.abc"
+
+fichier = input("Quel fichier souhaitez-vous ouvrir ? ")
+
+try:
+    f = open(fichier, "r") # le bloc à executer
+    print(f.read()) # pour lever une erreur de type UnicodeDecodeErrror en amont
+except FileNotFoundError as fnf:
+    print("Le chemin entré est incorrect : ", fnf)
+except UnicodeDecodeError as ude:
+    print("Le fichier ne peut être ouvert par Python : ", ude)
+else: # pas d'erreurs, on exécute ce bloc
+    f.close()
+
+En résumé, voici un bloc try très complet :
+try:
+    # instruction qui risque de lever une erreur
+    print('Je suis une instruction problématique')
+except Exception as e:
+    # Instruction exécutée quand l'exception Exception est lancée
+    print('Je suis déclenchée quand Exception est levée')
+except:
+    # Instruction exécutée dans le cas d'une autre erreur
+    print('Une autre erreur est survenue')
+else:
+    # Instruction exécutée si l'instruction dans try est vraie
+    print("Tout s'est bien passé ! Je passe donc à la suite")
+finally:
+    # Instruction exécutée dans tous les cas
+    print("Je suis déterminé : erreur ou pas, je m'affiche dans tous les cas")
+
+# lever une exception AVANT que le problème ne se produise :
+def ajouter(self, element):
+    if not isinstance(element, str):  # si élément pas de type string
+        raise ValueError( # on lève une erreur
+            "Vous ne pouvez ajouter que des chaînes de caractères!")
+
+# avec un bloc try :
+if __name__ == '__main__':
+    args = parse_arguments()
+    try:
+        datafile = args.datafile
+        if datafile == None:
+            raise Warning('You must indicate a datafile!')
+        else:
+            try:
+                if args.extension == 'xml':
+                    x_an.launch_analysis(datafile)
+                elif args.extension == 'csv':
+                    c_an.launch_analysis(datafile)
+            except FileNotFoundError as e:
+                print("Ow :( The file was not found. Here is the original message of the exception :", e)
+            finally:
+                print('#################### Analysis is over ######################')
+    except Warning as e:
+        print(e)
+
+(!) Bien souvent, nous utilisons raise dans un bloc except pour relancer 
+l'erreur et déléguer la gestion de l'erreur à quelqu'un d'autre. 
+Cela peut être utile pour, par exemple, afficher des messages complémentaires ou nettoyer des objets.
+
+# Aller plus loin :
+écrire des tests unitaires > https://openclassrooms.com/courses/testez-un-projet-python/decouvrez-les-tests
+coder en Test-Driven Development > https://openclassrooms.com/courses/testez-un-projet-python/decouvrez-le-test-driven-development
+la hiérarchie des exceptions > https://docs.python.org/3.7/library/exceptions.html#exception-hierarchy 
 
 
 ## -- LE LOGGING -- ##
@@ -2107,8 +2204,8 @@ ou copier-glisser le projet sur l'icône' VS du bureau
 
 # créer une classe
 class Voiture:
-    marque = "Lamborghini" # attribut
-    couleur = "rouge"
+    marque = "Lamborghini" # attribut de classe
+    couleur = "rouge" # partagé par toutes les instances de Voiture()
 
 print(Voiture.marque, Voiture.couleur) # Lamborghini rouge
 
@@ -2121,6 +2218,12 @@ Voiture.marque = "Porsche" # modification de l'attribut de classe (se répercute
 print(Voiture.marque, voiture_01.marque) # Porsche Porsche
 voiture_01.marque = "Fiat Panda" # modification de l'attribut d'instance (modification individuelle)
 print(voiture_01.marque) # Fiat Panda
+
+# avertissement sur les attributs de classe
+"""
+Python class attributes may be useful in different cases,
+however, they must be used with caution in order to avoid unexpected behaviors
+"""
 
 # initialiser une instance
 class Voiture:
@@ -2503,7 +2606,14 @@ class Circle:
 
 # créer ses propres décorateurs
 # un @decorator est une fonction qui prend en paramètre une fonction
-# et renvoie une autre fonction
+# et renvoie une autre fonction, modifiant ainsi le comportement de la fonction de base
+
+# Decorator Function
+def mydecoratorfunction(some_function): # function to be decorated passed as argument
+    def wrapper_function(): # wrap the some_function and extends its behaviour
+        # write code to extend the behaviour of some_function()
+        some_function() # call some_function
+        return wrapper_function # return wrapper function
 
 # notre décorateur
 # son but =  afficher le nom de la méthode
@@ -2599,8 +2709,8 @@ Wow, I just hacked Python!
     'Opérateurs arithmétiques': [__add__+, __sub__-, __mul__*, __truediv__/, __floordiv__//, __mod__ %, __round__]
 }
 
-
-# l'héritage
+# Héritage
+# un enfant hérite de tous les attributs et méthode (publiques, par défaut) de la classe Parent
 projets = ["pr_GameOfThrones", "HarryPotter", "pr_Avengers"]
 
 class Utilisateur:
@@ -2645,6 +2755,18 @@ class Junior(Utilisateur):
 
 paul = Junior("Paul", "Durand")
 paul.afficher_projets()
+
+# autre exemple : la classe rectangle, héritant de la classe Quadrilatère :
+class quadriLateral:
+    def __init__(self, a, b, c, d):
+        self.side1 = a
+        self.side2 = b
+        self.side3 = c
+        self.side4 = d
+
+class rectangle(quadriLateral):
+    def __init__(self, a, b): # elle n'a besoin que de 2 côtés (contre 4 pour la classe Parente)
+        super().__init__(a, b, a, b)
 
 # la surcharge
 # on réécrit la méthode parente
@@ -2701,7 +2823,40 @@ a.avance()
 # L'avion vole
 
 # __méthodes_privées (accessibles seulement à l'INTERIEUR de la classe)
-# et _méthodes_protegees (accesibles à la classe et ses enfants)
+# toute modification d'un élément privé hors de la classe renverra un AttributeError
+# à considérer pour éviter que les classes enfants utilisent une variable de la classe Mère
+# à n'utiliser que pour le cas où l'on veut éviter que des noms de variables soient utilisés
+# dans des classes héritant de la classe principale
+# très peu utilisé, en dehors des frameworks et des librairies
+# ex. :
+class employee:
+    def __init__(self, name, sal):
+        self.__name = name  # private attribute 
+        self.__salary = sal # private attribute
+
+>>> e1 = employee("Bill",10000)
+>>> e1.__salary
+AttributeError: 'employee' object has no attribute '__salary'
+
+# _méthodes_protegées (accessibles seulement à l'INTERIEUR de la classe et de ses enfants)
+# toute modification d'un élément protégé hors de la classe ne renverra pas d'erreur
+# utilisées pour dire : ceci n'est pas public et réservé aux instances
+# "n'y touchez pas, sauf si vous êtes une instance de la classe principale"
+# utilisée pour la logique interne, elles n'ont pas vocation à être utilisées à l'extérieur du code
+# ex :
+class employee:
+    def __init__(self, name, sal):
+        self._name = name  # protected attribute 
+        self._salary = sal # protected attribute
+
+>>> e1 = employee("Swati", 10000)
+>>> e1._salary
+10000
+>>> e1._salary = 20000 # c'est possible, mais déconseillé ! 
+>>> e1._salary # l'underscore indique que l'utilisateur ne doit pas y toucher
+20000 # du moins à l'extérieur de la classe
+
+
 """Selon le principe de l'encapsulation, un objet ne présente aux autres objets du programme 
 que les attributs et les méthodes nécessaires à leurs interactions. 
 Certaines méthodes restent privées et ne doivent être utilisées qu'à l'intérieur d'une classe.
@@ -2793,6 +2948,95 @@ class Super:
     def accessPrivateMembers(self):      
         # accessing private memeber function 
         self.__displayPrivateMembers()
+
+## la question des getters et setters
+# In Python, getters and setters are not the same as those 
+# in other object-oriented programming languages
+# > https://www.geeksforgeeks.org/getter-and-setter-in-python/
+# on préfère les propriétés aux getters et setter
+
+# Python program showing the use of @property 
+class Geeks: 
+	def __init__(self): 
+		self._age = 0
+	
+	# using property decorator 
+	# a getter function 
+	@property
+	def age(self): 
+		print("getter method called") 
+		return self._age 
+	
+	# a setter function
+    # même nom de méthode, mais ajout de .setter au décorateur 
+	@age.setter 
+	def age(self, a): 
+		if(a < 18): 
+			raise ValueError("Sorry you age is below eligibility criteria") 
+		print("setter method called") 
+		self._age = a 
+
+mark = Geeks() 
+mark.age = 19
+print(mark.age) 
+# setter method called
+# getter method called
+# 19
+
+# autre exemple d'utilisation du setter :
+class OurClass:
+
+    def __init__(self, a):
+        # passe par le setter avant validation
+        self.OurAtt = a
+
+    @property
+    def OurAtt(self):
+        return self.__OurAtt
+
+    @OurAtt.setter
+    def OurAtt(self, val):
+        print("On passe par la validation du setter")
+        if val < 0:
+            self.__OurAtt = 0
+        elif val > 1000:
+            self.__OurAtt = 1000
+        else:
+            self.__OurAtt = val
+
+
+x = OurClass(10000)
+print(x.OurAtt)
+# On passe par la validation du setter
+# 1000 
+
+# la fonction issubclass
+# elle vérifie si une classe est une sous-classe d'une autre classe
+>>> issubclass(AgentSpecial, Personne) # AgentSpecial hérite de Personne
+True
+>>> issubclass(AgentSpecial, object)
+True
+>>> issubclass(Personne, object)
+True
+>>> issubclass(Personne, AgentSpecial) # Personne n'hérite pas d'AgentSpecial
+False
+>>> 
+
+# la fonction isinstance
+# permet de savoir si un objet est issu d'une classe ou de ses classes filles
+>>> agent = AgentSpecial("Fisher", "18327-121")
+>>> isinstance(agent, AgentSpecial) # Agent est une instance d'AgentSpecial
+True
+>>> isinstance(agent, Personne) # Agent est une instance héritée de Personne
+True
+>>> 
+
+# Héritage multiple
+class MaClasseHeritee(MaClasseMere1, MaClasseMere2):
+    def ordre_methodes(self):
+        print("La priorité des méthodes est définie par l'odre de déclaration")
+        print("Une méthode ira chercher dans...")
+        print("...MaClasseHeritee, puis MaClasseMere1, et enfin MaClasseMere2")
 
 
 ## -- LES BASES DE DONNEES -- ##
@@ -3144,7 +3388,10 @@ accepter le nouvel environnement
 cd env/bin/
 source activate # active l'environnement virtuel
 pip3.7 list # vérifie les packages installés
-pip3.7 install module_a_telecharger 
+pip3.7 install module_a_telecharger
+
++ créer un .gitignore
++ créer un requirements.txt
 
 
 ## -- PROJET CONVERTISSEUR DE DEVISES avec PYSIDE -- ## 
@@ -3803,7 +4050,25 @@ mixed_name = "".join([letter for letter in random_letter("Bonjour")])
 print(mixed_name.capitalize()) # Uoonbrj
 
 
-## - OPERATEURS TERNAIRES
+## - EXPRESSIONS GENERATRICES -- ##
+
+# une compréhension de liste :
+>>> [2*x for x in range(3)]
+[0, 2, 4]
+# équivalent en générateur : les expressions génératrices
+# même principe, sauf qu'au lieu de renvoyer une liste, 
+# une expression génératrice renvoie un générateur :
+# il suffit de remplacer les crochets par des parenthèses
+>> > gen = (2*x for x in range(3))
+>>> gen
+<generator object <genexpr> at 0x7fa777055e60>
+
+>>> sum(gen)
+6 
+
+
+
+## -- OPERATEURS TERNAIRES -- ##
 
 # structure conditionnelle sur une ligne
 
@@ -4152,6 +4417,8 @@ print(chemin(**data2)) # chemin\du\dossier\tutoriel.txt
 
 ## -- EXPRESSIONS REGULIERES -- ##
 
+Ressource > https://pythex.org/
+
 # regex : regular expression
 # exemple : nombre de téléphone français valide ?
 ^[0]{1}[1-7]{1}(-[0-9]{2}){4}$
@@ -4303,6 +4570,18 @@ for mail in adresses_mail:
     # + = de 1 à l'infini
     print("L'adresse {} est {}".format(mail, 'valide' if adresse_valide else 'invalide'))
 
+# ex. récupérer l'extension d'un fichier
+import re
+
+def recuperer_extension(fichier):
+    e = re.search(r'^.+\.(\D{3})$', fichier)
+    extension = e.group(1)
+    print(extension)
+
+recuperer_extension("document.doc") # doc
+
+
+
 # - Tester ses expressions régulières avec Regex101.com
 # Regarder Quick Reference pour bâtir ses regex
 https://regex101.com/
@@ -4447,12 +4726,11 @@ print(id(b)) # 1797946717680
 False
 
 # si l'opération concerne des nombres entre -5 et 256, pas de soucis
-# puisqu'ils ont tous la même adresse :
+# puisqu'ils ont tous le même objet en référence, qui pointe sur la même adresse :
 >>> x = 20
 >>> y = 19 + 1
 >>> x is y
 True
-
 
 a = [1, 2, 3, 4, 5]
 b = [1, 2, 3, 4, 5]
@@ -4821,6 +5099,16 @@ def recuperer_extension2(fichier):
 
 print(recuperer_extension("C:/mon_programme/test.py")) 
 # py
+
+
+## -- LIBRAIRIES -- ##
+
+* Matplotlib = faire des graphiques. 
+* Numpy = manipuler des données, et plus précisément des séries de nombres. 
+* Pandas = introduit un objet très pratique appelé le Dataframe. 
+Ce dernier s'apparente beaucoup à ce qu'il est possible de faire dans des 
+logiciels de type tableur: des tableaux avec plein de nombres dedans !
+
 
 
 
