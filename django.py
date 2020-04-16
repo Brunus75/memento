@@ -3,7 +3,15 @@
 
 ## -- RESSOURCES -- ##
 
-https://realpython.com/tutorials/django/
+https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding-style/
+~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
+~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
+~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
+~ https://realpython.com/tutorials/django/
+~ https://docs.djangoproject.com/fr/3.0/topics/security/
+~ https://docs.djangoproject.com/fr/3.0/howto/custom-lookups/
+~ https://docs.djangoproject.com/fr/3.0/topics/auth/
+~ https://docs.djangoproject.com/fr/3.0/releases/   
 
 
 
@@ -43,7 +51,56 @@ python manage.py runserver
 ## -- BONNES PRATIQUES -- ##
 
 * préférer timezone à datetime
+* Use single quotes for strings, or a double quote if the string contains a single quote. 
+Don’t waste time doing unrelated refactoring of existing code to conform to this style
+* Use underscores, not camelCase, for variable, function and method names
+* Use InitialCaps for 'class names' (or for factory functions that return classes)
+* Utilisez des importations absolues pour les autres composants Django 
+et des importations relatives pour les composants locaux
+* Ex de dispositions d'imports :
+# future
+from __future__ import unicode_literals
 
+# standard library
+import json # import module avant from import module
+from itertools import chain
+
+# third-party
+import bcrypt
+
+# Django
+from django.http import Http404
+from django.http.response import (
+    Http404, HttpResponse, HttpResponseNotAllowed, StreamingHttpResponse,
+    cookie,
+)
+
+# local Django
+from .models import LogEntry
+
+# try/except
+try:
+    import yaml
+except ImportError:
+    yaml = None
+
+CONSTANT = 'foo'
+
+
+class Example: # deux lignes sont sautées avant la déclaration d'une classe
+    # ...
+* gabarit : {{ foo }} # avec les espaces
+* vues : le premier paramètre doit obligatoirement s'appeler request :
+def my_view(request, foo):
+* modèles : nom des champs en minuscule et en minuscle_underscore
+class Person(models.Model):
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=40)
+* La class Meta doit apparaître après les définitions de champs, 
+avec une seule ligne vierge séparant les champs de la définition de classe
+* Supprimez systématiquement tout espace vide en fin de ligne dans le code
+* Il ne faut pas utiliser if request.POST pour savoir si la méthode POST a été utilisée, 
+mais plutôt if request.method == "POST"
 * reverse() : préférer les noms de motifs d'URL' à l'objet' de la vue
 # exemple :
 from news import views
@@ -58,7 +115,6 @@ reverse(views.archive)
 reverse('arch-summary', args=[1945])
 # avec des **kwargs :
 reverse('admin:app_list', kwargs={'app_label': 'auth'})
-
 * """
 PostgreSQL is the most capable of all the databases here in terms of schema support; 
 the only caveat is that adding columns with default values will cause a full rewrite of the table, 
@@ -66,6 +122,8 @@ for a time proportional to its size.
 For this reason, it’s recommended you always create new columns with null=True, 
 as this way they will be added immediately.
 """
+* Prenez soin de placer votre code Python en dehors de la racine du serveur Web.
+
 
 ## -- LEXIQUE -- ##
 
@@ -84,6 +142,10 @@ Chaque vue est responsable de renvoyer un objet "HttpResponse"
 
 # reverse_lazy()
 une version de reverse() à exécution différée
+
+# gabarit
+Un gabarit contient la partie statique du résultat HTML souhaité ainsi 
+qu’une certaine syntaxe particulière définissant comment insérer le contenu dynamique
 
 
 ## -- INSTALLATION -- ##
@@ -440,7 +502,7 @@ def list_articles(request, year, month=1): # month = 1 par défaut
     return HttpResponse('Articles de %s/%s' % (year, month))
 
 # passer des paramètres GET
-http://www.crepes-bretonnes.com/blog/article/1337?ref=twitte
+http://www.crepes-bretonnes.com/blog/article/1337?ref=twitter
 # Django tentera de trouver le pattern correspondant en ne prenant en compte 
 # que ce qui est avant les paramètres GET, c’est-à-dire /blog/article/1337
 # Les paramètres passés par la méthode GET sont bien évidemment récupérables, 
@@ -3197,7 +3259,7 @@ Un jour, une certaine personne m'a dit : {{ "Bonjour le monde !"|citation }}
 
 * Par défaut, Django échappe automatiquement tous les caractères spéciaux 
 des chaînes de caractères affichées dans un template, ainsi que le résultat des filtres
-* La méthode filter  peut prendre comme argument is_safe, 
+* La méthode filter peut prendre comme argument is_safe, 
 qui permet de signaler au framework par la suite que notre chaîne est sûre :
 @register.filter(is_safe=True)
 def citation(texte):
@@ -3923,7 +3985,7 @@ def stats_middleware(get_response):
 
     return middleware
 
-* l'objet' F sert à construire des requêtes SQL plus élaborées.
+* l'objet' F() sert à construire des requêtes SQL plus élaborées.
 * Au lieu de récupérer la valeur en Python et de l’incrémenter de 1,  
 F prend en compte l’opération "+ 1" auquel il a été associé 
 et va directement faire ces opérations dans la base de données, si possible
@@ -5150,6 +5212,125 @@ pour avoir un minimum de liens sur la dernière page :
 paginator = Paginator(minis_list, 20, 5) # 20 liens par page, avec un minimum de 5 liens sur la dernière
 
 
+## -- LES TRANSACTIONS -- ##
+
+https://docs.djangoproject.com/fr/3.0/topics/db/transactions/ 
+
+* Une transaction regroupe plusieurs requêtes à effectuer
+* Si l'une d'elles échoue, toutes les précédentes sont annulées 
+et les items retournent à leur état original
+* Il existe deux manières d'activer les transactions dans Django :
+- par défaut : toutes les routes sont, par défaut, dans une transaction.
+- au cas par cas : les routes ne sont pas dans des transactions. Il faut les activer manuellement.
+
+## - Transactions par défaut
+
+# settings.py
+DATABASES = {
+    'default': {
+      # ...
+      'ATOMIC_REQUESTS': True,
+    }
+}
+* A présent, toutes les requêtes des vues seront dans des transactions.
+Pour qu'une vue ne le soit pas, ajoutez le décorateur @transaction.non_atomic_requests :
+# views.py
+from django.db import transaction
+
+@transaction.non_atomic_requests
+def index(request):
+    # ...
+*!* C'est simple', mais cela à un coût de performance (à grande échelle)
+
+## - Transactions au cas par cas
+
+* Utilisez la méthode atomic() ou entourez la vue du décorateur @transaction.atomic :
+# views.py
+from django.db import transaction
+# ...
+@transaction.atomic
+def detail(request, album_id):
+    contact = Contact.objects.filter(email=email)
+    # ...
+
+# using pointe vers une base de données, Django utilise la BDD principale par défaut
+@transaction.non_atomic_requests(using='other')
+def my_other_view(request):
+    do_stuff_on_the_other_database()
+
+* Ou bien utilisez un bloc with pour spécifier les requêtes qui doivent faire partie 
+de la transaction et celles qui doivent en être exclues :
+# views.py
+from django.db import transaction
+
+def viewfunc(request):
+    # This code executes in autocommit mode (Django's default).
+    do_stuff()
+
+    with transaction.atomic():
+        # This code executes inside a transaction.
+        do_more_stuff()
+
+* Pour gérer les erreurs, intégrer la transaction dans un bloc try/except
+En effet, l'échec d'une transaction renvoie une exception IntegrityError.
+# views.py
+from django.db import transaction, IntegrityError
+# ...
+def detail(request, album_id):
+    # ...
+    try:
+        with transaction.atomic():
+            contact = Contact.objects.filter(email=email)
+            # ...
+    except IntegrityError:
+        pass
+
+* L’insertion d''atomic dans un bloc try/except est une manière naturelle 
+de gérer les erreurs d’intégrité
+from django.db import IntegrityError, transaction
+
+@transaction.atomic
+def viewfunc(request):
+    create_parent()
+
+    try:
+        with transaction.atomic():
+            generate_relationships()
+    except IntegrityError:
+        handle_exception()
+
+    add_children()
+
+"""
+Dans cet exemple, même si generate_relationships() provoque une erreur de base de données 
+en cassant une contrainte d’intégrité, vous pouvez exécuter des requêtes dans add_children() 
+et les modifications de create_parent() sont toujours présentes. 
+Notez que toute opération exécutée dans generate_relationships() aura déjà été annulée proprement 
+lorsque handle_exception() est appelée, 
+ce qui fait que le gestionnaire d’exception peut très bien agir au niveau de la base de données 
+si nécessaire.
+"""
+
+* Vous devrez peut-être réinitialiser manuellement l’état du modèle lors du 
+renversement d’une transaction.
+* Les valeurs des champs d’un modèle ne seront pas réinitialisées lorsqu’une 
+rétrogradation des transactions se produit
+from django.db import DatabaseError, transaction
+
+obj = MyModel(active=False)
+obj.active = True
+try:
+    with transaction.atomic():
+        obj.save()
+except DatabaseError:
+    obj.active = False # restauration des valeurs d'origine
+
+if obj.active:
+    ...
+
+* Pour des questions de performance, gardez vos transactions aussi brèves que possible
+
+
 ## -- L'INTERNATIONALISATION (I18N) -- ##
 
 https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874201-linternationalisation
@@ -5268,7 +5449,7 @@ assertIsInstance(a, b) | isinstance(a, b)
 
 # - Lancer le test en console -
 
-* la méthode est_recent  devrait renvoyer False. 
+* la méthode est_recent devrait renvoyer False. 
 Comme nous avons introduit une erreur dans notre modèle, 
 elle est censée renvoyer True  pour le moment, et donc faire échouer le test
 

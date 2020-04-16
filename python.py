@@ -8,12 +8,14 @@ https://www.udemy.com/course/cours-python-avance/
 https://realpython.com/pointers-in-python/
 https://openclassrooms.com/fr/courses/4302126-decouvrez-la-programmation-orientee-objet-avec-python
 https://openclassrooms.com/fr/courses/4425111-perfectionnez-vous-en-python
-https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/235263-de-bonnes-pratiques 
+https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/235263-de-bonnes-pratiques
+https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask/4526533-testez-le-parcours-utilisateur-avec-les-tests-fonctionnels 
 https://github.com/trending/python
 ~ https://realpython.com/python3-object-oriented-programming/ 
 ~ https://realpython.com/primer-on-python-decorators/
 ~ https://realpython.com/tutorials/django/
 ~ https://openclassrooms.com/fr/courses/4425126-testez-votre-projet-avec-python
+~ https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python 
 ~ https://www.geeksforgeeks.org/access-modifiers-in-python-public-private-and-protected/
 ~ https://wiki.python.org/moin/PythonDecoratorLibrary
 ~ https://diveintopython3.net/special-method-names.html
@@ -317,12 +319,14 @@ print("Le résultat de l'opération est " + str(resultat))
 # afficher le type d'une variable
 a = "10"
 print(type(a)) # 'str'
+
 # concaténation avec les f-string (depuis Python 3.6)
 prenom = "Paul"
 f"Bonjour {prenom} !" # "Bonjour" + str(prenom)
 a = 5
 b = 10
 f"La multiplication de {a} par {b} est égale à {a * b} !"
+
 # les anciennes méthodes de concaténation
 # la méthode format()
 nombre = 5
@@ -330,6 +334,16 @@ nombre = 5
 "Le nombre est égal à 5"
 "Les nombres sont égaux à {} et {}".format(5, 10)
 "Les nombres sont égaux à 5 et 10"
+
+# f string fonctionne aussi avec les dictionnaires
+ALBUMS = {
+    'eminame': 'toulouse yourself',
+    'riz hannah': 'blehblehblehblehbleh',
+}
+
+print(f"Le dernier album de Eminame est : {ALBUMS['eminame']}")
+# Le dernier album de Eminame est : toulouse yourself 
+
 # Commentaire sur une ligne
 """
 Commentaire
@@ -337,6 +351,7 @@ sur
 plusieurs 
 lignes
 """
+
 # Exercices
 a = int(input("Entrez un premier nombre : "))
 b = int(input("Entrez un deuxième nombre : "))

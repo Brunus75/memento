@@ -38,6 +38,44 @@ Il est constitué d'un répertoire de 137 929 caractères, couvrant une centaine
 
 * :dizzy: :white_flag: **HTTPS** : même principe, en plus sécurisé : les données qui transitent sont chiffrées ; il est impossible de les déchiffrer en les interceptant => les données qui circulent restent privées et invisibles
 
+* :computer: **Requête HTTP** : requête formulée par un client (tout logiciel dans la capacité de forger une requête) 
+
+* :clipboard: **Contenu d'une requête HTTP** : la méthode HTTP (GET, POST, PUT, PATCH, DELETE, OPTIONS, CONNECT, HEAD ou TRACE), l'URI, cad ce qu'il y a après le nom de domaine (exemple : /users/1), la version du protocole (exemple : HTTP/1.1), les entêtes (headers), le contenu de la requête (body)
+```http
+POST /users HTTP/1.1
+User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 28
+
+name=Sarah Khalil&job=auteur
+```
+
+* :back: **Réponse HTTP** : réponse du serveur à une requête du client
+
+* :clipboard: **Contenu d'une réponse HTTP** : la version du protocole utilisée, le code status, l'équivalent textuel du code status, les entêtes (headers), le contenu de la requête (body)
+```http
+HTTP/1.1 200 OK
+Date:Tue, 31 Jan 2017 13:18:38 GMT
+Content-Type: application/json
+
+{
+    "current status" : "Everything is ok!"
+}
+```
+
+* :vertical_traffic_light: Les différents **codes status**
+```py
+{
+    '1XX': 'les informations',
+    '2XX': 'les succès',
+    '3XX': 'les redirections',
+    '304': 'le contenu n\'a pas changé, dans un contexte de cache'
+    '4XX': 'les erreurs clients',
+    '5XX': 'les erreurs serveur'
+}
+
+```
+
 * :dizzy: :closed_lock_with_key: **SSH** : Secure Shell : protocole + programme l’utilisant : protocole qui permet de faire des connexions sécurisées (i.e. cryptées) entre un serveur et un client, permet d’administrer à distance un serveur ou d’accéder à un ordinateur
 
 * :open_file_folder: **FTP** : protocole qui permet d’échanger (entre client et serveur) des fichiers.
@@ -69,7 +107,7 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 
 * :framed_picture: **Framework** : application qui a déjà une architecture, des fichiers et des fonctions prêtes à l’emploi et conçue pour les développeurs et pour faciliter le développement d’un projet web
 
-* :vertical_traffic_light: **API** : interface permet de communiquer avec un service distant depuis notre appli
+* :joystick: **API** : interface permet de communiquer avec un service distant depuis notre appli
 
 * :dart: **Méthode AGILE** : priorité au client avec qui on a une communication régulière et qui valide ou ajuste toutes les opérations, étapes par étapes, objectifs à court terme pour accepter les changements et imprévus, flexibilité
 
