@@ -1,18 +1,18 @@
-## ---------- MEMENTO DJANGO ---------- ##
+# MEMENTO DJANGO
 
 
-## -- RESSOURCES -- ##
+## RESSOURCES
 
-https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding-style/
-~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
-~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
-~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
-~ https://realpython.com/tutorials/django/
-~ https://docs.djangoproject.com/fr/3.0/topics/security/
-~ https://docs.djangoproject.com/fr/3.0/howto/custom-lookups/
-~ https://docs.djangoproject.com/fr/3.0/topics/auth/
-~ https://docs.djangoproject.com/fr/3.0/releases/
-~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#   
+* https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding-style/
+* ~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
+* ~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
+* ~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
+* ~ https://realpython.com/tutorials/django/
+* ~ https://docs.djangoproject.com/fr/3.0/topics/security/
+* ~ https://docs.djangoproject.com/fr/3.0/howto/custom-lookups/
+* ~ https://docs.djangoproject.com/fr/3.0/topics/auth/
+* ~ https://docs.djangoproject.com/fr/3.0/releases/
+* ~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#   
 
 
 
@@ -22,43 +22,49 @@ https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding
 2. cloner le repo
 3. créer un environnement virtuel dans le repo
 4. lancer l'environnement virtuel', installer django
+```
 dossier_projet/
     env/
     projet_django/
+```
 * le fichier settings.py renferme de nombreuses informations privées
-+ créer settings.py.dist ou settings_public.py
-+ créer un gitignore à la racine du projet
-* un gitignore exhaustif : # https://github.com/github/gitignore/blob/master/Python.gitignore
-* créer son gitignore:  # http://gitignore.io/api/django
-*!* à ne jamais sauvegarder en clair :
-- SECRET_KEY
-- DATABASES
+* créer settings.py.dist ou settings_public.py
+* créer un gitignore à la racine du projet
+* un gitignore exhaustif : https://github.com/github/gitignore/blob/master/Python.gitignore
+* créer son gitignore: http://gitignore.io/api/django
+* :exclamation: à ne jamais sauvegarder en clair :   
+   - SECRET_KEY
+   - DATABASES
 * Une bonne pratique consiste à avoir une clé secrète différente en développement et en production
-+ créer un requirements.txt
+* créer un requirements.txt
+```py
 """
 pour installer les dépendances listées dans requirements.txt :
 pip install -r requirements.txt 
 """
+```
 
 
-## -- BONS PLANS -- ##
+## BONS PLANS
 
-django-shortcuts: https://pypi.org/project/django-shortcuts/
+* django-shortcuts: https://pypi.org/project/django-shortcuts/
+```py
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
+```
 
-
-## -- BONNES PRATIQUES -- ##
+## BONNES PRATIQUES
 
 * préférer timezone à datetime
-* Use single quotes for strings, or a double quote if the string contains a single quote. 
+* Use single quotes for strings, or a double quote if the string contains a single quote.    
 Don’t waste time doing unrelated refactoring of existing code to conform to this style
 * Use underscores, not camelCase, for variable, function and method names
 * Use InitialCaps for 'class names' (or for factory functions that return classes)
-* Utilisez des importations absolues pour les autres composants Django 
+* Utilisez des importations absolues pour les autres composants Django    
 et des importations relatives pour les composants locaux
 * Ex de dispositions d'imports :
+```py
 # future
 from __future__ import unicode_literals
 
@@ -90,67 +96,83 @@ CONSTANT = 'foo'
 
 class Example: # deux lignes sont sautées avant la déclaration d'une classe
     # ...
-* gabarit : {{ foo }} # avec les espaces
+```
+* gabarit : 
+```py
+{{ foo }} # avec les espaces
+```
 * vues : le premier paramètre doit obligatoirement s'appeler request :
+```py
 def my_view(request, foo):
+```
 * modèles : nom des champs en minuscule et en minuscle_underscore
+```py
 class Person(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=40)
+```
 * La class Meta doit apparaître après les définitions de champs, 
 avec une seule ligne vierge séparant les champs de la définition de classe
 * Supprimez systématiquement tout espace vide en fin de ligne dans le code
 * Il ne faut pas utiliser if request.POST pour savoir si la méthode POST a été utilisée, 
 mais plutôt if request.method == "POST"
 * reverse() : préférer les noms de motifs d'URL' à l'objet' de la vue
+```py
 # exemple :
 from news import views
 path('archive/', views.archive, name='news-archive')
 # using the named URL
 reverse('news-archive')
+
 # passing a callable object
 # (This is discouraged because you can't reverse namespaced views this way.)
 from news import views
 reverse(views.archive)
+
 # avec des *args :
 reverse('arch-summary', args=[1945])
 # avec des **kwargs :
 reverse('admin:app_list', kwargs={'app_label': 'auth'})
-* """
+```
+* 
+```py
+"""
 PostgreSQL is the most capable of all the databases here in terms of schema support; 
 the only caveat is that adding columns with default values will cause a full rewrite of the table, 
 for a time proportional to its size.
 For this reason, it’s recommended you always create new columns with null=True, 
 as this way they will be added immediately.
 """
+```
 * Prenez soin de placer votre code Python en dehors de la racine du serveur Web.
 
 
-## -- LEXIQUE -- ##
+## LEXIQUE
 
-# *args & **kwargs
+* *args & **kwargs
+```py
 **kwargs = les arguments nommés dans l’URL (arguments nominatifs)
 **kwargs = pour faire passer une variable indéfinie, associée à une clé
 **kwargs allows you to pass keyworded variable length of arguments to a function. 
 You should use **kwargs if you want to handle named arguments in a function.
 *args = faire passer une variable indéfinie, sans clé, dans une fonction
+```
 
-# HttpRequest & HttpResponse
-Lorsqu’une page est demandée, Django crée un objet "HttpRequest" 
-contenant des métadonnées au sujet de la requête. 
-Puis, Django charge la vue appropriée, lui transmettant l’objet "HttpRequest" comme premier paramètre. 
+* HttpRequest & HttpResponse   
+Lorsqu’une page est demandée, Django crée un objet "HttpRequest" contenant des métadonnées au sujet de la requête.    
+Puis, Django charge la vue appropriée, lui transmettant l’objet "HttpRequest" comme premier paramètre.    
 Chaque vue est responsable de renvoyer un objet "HttpResponse"
 
-# reverse_lazy()
+* reverse_lazy()   
 une version de reverse() à exécution différée
 
-# gabarit
+* gabarit   
 Un gabarit contient la partie statique du résultat HTML souhaité ainsi 
 qu’une certaine syntaxe particulière définissant comment insérer le contenu dynamique
 
 
-## -- INSTALLATION -- ##
-
+## INSTALLATION
+```py
 # créer un environnement virtuel
 # se placer dans le dossier principal
 py - 3.7 - m venv env  # -m pour module
@@ -176,31 +198,30 @@ VS Code gère les environnements virtuels
 il suffit de lancer le projet dans VS Code
 se placer dans le projet + taper: code . dans git bash
 ou copier-glisser le projet sur l'icône' VS du bureau
+```
 
-
-## -- SQLITE -- ##
-
+## SQLITE
+```py
 # visualiser une BDD dans VS Code
 extension SQLite
 Ctrl Shift P
 SQLite Open Database
 SQLite explorer se rajoute en bas à gauche
 Show Table => execute commande SQL pour afficher la table
+```
+
+## DJANGO
+
+* Architecture MVT: Modèle-Vue-Template
+* Django gère de façon autonome la réception des requêtes et l’envoi des réponses au client (partie contrôleur)
+* Chaque site web conçu avec Django est considéré comme un projet, composé de plusieurs applications. 
+* Une application consiste en un dossier contenant plusieurs fichiers de code
+* chaque bloc du site web est isolé dans un dossier avec ses vues, ses modèles et ses schémas d’URL
+* Ex. d'applications' : un forum, une galerie de photos ; modules réutilisables
 
 
-## -- DJANGO -- ##
-
-Architecture MVT: Modèle-Vue-Template
-Django gère de façon autonome la réception des requêtes 
-et l’envoi des réponses au client (partie contrôleur)
-Chaque site web conçu avec Django est considéré comme un projet, composé de plusieurs applications. 
-Une application consiste en un dossier contenant plusieurs fichiers de code
-chaque bloc du site web est isolé dans un dossier avec ses vues, ses modèles et ses schémas d’URL
-Ex. d'applications' : un forum, une galerie de photos ; modules réutilisables
-
-
-## -- GESTION DE PROJET -- ##
-
+## GESTION DE PROJET
+```py
 # Création de projet
 outil de commande Django : django-admin
 se déplacer dans le dossier où le projet sera créé
@@ -278,15 +299,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog', # ++
 ]
+```
 
-
-## -- LES BASE DE DONNEES -- ##
-
+## LES BASE DE DONNEES
+```py
 # LES SGBD
 SQLite3 pour le développement, MySQL ou PostgreSQL en production
 
 # INSTALLER POSTGRESQL
-https: // www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04
+https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04
 + pip install psycopg2
 psycopg2 est le driver qui connecte à PostgreSQL depuis Python
 + télécharger postgreSQL
@@ -375,10 +396,10 @@ Cette couche permet de rendre invisible la gestion de la base de données dans v
 et ainsi de passer de MySQL à PostgreSQL sans soucis par exemple. 
 Cette abstraction permet également de manipuler des objets, 
 ce qui est plus pratique la majorité du temps.
+```
 
-
-## -- ORGANISER SES VUES -- ##
-
+## ORGANISER SES VUES
+```py
 ## - La gestion des vues
 
 chaque application compte son views.py
@@ -579,14 +600,14 @@ return redirect('afficher_article', id_article=42)
 
 # générer l'URL avec reverse (django.urls.reverse)
 retourne une chaîne de caractères contenant l’URL vers la vue selon les éventuels arguments donnés
+```
 
+## TEMPLATE
 
-## -- TEMPLATES -- ## 
-
-Les templates sont écrits dans un mini-langage de programmation propre à Django 
-qui possède des expressions et des structures de contrôle basiques (if/else, boucle for, etc.) 
-que nous appelons des tags
-
+* Les templates sont écrits dans un mini-langage de programmation propre à Django
+* qui possède des expressions et des structures de contrôle basiques (if/else, boucle for, etc.)
+* que nous appelons des tags   
+```py
 ## - Lier template et vue
 
 la vue se charge de transmettre l’information de la requête au template, 
@@ -892,7 +913,6 @@ ils n’apparaîtront pas dans la page HTML
 {% endcomment %}
 <table>...
 
-
 ## - Ajoutons des fichiers statiques
 
 Comme pour les templates, les fichiers statiques peuvent se trouver à deux endroits : 
@@ -946,10 +966,10 @@ Vous pouvez ainsi inclure l’image de crêpes de l’application blog dans votr
 
 (!) Cette méthode n’est pas considérée comme efficace et sécurisée 
 donc elle ne doit pas être utilisée en production !
+```
 
-
-## -- LES MODELES -- ##
-
+## LES MODELES
+```py
 ## - Créer un modèle
 
 Un modèle s’écrit sous la forme d’une classe
@@ -1415,13 +1435,12 @@ crepes-rhum
 >>> art2.categorie = cat
 >>> art2.slug = "crepes-cidre"
 >>> art2.save()
+```
 
+## L'ADMINISTRATION
 
-## -- L'ADMINISTRATION -- ##
-
-Un des gros points forts de Django est que celui-ci génère de façon automatique 
-l’administration en fonction de vos modèles.
-
+Un des gros points forts de Django est que celui-ci génère de façon automatique l’administration en fonction de vos modèles.
+```py
 ## - Mise en place de l'administration
 
 # Les modules django.contrib
@@ -1710,10 +1729,10 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Categorie)
 admin.site.register(Article, ArticleAdmin)
+```
 
-
-## -- LES FORMULAIRES -- ##
-
+## LES FORMULAIRES
+```py
 ## - Créer un formulaire
 
 + créer, dans chaque application, un fichier forms.py dans lequel nous écrirons nos formulaires
@@ -1945,10 +1964,10 @@ Un paramètre spécial de la méthode save() a été prévu pour cette situation
 >>> article.categorie = Categorie.objects.all()[0]  # Nous ajoutons les attributs manquants
 >>> article.auteur = "Mathieu"
 >>> article.save()
+```
 
-
-## -- LA GESTION DES FICHIERS -- ##
-
+## LA GESTION DES FICHIERS
+```py
 ## - Enregistrer une image
 
 + installer la bibliothèque Pillow
@@ -2126,10 +2145,10 @@ Un exemple de modèle utilisant cette fonction serait donc simplement :
 class Document(models.Model):
     nom = models.CharField(max_length=100)
     doc = models.FileField(upload_to=renommage, verbose_name="Document")
+```
 
-
-## -- TP: UN RACCOURCISSEUR D'URL -- ##
-
+## TP: UN RACCOURCISSEUR D'URL
+```py
 ## - Cahier des charges
 
 + créer une nouvelle application nommée mini_url
@@ -2327,14 +2346,14 @@ def redirection(request, code):
     {{ form.as_p }} # form retranscrit sous la forme d’une suite de paragraphes
     <input type="submit"/>
 </form>
+```
 
-
-## -- LES VUES GENERIQUES -- ##
+## LES VUES GENERIQUES
 
 * Sur la plupart des sites web, il existe certains types de pages où créer une vue, 
 est lourd et presque inutile : pour une page statique sans informations dynamiques, 
 ou encore de simples listes d’objets sans traitements particuliers.
-
+```py
 ## - Premiers pas avec des pages statiques
 
 * exemple de vue classique, qui ne s’occupe que d’afficher un template à l’utilisateur, 
@@ -2783,10 +2802,10 @@ afin de pouvoir mettre à jour ou supprimer une URL rapidement :
 # Aller plus loin
 Le site http://ccbv.co.uk/ présente une documentation exhaustive sur les vues génériques de Django
 Documentation officielle sur les vues génériques : https://docs.djangoproject.com/en/stable/ref/class-based-views/
+```
 
-
-## -- TECHNIQUES AVANCEES DANS LES MODELES -- ##
-
+## TECHNIQUES AVANCEES DANS LES MODELES
+```py
 ## - Les requêtes complexes avec Q
 
 but = créer des requêtes complexes sur des modèles
@@ -3143,14 +3162,14 @@ vous devrez également les spécifier lors de la création de la GenericRelation
 commentaires = GenericRelation(Commentaire,
     content_type_field="le_champ_du_content_type",
     object_id_field="le champ_de_l_id")
+```
 
-
-## -- SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES -- ##
+## SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES
 
 Django permet également de créer nos propres filtres et tags, 
 et même de générer des variables par défaut lors de la construction d’un template 
 (ce que nous appelons le contexte du template)
-
+```py
 ## - Architecture des filtres et tags
 
 * soit votre fonctionnalité est propre à une application 
@@ -3705,9 +3724,9 @@ un objet SimpleNode est instancié et sa fonction render() ne fait qu’appeler 
 c’est-à-dire que le HTML y est interprété
 * Il est donc important de penser à échapper le HTML quand il est nécessaire, 
 via la fonction escape(), telle que nous l’avons vue avec les filtres
+```
 
-
-## -- LES SIGNAUX ET MIDDLEWARES -- ##
+## LES SIGNAUX ET MIDDLEWARES
 
 * comment effectuer une action précise à chaque fois qu’une entrée d’un modèle est supprimée, 
 et ce depuis n’importe où dans le code ? 
@@ -3716,7 +3735,7 @@ que son adresse IP n’est pas bannie ?
 * Pour ces situations un peu spéciales qui nécessitent de répéter la même action à plusieurs moments 
 et endroits dans le code, Django intègre deux mécanismes différents qui permettent de résoudre 
 ce genre de problèmes : les signaux et les middlewares.
-
+```py
 ## - Notifiez avec les signaux
 
 * Un signal est une notification envoyée par une application à Django lorsqu’une action se déroule, 
@@ -4046,10 +4065,10 @@ path('stats/', include('stats.urls')),
 F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
 HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
 HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse
+```
 
-
-## -- LES UTILISATEURS -- ##
-
+## LES UTILISATEURS
+```py
 ## - La Base
 
 * Vérifier toujours que 'django.contrib.auth' et 'django.contrib.contenttypes' 
@@ -4674,10 +4693,10 @@ tous ses utilisateurs en disposent automatiquement aussi
 >>> user.groups.add(group)
 * La méthode user.has_perm('app.nom_perm') vérifie donc si l’utilisateur a cette permission 
 ou s’il appartient à un groupe ayant la permission app.nom_perm
+```
 
-
-## -- LES MESSAGES -- ##
-
+## LES MESSAGES
+```py
 ## - Les bases
 
 * s’assurer que l’application et ses dépendances sont bien installées. 
@@ -4767,10 +4786,10 @@ il se peut que les gens qui souhaitent l’intégrer n’utilisent pas le systè
 Pour éviter de provoquer des erreurs, si vous pensez que le message est facultatif, 
 vous pouvez spécifier à Django d’échouer silencieusement :
 messages.info(request, 'Message à but informatif.', fail_silently=True)
+```
 
-
-## -- LA MISE EN CACHE -- ##
-
+## LA MISE EN CACHE
+```py
 ## - Le cache et ses systèmes
 
 https://docs.djangoproject.com/fr/3.0/topics/cache/
@@ -5005,13 +5024,13 @@ et de décrémenter un nombre dans le cache, sans avoir à le récupérer pour l
 11
 >>> cache.decr('num', 5) # décrémente de 5
 6
+```
 
+## LA PAGINATION
 
-## -- LA PAGINATION -- ##
-
-https://docs.djangoproject.com/fr/3.0/topics/pagination/
-https://docs.djangoproject.com/fr/3.0/ref/paginator/#django.core.paginator.Paginator
-
+* https://docs.djangoproject.com/fr/3.0/topics/pagination/
+* https://docs.djangoproject.com/fr/3.0/ref/paginator/#django.core.paginator.Paginator
+```py
 ## - Exemples en console
 
 * Django permet de répartir des ensembles d’objets sur plusieurs pages : des listes, des QuerySet, etc. 
@@ -5211,19 +5230,19 @@ via {% include "pagination.html" with liste=minis view="url_liste" %}
 + Par exemple, on peut réutiliser le troisième argument optionnel orphans 
 pour avoir un minimum de liens sur la dernière page :
 paginator = Paginator(minis_list, 20, 5) # 20 liens par page, avec un minimum de 5 liens sur la dernière
+```
 
-
-## -- LES TRANSACTIONS -- ##
+## LES TRANSACTIONS
 
 https://docs.djangoproject.com/fr/3.0/topics/db/transactions/ 
 
 * Une transaction regroupe plusieurs requêtes à effectuer
 * Si l'une d'elles échoue, toutes les précédentes sont annulées 
 et les items retournent à leur état original
-* Il existe deux manières d'activer les transactions dans Django :
-- par défaut : toutes les routes sont, par défaut, dans une transaction.
-- au cas par cas : les routes ne sont pas dans des transactions. Il faut les activer manuellement.
-
+* Il existe deux manières d'activer les transactions dans Django :   
+   - par défaut : toutes les routes sont, par défaut, dans une transaction.
+   - au cas par cas : les routes ne sont pas dans des transactions. Il faut les activer manuellement.
+```py
 ## - Transactions par défaut
 
 # settings.py
@@ -5330,13 +5349,13 @@ if obj.active:
     ...
 
 * Pour des questions de performance, gardez vos transactions aussi brèves que possible
+```
 
+## L'INTERNATIONALISATION (I18N)
 
-## -- L'INTERNATIONALISATION (I18N) -- ##
-
-https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874201-linternationalisation
-https://docs.djangoproject.com/fr/3.0/topics/i18n/
-
+* https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874201-linternationalisation
+* https://docs.djangoproject.com/fr/3.0/topics/i18n/
+```py
 # settings.py
 
 LANGUAGE_CODE = 'fr-fr'
@@ -5347,15 +5366,16 @@ USE_I18N = False # permet d’activer l’internationalisation
 
 USE_L10N = True # permet de formater automatiquement certaines données 
 # en fonction de la langue de l’utilisateur
+```
 
-
-## -- LES TESTS UNITAIRES -- ##
+## LES TESTS UNITAIRES
 
 * opération qui vérifie une certaine partie de votre code
-https://docs.djangoproject.com/fr/3.0/topics/testing/tools/
-https://docs.djangoproject.com/fr/3.0/topics/testing/overview/
-https://docs.python.org/3/library/unittest.html#module-unittest
+* https://docs.djangoproject.com/fr/3.0/topics/testing/tools/
+* https://docs.djangoproject.com/fr/3.0/topics/testing/overview/
+* https://docs.python.org/3/library/unittest.html#module-unittest
 * exemple :
+```py
 from django.test import TestCase
 from myapp.models import Animal
 
@@ -5625,12 +5645,12 @@ c.login(username='utilisateur', password='mot_de_passe')
 reponse = c.get('/une/url/')
 c.logout()  # La déconnexion n'est pas obligatoire
 * en savoir plus sur le client de test : https://docs.djangoproject.com/fr/3.0/topics/testing/tools/#the-test-client
+```
 
-
-## -- DJANGO.CONTRIB -- ##
+## DJANGO.CONTRIB
 
 * Django inclut dans le framework un nombre de modules complémentaires très important
-
+```py
 ## - Les modules de django.contrib
 
 * l’ensemble des fonctionnalités supplémentaires de Django est situé dans le module django.contrib
@@ -5942,14 +5962,14 @@ exemple, encore une fois en français :
 {{ 1|ordinal }}   renvoie 1<sup>er</sup><br />
 {{ "2"|ordinal }} renvoie 2<sup>e</sup><br />
 {{ 98|ordinal }}  renvoie 98<sup>e</sup><br />
+```
 
+## DEPLOYER EN PRODUCTION
 
-## -- DEPLOYER EN PRODUCTION -- ##
-
-https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874623-deployer-votre-application-en-production
-https://docs.djangoproject.com/fr/3.0/howto/deployment/checklist/
-https://docs.djangoproject.com/fr/3.0/howto/deployment/
-
+* https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874623-deployer-votre-application-en-production
+* https://docs.djangoproject.com/fr/3.0/howto/deployment/checklist/
+* https://docs.djangoproject.com/fr/3.0/howto/deployment/
+```py
 Voici les variables à modifier :
 - Passez la variable DEBUG à False pour indiquer que le site est désormais en production. 
 Il est très important de le faire, sans quoi les erreurs et des données sensibles seront affichées !
@@ -5971,10 +5991,10 @@ ADMINS = (
     ('Mathieu Xhonneux', 'mathieu@crepes-bretonnes.com'),
 )
 SERVER_EMAIL = 'no-reply@crepes-bretonnes.com'
+```
 
-
-## -- L'UTILITAIRE MANAGE.PY -- ##
-
+## L'UTILITAIRE MANAGE.PY
+```py
 https://docs.djangoproject.com/fr/3.0/ref/django-admin/
 
 ## - Les commandes de base
@@ -6230,12 +6250,13 @@ python manage.py compilemessages --locale fr_FR
 
 python manage.py createcachetable nom_de_table
 # Crée une table de cache pour le système de cache
+```
 
+## MODULES COMPLEMENTAIRES
 
-## -- MODULES COMPLEMENTAIRES -- ##
-
-## - Django Debug Toolbar
+### Django Debug Toolbar
 https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+```py
 pip install django-debug-toolbar
 INSTALLED_APPS = [
     # ...
@@ -6272,3 +6293,4 @@ if settings.DEBUG:
         # url(r'^__debug__/', include(debug_toolbar.urls)),
 
     ] + urlpatterns
+```
