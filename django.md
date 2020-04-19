@@ -19,7 +19,34 @@
 
 * [GITHUB](#github)
 * [BONS PLANS](#bons-plans)
-
+* [BONNES PRATIQUES](#bonnes-pratiques)
+* [LEXIQUE](#lexique)
+* [INSTALLATION](#installation)
+* [SQLITE](#sqlite)
+* [DJANGO](#django)
+* [GESTION DE PROJET](#gestion-projet)
+* [LES BASE DE DONNEES](#base-donnees)
+* [ORGANISER SES VUES](#organiser-vues)
+* [TEMPLATE](#template)
+* [LES MODELES](#les-modeles)
+* [L'ADMINISTRATION]
+* [LES FORMULAIRES](#les-formulaires)
+* [LA GESTION DES FICHIERS](#gestion-fichiers)
+* [TP: UN RACCOURCISSEUR D'URL](#tp-url)
+* [LES VUES GENERIQUES](#les-vues-generiques)
+* [TECHNIQUES AVANCEES DANS LES MODELES](#avance-modeles)
+* [SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES](#avance-template)
+* [LES SIGNAUX ET MIDDLEWARES](#signaux-middlewares)
+* [LES UTILISATEURS](#les-utilisateurs)
+* [LES MESSAGES](#les-messages)
+* [LA MISE EN CACHE](#mise-cache)
+* [LA PAGINATION](#la-pagination)
+* [LES TRANSACTIONS](#les-transactions)
+* [L'INTERNATIONALISATION (I18N)](#internationalisation)
+* [DJANGO.CONTRIB](#django-contrib)
+* [DEPLOYER EN PRODUCTION](#deployer-production)
+* [L'UTILITAIRE MANAGE.PY](#manage-py)
+* [MODULES COMPLEMENTAIRES](#modules-complementaires)
 
 
 ## GITHUB
@@ -226,7 +253,7 @@ Show Table => execute commande SQL pour afficher la table
 * Ex. d'applications' : un forum, une galerie de photos ; modules réutilisables
 
 
-## GESTION DE PROJET
+## <a name="gestion-projet"></a> GESTION DE PROJET
 ```py
 # Création de projet
 outil de commande Django : django-admin
@@ -307,7 +334,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-## LES BASE DE DONNEES
+## <a name="base-donnees"></a> LES BASE DE DONNEES
 ```py
 # LES SGBD
 SQLite3 pour le développement, MySQL ou PostgreSQL en production
@@ -404,7 +431,7 @@ Cette abstraction permet également de manipuler des objets,
 ce qui est plus pratique la majorité du temps.
 ```
 
-## ORGANISER SES VUES
+## <a name="organiser-vues"></a> ORGANISER SES VUES
 ```py
 ## - La gestion des vues
 
@@ -1972,7 +1999,7 @@ Un paramètre spécial de la méthode save() a été prévu pour cette situation
 >>> article.save()
 ```
 
-## LA GESTION DES FICHIERS
+## <a name="gestion-fichiers"></a> LA GESTION DES FICHIERS
 ```py
 ## - Enregistrer une image
 
@@ -2153,7 +2180,7 @@ class Document(models.Model):
     doc = models.FileField(upload_to=renommage, verbose_name="Document")
 ```
 
-## TP: UN RACCOURCISSEUR D'URL
+## <a name="tp-url"></a> TP: UN RACCOURCISSEUR D'URL
 ```py
 ## - Cahier des charges
 
@@ -2810,7 +2837,7 @@ Le site http://ccbv.co.uk/ présente une documentation exhaustive sur les vues g
 Documentation officielle sur les vues génériques : https://docs.djangoproject.com/en/stable/ref/class-based-views/
 ```
 
-## TECHNIQUES AVANCEES DANS LES MODELES
+## <a name="avance-modeles"></a> TECHNIQUES AVANCEES DANS LES MODELES
 ```py
 ## - Les requêtes complexes avec Q
 
@@ -3170,7 +3197,7 @@ commentaires = GenericRelation(Commentaire,
     object_id_field="le champ_de_l_id")
 ```
 
-## SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES
+## <a name="avance-template"></a> SIMPLIFIONS NOS TEMPLATES : FILTRES, TAGS, ET CONTEXTES
 
 Django permet également de créer nos propres filtres et tags, 
 et même de générer des variables par défaut lors de la construction d’un template 
@@ -3732,7 +3759,7 @@ c’est-à-dire que le HTML y est interprété
 via la fonction escape(), telle que nous l’avons vue avec les filtres
 ```
 
-## LES SIGNAUX ET MIDDLEWARES
+## <a name="signaux-middlewares"></a> LES SIGNAUX ET MIDDLEWARES
 
 * comment effectuer une action précise à chaque fois qu’une entrée d’un modèle est supprimée, 
 et ce depuis n’importe où dans le code ? 
@@ -4794,7 +4821,7 @@ vous pouvez spécifier à Django d’échouer silencieusement :
 messages.info(request, 'Message à but informatif.', fail_silently=True)
 ```
 
-## LA MISE EN CACHE
+## <a name="mise-cache"></a> LA MISE EN CACHE
 ```py
 ## - Le cache et ses systèmes
 
@@ -5357,7 +5384,7 @@ if obj.active:
 * Pour des questions de performance, gardez vos transactions aussi brèves que possible
 ```
 
-## L'INTERNATIONALISATION (I18N)
+## <a name="internationalisation"></a> L'INTERNATIONALISATION (I18N)
 
 * https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874201-linternationalisation
 * https://docs.djangoproject.com/fr/3.0/topics/i18n/
@@ -5653,7 +5680,7 @@ c.logout()  # La déconnexion n'est pas obligatoire
 * en savoir plus sur le client de test : https://docs.djangoproject.com/fr/3.0/topics/testing/tools/#the-test-client
 ```
 
-## DJANGO.CONTRIB
+## <a name="django-contrib"></a> DJANGO.CONTRIB
 
 * Django inclut dans le framework un nombre de modules complémentaires très important
 ```py
@@ -5970,7 +5997,7 @@ exemple, encore une fois en français :
 {{ 98|ordinal }}  renvoie 98<sup>e</sup><br />
 ```
 
-## DEPLOYER EN PRODUCTION
+## <a name="deployer-production"></a> DEPLOYER EN PRODUCTION
 
 * https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django/1874623-deployer-votre-application-en-production
 * https://docs.djangoproject.com/fr/3.0/howto/deployment/checklist/
@@ -5999,7 +6026,7 @@ ADMINS = (
 SERVER_EMAIL = 'no-reply@crepes-bretonnes.com'
 ```
 
-## L'UTILITAIRE MANAGE.PY
+## <a name="manage-py"><a> L'UTILITAIRE MANAGE.PY
 ```py
 https://docs.djangoproject.com/fr/3.0/ref/django-admin/
 

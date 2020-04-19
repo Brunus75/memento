@@ -1,6 +1,52 @@
 # MEMENTO PYTHON
 
 
+## SOMMAIRE
+
+* [INSTALLATION](#installation)
+* [RACCOURCIS VS CODE](#raccourcis-code)
+* [EXTENSIONS VS CODE](#extensions-code)
+* [OUTILS](#outils)
+* [SPECIFICITES PYTHON](#specificites-python)
+* [BONNES PRATIQUES](#bonnes-pratiques)
+* [LEXIQUE](#lexique)
+* [LE TERMINAL](#le-terminal)
+* [PREMIER SCRIPT](#premier-script)
+* [PYTHON et VISUAL CODE](#python-vs-code)
+* [LES BASES](#les-bases)
+* [LES OPERATEURS](#les-operateurs)
+* [LES STRUCTURES CONDITIONNELLES](#structures-cond)
+* [MODULES ET FONCTIONS](#modules-et-fonctions)
+* [LES LISTES](#les-listes)
+* [LES SETS](#les-sets)
+* [METHODES ET FONCTIONS UTILES](#methodes-utiles)
+* [LES BOUCLES](#les-boucles)
+* [LES FICHIERS](#les-fichiers)
+* [LES DICTIONNAIRES](#les-dictionnaires)
+* [LES FONCTIONS](#les-fonctions)
+* [LES MODULES](#les-modules)
+* [PACKAGES](#packages)
+* [DOCUMENTER SON CODE](#documenter-son-code)
+* [TESTER SON CODE AVEC PDB](#pdb)
+* [LA GESTION D'ERREURS AVEC LES EXCEPTIONS](#exceptions)
+* [LE LOGGING](#le-logging)
+* [INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP](#pip)
+* [LES ENVIRONNEMENTS VIRTUELS](#virtuel-env)
+* [L'ORIENTÉ OBJET (partie 1)](#objet-part1)
+* [L'ORIENTÉ OBJET (partie 2)](#objet-part2)
+* [LES BASES DE DONNEES](#bdd)
+* [ARCHITECTURE](#architecture)
+* [CREER UNE APP](#creer-une-app)
+* [PROJET CONVERTISSEUR DE DEVISES avec PYSIDE](#projet-devises-pyside)
+* [PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API)](#projet-cine-pyside-1)
+* [PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)](#projet-cine-pyside-2)
+* [PYTHON AVANCÉ](#python-avancé)
+* [10 ERREURS DU DEBUTANT](#erreurs-debutant)
+* [ASTUCES](#astuces)
+* [LIBRAIRIES](#librairies)
+* [PYTHON & HTML](#python-html)
+
+
 ## RESSOURCES
 
 * https://www.udemy.com/course/formation-complete-python/
@@ -50,13 +96,13 @@
 * exit() pour en sortir
 
 
-## RACCOURCIS VS CODE
+## <a name="raccourcis-code"></a> RACCOURCIS VS CODE
 * Ctrl + : => commente une ligne/plusieurs lignes
 * Ctrl + Shift + : => commente plusieurs lignes
 * Ctrl + Shift + P : => montre les commandes disponibles (SQLite, par ex.)
 
 
-## EXTENSIONS VS CODE
+## <a name="extensions-code"></a> EXTENSIONS VS CODE
 * Python
 * autoDocstring
 * SQLite
@@ -276,7 +322,7 @@ touch monfichier.py
 ## PREMIER SCRIPT
 Cmder > print("Hello World !");
 
-## PYTHON et VISUAL CODE
+## <a name="python-vs-code"></a> PYTHON et VISUAL CODE
 ```py
 Ouvrir 'VS Code' depuis le terminal => code;
 code monDossierAOuvrir;
@@ -469,7 +515,7 @@ resultat = int(nombre_utilisateur) == nombre_mystere
 print(resultat)
 ```
 
-## LES STRUCTURES CONDITIONNELLES
+## <a name"structures-cond"></a> LES STRUCTURES CONDITIONNELLES
 ```py
 if age >= 18:
     print("Vous êtes majeur !")
@@ -869,7 +915,7 @@ print(a.symmetric_difference(b)) # {1, 2, 5, 6}
 print(a ^ b) # {1, 2, 5, 6}
 ```
 
-## METHODES ET FONCTIONS UTILES
+## <a name="methodes-utiles"></a> METHODES ET FONCTIONS UTILES
 ```py
 # méthode agit directement sur l'objet, pas besoin de lui attribuer une nouvelle variable
 liste.sort() # la liste est triée, on peut l'utiliser
@@ -1978,7 +2024,7 @@ def fonction_exemple(nom, age):
     return [1, 2, 3]
 ```
 
-## TESTER SON CODE AVEC PDB
+## <a name="pdb"></a> TESTER SON CODE AVEC PDB
 ```py
 import pdb # Python Debugger, librairie qui permet de déboguer
 
@@ -1991,7 +2037,7 @@ Docs > https://docs.python.org/3/library/pdb.html
 https://realpython.com/python-debugging-pdb/ 
 
 
-## LA GESTION D'ERREURS AVEC LES EXCEPTIONS
+## <a name="exceptions"></a> LA GESTION D'ERREURS AVEC LES EXCEPTIONS
 
 La liste des exceptions > https://docs.python.org/3.7/library/exceptions.html 
 ```py
@@ -2166,7 +2212,7 @@ logging.error("Une erreur est arrivée")
 logging.critical("Erreur critique")
 ```
 
-## INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP
+## <a name="pip"></a> INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP
 ```py
 # documentation : https://pip.pypa.io/en/stable/
 # pip (Pip Installs Packages)
@@ -2209,7 +2255,7 @@ pip uninstall package
 pip3.7 uninstall nomDuPackage
 ```
 
-## LES ENVIRONNEMENTS VIRTUELS
+## <a name="virtuel-env"></a> LES ENVIRONNEMENTS VIRTUELS
 ```py
 # autre version de Python, qui va être isolée du python installé sur l'ordinateur
 # on crée généralement un environnement virtuel par projet 
@@ -2230,7 +2276,7 @@ se placer dans le projet + taper : code . dans git bash
 ou copier-glisser le projet sur l'icône' VS du bureau
 ```
 
-## L'ORIENTÉ OBJET (partie 1)
+## <a name="objet-part1"></a> L'ORIENTÉ OBJET (partie 1)
 ```py
 # avec Python, tout est un objet
 # avantages : organiser notre code, éviter les répétitions
@@ -2544,7 +2590,7 @@ if __name__ == "__main__":
     liste.sauvegarder()
 ```
 
-## L'ORIENTÉ OBJET (partie 2)
+## <a name="objet-part2"></a> L'ORIENTÉ OBJET (partie 2)
 ```py
 # méthodes de classe
 # appartient seulement à la classe
@@ -3072,7 +3118,7 @@ class MaClasseHeritee(MaClasseMere1, MaClasseMere2):
         print("...MaClasseHeritee, puis MaClasseMere1, et enfin MaClasseMere2")
 ```
 
-## LES BASES DE DONNEES
+## <a name="bdd"></a> LES BASES DE DONNEES
 
 ### SQL
 * fichiers non modifiables directement
@@ -3425,7 +3471,7 @@ pip3.7 install module_a_telecharger
 + créer un requirements.txt
 ```
 
-## PROJET CONVERTISSEUR DE DEVISES avec PYSIDE 
+## <a name="projet-devises-pyside"></a> PROJET CONVERTISSEUR DE DEVISES avec PYSIDE 
 ```py
 from PySide2 import QtWidgets, QtGui, QtCore # a importer avec pip (dans l'env virtuel)
 import currency_converter
@@ -3527,7 +3573,7 @@ win.show() # montre l'interface
 app.exec_() # lance l'appli
 ```
 
-## PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API
+## <a name="projet-cine-pyside-1"></a> PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API)
 ```py
 # Création de la logique du code
 
@@ -3603,7 +3649,7 @@ if __name__ == "__main__": # exécute le code que si l'on est sur le fichier pri
     get_movies() # récupère les films sous forme d'instances
 ```
 
-## PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)
+## <a name="projet-cine-pyside-2"></a> PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)
 ```py
 # Création de l'interface graphique de l'appli
 
@@ -4620,7 +4666,7 @@ https://regex101.com/
 https://regexr.com/
 
 
-## 10 ERREURS DU DEBUTANT
+## <a name="erreurs-debutant></a> 10 ERREURS DU DEBUTANT
 
 ### Récupérer une clé inexistant d'un dictionnaire
 ```py
@@ -5177,7 +5223,7 @@ Ce dernier s'apparente beaucoup à ce qu'il est possible de faire dans des
 logiciels de type tableur: des tableaux avec plein de nombres dedans !
 
 
-## PYTHON & HTML
+## <a name="python-html"></a> PYTHON & HTML
 
 1. Il faut utiliser la CGI, une interface qui va servir d'intermédiaire' entre le serveur 
 et le programme Python. C'est une vieille interface, prise en compte par la plupart des serveurs web.

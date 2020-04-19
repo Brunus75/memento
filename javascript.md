@@ -1,6 +1,18 @@
 # MEMENTO ET ASTUCES JAVASCRIPT
 
 
+## SOMMAIRE
+
+* [RESSOURCES](#ressources)
+* [LEXIQUE](#lexique)
+* [ES6](#es6)
+* [PROGRAMMATION ASYNCHRONE](#programmation-asynchrone)
+* [GERER DU CODE ASYNCHRONE](#gerer-asynchrone)
+* [Parallélisez plusieurs requêtes HTTP](#parallele-http)
+* [FONCTIONS](#fonctions)
+* [ASTUCES](#astuces)
+
+
 ## RESSOURCES
 
 * Compilez et exécutez votre code : https://openclassrooms.com/fr/courses/5543061-ecrivez-du-javascript-pour-le-web/5577766-compilez-et-executez-votre-code
@@ -319,7 +331,7 @@ L'I/O correspond aux événements liés à l'input (les flux d'entrée) et l'out
 lorsque l'on exécute la fonction send() lors d'une requête HTTP, celle-ci ne bloquait pas l'exécution du code
 
 
-## GERER DU CODE ASYNCHRONE
+## <a name="gerer-asynchrone"></a> GERER DU CODE ASYNCHRONE
 
 ### Callbacks
 
@@ -465,7 +477,7 @@ const promiseRes =
 ```
 
 
-## Parallélisez plusieurs requêtes HTTP
+## <a name="parallele-http"></a> Parallélisez plusieurs requêtes HTTP
 
 * Objectif : voir comment **enchaîner** les requêtes HTTP en exécutant 2 requêtes GET en même temps (en parallèle), puis 1 requête POST une fois que les 2 requêtes précédentes sont terminées (en séquence)
 
