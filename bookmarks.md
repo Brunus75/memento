@@ -25,6 +25,7 @@
 
 * Open Graph Meta Tags: Everything You Need to Know : https://ahrefs.com/blog/open-graph-meta-tags/
 * Alt Text for SEO: How to Optimize Your Images : https://ahrefs.com/blog/alt-text/
+* SEO : les erreurs les plus fréquentes qui pénalisent le référencement des sites web : https://www.blogdumoderateur.com/seo-erreurs-frequentes
 
 
 ## ORGANISATION
@@ -150,6 +151,11 @@
 
 * https://regexr.com/
 * https://regex101.com/
+
+
+## MAILING
+
+* Guide to Email Deliverability: Best Practices and Tools to Avoid Spam Folders : https://designmodo.com/email-deliverability/
 
 
 ## HEBERGEURS

@@ -15,8 +15,14 @@
 * ~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#   
 
 
+## SOMMAIRE
 
-## -- GITHUB -- ##
+* [GITHUB](#github)
+* [BONS PLANS](#bons-plans)
+
+
+
+## GITHUB
 
 1. initialiser le repo
 2. cloner le repo

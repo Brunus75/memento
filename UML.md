@@ -56,6 +56,9 @@
 * Le cas d’utilisation source (départ de la flèche) contient **TOUJOURS** le cas d’utilisation inclus
 * Cas d’utilisation 1 -> inclut -> cas d’utilisation 2 (interne)
 * *ex. le cas d’utilisation source « Enregistrer un achat » contiendra TOUJOURS le cas d’utilisation « Constituer un panier »*
+```
+Un include signifie que lorsque tu réalises une action, une autre doit se faire plus ou moins en même temps (quand je valide ma commande je dois payer => include)
+```
 
 ### La relation « extend »
 
@@ -66,6 +69,9 @@
 * Dès lors qu’il y a une relation « extend », il faudra toujours définir la condition, c’est-à-dire : à quelle condition cette relation peut avoir lieu ?
 * Pour indiquer cela, il faut ajouter une ligne « extension points » et définir la condition « EXT »
 * *ex. EXT1 : Si acteur = commercial*
+```
+Un exclude signifie que lorsque tu réalises une action, une autre devient accessible
+```
 
 ### La spécialisation des cas d’utilisation
 
