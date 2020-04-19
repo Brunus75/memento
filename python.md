@@ -34,6 +34,8 @@
 * [LES ENVIRONNEMENTS VIRTUELS](#virtuel-env)
 * [L'ORIENTÉ OBJET (partie 1)](#objet-part1)
 * [L'ORIENTÉ OBJET (partie 2)](#objet-part2)
+* [LES METACLASSES](#les-metaclasses)
+* [LES DECORATEURS](#les-decorateurs)
 * [LES BASES DE DONNEES](#bdd)
 * [ARCHITECTURE](#architecture)
 * [CREER UNE APP](#creer-une-app)
@@ -515,7 +517,7 @@ resultat = int(nombre_utilisateur) == nombre_mystere
 print(resultat)
 ```
 
-## <a name"structures-cond"></a> LES STRUCTURES CONDITIONNELLES
+## <a name="structures-cond"></a> LES STRUCTURES CONDITIONNELLES
 ```py
 if age >= 18:
     print("Vous êtes majeur !")
@@ -3118,6 +3120,526 @@ class MaClasseHeritee(MaClasseMere1, MaClasseMere2):
         print("...MaClasseHeritee, puis MaClasseMere1, et enfin MaClasseMere2")
 ```
 
+
+## LES DECORATEURS
+
+* Les décorateurs sont des fonctions de Python dont le rôle est de **modifier le comportement par défaut** d'autres fonctions ou classes
+* Les décorateurs servent surtout à modifier le comportement d'une fonction
+* une fonction modifiée par un décorateur ne s'exécutera pas elle-même mais appellera le décorateur
+* Le décorateur s'exécute au moment de la définition de fonction et non lors de l'appel
+```py
+# Exemple avec décorateur
+@decorateur
+def fonction(...):
+    ...
+
+# Exemple équivalent, sans décorateur
+def fonction(...):
+    ...
+
+fonction = decorateur(fonction)
+
+
+>>> def mon_decorateur(fonction):
+...     """Premier exemple de décorateur"""
+...     print("Notre décorateur est appelé avec en paramètre la fonction {0}".format(fonction))
+...     return fonction
+...
+>>> @mon_decorateur
+... def salut():
+...     """Fonction modifiée par notre décorateur"""
+...     print("Salut !")
+...
+Notre décorateur est appelé avec en paramètre la fonction <function salut at 0x00BA5198>
+>>>
+```
+* la fonction renvoyée par le décorateur remplace la fonction définie
+* Le seul moment où notre décorateur est appelé, c'est lors de la définition de notre fonction
+
+### Modifier le comportement de notre fonction
+
+* on va devoir créer une nouvelle fonction qui sera chargée de modifier le comportement de la fonction définie
+* on va la définir directement dans le corps de notre décorateur
+```py
+def mon_decorateur(fonction): # fonction = salut()
+    """Notre décorateur : il va afficher un message avant l'appel de la
+    fonction définie"""
+    
+    def fonction_modifiee():
+        """Fonction que l'on va renvoyer. Il s'agit en fait d'une version
+        un peu modifiée de notre fonction originellement définie. On se
+        contente d'afficher un avertissement avant d'exécuter notre fonction
+        originellement définie"""
+        
+        print("Attention ! On appelle {0}".format(fonction))
+        return fonction() # exécute salut()
+    return fonction_modifiee
+
+@mon_decorateur
+def salut():
+    print("Salut !")
+
+>>> salut()
+Attention ! On appelle <function salut at 0x00BA54F8>
+Salut !
+>>>
+
+@mon_decorateur
+def salut():
+    ...
+
+# revient au même, pour Python, que le code :
+def salut():
+    ...
+
+salut = mon_decorateur(salut)
+
+
+# Autre exemple : un décorateur chargé tout simplement d'empêcher l'exécution de la fonction. 
+# Au lieu d'exécuter la fonction d'origine, on lève une exception pour avertir l'utilisateur 
+# qu'il utilise une fonctionnalité obsolète.
+def obsolete(fonction_origine):
+    """Décorateur levant une exception pour noter que la fonction_origine
+    est obsolète"""
+    
+    def fonction_modifiee():
+        raise RuntimeError("la fonction {0} est obsolète !".format(fonction_origine))
+    return fonction_modifiee
+```
+
+### Un décorateur avec des paramètres
+
+* Exemple : coder un décorateur chargé d'exécuter une fonction en contrôlant le temps qu'elle met à s'exécuter
+* Si elle met un temps supérieur à la durée passée en paramètre du décorateur, on affiche une alerte
+```py
+@controler_temps(2.5) # 2,5 secondes maximum pour la fonction ci-dessous
+# notre fonction de décorateur prendra en paramètres non pas une fonction, 
+# mais les paramètres du décorateur (ici, le temps maximum autorisé pour la fonction). 
+# Elle ne renverra pas une fonction de substitution, mais un décorateur
+
+@decorateur(parametre)
+def fonction(...):
+    ...
+
+# revient à
+def fonction(...):
+    ...
+            # renvoie decorateur(fonction)
+                    #↓
+fonction = decorateur(parametre)(fonction)
+# on doit définir comme décorateur une fonction qui prend en arguments les paramètres du décorateur
+# (ici, le temps attendu) et qui renvoie un décorateur
+
+"""Pour gérer le temps, on importe le module time
+On va utiliser surtout la fonction time() de ce module qui renvoie le nombre
+de secondes écoulées depuis le premier janvier 1970 (habituellement).
+On va s'en servir pour calculer le temps mis par notre fonction pour
+s'exécuter"""
+
+import time
+
+# définit dans son corps notre décorateur decorateur
+def controler_temps(nb_secs): # récupère les arguments
+    """Contrôle le temps mis par une fonction pour s'exécuter.
+    Si le temps d'exécution est supérieur à nb_secs, on affiche une alerte"""
+    
+    # définit lui-même dans son corps notre fonction modifiée fonction_modifiee
+    def decorateur(fonction_a_executer):
+        """Notre décorateur. C'est lui qui est appelé directement LORS
+        DE LA DEFINITION de notre fonction (fonction_a_executer)"""
+        
+        def fonction_modifiee():
+            """Fonction renvoyée par notre décorateur. Elle se charge
+            de calculer le temps mis par la fonction à s'exécuter"""
+            
+            tps_avant = time.time() # Avant d'exécuter la fonction
+            valeur_renvoyee = fonction_a_executer() # On exécute la fonction
+            tps_apres = time.time()
+            tps_execution = tps_apres - tps_avant
+            if tps_execution >= nb_secs:
+                print("La fonction {0} a mis {1} pour s'exécuter".format( \
+                        fonction_a_executer, tps_execution))
+            return valeur_renvoyee
+        return fonction_modifiee
+    return decorateur
+
+
+>>> @controler_temps(4)
+... def attendre():
+...     input("Appuyez sur Entrée...")
+...
+>>> attendre() # Je vais appuyer sur Entrée presque tout de suite
+Appuyez sur Entrée...
+>>> attendre() # Cette fois, j'attends plus longtemps
+Appuyez sur Entrée...
+La fonction <function attendre at 0x00BA5810> a mis 4.14100003242 pour s'exécuter
+>>>
+```
+### Tenir compte des paramètres de notre fonction (décorateur flexible)
+
+* le décorateur que nous avons créé un peu plus haut devrait pouvoir s'appliquer à des fonctions ne prenant aucun paramètre, ou en prenant un, ou plusieurs…
+```py
+import time
+
+# définit dans son corps notre décorateur decorateur
+def controler_temps(*parametres_non_nommes, **parametres_nommes):
+    """Contrôle le temps mis par une fonction pour s'exécuter.
+    Si le temps d'exécution est supérieur à nb_secs, on affiche une alerte"""
+    
+    # définit lui-même dans son corps notre fonction modifiée fonction_modifiee
+    def decorateur(fonction_a_executer):
+        """Notre décorateur. C'est lui qui est appelé directement LORS
+        DE LA DEFINITION de notre fonction (fonction_a_executer)"""
+
+        def fonction_modifiee(*parametres_non_nommes, **parametres_nommes):
+            """Fonction renvoyée par notre décorateur. Elle se charge
+            de calculer le temps mis par la fonction à s'exécuter"""
+            
+            tps_avant = time.time() # avant d'exécuter la fonction
+            ret = fonction_a_executer(*parametres_non_nommes, **parametres_nommes)
+            tps_apres = time.time()
+            tps_execution = tps_apres - tps_avant
+            if tps_execution >= nb_secs:
+                print("La fonction {0} a mis {1} pour s'exécuter".format( \
+                        fonction_a_executer, tps_execution))
+            return ret
+        return fonction_modifiee
+    return decorateur
+```
+### Des décorateurs s'appliquant aux définitions de classes
+
+* Vous pouvez également appliquer des décorateurs aux définitions de classes
+* Au lieu de recevoir en paramètre la fonction, vous allez recevoir la classe
+```py
+>>> def decorateur(classe):
+...     print("Définition de la classe {0}".format(classe))
+...     return classe
+...
+>>> @decorateur
+... class Test:
+...     pass
+...
+Définition de la classe <class '__main__.Test'>
+```
+### Chaîner nos décorateurs
+```py
+@decorateur1
+@decorateur2
+def fonction():
+```
+### Exemples d'applications
+
+* Les classes singleton   
+   * une classe dite singleton est une classe qui ne peut être instanciée qu'une fois
+   * La première fois que vous appelez le constructeur de ce type de classe, vous obtenez le premier et l'unique objet nouvellement instancié
+   * Tout appel ultérieur à ce constructeur renvoie le même objet (le premier créé)
+```py
+def singleton(classe_definie):
+    instances = {} # Dictionnaire de nos instances singletons
+    def get_instance(): # fonction interne qui va remplacer notre classe
+        if classe_definie not in instances:
+            # On crée notre premier objet de classe_definie
+            instances[classe_definie] = classe_definie()
+        return instances[classe_definie]
+    return get_instance
+
+>>> @singleton
+... class Test:
+...     pass
+...
+>>> a = Test() # Quand on crée notre premier objet (celui se trouvant dans a), notre constructeur est bien appelé
+>>> b = Test() # Quand on souhaite créer un second objet, c'est celui contenu dans a qui est renvoyé
+>>> a is b # Ainsi, a et b pointent vers le même objet
+True
+>>>
+```
+* Contrôler les types passés à notre fonction   
+   * Dans Python, aucun contrôle n'est fait sur le type des données passées en paramètres de nos fonctions
+   * Il pourrait être utile de coder un décorateur qui vérifie les types passés en paramètres à notre fonction et qui lève une exception si les types attendus ne correspondent pas à ceux reçus lors de l'appel à la fonction
+   * Voici notre définition de fonction, pour vous donner une idée :
+   ```py
+    @controler_types(int, int)
+    def intervalle(base_inf, base_sup):
+   ```
+```py
+def controler_types(*a_args, **a_kwargs): # liste des types des paramètres attendus (int, ici)
+    """On attend en paramètres du décorateur les types souhaités. On accepte
+    une liste de paramètres indéterminés, étant donné que notre fonction
+    définie pourra être appelée avec un nombre variable de paramètres et que
+    chacun doit être contrôlé"""
+    
+    def decorateur(fonction_a_executer):
+        """Notre décorateur. Il doit renvoyer notre fonction_modifiee"""
+        def fonction_modifiee(*args, **kwargs):
+            """Notre fonction modifiée. Elle se charge de contrôler
+            les types qu'on lui passe en paramètres"""
+            
+            # La liste des paramètres attendus (a_args) doit être de même
+            # Longueur que celle reçue (args)
+            if len(a_args) != len(args):
+                raise TypeError("le nombre d'arguments attendu n'est pas égal " \
+                        "au nombre reçu")
+            # On parcourt la liste des arguments reçus et non nommés
+            for i, arg in enumerate(args):
+                if a_args[i] is not type(args[i]):
+                    raise TypeError("l'argument {0} n'est pas du type " \
+                            "{1}".format(i, a_args[i]))
+            
+            # On parcourt à présent la liste des paramètres reçus et nommés
+            for cle in kwargs:
+                if cle not in a_kwargs:
+                    raise TypeError("l'argument {0} n'a aucun type " \
+                            "précisé".format(repr(cle)))
+                if a_kwargs[cle] is not type(kwargs[cle]):
+                    raise TypeError("l'argument {0} n'est pas de type" \
+                            "{1}".format(repr(cle), a_kwargs[cle]))
+            return fonction_a_executer(*args, **kwargs)
+        return fonction_modifiee
+    return decorateur
+
+>>> @controler_types(int, int) # déclare les types attendus
+... def intervalle(base_inf, base_sup):
+...     print("Intervalle de {0} à {1}".format(base_inf, base_sup))
+...
+>>> intervalle(1, 8)
+Intervalle de 1 à 8
+>>> intervalle(5, "oups!")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 24, in fonction_modifiee
+TypeError: l'argument 1 n'est pas du type <class 'int'>
+```
+* Voilà nos exemples d'applications. Il y en a bien d'autres, vous pouvez en retrouver plusieurs sur la PEP 318 consacrée aux décorateurs, ainsi que des informations supplémentaires
+
+### En résumé :   
+
+* Les décorateurs permettent de modifier le comportement d'une fonction
+* Ce sont eux-mêmes des fonctions, prenant en paramètre une fonction et renvoyant une fonction (qui peut être la même)
+* On peut déclarer une fonction comme décorée en plaçant, au-dessus de la ligne de sa définition, la ligne @nom_decorateur
+* Au moment de la définition de la fonction, le décorateur est appelé et la fonction qu'il renvoie sera celle utilisée.
+* Les décorateurs peuvent également prendre des paramètres pour influer sur le comportement de la fonction décorée.
+
+
+## LES METACLASSES
+
+* La méthode __init__ est là pour initialiser notre objet (en écrivant des attributs dedans, par exemple)
+* La méthode qui se charge de le créer, c'est __new__
+```py
+ce qui se passe quand on tente de construire un objet :
+1. On demande à créer un objet, en écrivant par exemple Personne("Doe", "John").
+2. La méthode __new__ de notre classe (ici Personne) est appelée et se charge de construire un nouvel objet.
+3. Si __new__ renvoie une instance de la classe, on appelle le constructeur __init__ en lui passant en    
+paramètres cette nouvelle instance ainsi que les arguments passés lors de la création de l'objet.
+
+class Personne:
+    
+    """Classe définissant une personne.
+    
+    Elle possède comme attributs :
+    nom -- le nom de la personne
+    prenom -- son prénom
+    age -- son âge
+    lieu_residence -- son lieu de résidence
+    
+    Le nom et le prénom doivent être passés au constructeur."""
+    
+    # première étape
+    def __new__(cls, nom, prenom):
+        print("Appel de la méthode __new__ de la classe {}".format(cls))
+        # On laisse le travail à object
+        return object.__new__(cls, nom, prenom)
+    
+    # deuxième étape
+    def __init__(self, nom, prenom):
+        """Constructeur de notre personne."""
+        print("Appel de la méthode __init__")
+        self.nom = nom
+        self.prenom = prenom
+        self.age = 23
+        self.lieu_residence = "Lyon"
+
+# création d'une instance
+>>> personne = Personne("Doe", "John")
+Appel de la méthode __new__ de la classe <class '__main__.Personne'>
+Appel de la méthode __init__
+```
+* Redéfinir__new__peut permettre, par exemple, de créer une instance d'une autre classe
+
+### Créer une classe dynamiquement
+
+* En Python, tout est objet. Cela veut dire que les entiers, les flottants, les listes sont des objets, que les modules sont des objets, que les packages sont des objets… mais cela veut aussi dire que les classes sont des objets !
+* Si les classes sont des objets, cela veut dire que les classes sont elles-mêmes modelées sur des classes
+```py
+>>> type(5)
+<class 'int'>
+>>> type("une chaîne")
+<class 'str'>
+>>> type([1, 2, 3])
+<class 'list'>
+>>> type(int)
+<class 'type'> # par défaut, toutes nos classes sont modelées sur la classe type
+>>> type(str)
+<class 'type'>
+>>> type(list)
+<class 'type'>
+
+# quand on crée une nouvelle classe (class Personne: par exemple), 
+# Python appelle la méthode __new__ de la classe type;
+# une fois la classe créée, on appelle le constructeur __init__ de la classe type
+```
+* Résumé   
+   * nous savons que les objets sont modelés sur des classes    
+   * nous savons que nos classes, étant elles-mêmes des objets, sont modelées sur une classe   
+   * la classe sur laquelle toutes les autres sont modelées par défaut s'appelle type
+* La classe type prend trois arguments pour se construire :   
+   * le nom de la classe à créer   
+   * un tuple contenant les classes dont notre nouvelle classe va hériter   
+   * un dictionnaire contenant les attributs et méthodes de notre classe.
+```py
+>>> Personne = type("Personne", (), {})
+>>> Personne
+<class '__main__.Personne'>
+>>> john = Personne()
+>>> dir(john)
+['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__g
+e__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__',
+'__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '_
+_setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__']
+
+# création dynamique
+# 1) On commence par créer deux fonctions, creer_personne et presenter_personne. 
+# Elles sont amenées à devenir les méthodes __init__ et presenter de notre future classe. 
+# Étant de futures méthodes d'instance, elles doivent prendre en premier paramètre l'objet manipulé
+def creer_personne(personne, nom, prenom):
+    """La fonction qui jouera le rôle de constructeur pour notre classe Personne.
+    
+    Elle prend en paramètre, outre la personne :
+    nom -- son nom
+    prenom -- son prenom"""
+    
+    personne.nom = nom
+    personne.prenom = prenom
+    personne.age = 21
+    personne.lieu_residence = "Lyon"
+
+def presenter_personne(personne):
+    """Fonction présentant la personne.
+    
+    Elle affiche son prénom et son nom"""
+    
+    print("{} {}".format(personne.prenom, personne.nom))
+
+# 2) On place ces deux fonctions dans un dictionnaire. 
+# En clé se trouve le nom de la future méthode et en valeur, la fonction correspondante
+# Dictionnaire des méthodes
+methodes = {
+    "__init__": creer_personne,
+    "presenter": presenter_personne,
+}
+
+# 3) Enfin, on fait appel à type en lui passant, en troisième paramètre, 
+# le dictionnaire que l'on vient de constituer
+# Création dynamique de la classe
+# type("nom_classe", (classes_meres), méthodes_classe)
+Personne = type("Personne", (), methodes)
+# Si vous essayez de mettre des attributs dans ce dictionnaire passé à type, 
+# il s'agira d'attributs de classe, pas d'attributs d'instance
+
+>>> john = Personne("Doe", "John")
+>>> john.nom
+'Doe'
+>>> john.prenom
+'John'
+>>> john.age
+21
+>>> john.presenter()
+John Doe
+>>>
+```
+### Définition d'une métaclasse
+
+* Un métaclasse : classe d'une classe, la classe mère d'autre classes
+* type est la métaclasse de toutes les classes par défaut
+* Cependant, une classe peut posséder une autre métaclasse que type.
+* Construire une métaclasse se fait de la même façon que construire une classe.
+* Les métaclasses héritent de type
+* La méthode __new__ prend 4 paramètres :    
+   * la métaclasse servant de base à la création de notre nouvelle classe   
+   * le nom de notre nouvelle classe
+   * un tuple contenant les classes dont héritent notre classe à créer
+   * le dictionnaire des attributs et méthodes de la classe à créer
+```py
+# méthode __new__ minimaliste
+class MaMetaClasse(type):
+    
+    """Exemple d'une métaclasse."""
+    
+    def __new__(metacls, nom, bases, dict):
+        """Création de notre classe."""
+        print("On crée la classe {}".format(nom))
+        return type.__new__(metacls, nom, bases, dict)
+
+# Pour dire qu'une classe prend comme métaclasse autre chose que type, 
+# c'est dans la ligne de la définition de la classe que cela se passe :
+class MaClasse(metaclass=MaMetaClasse):
+    pass
+```
+* La méthode __init__ prend les mêmes paramètres que __new__, sauf le premier, qui n'est plus la métaclasse servant de modèle mais la classe que l'on vient de créer
+
+### Les métaclasses en action
+
+* les métaclasses sont généralement utilisées pour des besoins assez complexes
+```py
+# Par exemple, la classe mère de tous nos widgets s'appellera Widget. 
+# De cette classe hériteront les classes Bouton, CaseACocher, Menu, Cadre, etc. 
+# L'utilisateur de la bibliothèque pourra par ailleurs en dériver ses propres classes.
+
+trace_classes = {} # Notre dictionnaire vide
+
+class MetaWidget(type):
+    
+    """Notre métaclasse pour nos Widgets.
+    
+    Elle hérite de type, puisque c'est une métaclasse.
+    Elle va écrire dans le dictionnaire trace_classes à chaque fois
+    qu'une classe sera créée, utilisant cette métaclasse naturellement."""
+    
+    def __init__(cls, nom, bases, dict):
+        """Constructeur de notre métaclasse, appelé quand on crée une classe."""
+        type.__init__(cls, nom, bases, dict)
+        trace_classes[nom] = cls
+
+
+# création de la classe Widget
+class Widget(metaclass=MetaWidget):
+    
+    """Classe mère de tous nos widgets."""
+    
+    pass
+
+>>> trace_classes
+{'Widget': <class '__main__.Widget'>} # notre classe Widget a bien été ajoutée dans notre dictionnaire
+>>>
+
+# construisons une nouvelle classe héritant de Widget
+class bouton(Widget):
+    
+    """Une classe définissant le widget bouton."""
+    # Si vous affichez de nouveau le contenu du dictionnaire, vous vous rendrez compte que la classe Bouton a bien été ajoutée
+    pass
+```
+### En résumé :
+
+* Le processus d'instanciation d'un objet est assuré par deux méthodes, __new__ et __init__
+* __new__ est chargée de la création de l'objet et prend en premier paramètre sa classe
+* __init__ est chargée de l'initialisation des attributs de l'objet et prend en premier paramètre l'objet précédemment créé par __new__
+* Les classes étant des objets, elles sont toutes modelées sur une classe appelée **métaclasse**
+* À moins d'être explicitement modifiée, la métaclasse de toutes les classes est **type**
+* On peut utiliser type pour créer des classes dynamiquement
+* On peut faire hériter une classe de type pour créer une nouvelle métaclasse
+* Dans le corps d'une classe, pour spécifier sa métaclasse, on exploite la syntaxe suivante :class MaClasse(metaclass=NomDeLaMetaClasse):
+
+
 ## <a name="bdd"></a> LES BASES DE DONNEES
 
 ### SQL
@@ -3837,6 +4359,8 @@ for i in range(len(liste)):
 	    print(liste[i])
 
 # avec enumerate
+# retourne un objet enumerate
+# la fonction enumerate assigne un index à chaque élément d'un itérable
 liste = ['Bonjour', 'tout', 'le', 'monde']
 for i, mot in enumerate(liste): # plus besoin de range pour récupérer le i
 	if i > 0:
@@ -3888,6 +4412,13 @@ phrase_convertie = mots.pop(0) # enlève la valeur 0 du tableau et la renvoie
 for mot in mots:
     phrase_convertie += mot.capitalize()
 print(phrase_convertie)
+
+# You can also create tuples containing the index and list item using a list. 
+# Here is an example:
+my_list = ['apple', 'banana', 'grapes', 'pear']
+counter_list = list(enumerate(my_list, 1))
+print(counter_list)
+# Output: [(1, 'apple'), (2, 'banana'), (3, 'grapes'), (4, 'pear')]
 ```
 
 ### FORMATTING
@@ -4666,7 +5197,7 @@ https://regex101.com/
 https://regexr.com/
 
 
-## <a name="erreurs-debutant></a> 10 ERREURS DU DEBUTANT
+## <a name="erreurs-debutant"></a> 10 ERREURS DU DEBUTANT
 
 ### Récupérer une clé inexistant d'un dictionnaire
 ```py

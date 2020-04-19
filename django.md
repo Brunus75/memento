@@ -29,7 +29,7 @@
 * [ORGANISER SES VUES](#organiser-vues)
 * [TEMPLATE](#template)
 * [LES MODELES](#les-modeles)
-* [L'ADMINISTRATION]
+* [L'ADMINISTRATION](#admin)
 * [LES FORMULAIRES](#les-formulaires)
 * [LA GESTION DES FICHIERS](#gestion-fichiers)
 * [TP: UN RACCOURCISSEUR D'URL](#tp-url)
@@ -1470,7 +1470,7 @@ crepes-rhum
 >>> art2.save()
 ```
 
-## L'ADMINISTRATION
+## <a name="admin"></a> L'ADMINISTRATION
 
 Un des gros points forts de Django est que celui-ci génère de façon automatique l’administration en fonction de vos modèles.
 ```py

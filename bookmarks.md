@@ -153,6 +153,7 @@
 ## :white_check_mark: FRONT-END
 
 * Front-end Developer Handbook 2019 - Learn the entire JavaScript, CSS and HTML development practice! : https://frontendmasters.com/books/front-end-handbook/2019/#4.10
+* Front-End Challenges : https://css-tricks.com/front-end-challenges/
 
 
 ### HTML
@@ -167,7 +168,8 @@
 ### CSS
 
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
-* * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
+* Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
+* Overflow In CSS : https://ishadeed.com/article/overflow-css/
 
 
 ### BOOTSTRAP
@@ -247,6 +249,7 @@
 * https://cssbattle.dev/
 * https://www.reddit.com/r/learnprogramming/comments/eelexn/list_of_programming_challenge_websites/
 * https://www.freecodecamp.org/news/the-10-most-popular-coding-challenge-websites-of-2016-fb8a5672d22f/
+* Front-End Challenges : https://css-tricks.com/front-end-challenges/
 
 
 ## :slot_machine: REGEX
