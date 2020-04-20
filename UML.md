@@ -17,6 +17,7 @@
 
 1. Décrire le contexte du logiciel à créer **[diagramme de contexte]**
 * à qui le logiciel devra servir ?
+* quels sont les acteurs et éléments environnants au système ?
 * indiquera qui aura une utilité du futur logiciel
 * personas
 2. Décomposition en packages **[diagramme de packages]**
@@ -95,3 +96,19 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 
 + https://openclassrooms.com/fr/courses/2035826-debutez-lanalyse-logicielle-avec-uml
 + http://staruml.io/
++ UML Use Case Diagram Tutorial : https://www.youtube.com/watch?v=zid-MVo7M-E&feature=emb_rel_end
++ tuto_ModelisationUML : https://github.com/iblasquez/tuto_ModelisationUML/blob/master/Modelio/Modelio_Classes.md
++ https://github.com/iblasquez/tuto_ModelisationUML/tree/master/Modelio
+
+
+## MODELIO
+
+* https://www.modelio.org/
+* https://www.modelio.org/resources-menu/videos.html
+* les projets sont stoqués dans : C:\Users\pablo\modelio\workspace
+* on peut changer l'emplacement du workplace (au démarrage de l'appli > File > Switch workplace)
+* mais on ne peut pas changer l'emplacement d'UN projet
+* pour exporter le projet, tout fermer, revenir, cliquer sur le projet, puis exporter
+* https://www.modelio.org/tutorials/how-to-create-uml-use-case-diagram.html
+* La fenêtre "Symbol" pour modifier les éléments se déroule sur la droite de l'interface
+* Créer un Système pour un Diagramme de contexte > créer un acteur > clic-droit > add sterotype > System > fenêtre Symbol > Representation > Image (or structured)

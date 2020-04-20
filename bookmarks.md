@@ -112,6 +112,18 @@
 
 ### PHP
 
+* PHP Programming with Visual Studio Code : https://code.visualstudio.com/docs/languages/php
+* PHP 7.4.0 est disponible avec de nombreuses améliorations et de nouvelles fonctionnalités telles que les propriétés typées, un séparateur numérique littéral, et autres : https://php.developpez.com/actu/285939/PHP-7-4-0-est-disponible-avec-de-nombreuses-ameliorations-et-de-nouvelles-fonctionnalites-telles-que-les-proprietes-typees-un-separateur-numerique-litteral-et-autres/
+* PHP: Référence des fonctions - Manual : http://fr.php.net/manual/fr/funcref.php
+* Packagist : https://packagist.org/
+* Composer: everything I should have known - The Startup - Medium : https://medium.com/swlh/composer-everything-i-should-have-known-794225cde691
+* PHP: foreach - Manual : https://www.php.net/manual/fr/control-structures.foreach.php
+* PHP: Qu'est ce qu'une référence ? - Manual : https://www.php.net/manual/fr/language.references.whatare.php
+* Doublure de test — PHPUnit latest Manual : https://phpunit.readthedocs.io/fr/latest/test-doubles.html#prophecy
+* LinkedIn : https://www.linkedin.com/feed/update/urn:li:activity:6601056850412740608/
+* Composer - Dev vs Production : PHP : https://www.reddit.com/r/PHP/comments/8pzdpn/composer_dev_vs_production/
+* PHP: composer does not belong in production! - Thomas Dutrion - Medium : https://medium.com/@tdutrion/php-composer-does-not-belong-in-production-11e7eb17cce5
+
 ### SYMFONY
 
 ### PYTHON
@@ -189,6 +201,15 @@
 
 
 ### JAVASCRIPT
+
+### JQUERY
+
+* jQuery.ajax() | jQuery API Documentation : https://api.jquery.com/jQuery.ajax/
+* Global Ajax Event Handlers | jQuery API Documentation : https://api.jquery.com/category/ajax/global-ajax-event-handlers/
+* Edit fiddle - JSFiddle : http://jsfiddle.net/mWdgz/6/
+* Tutoriel Vidéo Slider Javascript avec jQuery : https://www.grafikart.fr/tutoriels/slider-javascript-jquery-54
+* javascript - Marker in leaflet, click event - Stack Overflow : https://stackoverflow.com/questions/16927793/marker-in-leaflet-click-event
+* Canvas : dimensions & coordonnées by Catox on CodePen : https://codepen.io/Catox/post/canvas-dimensions-coordonnees
 
 
 ### REACT

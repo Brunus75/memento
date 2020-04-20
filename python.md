@@ -42,7 +42,21 @@
 * [PROJET CONVERTISSEUR DE DEVISES avec PYSIDE](#projet-devises-pyside)
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API)](#projet-cine-pyside-1)
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)](#projet-cine-pyside-2)
-* [PYTHON AVANCÉ](#python-avancé)
+* [PYTHON AVANCÉ](#python-avancé)   
+   * [OBJETS MUABLES & IMMUABLES](#muables-immuables)
+   * [LES FONCTIONS ANONYMES](#fonctions-anonymes)
+   * [LA FONCTION ENUMERATE](#la-fonction-enumerate)
+   * [FORMATTING](#formatting)
+   * [LES COMPREHENSIONS DE LISTE](#list-comprehension)
+   * [LES ITERATEURS](#les-iterateurs)
+   * [LES GENERATEURS](#les-generateurs)
+   * [EXPRESSIONS GENERATRICES](#expressions-generatrices)
+   * [OPERATEURS TERNAIRES](#operateurs-ternaires)
+   * [LA FONCTION ZIP](#la-fonction-zip)
+   * [L'INTROSPECTION](#introspection)
+   * [LES FONCTIONS ANY & ALL](#any-et-all)
+   * [ARGS & KWARGS](#args-kwargs)
+   * [EXPRESSIONS REGULIERES](#expressions-regulieres)
 * [10 ERREURS DU DEBUTANT](#erreurs-debutant)
 * [ASTUCES](#astuces)
 * [LIBRAIRIES](#librairies)
@@ -4256,7 +4270,7 @@ app.exec_() # lance l'appli
 
 ## PYTHON AVANCÉ
 
-### OBJETS MUABLES & IMMUABLES
+### <a name="muables-immuables"></a> OBJETS MUABLES & IMMUABLES
 ```py
 # Rappel : 2 catégories d'objets :
 # muables : modifiables : listes, dictionnaires, sets 
@@ -4291,7 +4305,7 @@ print("Temps d'execution: {}".format(b - a))
 # Solution 2 : Temps d'execution: 0.46729564666748047
 ```
 
-### LES FONCTIONS ANONYMES
+### <a name="fonctions-anonymes"></a> LES FONCTIONS ANONYMES
 ```py
 fonction_anonyme = "une fonction jetable, qui n'a pas de nom"
 but = "alléger le code et le rendre plus lisible"
@@ -4446,7 +4460,7 @@ print("hello %s" % (name,))
 # 'hello'
 ```
 
-### LES COMPREHENSIONS DE LISTE
+### <a name="list-comprehension"></a> LES COMPREHENSIONS DE LISTE
 ```py
 # List compréhension : definition & syntaxe
 boucle for sur une ligne
@@ -4780,7 +4794,7 @@ combinaison = list(zip(liste_01, liste_02))
 print(combinaison)
 ```
 
-### L'INTROSPECTION
+### <a name="introspection"></a> L'INTROSPECTION
 ```py
 # - la fonction Help => afficher la doc
 
@@ -4895,7 +4909,7 @@ print(id(liste_duplique)) # 2167383220872
 print(id(liste_duplique_unique)) # 2167383719240
 ```
 
-### LES FONCTIONS ANY & ALL
+### <a name="any-et-all"></a> LES FONCTIONS ANY & ALL
 ```py
 # but = vérfier si une ou toutes les variables sont vraies
 # syntaxe
@@ -4934,7 +4948,7 @@ autorisation = all(a >= 18 for a in age_invites)
 print(autorisation) # True
 ```
 
-### ARGS & KWARGS
+### <a name="args-kwargs"></a> ARGS & KWARGS
 ```py
 # - l'unpacking
 import sys
