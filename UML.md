@@ -97,6 +97,7 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 + https://openclassrooms.com/fr/courses/2035826-debutez-lanalyse-logicielle-avec-uml
 + http://staruml.io/
 + UML Use Case Diagram Tutorial : https://www.youtube.com/watch?v=zid-MVo7M-E&feature=emb_rel_end
++ UML Class Diagram Tutorial : https://www.youtube.com/watch?v=UI6lqHOVHic
 + tuto_ModelisationUML : https://github.com/iblasquez/tuto_ModelisationUML/blob/master/Modelio/Modelio_Classes.md
 + https://github.com/iblasquez/tuto_ModelisationUML/tree/master/Modelio
 
@@ -112,3 +113,4 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 * https://www.modelio.org/tutorials/how-to-create-uml-use-case-diagram.html
 * La fenêtre "Symbol" pour modifier les éléments se déroule sur la droite de l'interface
 * Créer un Système pour un Diagramme de contexte > créer un acteur > clic-droit > add sterotype > System > fenêtre Symbol > Representation > Image (or structured)
+* Changer l'odre des attributs/méthodes dans une classe > Sélectionner la classe dans le Model Navigateur (barre de gauche) > sélectionner l'attribut > cliquer sur la flèche jaune ↓ ↑ du Model Navigateur
