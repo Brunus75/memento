@@ -2,7 +2,35 @@
 
 ## SOMMAIRE
 
-
+* [GENERAL](#general)
+* [CONSIDERATIONS](#considerations)
+* [Créer une variable](#variable)
+* [Les conditions](#les-conditions)
+* [LES BOUCLES](#les-boucles)
+* [LES TABLEAUX (ARRAY)](#arrays)
+* [LES FONCTIONS](#les-fonctions)
+* [LA GESTION DES ERREURS](#la-gestion-des-erreurs)
+* [INCLURE DES PORTIONS DE PAGE](#portion-page)
+* [CODER PROPREMENT](#coder-proprement)
+* [TRANSMETTRE DES DONNEES AVEC L'URL](#donnees-url)
+* [TRANSMETTRE DES DONNEES AVEC LES FORMULAIRES](#donnees-form)
+* [TP : Page protégée par un mot de passe](#tp-mdp)
+* [LES VARIABLES SUPERGLOBALES](#les-variables-superglobales)
+* [SESSION & COOKIES](#session-cookies)
+* [LIRE ET ECRIRE DANS UN FICHIER](#lire-ecrire-fichier)
+* [LES BASES DE DONNEES](#bdd)
+* [PHPMYADMIN](#phpmyadmin)
+* [LIRE DES DONNEES](#lire-des-donnees)
+* [ECRIRE DES DONNEES](#ecrire-des-donnees)
+* [TP : MINI-CHAT](#tp-chat)
+* [LES FONCTIONS SQL](#les-fonctions-sql)
+* [LES DATES EN SQL](#les-dates-en-sql)
+* [TP : UN BLOG AVEC DES COMMENTAIRES](#tp-blog-coms)
+* [LES JOINTURES ENTRE LES TABLES](#jointures)
+* [TP : UN MINI-CHAT AMELIORE](#tp-chat-plus)
+* [APPROFONDIR PHP](#approfondir-php)
+* [LES EXPRESSIONS REGULIERES](#les-expressions-regulieres)
+* [MISE A JOUR WAMP](#maj-wamp)
 
 
 ## GENERAL
@@ -44,7 +72,7 @@ https://stackoverflow.com/questions/21337859/sendmail-wamp-php
 * Pour echo une seul message, utiliser <?= message ?>
 * Utiliser var_dump($_POST); // console log de POST
 ```php
-// die(); arrête le code de la console
+die(); // arrête le code de la console
 ```
 * Plusieurs variables dans le header : 
 ```php
@@ -77,10 +105,10 @@ final public static function bar()
 * PHP orienté objet = tous les chemins cible sont selon l'emplacement de index.php
 * plusieurs scripts (penser orienté objet) :
 ```php
-	$script = '
-		<script1 src="public/js/contact.js"></script>
-		<script2></script>
-    ';
+$script = '
+    <script1 src="public/js/contact.js"></script>
+    <script2></script>
+';
 ```
 * mail() = charset (oui) & boundary (frontière, sépare les parties du mail)
 * Dans une classe, on appelle les variables attributs (ou propriétés)
@@ -100,27 +128,22 @@ Sublime Text Keymap and Settings Importer, Twig Language
 
 ## <a name="variable"></a> Créer une variable
 ```php
-<?php
-	$je_suis_une_variable_php = 17, 17.356, "hello", 'Je m\'appelle Henry', true, NULL;
-	echo $je_suis_une_variable_php; // affiche la variable
-	$age_visiteur = 17;
-	echo "Le visiteur a $age_visteur ans";
-	echo 'Le visiteur a ' . $age_visiteur . ' ans'; // à préférer
-	// Le modulo = le reste de la division
-	$nombre = 10 % 5; // 0 car la division tombe juste
-	$nombre = 10 % 3; // 1 car il reste 1 après la division la plus proche
-?>
+$je_suis_une_variable_php = 17, 17.356, "hello", 'Je m\'appelle Henry', true, NULL;
+echo $je_suis_une_variable_php; // affiche la variable
+$age_visiteur = 17;
+echo "Le visiteur a $age_visteur ans";
+echo 'Le visiteur a ' . $age_visiteur . ' ans'; // à préférer
+// Le modulo = le reste de la division
+$nombre = 10 % 5; // 0 car la division tombe juste
+$nombre = 10 % 3; // 1 car il reste 1 après la division la plus proche
 
 I-b) Détruire une variable avec unset()
 
-<?php 
-	// détruit la variable de mauvaise connexion (en cas de rafraîchissement de page)
-	unset($_SESSION['login_error']);
-?>
+// détruit la variable de mauvaise connexion (en cas de rafraîchissement de page)
+unset($_SESSION['login_error']);
 
 I-c) Variables globales et locales 
 
-<?php
 $one = 1; // accessible globalement, mais pas localement
 
 function echoOne($one) {
@@ -129,11 +152,10 @@ function echoOne($one) {
 }
 
 echoOne($one); // si on ne renseigne pas l'argument, erreur de type variable indéfinie
-?>
 ```
 
 ## Les conditions
-```php
+```
 == ; > ; < ; >= ; <= ; != ;
 Difference between == and === (same goes with != and !==) :
 ┌──────────┬───────────┬───────────────────────────────────────────────────────────┐
@@ -150,16 +172,17 @@ $truthiness = $this_one && $that; // return FALSE (logic);
 Why ? = has a higher precedence (priority) than and --> ($truthiness = $this_one) and $that;
 And parentheses have higher precedence than = : $truthiness = ($this_one and $that);
 
- It is important to remember that the following values are considered false in PHP:
-	• Boolean false;
-    • Integer 0;
-    • Float 0.0;
-    • String '0' or "0";
-    • An empty string (i.e. '' or "");
-    • An empty array (i.e. [] or array());
-    • null;
-    • SimpleXML objects created from empty tags.
-
+It is important to remember that the following values are considered false in PHP:
+• Boolean false;
+• Integer 0;
+• Float 0.0;
+• String '0' or "0";
+• An empty string (i.e. '' or "");
+• An empty array (i.e. [] or array());
+• null;
+• SimpleXML objects created from empty tags.
+```
+```php
 
 $age = 8;
 if ($age <= 12) {
@@ -201,7 +224,6 @@ if ($pays == "fr" || $pays == "bel") { // ||
 } else {
     echo "Désolé, notre service n'est pas disponible dans votre pays !";
 }
-?>
 
 <?php // ASTUCE POUR RENTRER BEAUCOUP DE TEXTE
 $variable = 23;
@@ -212,7 +234,6 @@ if ($variable)
 <?php
 }
 ?>
-
 
 // SWITCH
 $note = 10;
@@ -481,7 +502,8 @@ Puis dans le code de la page d'accueil (ex. : index.php) => <?php include("menu.
 * Les Standards :
     ```html
     PSR (PHP Standards Recommendations) > <a href="https://www.php-fig.org/psr/" title="liste des PSR" />
-    À savoir au minimum : <a href="https://www.php-fig.org/psr/psr-1/" title="PSR-1" /> et <a href="https://www.php-fig.org/psr/psr-2/" title="PSR-2" />
+    À savoir au minimum : <a href="https://www.php-fig.org/psr/psr-1/" title="PSR-1" />    
+    et <a href="https://www.php-fig.org/psr/psr-2/" title="PSR-2" />
     ```
 
 ## <a name="donnees-url"></a> TRANSMETTRE DES DONNEES AVEC L'URL
@@ -853,7 +875,8 @@ FileZilla > clic droit sur le fichier du serveur > CHMOD ou Permissions de fichi
 Ex. compteur.txt > FileZilla > serveur > CHMOD 777
 Pas de CHMOD 777 > failed to open stream: Permission denied
 Consigne : Compter le nb de fois qu'une page a été vue et enregistrer ce nombre dans ce fichier
-<?php
+```
+```php
 // 1 : on ouvre le fichier
 $monfichier = fopen('compteur.txt', 'r+');
 // Mode "r" : Ouvre le fichier en lecture seule
@@ -865,13 +888,15 @@ $monfichier = fopen('compteur.txt', 'r+');
 
 // 3 : quand on a fini de l'utiliser, on ferme le fichier
 fclose($monfichier);
-?>
+```
+```
 
 • Lire et écrire dans un fichier
 - Lire :
 	caractère par caractère avec fgetc() (peu usité);
 	ligne par ligne avec fgets();
-<?php
+```
+```php
 // 1 : on ouvre le fichier
 $monfichier = fopen('compteur.txt', 'r+');
  
@@ -881,10 +906,11 @@ $ligne = fgets($monfichier);
  
 // 3 : quand on a fini de l'utiliser, on ferme le fichier
 fclose($monfichier);
-?>
+```
+```php
 
 • Ecrire, avec fputs()
-<?php fputs($monfichier, 'Texte à écrire'); ?> /!\ si on le couple à l'exemple ci-dessus (après le fgets), le curseur est à la fin de la première ligne du fichier et va écrire à la suite
+fputs($monfichier, 'Texte à écrire'); ?> ///!\ si on le couple à l'exemple ci-dessus (après le fgets), le curseur est à la fin de la première ligne du fichier et va écrire à la suite
 Pour éviter ça, on utilise la fonction fseek() qui replace le curseur là on le souhaite
 Ex. pour le mettre au début > fseek($monfichier, 0);
 Pour les modes a et a+, les données seront rajoutées en fin de fichier;
@@ -906,40 +932,43 @@ echo '<p>Cette page a été vue ' . $pages_vues . ' fois !</p>';
 
 ## <a name="bdd"></a> LES BASES DE DONNEES
 
-I) FONCTIONNEMENT
-	- Un langage qui lui est propre : le langage SQL
-	- PHP fait la jonction entre moi et MySQL
-	- Structure d'une base de données :
-		• La base, l'armoire où l'on classe les informations
-		• Une table, un tiroir qui contient des données différentes (pseudos/infos, messages, ect.)
-		• Les champs, les colonnes du tiroir
-		• Les entrées, les lignes du tiroir
+### FONCTIONNEMENT
+```
+- Un langage qui lui est propre : le langage SQL
+- PHP fait la jonction entre moi et MySQL
+- Structure d'une base de données :
+    • La base, l'armoire où l'on classe les informations
+    • Une table, un tiroir qui contient des données différentes (pseudos/infos, messages, ect.)
+    • Les champs, les colonnes du tiroir
+    • Les entrées, les lignes du tiroir
 
-	TABLE 1
-	   champ 1     champ 2                  champ 3                     champ 4
-	┌──────────┬───────────────┬───────────────────────────────┬───────────────────────┐
-	│ Numéro   │ Pseudo        │ E-mail                        │ Âge                   │ 
-	├──────────┼───────────────┼───────────────────────────────┼───────────────────────┤
-	│1         │ Kryptonic     │ kryptonic@free.fr             │ 24                    │ entrée
-	│2         │ Serial_Killer │ serialkiller@unitedgamers.com │ 28                    │ entrée
-	└──────────┴───────────────┴───────────────────────────────┴───────────────────────┘
-	Ex. de noms de table :
-	• news : stocke toutes les news qui sont affichées à l'accueil ;
-	• livre_or : stocke tous les messages postés sur le livre d'or ;
-	• forum : stocke tous les messages postés sur le forum ;
-	• newsletter : stocke les adresses e-mail de tous les visiteurs inscrits à la newsletter.
+TABLE 1
+    champ 1     champ 2                  champ 3                     champ 4
+┌──────────┬───────────────┬───────────────────────────────┬───────────────────────┐
+│ Numéro   │ Pseudo        │ E-mail                        │ Âge                   │ 
+├──────────┼───────────────┼───────────────────────────────┼───────────────────────┤
+│1         │ Kryptonic     │ kryptonic@free.fr             │ 24                    │ entrée
+│2         │ Serial_Killer │ serialkiller@unitedgamers.com │ 28                    │ entrée
+└──────────┴───────────────┴───────────────────────────────┴───────────────────────┘
+Ex. de noms de table :
+• news : stocke toutes les news qui sont affichées à l'accueil ;
+• livre_or : stocke tous les messages postés sur le livre d'or ;
+• forum : stocke tous les messages postés sur le forum ;
+• newsletter : stocke les adresses e-mail de tous les visiteurs inscrits à la newsletter.
 
-	Les données sont stockées dans des fichiers sur le disque dur
-	/!\ NE JAMAIS OUVRIR OU MODIFIER CES FICHIERS (toujours passer par MySQL)
+Les données sont stockées dans des fichiers sur le disque dur
+/!\ NE JAMAIS OUVRIR OU MODIFIER CES FICHIERS (toujours passer par MySQL)
+```
 
 
-II) PHPMYADMIN
+## PHPMYADMIN
 
-/!\ BUG abscence de SQL à l'export => https://github.com/phpmyadmin/phpmyadmin/commit/95114841420af6277b0406ec7f0d32c4ff3fcf27
+* /!\ BUG abscence de SQL à l'export => https://github.com/phpmyadmin/phpmyadmin/commit/95114841420af6277b0406ec7f0d32c4ff3fcf27
 
-Manipuler une base de données MySQL avec phpMyAdmin : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/913893-phpmyadmin
-Pour se connecter à phpMyAdmin > éteindre VPN > http://localhost/phpmyadmin/index.php
-Les types de champs MySQL :
+* Manipuler une base de données MySQL avec phpMyAdmin : https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/913893-phpmyadmin
+* Pour se connecter à phpMyAdmin > éteindre VPN > http://localhost/phpmyadmin/index.php
+* Les types de champs MySQL :
+```
 	Catégories :
 	• NUMERIC : nombres, petits nombres entiers (TINYINT), gros nombres (BIGINT)
 	• DATE and TIME : dates et heures
@@ -969,129 +998,135 @@ Autre opérations
     • Opérations : changer le nom de la table, déplacer la table vers, copier la table, optimiser (ranger de nouveau) la table ;
     • Vider : Vide tout le contenu de la table et fait disparaitre les entrées (seule la structure et les champs resteront) /!\ IRREVERSIBLE /!\ ;
     • Supprimer : Supprime tout /!\ IRREVERSIBLE /!\ ;
+```
 
+## LIRE DES DONNEES
 
-III) LIRE DES DONNEES
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/914293-lisez-des-donnees
 
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/914293-lisez-des-donnees
-
-• Se connecter à la base de données en PHP
-
-- Utilisation de l'extension PDO (universelle)
-
-- Se connecter à MySQL avec PDO : 
-	• Le nom de l'hôte : adresse de l'ordinateur où MySQL est installé (localhost si MySQL installé dans le même ordinateur que PHP, ou sql.hebergeur.com)
-	• La base : nom de la base de données à laquelle on va se connecter
-	• Le login : pour s'identifier (souvent le même que le ftp)
-	• Mot de passe : souvent le même que le ftp
+* Se connecter à la base de données en PHP
+* Utilisation de l'extension PDO (universelle)
+* Se connecter à MySQL avec PDO :
+``` 
+• Le nom de l'hôte : adresse de l'ordinateur où MySQL est installé (localhost si MySQL installé dans le même ordinateur que PHP, ou sql.hebergeur.com)
+• La base : nom de la base de données à laquelle on va se connecter
+• Le login : pour s'identifier (souvent le même que le ftp)
+• Mot de passe : souvent le même que le ftp
+```
 
 - Pour se connecter à la base de données "test" :
-<?php
+```php
 	// Sous WAMP (Windows)
 	$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-?>
+```
+```
 Objet $bdd = objet qui représente la connexion à la base de données ;
 $bdd = (nom de l'hôte, base de données, login, mdp)
+```
 En ligne :
-<?php
-	$bdd = new PDO('mysql:host=sql.hebergeur.com;dbname=mabase;charset=utf8', 'pierre.durand', 's3cr3t');
-?>
+```php
+$bdd = new PDO('mysql:host=sql.hebergeur.com;dbname=mabase;charset=utf8', 'pierre.durand', 's3cr3t');
+```
 
-- Tester la présence d'erreurs :
+* Tester la présence d'erreurs :
 Au lieu d'afficher la ligne d'erreur (avec le mdp), il vaut mieux traiter l'erreur en la capturant ;
+```php
+try // exécute les instructions
+{
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+}
+catch (Exception $e) // s'il y a erreur...
+{
+        die('Erreur : ' . $e->getMessage());
+}
+```
+
+* Récupérer des données
+
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/914293-lisez-des-donnees#/id/r-914147
+
+* Faire une requête
+```php
+$reponse = $bdd->query('Tapez votre requête SQL ici');
+```
+
+* Première requête SQL
+```sql
+SELECT * FROM jeux_video
+TYPE_D_OPERATION champs_MySQL (tous les champs = *, champs noms et posesseurs = noms, possesseur) FROM nom_de_la_table
+```
+```php
+$reponse = $bdd->query('SELECT * FROM jeux_video');
+```
+
+* Afficher le résultat d'une requête
+```php
+// Traiter $reponse, ligne par ligne avec fetch();
+
+$donnees = $reponse->fetch();
+
+$donnees = array qui contient champ par champ les valeurs de la PREMIERE entrée;
+Pour le champ 'console' -> $donnees['console'];
+Il faut traiter les donnes dans une boucle;
+
+try
+{
+    // On se connecte à MySQL
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+}
+catch(Exception $e)
+{
+    // En cas d'erreur, on affiche un message et on arrête tout
+        die('Erreur : '.$e->getMessage());
+}
+
+// Si tout va bien, on peut continuer
+
+// On récupère tout le contenu de la table jeux_video
+$reponse = $bdd->query('SELECT * FROM jeux_video');
+
+// On affiche chaque entrée une à une
+while ($donnees = $reponse->fetch())
+{
+?> <!-- on ferme l accolade car le texte qui suit est long -->
+    <p>
+    <strong>Jeu</strong> : <?php echo $donnees['nom']; ?><br />
+    Le possesseur de ce jeu est : <?php echo $donnees['possesseur']; ?>, et il le vend à <?php echo $donnees['prix']; ?> euros !<br />
+    Ce jeu fonctionne sur <?php echo $donnees['console']; ?> et on peut y jouer à <?php echo $donnees['nbre_joueurs_max']; ?> au maximum<br />
+    <?php echo $donnees['possesseur']; ?> a laissé ces commentaires sur <?php echo $donnees['nom']; ?> : <em><?php echo $donnees['commentaires']; ?></em>
+</p>
 <?php
-	try // exécute les instructions
-	{
-		$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-	}
-	catch (Exception $e) // s'il y a erreur...
-	{
-			die('Erreur : ' . $e->getMessage());
-	}
+}
+
+$reponse->closeCursor(); // Termine le traitement de la requête, OBLIGATOIRE
+```
+
+* Afficher seulement le contenu de quelques champs :
+```php
+Ex. Lister les noms des jeux : SELECT nom FROM jeux_video;
+<?php
+try
+{
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
+
+$reponse = $bdd->query('SELECT nom FROM jeux_video');
+
+while ($donnees = $reponse->fetch())
+{
+    echo $donnees['nom'] . '<br />';
+}
+
+$reponse->closeCursor();
 ?>
+```
 
-• Récupérer des données
-
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/914293-lisez-des-donnees#/id/r-914147
-
-- Faire une requête 
-	$reponse = $bdd->query('Tapez votre requête SQL ici');
-
-- Première requête SQL
-	SELECT * FROM jeux_video
-	TYPE_D_OPERATION champs_MySQL (tous les champs = *, champs noms et posesseurs = noms, possesseur) FROM nom_de_la_table
-	<?php
-	$reponse = $bdd->query('SELECT * FROM jeux_video');
-	?>
-
-- Afficher le résultat d'une requête
-	Traiter $reponse, ligne par ligne avec fetch();
-	<?php
-	$donnees = $reponse->fetch();
-	?>
-	$donnees = array qui contient champ par champ les valeurs de la PREMIERE entrée;
-	Pour le champ 'console' -> $donnees['console'];
-	Il faut traiter les donnes dans une boucle;
-
-	<?php
-	try
-	{
-		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-	}
-	catch(Exception $e)
-	{
-		// En cas d'erreur, on affiche un message et on arrête tout
-			die('Erreur : '.$e->getMessage());
-	}
-
-	// Si tout va bien, on peut continuer
-
-	// On récupère tout le contenu de la table jeux_video
-	$reponse = $bdd->query('SELECT * FROM jeux_video');
-
-	// On affiche chaque entrée une à une
-	while ($donnees = $reponse->fetch())
-	{
-	?> <!-- on ferme l'accolade car le texte qui suit est long -->
-		<p>
-		<strong>Jeu</strong> : <?php echo $donnees['nom']; ?><br />
-		Le possesseur de ce jeu est : <?php echo $donnees['possesseur']; ?>, et il le vend à <?php echo $donnees['prix']; ?> euros !<br />
-		Ce jeu fonctionne sur <?php echo $donnees['console']; ?> et on peut y jouer à <?php echo $donnees['nbre_joueurs_max']; ?> au maximum<br />
-		<?php echo $donnees['possesseur']; ?> a laissé ces commentaires sur <?php echo $donnees['nom']; ?> : <em><?php echo $donnees['commentaires']; ?></em>
-	</p>
-	<?php
-	}
-
-	$reponse->closeCursor(); // Termine le traitement de la requête, OBLIGATOIRE
-
-	?>
-
-- Afficher seulement le contenu de quelques champs :
-	Ex. Lister les noms des jeux : SELECT nom FROM jeux_video;
-	<?php
-	try
-	{
-		$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-	}
-	catch(Exception $e)
-	{
-			die('Erreur : '.$e->getMessage());
-	}
-
-	$reponse = $bdd->query('SELECT nom FROM jeux_video');
-
-	while ($donnees = $reponse->fetch())
-	{
-		echo $donnees['nom'] . '<br />';
-	}
-
-	$reponse->closeCursor();
-
-	?>
-
-• Les critères de selection
-
+* Les critères de selection
+```php
 - Mot-clés WHERE ; ORDER BY ; LIMIT
 
 - WHERE : trier les données
@@ -1116,8 +1151,10 @@ while ($donnees = $reponse->fetch())
 $reponse->closeCursor();
 
 ?>
+```
 
-- COMBINER PLUSIEURS CONDITIONS, avec AND ou OR
+* COMBINER PLUSIEURS CONDITIONS, avec AND ou OR
+```php
 SELECT * FROM jeux_video WHERE possesseur='Patrick' AND prix < 20; // lorsque le champ possesseur égal Patrick et lorsque le prix est inférieur à 20
 
 - ORDER BY : ordonner les résultats
@@ -1147,9 +1184,9 @@ Par ordre décroissant : rajouter DESC à la fin;
 SELECT * FROM jeux_video ORDER BY prix DESC; // ordonner les résultats par prix décroissant
 ORDER BY sur du texte : ordre alphabétique
 
-- LIMIT : selectionner qu'une partie des résultats (par ex. les 20 premiers)
+- LIMIT : selectionner qu une partie des résultats (par ex. les 20 premiers)
 SELECT * FROM jeux_video LIMIT 0, 20; /!\ 0 = première entrée, 20 = 21ème entrée, etc.
-LIMIT première entrée, nombre d'entrées à selectionner;
+LIMIT première entrée, nombre d entrées à selectionner;
 LIMIT 0, 20 : affiche les vingt premières entrées ;
 LIMIT 5, 10 : affiche de la sixième à la quinzième entrée ;
 LIMIT 10, 2 : affiche la onzième et la douzième entrée ;
@@ -1189,71 +1226,71 @@ $reponse = $bdd->query('SELECT nom FROM jeux_video WHERE possesseur=\'' . $_GET[
 - La solution : les requêtes préparées
 À utiliser si l'on veut adapter une reqûete en fonction d'une ou plusieurs variables
 
-	- Avec des marqueur "?"
-	<?php
-	$req = $bdd->prepare('SELECT nom FROM jeux_video WHERE possesseur = ?');
-	// requête sans variable, avec prepare();
-	$req->execute(array($_GET['possesseur']));
-	// requête avec execute, où le ? est remplacé par le contenu, ici la valeur du paramètre possesseur 
-	?>
-	S'il y a plusieurs marqueurs, il faut les appeler dans le bon ordre :
-	<?php
-	$possesseur = 'Florent';
-    $prix_max = 20;
-	$req = $bdd->prepare('SELECT nom FROM jeux_video WHERE possesseur = ? AND prix <= ?');
-	$req->execute(array($possesseur, $_prix_max));
-	?>
-	<?php
-	try
-	{
-		$bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
-	}
-	catch(Exception $e)
-	{
-			die('Erreur : '.$e->getMessage());
-	}
+- Avec des marqueur "?"
+<?php
+$req = $bdd->prepare('SELECT nom FROM jeux_video WHERE possesseur = ?');
+// requête sans variable, avec prepare();
+$req->execute(array($_GET['possesseur']));
+// requête avec execute, où le ? est remplacé par le contenu, ici la valeur du paramètre possesseur 
+?>
+S il y a plusieurs marqueurs, il faut les appeler dans le bon ordre :
+<?php
+$possesseur = 'Florent';
+$prix_max = 20;
+$req = $bdd->prepare('SELECT nom FROM jeux_video WHERE possesseur = ? AND prix <= ?');
+$req->execute(array($possesseur, $_prix_max));
+?>
+<?php
+try
+{
+    $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
 
-	$req = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = ?  AND prix <= ? ORDER BY prix');
-	$req->execute(array($_GET['possesseur'], $_GET['prix_max']));
+$req = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = ?  AND prix <= ? ORDER BY prix');
+$req->execute(array($_GET['possesseur'], $_GET['prix_max']));
 
-	echo '<ul>';
-	while ($donnees = $req->fetch())
-	{
-		echo '<li>' . $donnees['nom'] . ' (' . $donnees['prix'] . ' EUR)</li>';
-	}
-	echo '</ul>';
+echo '<ul>';
+while ($donnees = $req->fetch())
+{
+    echo '<li>' . $donnees['nom'] . ' (' . $donnees['prix'] . ' EUR)</li>';
+}
+echo '</ul>';
 
-	$req->closeCursor();
+$req->closeCursor();
 
-	?>
+?>
 
-	- Avec des marqueurs nominatifs (si la requête contient beaucoup de parties variables)
-	<?php
-	$req = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = :possesseur AND prix <= :prixmax');
-	$req->execute(array('possesseur' => $_GET['possesseur'], 'prixmax' => $_GET['prix_max']));
-	?>
-	:possesseur et :prixmax, puis 'possesseur' => variable, 'prixmax' => variable;
- 	Plus de clarté quand il y a beaucoup de paramètres;
+- Avec des marqueurs nominatifs (si la requête contient beaucoup de parties variables)
+<?php
+$req = $bdd->prepare('SELECT nom, prix FROM jeux_video WHERE possesseur = :possesseur AND prix <= :prixmax');
+$req->execute(array('possesseur' => $_GET['possesseur'], 'prixmax' => $_GET['prix_max']));
+?>
+:possesseur et :prixmax, puis 'possesseur' => variable, 'prixmax' => variable;
+Plus de clarté quand il y a beaucoup de paramètres;
 
 - Traquer les erreurs
 
-Lorsqu'une requête SQL « plante », bien souvent PHP vous dira qu'il y a eu une erreur à la ligne du fetch : Fatal error: Call to a member function fetch() on a non-object in C:\wamp\www\tests\index.php on line 13
-Pour afficher des détails sur l'erreur, il faut activer les erreurs lors de la connexion à la base de données via PDO :
+Lorsqu une requête SQL « plante », bien souvent PHP vous dira qu il y a eu une erreur à la ligne du fetch : Fatal error: Call to a member function fetch() on a non-object in C:\wamp\www\tests\index.php on line 13
+Pour afficher des détails sur l erreur, il faut activer les erreurs lors de la connexion à la base de données via PDO :
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)); // affiche des erreurs plus précises
 ?>
 TOUJOURS activer ce dernier paramètre !
+```
 
+## ECRIRE DES DONNEES
 
-IV) ECRIRE DES DONNEES
-
-• INSERT : ajouter des données
-
-- La requête INSERT INTO permet d'ajouter une entrée;
+* INSERT : ajouter des données
+```php
+- La requête INSERT INTO permet d ajouter une entrée;
 INSERT INTO jeux_video(ID, nom, possesseur, console, prix, nbre_joueurs_max, commentaires) VALUES('', 'Battlefield 1942', 'Patrick', 'PC', 45, 50, '2nde guerre mondiale');
-Les nombres n'ont pas besoin de '' pour fonctionner;
+Les nombres n ont pas besoin de '' pour fonctionner;
 INSERT INTO table(noms des champs concernés) VALUES(valeurs à associer);
-Champ ID : '' ou mieux, absent (la base de données gère l'auto-incrémentation);
+Champ ID : '' ou mieux, absent (la base de données gère l auto-incrémentation);
 INSERT INTO jeux_video(nom, possesseur, console, prix, nbre_joueurs_max, commentaires) VALUES('Battlefield 1942', 'Patrick', 'PC', 45, 50, '2nde guerre mondiale')
 
 - Application en PHP
@@ -1331,25 +1368,25 @@ Avec exc() si une entrée, ou prepare();
 
 • TRAITER LES ERREURS SQL
 
-- Repérer l'erreur SQL en PHP
+- Repérer l erreur SQL en PHP
 Fatal error: Call to a member function fetch() on a non-object
 Cette erreur survient lorsque vous voulez afficher les résultats de votre requête, généralement dans la boucle  while ($donnees = $reponse->fetch());
 
 - Crache le morceau !
-Repérez la requête qui selon vous plante (certainement celle juste avant la boucle  while), et demandez d'afficher l'erreur s'il y en a une, comme ceci :
+Repérez la requête qui selon vous plante (certainement celle juste avant la boucle  while), et demandez d afficher l erreur s il y en a une, comme ceci :
 <?php
 $reponse = $bdd->query('SELECT nom FROM jeux_video') or die(print_r($bdd->errorInfo()));
 ?>
-En général, MySQL vous dit « You have an error in your SQL syntax near 'XXX' ». À vous de bien relire votre requête SQL ; l'erreur se trouve généralement près de l'endroit où on vous l'indique.
+En général, MySQL vous dit « You have an error in your SQL syntax near 'XXX' ». À vous de bien relire votre requête SQL ; l erreur se trouve généralement près de l endroit où on vous l indique.
+```
 
-
-V) TP : MINI-CHAT
+## <a name="tp-chat"></a> TP : MINI-CHAT
 
 À retenir :
-- La fonction header() permet d'envoyer des "en-têtes HTTP" (protocole utilisé par le serveur et le client pour échanger des pages web) > Redirection avec header('Location : XXX') (technique transparente et instantanée)
+* La fonction header() permet d'envoyer des "en-têtes HTTP" (protocole utilisé par le serveur et le client pour échanger des pages web) > Redirection avec header('Location : XXX') (technique transparente et instantanée)
 
 minichat.php : 
-
+```html
 <!DOCTYPE html>
 <html>
     <head>
@@ -1372,7 +1409,8 @@ minichat.php :
         <input type="submit" value="Envoyer" />
 	</p>
     </form>
-
+```
+```php
 <?php
 // Connexion à la base de données
 try
@@ -1430,16 +1468,18 @@ $req -> execute(array(
 // Redirection du visiteur vers la page du minichat
 header('Location: minichat.php');
 ?>
-
+```
+```
 Aller plus loin :
 - Vérifier si les cases sont remplies, si c'est pas trop long
 - Retenir le pseudo avec un cookie
 - Proposer d'actualiser le mini-chat
 - Afficher les anciens messages
+```
 
 
-VI) LES FONCTIONS SQL
-
+## LES FONCTIONS SQL
+```
 Les fonctions SQL sont classées en 2 catégories :
 	- Les fonctions scalaires : agissent sur chaque entrée (ex. transformer en majuscule chacune des entrées d'un champ);
 	- Les fonctions d'agrégat : calculs sur l'ensemble de la table pour retourner une valeur (ex. le prix moyen);
@@ -1451,6 +1491,8 @@ Les noms des fonctions s'écrivent en MAJUSCULES, comme SELECT, INSERT, etc.;
 SELECT UPPER(nom) FROM jeux_video; // la fonction UPPER est appliquée sur le champ 'nom' > tous les noms passent en MAJUSCULES
 La fonction UPPER modifie SEULEMENT la valeur envoyée à PHP, pas la table;
 Cela crée un champ virtuel (un ALIAS) qui n'existe que le temps de la requête;
+```
+```php
 SELECT UPPER(nom) AS nom_maj FROM jeux_video; // on récupère les noms en MAJ grâce au chap virtuel nom_maj
 <?php
 $reponse = $bdd->query('SELECT UPPER(nom) AS nom_maj FROM jeux_video');
@@ -1474,16 +1516,21 @@ LOWER : CONVERTIR EN minuscules => SELECT LOWER(nom) AS nom_maj FROM jeux_video;
 LENGTH : compter le nombre de C4R4CT3R3S => SELECT LENGTH(nom) AS nom_maj FROM jeux_video; 
 Sonic => 5;
 ROUND : arrondir un chiffre décimal => SELECT ROUND(prix, 2) AS prix_arrondi FROM jeux_video => SELECT ROUND(nomChamp, nombreChiffresApresVirgule) AS alias FROM table; 25,86999 => 25,87
+```
+```
 D'autres : Un liste des fonctions mathématiques > https://dev.mysql.com/doc/refman/8.0/en/numeric-functions.html;
 Des fonctions sur les chaînes de caractère > https://dev.mysql.com/doc/refman/8.0/en/string-functions.html
+```
 
 
-• Les fonctions d'agrégat
-
+* Les fonctions d'agrégat
+```
 - Utiliser une fonction d'agrégat SQL :
 Elles font des opérations sur plusieurs entrées pour retourner une valeur;
 Une fonction d'agrégat comme AVG renvoie une seule entrée : la valeur moyenne de tous les prix;
 Elle calcule la moyenne d'un champ contenant des nombres;
+```
+```php
 SELECT AVG(prix) AS prix_moyen FROM jeux_video => 28.34;
 <?php
 $reponse = $bdd->query('SELECT AVG(prix) AS prix_moyen FROM jeux_video');
@@ -1497,13 +1544,15 @@ $reponse->closeCursor();
 
 - Filtrer les résultats :
 SELECT AVG(prix) AS prix_moyen FROM jeux_video WHERE possesseur='Patrick'; // le prix moyen des jeux appartenant à Patrick
-
-- /!\ Ne pas mélanger une fonction d'agrégat avec d'autres champs :
+```
+```
+/!\ Ne pas mélanger une fonction d'agrégat avec d'autres champs :
 SQL renvoie les informations sous la forme d'un tableau;
 On ne peut pas représenter la moyenne des prix (qui tient en une seule entrée) en même temps que la liste des jeux. Si on voulait obtenir ces deux informations il faudrait faire deux requêtes.;
+```
 
-- Quelques fonctions d'agrégat utiles :
-
+* Quelques fonctions d'agrégat utiles :
+```
 AVG : calcule la moyenne d'un champ contenant des nombres => SELECT AVG(prix) AS prix_moyen FROM jeux_video
 SUM : additionne toutes les valeurs d'un champ => SELECT SUM(prix) AS prix_total FROM jeux_video WHERE possesseur='Patrick' => valeur totale des jeux de Patrick;
 MAX : retourne la valeur maximale d'un champ => SELECT MAX(prix) AS prix_max FROM jeux_video => le jeu le plus cher
@@ -1514,10 +1563,11 @@ SELECT COUNT(*) AS nbjeux FROM jeux_video; // * en paramètres, le plus courant
 SELECT COUNT(*) AS nbjeux FROM jeux_video WHERE possesseur='Florent'; // nombre de jeux appartenant à Florent
 Compter uniquement les entrées pour lesquelles l'un des champs n'est pas vide, c'est-à-dire qu'il ne vaut pas NULL => SELECT COUNT(nbre_joueurs_max) AS nbjeux FROM jeux_video => SELECT COUNT(nom_champ) => nombre d'entrées remplies du champ 'nbre_joueurs_max';
 Compter le nombre de valeurs distinctes sur un champ précis => SELECT COUNT(DISTINCT possesseur) AS nbpossesseurs FROM jeux_video => nombre exact de joueurs;
+```
 
 
-• GROUP BY et HAVING : le groupement de données
-
+* GROUP BY et HAVING : le groupement de données
+```
 SELECT AVG(prix) AS prix_moyen, console FROM jeux_video est impossible : on ne peut pas avoir un tableau avec un champ et une seule entrée (prix moyen) et un champ avec l'ensemble des entrées.
 
 - GROUP BY : grouper des données
@@ -1533,14 +1583,14 @@ HAVING ne s'utilise que sur le résultat d'une fonction d'agrégat (ici prix_moy
 
 WHERE agit en premier, avant le groupement des données, tandis que HAVING agit en second, après le groupement des données. On peut d'ailleurs très bien combiner les deux :
 SELECT AVG(prix) AS prix_moyen, console FROM jeux_video WHERE possesseur='Patrick' GROUP BY console HAVING prix_moyen <= 10 => On demande à récupérer le prix moyen par console de tous les jeux de Patrick (WHERE), à condition que le prix moyen des jeux de la console ne dépasse pas 10 euros (HAVING).
+```
 
+## LES DATES EN SQL
 
-VII) LES DATES EN SQL
+* Les champs de type date
 
-• Les champs de type date
-
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/915206-les-dates-en-sql#/id/r-915156
-
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/915206-les-dates-en-sql#/id/r-915156
+```
 - Les différents types de dates :
 	○ DATE : stocke une date au format AAAA-MM-JJ (année-mois-jour); (très utilisé)
 	○ TIME : stocke un moment au format HH:MM:SS (heure-minutes-secondes);
@@ -1596,16 +1646,16 @@ SELECT pseudo, message, DATE_ADD(date, INTERVAL 15 DAY) AS date_expiration FROM 
 Le champ date_expiration correspond à « la date de l'entrée + 15 jours »;
 Le mot-clé INTERVAL ne doit pas être changé ; en revanche, vous pouvez remplacer DAY par MONTH, YEAR, HOUR, MINUTE, SECOND, etc. Par conséquent, si vous souhaitez indiquer que les messages expirent dans deux mois :
 SELECT pseudo, message, DATE_ADD(date, INTERVAL 2 MONTH) AS date_expiration FROM minichat;
+```
 
+## <a name="tp-blog-coms"></a> TP : UN BLOG AVEC DES COMMENTAIRES
 
-VIII) TP : UN BLOG AVEC DES COMMENTAIRES
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/915379-tp-un-blog-avec-des-commentaires
 
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/915379-tp-un-blog-avec-des-commentaires
-
-nl2br() = fonction qui permet de convertir les retours à la ligne en balises HTML <br />;
+* nl2br() = fonction qui permet de convertir les retours à la ligne en balises HTML <br />;
 
 index.php : la liste des derniers billets :
-
+```html
 <!DOCTYPE html>
 <html>
     <head>
@@ -1749,22 +1799,23 @@ Lorsque l'on arrive la première fois > $_GET['page']n'est pas défini > Page 1
 - Réaliser une interface d'administration du blog
 Protéger l'accès à l'administration : Créer un sous-dossier admin qui contiendra tous les fichiers d'administration du blog (ajouter.php,modifier.php,supprimer.php…). Ce dossier admin sera entièrement protégé à l'aide des fichiers .htaccess et .htpasswd, ce qui fait que personne ne pourra charger les pages qu'il contient à moins de connaître le login et le mot de passe
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918580-protegez-un-dossier-avec-un-htaccess
+```
 
+## <a name="jointures"></a> LES JOINTURES ENTRE LES TABLES
 
-IX) LES JOINTURES ENTRE LES TABLES
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/916084-les-jointures-entre-tables
 
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/916084-les-jointures-entre-tables
-
-• Modélisation d'une relation
-
+* Modélisation d'une relation
+```
 But : éviter les répétitions + créer une connexion entre plusieurs tables
 Création d'une table propriétaires : ID prenom nom tel;
 Modification de la table jeux_video : ID nom ID_proprietaire console prix etc.
 ID_proprietaire = ID de la table propriétaire
 Pour que la relation soit effective > jointure des tables;
+```
 
-• Une jointure
-
+* Une jointure
+```
 - Les jointure internes : ne sélectionnent que les données qui ont une correspondance (un lien, une connexion) entre les deux tables;
 - Les jointures externes : sélectionnent TOUTES les données, même celles qui n'ont AUCUNE correspondance (aucun lien, aucune connexion) dans l'autre table
 
@@ -1840,16 +1891,15 @@ Bomberman             NULL
 
 FROM tableA A
 RIGHT JOIN tableB B => TOUTES les données de la table B + les données correspondantes de la table A
+```
+* https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins
+* En savoir plus sur les bases de données MySQL > https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql
 
-https://www.codeproject.com/Articles/33052/Visual-Representation-of-SQL-Joins
 
-En savoir plus sur les bases de données MySQL > https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql
-
-
-X) TP : UN MINI-CHAT AMELIORE
+## <a name="tp-chat-plus"></a> TP : UN MINI-CHAT AMELIORE
 
 minichat.php :
-
+```html
 <!DOCTYPE html>
 <html>
     <head>
@@ -2019,20 +2069,20 @@ else
 }
 
 ?>
+```
+
+## APPROFONDIR PHP
 
 
--------------------------- // APPROFONDIR PHP // --------------------------
+### CREER DES IMAGES EN PHP
 
+* Activer la bibliothèque GD
 
-I) CREER DES IMAGES EN PHP
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/916429-creez-des-images-en-php#/id/r-916098
 
-• Activer la bibliothèque GD
-
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/916429-creez-des-images-en-php#/id/r-916098
-
-• Les bases de la création d'image
-
-	○ Le header (en haut de page)
+* Les bases de la création d'image
+```
+    ○ Le header (en haut de page)
 2 façons de générer un fichier : 1) script PHP renvoie une image (au lieu d'une page web)
 2) on demande à PHP d'enregistrer l'image dans un fichier
 
@@ -2235,9 +2285,9 @@ imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_destination, $hau
 imagejpeg($destination, "mini_couchersoleil.jpg");
 ?>
 Afficher en html : <img src="mini_couchersoleil.jpg" alt="Coucher de soleil" />
+```
 
-
-II) LES EXPRESSIONS REGULIERES
+### LES EXPRESSIONS REGULIERES
 
 Fonctionnalité Rechercher/Remplacer très poussée
 
@@ -2256,6 +2306,7 @@ Notre choix : PCRE
 - preg_replace_callback ;
 
 - preg_match : renvoie TRUE (mot trouvé) ou FALSE (mot absent)
+```
 <?php
 if (preg_match("** Votre REGEX **", "Ce dans quoi vous faites la recherche"))
 {
@@ -2598,14 +2649,14 @@ http://www.siteduzero.com/index.php?page=3&skin=blue ;
 	- Compléter le bbCode avec[u],[img], etc. ;
 	- Faire son propre bbCode : {gras}{/gras} ;
 	- Écrire une fonction qui colore automatiquement le code HTML ! (Vous donnez à la fonction le code HTML, elle en fait un htmlspecialchars, puis elle rajoute des <span style="color:…"> pour colorer par exemple en bleu les noms des balises, en vert les attributs, en rouge ce qui est entre guillemets, etc.)
+```
 
+### TP : Créer un espace membre
 
-III) TP : Créer un espace membre
+* Conception de l'espace membre
 
-• Conception de l'espace membre
-
-https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/917948-tp-creez-un-espace-membres#/id/r-2178871
-
+* https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/917948-tp-creez-un-espace-membres#/id/r-2178871
+```
 un espace membres nécessite au minimum les éléments suivants :
 - une page d'inscription ;
 - une page de connexion ;
@@ -2736,9 +2787,9 @@ https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et
 ○ Proposez au membre s'il le souhaite de changer ses identifiants : son pseudonyme et son mot de passe. Il est courant qu'un membre désire changer de pseudonyme quelque temps après s'être inscrit, mais surtout il est vital qu'il puisse changer son mot de passe à tout moment au cas où celui-là serait compromis !
 ○ Donnez au membre la possibilité de choisir parmi plusieurs options de navigation. Tout le monde n'utilise pas votre site web de la même manière, peut-être que certains souhaiteraient avoir un menu en haut des pages plutôt qu'un autre, peut-être que d'autres préfèreraient naviguer avec un design sombre, etc.
 ○ Mettre en place vos propres forums sur votre site web ! Chaque message des forums sera associé à un id de membre : il suffira de créer un champ id_membre dans la table des messages. Vous pourrez alors utiliser les jointures pour récupérer automatiquement le pseudonyme du membre et sa signature à chaque message posté !
+```
 
-
-IV) ALLER PLUS LOIN
+### ALLER PLUS LOIN
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/4778351-comment-aller-plus-loin
 
@@ -2749,14 +2800,14 @@ https://openclassrooms.com/fr/courses/1665806-programmez-en-oriente-objet-en-php
 https://openclassrooms.com/fr/courses/5489656-construisez-un-site-web-a-l-aide-du-framework-symfony-4
 
 
-V) ENVOYER LE SITE SUR LE WEB
+### ENVOYER LE SITE SUR LE WEB
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918167-envoyez-votre-site-sur-le-web
 
 Partie PHP > https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918167-envoyez-votre-site-sur-le-web#/id/r-4447092
 
 
-VI) Utilisez la documentation PHP
+### Utilisez la documentation PHP
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918372-utilisez-la-documentation-php
 
@@ -2779,10 +2830,10 @@ https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et
     ○ mixed : la fonction peut renvoyer n'importe quel type de données (unint, unstring, ça dépend…).
 
 
-VII) Protégez un dossier avec un .htaccess
+### Protégez un dossier avec un .htaccess
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918580-protegez-un-dossier-avec-un-htaccess
-
+```
 • Créer le .htaccess
 
 1) Créer sur le disque dur un fichier appelé .htaccess ;
@@ -2850,14 +2901,14 @@ else // On n'a pas encore rempli le formulaire
 1) On a deux fichiers sur votre disque dur : .htaccess et .htpasswd. ;
 2) FTP ;
 3) Transférez les fichiers .htaccess et .htpasswd DANS le dossier que vous voulez protéger par un mot de passe.
+```
 
-
-VIII) Mémento des expressions régulières
+### Mémento des expressions régulières
 
 https://openclassrooms.com/fr/courses/918836-concevez-votre-site-web-avec-php-et-mysql/918834-memento-des-expressions-regulieres
 
 
-// ---------- MISE A JOUR WAMP ---------- //
+## <a name="maj-wamp"></a> MISE A JOUR WAMP
 
 Avec ton ancien Wamp :
 1. Tu fais une copie de ton dossier www

@@ -1,5 +1,47 @@
 -------------------------- MEMENTO, ASTUCES & BONNES PRATIQUES PHP --------------------------
 
+## SOMMAIRE
+
+GENERAL
+CONSIDERATIONS
+I) Créer une variable
+II) Les conditions
+III) LES BOUCLES
+IV) LES TABLEAUX (ARRAY)
+V) LES FONCTIONS
+VI) LA GESTION DES ERREURS
+VII) INCLURE DES PORTIONS DE PAGE
+VIII) CODER PROPREMENT
+IX) TRANSMETTRE DES DONNEES AVEC L'URL
+X) TRANSMETTRE DES DONNEES AVEC LES FORMULAIRES
+XI) TP : Page protégée par un mot de passe
+XII) LES VARIABLES SUPERGLOBALES
+XIII) SESSION & COOKIES
+XIII) LIRE ET ECRIRE DANS UN FICHIER
+LES BASES DE DONNEES
+I) FONCTIONNEMENT
+II) PHPMYADMIN
+III) LIRE DES DONNEES
+IV) ECRIRE DES DONNEES
+V) TP : MINI-CHAT
+VI) LES FONCTIONS SQL
+VII) LES DATES EN SQL
+VIII) TP : UN BLOG AVEC DES COMMENTAIRES
+IX) LES JOINTURES ENTRE LES TABLES
+X) TP : UN MINI-CHAT AMELIORE
+APPROFONDIR PHP
+I) CREER DES IMAGES EN PHP
+II) <a href="#regex">EXPRESSIONS REGULIERES</a>
+III) TP : Créer un espace membre
+IV) ALLER PLUS LOIN
+V) ENVOYER LE SITE SUR LE WEB
+VI) Utilisez la documentation PHP
+VII) Protégez un dossier avec un .htaccess
+VIII) Mémento des expressions régulières
+MISE A JOUR WAMP
+
+◘ GENERAL :
+
 Message cannot validate de VS Studio > https://stackoverflow.com/questions/34182067/cannot-validate-the-php-file-the-php-program-was-not-found
 Problèmes URL localhost WAMP : clic droit sur l'icône de WampServer > ⛭ Paramètres Wamp > Ajouter localhost dans l'URL
 https://stackoverflow.com/questions/49811804/phpmyadmin-failed-to-set-session-cookie-maybe-you-are-using-http-instead-of-htt
@@ -18,7 +60,7 @@ message erreur php debug eaddrinuse adress already in use : 9000 => changer les 
 https://www.cloudways.com/blog/php-debug/#configure-xdebug
 wamp => php => date/timezone => Paris
 
-CONSIDERATIONS :
+◘ CONSIDERATIONS :
 
 ## SQL ##
 • nom de table, colonne = singulier
@@ -2194,7 +2236,7 @@ imagejpeg($destination, "mini_couchersoleil.jpg");
 Afficher en html : <img src="mini_couchersoleil.jpg" alt="Coucher de soleil" />
 
 
-II) LES EXPRESSIONS REGULIERES
+II) <a name="regex"></a> LES EXPRESSIONS REGULIERES
 
 Fonctionnalité Rechercher/Remplacer très poussée
 
