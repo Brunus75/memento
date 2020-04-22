@@ -1,5 +1,26 @@
 -------------------------- PROGRAMMER EN ORIENTE OBJET EN PHP --------------------------
 
+## SOMMAIRE
+
+I) INTRODUCTION à la POO
+II) UTILISER UNE CLASSE
+III) L'OPERATEUR DE RESOLUTION DE PORTEE (::)
+IV) MANIPULATION DE DONNEES STOCKEES
+V) TP : MINI-JEU DE COMBAT
+VI) L'HERITAGE
+VII) TP : DES PERSONNAGES SPECIALISES
+VIII) LES METHODES MAGIQUES
+IX) COMPRENDRE LES OBJETS
+X) LES INTERFACES
+XI) LES EXCEPTIONS
+XII) LES TRAITS
+XIII) L'API DE RÉFLEXIVITÉ
+XIV) UML : présentation (1/2)
+XV) UML : modélisons nos classes (2/2)
+XVI) LES DESIGN PATTERNS
+XVII) L'OPERATEUR INSTANCEOF
+XVIII) LES CLOSURES (FONCTIONS ANONYMES)
+
 
 I) INTRODUCTION à la POO
 
@@ -2099,9 +2120,9 @@ Enfant::lancerLeTest(); // affiche Je suis la classe Mère (malheureusement)
 
 Explications :
 
-    • appel de la méthode lancerLeTest de la classe Enfant ;
+  • appel de la méthode lancerLeTest de la classe Enfant ;
 
-    • la méthode n'a pas été réécrite, on va donc « chercher » la méthode lancerLeTest de la classe mère ;
+  • la méthode n'a pas été réécrite, on va donc « chercher » la méthode lancerLeTest de la classe mère ;
 
 	• appel de la méthode quiEstCe de la classeMere.
 	

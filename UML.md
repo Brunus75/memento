@@ -82,6 +82,33 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 * Dans une spécialisation, on indique que les cas d’utilisation spécialisés sont des versions différentes du cas d’utilisation générique
 * Chacun des cas d’utilisation spécialisés nécessite plusieurs actions
 
+## Diagramme de classes
+
+* Chaque classe doit posséder une identité, attribut unique qui la caractérise
+* Si une classe ne possède pas d'identité, on ne rajoute pas d'attribut id (qui n'est pas pertinent pour la classe, mais pour la base de données)
+* Tout ce qui relève de la BDD (primary key, foreign key) n'appartient pas au diagramme de classe
+* Il y a association lorsqu'une classe A se sert d'une classe B
+```
+A 1 ---- collecter ---→ 2..* B (A collecte entre 2 et une multitude de B)
+(B est collecté par 1 A)
+```
+* Une agrégation est une association particulière : il y a agrégation entre A et B si l'objet A possède une ou plusieurs instances de B
+```
+Cours <>---- concerner ---- 5...* Etudiant
+[si le cours est supprimé, l'étudiant continue sa vie]
+
+Voiture <>---- posséder ---- 2...* Roue
+[une roue peut exister indépendemment d'une Voiture : vélo, véhicule, balançoire, ect.]
+```
+* Une composition est une agrégation particulière : il y a composition entre A et B si toutes les instances de B contenues dans A sont supprimées lorsque A est supprimée.
+```
+Livre ◄--- contenir ---- 1..* Page (le livre contient entre 1 et une multitude de pages)
+[si le livre est détruit, les pages aussi]
+
+Dossier ◄--- contenir ---- * Fichier
+[la destruction du dossier entraine la destruction des fichiers]
+```
+
 
 ## Vocabulaire
 
@@ -95,6 +122,8 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 ## Ressources
 
 + https://openclassrooms.com/fr/courses/2035826-debutez-lanalyse-logicielle-avec-uml
++ https://openclassrooms.com/fr/courses/1665806-programmez-en-oriente-objet-en-php/1667684-uml-presentation-1-2
++ http://uml.free.fr/cours/p15.html
 + http://staruml.io/
 + UML Use Case Diagram Tutorial : https://www.youtube.com/watch?v=zid-MVo7M-E&feature=emb_rel_end
 + UML Class Diagram Tutorial : https://www.youtube.com/watch?v=UI6lqHOVHic

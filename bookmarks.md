@@ -11,6 +11,24 @@
 * Awwwards - Publications : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * Web Dev / Design : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * https://www.reddit.com/
+* https://www.barbuduweb.com/
+* https://stephaniewalter.design/blog/
+
+
+## :gun: WEB TOOLS
+
+* Fonty: the new way for testing web fonts : https://fonty.dizoo.bg/
+* Color Picker by WebpageFX : https://www.webpagefx.com/web-design/color-picker/
+* colorPicker - Modules pour Firefox : https://addons.mozilla.org/fr/firefox/addon/colorpicker/
+* ColorZilla - Chrome Web Store : https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp
+* Can I use... Support tables for HTML5, CSS3, etc : https://www.caniuse.com/
+* Create Your Own @font-face Kits » Font Squirrel : https://www.fontsquirrel.com/tools/webfont-generator
+* Free Fonts! Legit Free & Quality » Font Squirrel : https://www.fontsquirrel.com/
+* Find Free Fonts » Font Squirrel : https://www.fontsquirrel.com/fonts/list/find_fonts?filter%5Blicense%5D%5B0%5D=web
+* CSS3 module: W3C Selectors : https://www.w3.org/Style/css3-selectors-updates/WD-css3-selectors-20010126.fr.html#selectors
+* Font Awesome : https://fontawesome.com/
+* Fontisto : une webfont de plus de 600 icônes - barbu du web : https://www.barbuduweb.com/fontisto-bibliotheque-dicones/
+* Picular : https://picular.co/
 
 
 ## :warning: VALIDATEURS
@@ -62,6 +80,7 @@
 * Favicon SEO | SEO Book : http://www.seobook.com/favicon-seo
 * 12 SEO Best Practices That Everyone Should Follow : https://ahrefs.com/blog/seo-best-practices/
 * Optimiser et accélérer les pages web - lehollandaisvolant.net : https://lehollandaisvolant.net/tuto/pagespd/#css-squelette
+* Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
 
 
 ## :bulb: ORGANISATION
@@ -126,6 +145,29 @@
 
 ### SYMFONY
 
+* The Symfony Blog : https://symfony.com/blog/
+* Symfony roadmap, notifications and release checker : https://symfony.com/roadmap
+* Déployez votre site web - Construisez un site web à l’aide du framework Symfony 4 - OpenClassrooms: https://openclassrooms.com/fr/courses/5489656-construisez-un-site-web-a-l-aide-du-framework-symfony-4/5517046-deployez-votre-site-web
+* Symfony Security Monitoring : https://security.symfony.com/
+* Déployer son site Symfony en production - Développez votre site web avec le framework Symfony - OpenClassrooms : https://openclassrooms.com/fr/courses/3619856-developpez-votre-site-web-avec-le-framework-symfony/3626249-deployer-son-site-symfony-en-production
+* How to Deploy a Symfony Application (Symfony Docs) : https://symfony.com/doc/current/deployment.html 
+* SymfonyInsight : https://insight.symfony.com
+* Using PHP Composer in 1&1 IONOS Webhosting Packages - 1&1 Hosting (US) : https://www.ionos.com/community/hosting/php/using-php-composer-in-11-ionos-webhosting-packages/
+* [Résolu] Déployer site Symfony par Faboubz - OpenClassrooms : https://openclassrooms.com/forum/sujet/deployer-site-symfony
+* Symfony 4.2 - Deploiement en production sur perfx01 : https://www.developpez.net/forums/d1926588/webmasters-developpement-web/general-conception-web/hebergement/ovh/symfony-4-2-deploiement-production-perfx01/
+* symfony2-checklist/fr at master · winzou/symfony2-checklist · GitHub : https://github.com/winzou/symfony2-checklist/tree/master/fr
+* [Résolu] Symfony 4 configuration mysql par Askul - OpenClassrooms : https://openclassrooms.com/forum/sujet/symfony-4-configuration-mysql
+* ismail1432/docker-demo: Simple Docker demo for beginners : https://github.com/ismail1432/docker-demo
+* ismail1432/crossover : https://github.com/ismail1432/crossover
+* Smaine Milianni - YouTube : https://www.youtube.com/channel/UCAY4O2TgmAy6-9gDx9Gn2wQ
+* AFSY - Association Francophone des Utilisateurs de Symfony - calendrier de l'avent 2019 - Jour 02 - L'épopée d'une migration de Symfony 4.3 à Symfony 5.0 : https://afsy.fr/avent/2019/02-symfony4-vers-symfony5
+* AFSY - Association Francophone des Utilisateurs de Symfony - calendrier de l'avent 2019 : https://afsy.fr/avent/2019
+* AFSY - Association Francophone des Utilisateurs de Symfony - calendrier de l'avent 2019 - Jour 11 - Petit précis des images responsives avec Symfony : https://afsy.fr/avent/2019/11-images-responsives-avec-symfony
+* symfony-docs/setup.rst at master · symfony/symfony-docs : https://github.com/symfony/symfony-docs/blob/master/setup.rst
+* symfony/demo: Symfony Demo Application : https://github.com/symfony/demo
+
+
+
 ### PYTHON
 
 * Global & Return — Python Tips 0.1 documentation : https://book.pythontips.com/en/latest/global_&_return.html
@@ -175,6 +217,7 @@
 * What Is Rel=Nofollow & How Do I Use Nofollow Links On My Site? : https://www.hobo-web.co.uk/what-is-nofollow/#example-nofollow-link-code
 * Exemple masquage accessible et aria-hidden - recommandations accessibilité web Orange : https://a11y-guidelines.orange.com/web/exemples/masquage/index.html
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
+* * Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
 
 
 ### CSS
@@ -296,3 +339,8 @@
 * https://www.shutterstock.com/blog/free-icons
 * https://pixabay.com/
 * https://www.pexels.com/
+
+
+## :heavy_heart_exclamation: SITES WEB
+
+* https://stephaniewalter.design/

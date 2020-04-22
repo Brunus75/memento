@@ -1,5 +1,29 @@
 <!---------- // MÉMENTO SYMFONY // ---------->
 
+## SOMMAIRE
+
+## CONSIDERATIONS
+## GENERAL
+I) INSTALLER SYMFONY
+II) SYMFONY
+III) SYMFONY FLEX
+IV) CREER UN BUNDLE
+SYMFONY 4 avec Lior CHAMLA
+I) INSTALLATION
+II) CREER DES FONCTIONNALITES DANS SYMFONY
+III) MISE EN PLACE : CREATION DE PAGES
+IV) L'ORM DOCTRINE : GERER LES BASES DE DONNEES
+V) BONUS DE STYLE : L'INJECTION DE DEPENDANCES DANS SYMFONY
+VI) SYMFONY ET LES FORMULAIRES
+V) LES ENTITÉS ET LEURS RELATIONS
+VI) L'AUTHENTIFICATION
+LIENS ET INFOS
+BONUS
+EASY ADMIN BUNDLE
+
+
+## GENERAL :
+
 Installer Composer > https://getcomposer.org/
 Invite de commandes : taper composer
 Cours : https://www.youtube.com/watch?v=UTusmVpwJXo
@@ -33,7 +57,8 @@ php bin/console make:form
 MAJ (pour patch correctif) : composer update
 downgrade un bundle : composer require easycorp/easyadmin-bundle:2.2.2
 
-Considérations
+## CONSIDERATIONS :
+
     • Versions : une grosse version tous les 2 ans (S3, S4, S5) qui intègre beaucoup de changements
         Une version mineure tous les 6 mois (4.3, 4.4, ect.)
     • Versions majeures de Symfony : .4 = 3.4, 4.4
