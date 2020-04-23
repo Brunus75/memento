@@ -84,15 +84,32 @@ Un exclude signifie que lorsque tu réalises une action, une autre devient acces
 
 ## Diagramme de classes
 
+* Représentation orienté objet (chaque attribut est un objet, et peut donc être une classe)
 * Chaque classe doit posséder une identité, attribut unique qui la caractérise
 * Si une classe ne possède pas d'identité, on ne rajoute pas d'attribut id (qui n'est pas pertinent pour la classe, mais pour la base de données)
 * Tout ce qui relève de la BDD (primary key, foreign key) n'appartient pas au diagramme de classe
-* Il y a association lorsqu'une classe A se sert d'une classe B
+* Ainsi, un attribut de type autreclasseID ne doit pas y figurer (cette relation est illustrée par les associations)
+* Toute référence à une autre classe doit être illustrée par une association
+* Il y a association lorsqu'une classe A se sert des fonctionnalités d'une classe B, sans idée de possession
 ```
 A 1 ---- collecter ---→ 2..* B (A collecte entre 2 et une multitude de B)
 (B est collecté par 1 A)
 ```
-* Une agrégation est une association particulière : il y a agrégation entre A et B si l'objet A possède une ou plusieurs instances de B
+* Pour préciser le nom à donner à la référence, il faut lui décrire un rôle (ex. + magazine, ajouté au bout d'une association avec la classe Personne, indique que la classe Personne possède l'attribut public magazine qui fait référence à la classe Magazine)
+* La navigabilité est représentée par une flèche à l'extrémité de l'association
+* La présence d'une flèche à l'extremité d'une assocation signifie qu'une instance de la classe pointée par la flèche est accessible par une instance de l'autre classe
+* Elle indique aussi que les instances d'une classe ne "connaissent" pas les instances d'une autre
+```
+Editeur 1 ←-- éditer --- 1..* Livre 1..* --- écrire --- 1..* Ecrivain
+Livre a accès à la classe Editeur (et non l'inverse)
+Livre a accès à la classe Ecrivain (et Ecrivain a accès à la classe Livre)
+```
+* Une agrégation est une association particulière : il y a agrégation entre A et B si l'objet A possède une ou plusieurs instances de B   
+   * B est alors SEULEMENT possédé par A (il ne peut pas être possédé par une autre classe)
+   * Néanmoins si A est supprimé, B continue d'exister
+   * Un prof n'appartient qu'à un seul département, mais si le département est supprimé, le prof continue d'exister
+   * Pour éviter de se prendre la tête sur un choix association/agrégation, préférer association
+   * S'il y une idée de collection (comme les tags d'un Article), préférer agrégation   
 ```
 Cours <>---- concerner ---- 5...* Etudiant
 [si le cours est supprimé, l'étudiant continue sa vie]
@@ -101,6 +118,7 @@ Voiture <>---- posséder ---- 2...* Roue
 [une roue peut exister indépendemment d'une Voiture : vélo, véhicule, balançoire, ect.]
 ```
 * Une composition est une agrégation particulière : il y a composition entre A et B si toutes les instances de B contenues dans A sont supprimées lorsque A est supprimée.
+ex. Un livre **est composé de** un ou plusieurs pages.
 ```
 Livre ◄--- contenir ---- 1..* Page (le livre contient entre 1 et une multitude de pages)
 [si le livre est détruit, les pages aussi]
@@ -108,6 +126,16 @@ Livre ◄--- contenir ---- 1..* Page (le livre contient entre 1 et une multitude
 Dossier ◄--- contenir ---- * Fichier
 [la destruction du dossier entraine la destruction des fichiers]
 ```
+* Résumé :
+
+    1. Association: **uses** a   
+    *Ex: a Class Man uses a Class Pen ( Pen is still there when man die )*
+    2. Aggregation: **has** a   
+    *Ex: a Class Man has a Class Car ( Car is still there when Man die )*
+    3. Composition: **owns** a   
+    *Ex: a Class Man owns a Class Heart ( When Man die, Heart die )*
+    4. Inheritance: **is** a   
+    *Ex: a Class Man is a Class Human ( Man is a Human )*
 
 
 ## Vocabulaire
@@ -117,7 +145,7 @@ Dossier ◄--- contenir ---- * Fichier
 + **acteurs principaux** : agissent directement sur le système (ex. utilisateurs)
 + **acteurs secondaires** : n’ont pas de besoin direct d’utilisation (ex. un autre système (logiciel) avec lequel le nôtre doit échanger des informations, comme un système bancaire de type Paypal)
 + **lot d’actions** : fonctionnalité dont certains acteurs principaux ont besoin
-
++ **cardinalité** : notation qui précise le nombre d'instances qui participent à l'intéraction entre deux classes (0, 0..*, 1, *, etc.)
 
 ## Ressources
 
@@ -129,6 +157,7 @@ Dossier ◄--- contenir ---- * Fichier
 + UML Class Diagram Tutorial : https://www.youtube.com/watch?v=UI6lqHOVHic
 + tuto_ModelisationUML : https://github.com/iblasquez/tuto_ModelisationUML/blob/master/Modelio/Modelio_Classes.md
 + https://github.com/iblasquez/tuto_ModelisationUML/tree/master/Modelio
++ https://www.uml-diagrams.org/association.html
 
 
 ## MODELIO

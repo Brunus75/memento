@@ -122,3 +122,5 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 * :arrows_clockwise: **AJAX** : Asynchronous JavaScript and XML : ensemble de technologies destinées à réaliser de rapides mises à jour du contenu d'une page Web, sans qu'elles nécessitent le moindre rechargement de la page Web. L'AJAX est un moyen de charger des données sans recharger la page, en utilisant le JavaScript.
 
 * :world_map: **Pointeur** : variable qui contient l’adresse d’une donnée contenue en mémoire
+
+* :notebook: **Prototypage** : réalisation du prototype, du brouillon d'un produit final
