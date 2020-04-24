@@ -97,7 +97,7 @@ A 1 ---- collecter ---→ 2..* B (A collecte entre 2 et une multitude de B)
 ```
 * Pour préciser le nom à donner à la référence, il faut lui décrire un rôle (ex. + magazine, ajouté au bout d'une association avec la classe Personne, indique que la classe Personne possède l'attribut public magazine qui fait référence à la classe Magazine)
 * La navigabilité est représentée par une flèche à l'extrémité de l'association
-* La présence d'une flèche à l'extremité d'une assocation signifie qu'une instance de la classe pointée par la flèche est accessible par une instance de l'autre classe
+* La présence d'une flèche à l'extremité d'une association signifie qu'une instance de la classe pointée par la flèche est accessible par une instance de l'autre classe
 * Elle indique aussi que les instances d'une classe ne "connaissent" pas les instances d'une autre
 ```
 Editeur 1 ←-- éditer --- 1..* Livre 1..* --- écrire --- 1..* Ecrivain

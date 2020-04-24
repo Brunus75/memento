@@ -275,6 +275,8 @@
 * Why Cancel Buttons Should Never Have a Color : https://uxmovement.com/buttons/why-cancel-buttons-should-never-have-a-color/
 * Freebie Lobster - Showcase for UX/UI. : http://freebielobster.com/
 * Line Awesome : 1 400 icônes modernes, gratuites et open source - BDM : https://www.blogdumoderateur.com/line-awesome-icones-modernes-gratuites
+* Make sense of rounded corners on buttons : https://uxdesign.cc/make-sense-of-rounded-corners-on-buttons-dfc8e13ea7f7
+* 7 Practical Tips for Cheating at Design : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 
 
 ## :joystick: API
