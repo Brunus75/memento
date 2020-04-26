@@ -11,6 +11,9 @@
 * [PARCOURIR LES ELEMENTS DU DOM](#dom)
 * [Manipuler le code HTML avec jQuery](#manip-html)
 * [AJAX: les requêtes HTTP par l'objet XmlHttpRequest](#ajax-http)
+* [Exemples d'utilisation AJAX](#ajax-exemples)
+* [Les événements AJAX](#ajax-events)
+* [PLUGINS](#plugins)
 
 
 ## BONNES PRATIQUES
@@ -834,3 +837,300 @@ $(document).ready(function () {
         $.ajax();
     });
 });
+```
+
+## <a name="ajax-exemples"></a> Exemples d'utilisation AJAX
+```js
+
+// PROJET LOCATIONS VELOS
+// AJAX GET
+
+initSettings() {
+        this.document.ready( ($) => { // quand le DOM est prêt, on lance la méthode AJAX
+            this.launchAjax();
+        });
+    }
+
+    launchAjax() {
+            $.ajax({
+                url: this.ajaxURL,
+                type: 'GET',
+                dataType: 'json',
+                data: {param1: 'value1'},
+            })
+            .done(function() {
+                console.log("success");
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always( (response) => {
+                console.log("complete");
+                this.ajaxOK(response);
+            });
+        };
+
+    ajaxOK(response) { // fonction qui se déclenche quand  l'appel AJAX s'est terminé avec succès
+        let stations = response; // le tableau JS obtenu (jQuery traduit en JS)
+        for (let station of stations) { // création d'une classe pour chaque station
+            // ...
+        };
+    };
+
+
+    // ENVOI DE FORMULAIRE EN AJAX
+    // PROJET MODULA
+    // AJAX POST
+
+    $(document).ready(function () {
+
+    // get user IP
+    let ipAdress = '';
+    $.getJSON('https://json.geoiplookup.io/api?callback=?', function (data) {
+        ipAdress = data.ip;
+    });
+
+    // validator for email
+    $.validator.addMethod("mailverified", function (value, element, params) {
+        let pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+        return pattern.test(value);
+    }, "Veuillez saisir une adresse mail valide");
+
+    // main method of jQuery validation plugin
+    $('#form-contact').validate({
+        rules: {
+            "email": {
+                required: true,
+                mailverified: true, // replace mail property
+                minlength: 3,
+                maxlength: 100
+            },
+            "firstName": {
+                required: true,
+                maxlength: 100
+            },
+            "name": {
+                required: true,
+                maxlength: 100
+            },
+            "message": {
+                required: true
+            }
+        },
+        messages: {
+            "email": {
+                required: "Veuillez saisir votre adresse mail",
+                email: "Veuillez saisir une adresse mail valide",
+                mailverified: "Veuillez saisir une adresse mail valide", // replace mail property
+                minlength: "Veuillez saisir une adresse mail valide",
+                maxlength: "Veuillez saisir une adresse mail valide"
+            },
+            "firstName": {
+                required: "Veuillez saisir votre prénom",
+                maxlength: "Veuillez saisir un prénom moins long"
+            },
+            "name": {
+                required: "Veuillez saisir votre nom",
+                maxlength: "Veuillez saisir un nom moins long"
+            },
+            "message": {
+                required: "Veuillez saisir votre message"
+            }
+        },
+        submitHandler: function (form) {
+            $.ajax({
+                url: 'contact.php',
+                type: 'POST',
+                dataType: 'text',
+                data: {
+                    firstName: $('#form-firstname').val(),
+                    name: $('#form-name').val(),
+                    email: $('#form-mail').val(),
+                    message: $('#form-message').val(),
+                    captcha: grecaptcha.getResponse(),
+                    "request-rgpd": $('#request-rgpd').is(':checked'),
+                    ip: ipAdress
+                },
+            })
+                .done(function () {
+                    console.log("success");
+                })
+                .fail(function () {
+                    console.log("error");
+                    $('#modalAlertEmail').text("Erreur lors de l'envoi, veuillez réessayer.");
+                    $('#mail-success').prop('aria-labelledby', 'Votre mail a rencontré une erreur.');
+                    $('#mail-success').modal('toggle');
+                })
+                .always((response) => {
+                    console.log("complete");
+                    // response from contact.php
+                    if (response.startsWith("Erreur")) {
+                        $('#error-ajax').text(response);
+                        $('#error-ajax').css('display', 'block');
+                        $('html, body').animate({
+                            scrollTop: $('#error-ajax').offset().top - 100
+                        }, 1000);
+                    } else {
+                        // display modal of success
+                        $('#mail-success').modal('toggle');
+                        // remove values
+                        $('#form-firstname').val('');
+                        $('#form-name').val('');
+                        $('#form-mail').val('');
+                        $('#form-message').val('');
+                        $('#request-rgpd').prop('checked', false);
+                        $('#request-check').prop('checked', false);
+                    }
+                });
+            return false; // required to block normal submit since ajax is used
+        }
+    });
+});
+```
+
+### Sérialisez vos formulaires !
+
+* la méthode **serialize()** de jQuery transforme les champs d'un formulaire en chaîne de caractères avec les variables et leurs contenus concaténés
+* exemple :
+```html
+<!-- Formulaire HTML super simple à sérialiser -->
+<form id="formulaire" method="POST" action="traitement.php">
+    <input type="text" name="valeur1" />
+    <input type="text" name="valeur2" />
+    <input type="text" name="valeur3" />
+    <input type="submit" name="submit" />
+</form>
+```
+* Le but est d'obtenir data : 'valeur1=' + valeur1 + '&valeur2=' + valeur2 + '&valeur3=' + valeur3 afin de l'envoyer en AJAX
+```js
+$("#formulaire").submit(function(e){ // On sélectionne le formulaire par son identifiant
+    e.preventDefault(); // Le navigateur ne peut pas envoyer le formulaire
+
+    const donnees = $(this).serialize(); // On créer une variable content le formulaire sérialisé
+     
+    $.ajax({
+    //...
+        data : donnees,
+    //...
+    });
+});
+```
+
+## <a name="ajax-events"></a> Les événements AJAX
+
+* https://api.jquery.com/Ajax_Events/
+
+```js
+// dès qu'un appel AJAX présent sur cette page sera lancé, une fonction va envoyer dans la console le texte : « L'appel AJAX est lancé ! »
+// "p" est l'élément ciblé, sur lequel on veut intéragir
+$("p").ajaxStart(function() {
+console.log("L'appel AJAX est lancé !");
+});
+// écouter le succès d'une requête AJAX se déroulant depuis la page sur laquelle nous travaillons :
+$("p").ajaxSuccess(function() {
+  console.log("L'appel AJAX a réussi !");
+});
+// écouter l'échec d'une requête AJAX :
+$("p").ajaxError(function() {
+  console.log("L'appel AJAX a échoué !");
+});
+$("p").ajaxComplete(function() {
+    console.log("L'appel AJAX est terminé !");
+});
+
+// ex. du loader
+
+$("<div id='loading'></div>").insertAfter("#more_com"); // Nous ajoutons un élément après le bouton
+
+$("#loading").css({ // Nous appliquons du CSS à cet élément pour y afficher l'image en background
+    background : "url(load.gif)", // On affiche l'image en arrière-plan
+    display : "none"  // Nous cachons l'élément
+});
+
+$("#more_com").click(function(){
+    $.get(
+        'more_com.php',
+        false,
+        'fonction_retour',
+        'text'
+    );
+
+    $("#loading").ajaxStart(function(){ // Nous ciblons l'élément #loading qui est caché
+        $(this).show(); // Nous l'affichons quand la requête AJAX démarre
+    });
+});
+
+```
+
+## PLUGINS
+
+### JQUERY VALIDATION
+
+* https://jqueryvalidation.org/
+
+```js
+$(document).ready(function () {
+
+    $.validator.addMethod("mailverified", function (value, element, params) {
+        let pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+        return pattern.test(value);
+    }, "Veuillez saisir une adresse mail valide");
+
+    // la méthode principale de jQuery validation plugin
+    $('#form-contact').validate({
+        rules: {
+            "form-mail": {
+                required: true,
+                mailverified: true, // remplace la propriété mail
+                minlength: 3,
+                maxlength: 100
+            },
+            "form-firstname": {
+                required: true,
+                maxlength: 255
+            },
+            "form-name": {
+                required: true,
+                maxlength: 255
+            },
+            "form-subject": {
+                required: true,
+                maxlength: 255
+            },
+            "form-message": {
+                required: true
+            },
+            "request-check": {
+                required: true
+            }
+        },
+        messages: {
+            "form-mail": {
+                required: "Veuillez saisir votre adresse mail",
+                email: "Veuillez saisir une adresse mail valide",
+                mailverified: "Veuillez saisir une adresse mail valide", // remplace la propriété mail
+                minlength: "Veuillez saisir une adresse mail valide",
+                maxlength: "Veuillez saisir une adresse mail valide"
+            },
+            "form-firstname": {
+                required: "Veuillez saisir votre prénom",
+                maxlength: "Veuillez saisir un prénom moins long"
+            },
+            "form-name": {
+                required: "Veuillez saisir votre nom",
+                maxlength: "Veuillez saisir un nom moins long"
+            },
+            "form-subject": {
+                required: "Veuillez saisir l'objet de votre mail",
+                maxlength: "Veuillez saisir un titre moins long"
+            },
+            "form-message": {
+                required: "Veuillez saisir votre message"
+            },
+            "request-check": {
+                required: "Veuillez confirmer votre demande"
+            }
+        }
+    });
+});
+```

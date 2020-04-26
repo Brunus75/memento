@@ -9,7 +9,7 @@ sauvegarder puis revenir en arrière et sauvegarder
 
 ## SOMMAIRE
 * REACT avec OC :
-* PRESENTATION
+* [PRESENTATION](#presentation)
 * [DEMARRER AVEC CREATE-REACT-APP](#create-react-app)
 * [Adapter le code à ES2015 (ES6)](#es6)
 * [Ecrire des fonctions pures](#fonctions-pures)
@@ -17,6 +17,24 @@ sauvegarder puis revenir en arrière et sauvegarder
 * [Réagir aux événements](#react-events)
 * [Affichage conditionnel](#affichage-conditionnel)
 * [Listes et clés](#liste-cles)
+* [Configurez vos composants avec les props](#props)
+* [Définissez formellement vos props avec PropTypes](#proptypes)
+* [Gérez la complexité avec les classes ES2015](#gerer-es6)
+* [Définissez des méthodes métier](#methodes-metiers)
+* [Faire référence au bon « this » dans les fonctions](#bon-this)
+* [Mettre en place un état local](#local-state)
+* [Mettez à jour l'état local avec setState](#set-state)
+* [Simplifiez votre gestion des valeurs et événements](#simplify-events)
+* [Validez et formatez à la volée avec les champs contrôlés](#validate-forms)
+* [Déléguez des traitements avec les champs non contrôlés](#delegate-events)
+* [LES TEST AUTOMATISÉS](#automatic-tests)
+* [Premier test avec Jest](#jest)
+* [(OPTIONNEL) Gagnez en expressivité avec Chai](#chai)
+* [Facilitez-vous l'écriture des tests avec Enzyme](#enzyme)
+* [Simulez des événements](#simulate-events)
+* [Mettre en place un filet de sécurité avec les Snapshots](#snapshots)
+* [Auditez la couverture de vos tests](#audit-tests)
+* [Explorez la documentation pour aller plus loin](#doc)
 
 
 
@@ -707,8 +725,8 @@ render() {
   }
 ```
 
-IX) Configurez vos composants avec les props
-
+## <a name="props"></a> Configurez vos composants avec les props
+```jsx
 ◘ Composants parents et enfants
 
 composant enfant = tout composant défini dans le render() du composant parent
@@ -763,10 +781,10 @@ MyCoolComponent.defaultProps = {
   l10n: true,
   required: false,
 }
+```
 
-
-X) Définissez formellement vos props avec PropTypes
-
+## <a name="proptypes"></a> Définissez formellement vos props avec PropTypes
+```jsx
 Le seul moyen pour un composant parent de « configurer » notre composant, 
 de lui indiquer quoi faire, c’est de lui passer les bonnes props.
 
@@ -840,10 +858,10 @@ On retrouve ici deux combinateurs classiques :
 dont la définition est fournie en argument.
 ○ shape(), qui décrit un objet dont les clés sont connues,
 en précisant les types de leurs valeurs.
+```
 
-
-XI) Gérez la complexité avec les classes ES2015
-
+## <a name="gerer-es6"></a> Gérez la complexité avec les classes ES2015
+```jsx
 La principale limite des fonctions, c’est qu’elles se restreignent au rendu
 les fonctions simples restent largement suffisantes pour la grande majorité des composants, 
 ceux appelés « présentationnels » ou « bêtes »
@@ -905,10 +923,10 @@ Dans des didacticiels plus anciens, vous trouverez encore de nombreuses référe
 à l’API d’origine de création de composant avec React: React.createClass
 Toutes les méthodes définies étaient auto-bound, c’est-à-dire que 
 this y désignait toujours, par défaut, l’instance du composant
+```
 
-
-XII) Définissez des méthodes métier
-
+## <a name="methodes-metiers"></a> Définissez des méthodes métier
+```jsx
 ◘ Types de méthodes métier
 
 Dans nos composants définis par des classes, 
@@ -982,9 +1000,10 @@ class LoginScreen extends Component {
     )
   }
 }
+```
 
-XIII) Faire référence au bon « this » dans les fonctions
-
+## <a name="bon-this"></a> Faire référence au bon « this » dans les fonctions
+```jsx
 ◘ Première approche: bind dans le constructeur
 
 class LoginScreen extends Component {
@@ -1052,10 +1071,10 @@ handleCardClick(card) {
 handleCardClick = (card) => {
   console.log(card, this)
 }
+```
 
-
-XIV) Mettre en place un état local
-
+## <a name="local-state"></a> Mettre en place un état local
+```jsx
 Une fois nos composants renderés, 
 ils commencent à « vivre » en interaction avec l’utilisateur ou le système.
 Pour représenter ces données, qui persistent d’un render() à l’autre ou 
@@ -1265,10 +1284,10 @@ Card.propTypes = {
 À présent, si vous cliquez sur une première carte, celle-ci doit s’afficher sans effet particulier. 
 En revanche, en cliquant sur une deuxième carte, 
 la méthode handleNewPairClosedBy() n’étant pas encore écrite, une erreur sera générée, cliquable.
+```
 
-
-XV) Mettez à jour "l'état local" avec « setState »
-
+## <a name="set-state"></a> Mettez à jour l'état local avec setState
+```jsx
 ◘ Appeler setState avec un objet, ça fait quoi ?
 
 envoie une série de modifications à l’état local du composant
@@ -1391,14 +1410,14 @@ componentWillMount() // endroit adapté pour inscrire des timers (ex. setInterva
 render()
 componentDidMount() // le composant a été retranscrit pour la première fois dans le DOM
 componentWillReceiveProps()
+```
 
+## <a name="simplify-events"></a> Simplifiez votre gestion des valeurs et événements
+```jsx
+◘ Valeur d''un champ
 
-XVI) Simplifiez votre gestion des valeurs et événements
-
-◘ Valeur d'un champ
-
-En HTML, la valeur réelle d’un champ dépend largement du type de balise utilisée.
-Avec React, on utilise simplement la prop "value=", quel que soit le type de composant.
+En HTML, la valeur réelle d’un champ dépend largement du "type" de balise utilisée.
+Avec React, on utilise simplement la prop "value=", quel que soit le "type" de composant.
 Pour valeurs multiples, ex.  <select multiple> et ses enfants <option>, 
 vous passerez tout simplement un tableau de valeurs à la prop
 Pour une valeur par défaut, on utilise la prop "defaultValue="
@@ -1406,11 +1425,11 @@ Pour une valeur par défaut, on utilise la prop "defaultValue="
 ◘ Détection de changement d’un champ
 
 React normalise le comportement de changement via la prop "onChange", 
-qui est certifiée comme étant immédiate "(« live »)", quel que soit le type de champ.
+qui est certifiée comme étant immédiate "(« live »)", quel que soit le "type" de champ.
+```
 
-
-XVII) Validez et formatez à la volée avec les champs contrôlés
-
+## <a name="validate-forms"></a> Validez et formatez à la volée avec les champs contrôlés
+```jsx
 ◘ Pourquoi les champs contrôlés ?
 
 - effectuer une requête API
@@ -1655,10 +1674,10 @@ pour limiter à quelques paires réussies par exemple :
   // TEMPORAIRE
   const won = matchedCardIndices.length === 4 // cards.length
 }
+```
 
-
-XVIII) Déléguez des traitements avec les champs non contrôlés
-
+## <a name="delegate-events"></a> Déléguez des traitements avec les champs non contrôlés
+```jsx
 pratiques lorsque l’on souhaite récupérer une valeur de champ 
 sans contraindre sa saisie ni son formatage
 
@@ -1708,10 +1727,10 @@ APPRONDIR LES FORMULAIRES :
   },
   "Awesome React Components": https://github.com/brillout/awesome-react-components#form-components
 } 
+```
 
-
-XIX) LES TEST AUTOMATISÉS
-
+## <a name="automatic-tests"></a> LES TEST AUTOMATISÉS
+```jsx
 ◘ `Test-first (TDD) ou Test-after ?`
 
 On aura donc tendance à limiter le "test-first" au code métier 
@@ -1768,10 +1787,10 @@ les plus populaires = Mocha, Jest et Jasmine. Create React App utilise Jest
 • `Intégration continue`
 va réagir à tout envoi de code sur votre serveur de versions
 Travis CI, Jenkins, GitLab
+```
 
-
-XX) Premier test avec Jest 
-
+## <a name="jest"></a> Premier test avec Jest 
+```jsx
 Jest est intégré de base avec les applications générées par Create React App
 Le fichier src/App.test.js contient une suite de test basique, 
 ce qu’on appelle un smoke test, 
@@ -1795,10 +1814,10 @@ ou d’un point (.)
 
 Jest fournit une fonction expect() qui propose toute une série d’assertions
 =>  https://jestjs.io/docs/en/expect.html#content
+```
 
-
-XXI) (OPTIONNEL) Gagnez en expressivité avec Chai
-
+## <a name="chai"></a> (OPTIONNEL) Gagnez en expressivité avec Chai
+```jsx
 ◘ Utiliser les assertions de Chai
 
 au lieu d’utiliser le  expect()  fourni de base par Jest, 
@@ -1833,7 +1852,7 @@ const dirtyChai = require('dirty-chai');
 
 chai.use(dirtyChai);
 
-◘ Récupérer les jolis diffs de Jest en cas d'inégalité structurelle
+◘ Récupérer les jolis diffs de Jest en cas d''inégalité structurelle
 
 npm install --save-dev chai-jest-diff
 `npm i chai-jest-diff sur le site off`
@@ -1845,10 +1864,10 @@ const chaiJestDiff = require('chai-jest-diff');
 
 chai.use(dirtyChai);
 chai.use(chaiJestDiff.default());
+```
 
-
-XXII) Facilitez-vous l'écriture des tests avec Enzyme
-
+## <a name="enzyme"></a> Facilitez-vous l'écriture des tests avec Enzyme
+```jsx
 Le renderer de test de React est très inférieur à l’outil Enzyme de Airbnb, 
 lequel est d’ailleurs officiellement recommandé par Create React App
 
@@ -1913,10 +1932,10 @@ it('has 36 cards', () => {
 
 La doc : https://airbnb.io/enzyme/docs/api/shallow.html
 des assertions comme prop() ou text() sont extrêmement utiles
+```
 
-
-XXIII) Simulez des événements
-
+## <a name="simulate-events"></a> Simulez des événements
+```jsx
 Rappel à tester : Notre composant <Card /> propose une prop onClick 
 qu’il est effectivement censé appeler, 
 avec sa position dans le tableau (sa prop index) en argument, 
@@ -1981,10 +2000,10 @@ describe('<Card/>', () => {
     expect(onClick).to.have.been.calledWith(0) // ++
   })
 })
+```
 
-
-XXIV) Mettre en place un filet de sécurité avec les Snapshots
-
+## <a name="snapshots"></a> Mettre en place un filet de sécurité avec les Snapshots
+```jsx
 snapshots = « photo » intégrale du résultat d’un morceau de code, 
 en partant du principe que ce code marche correctement à ce moment-là, 
 pour ensuite, lors des prochaines passes de test, 
@@ -2092,18 +2111,18 @@ it('should match its reference snapshot', () => {
 on va à nouveau avoir un snapshot incohérent, 
 puisque celui qui fait référence était aléatoire ; 
 on va donc entériner le nouveau snapshot en tapant u (update)
+```
 
-
-XXV) Auditez la couverture de vos tests
-
+## <a name="audit-tests"></a> Auditez la couverture de vos tests
+```jsx
 npm test -- --coverage
 // --  seul pour indiquer que le reste de la ligne de commande n’est pas à considérer 
 // comme des options pour la commande principale (npm, donc), mais à passer tels quels
 Ouvrir coverage/lcov-report/index.html : tableau interactif et très détaillé de couverture
+```
 
-
-XXVI) Explorez la documentation pour aller plus loin
-
+## <a name="doc"></a> Explorez la documentation pour aller plus loin
+```jsx
 {
   Jest: 'https://jestjs.io/',
   Chai: 'https://www.chaijs.com/',
@@ -2112,3 +2131,4 @@ XXVI) Explorez la documentation pour aller plus loin
   Sinon: 'https://sinonjs.org/',
   'Sinon-Chai': 'https://github.com/domenic/sinon-chai#readme'
 }
+```
