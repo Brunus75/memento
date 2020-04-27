@@ -29,6 +29,39 @@
 * Font Awesome : https://fontawesome.com/
 * Fontisto : une webfont de plus de 600 icônes - barbu du web : https://www.barbuduweb.com/fontisto-bibliotheque-dicones/
 * Picular : https://picular.co/
+* Prototype Design: Atomic.io, the underrated prototyping tool : https://abduzeedo.com/prototype-design-atomicio-underrated-prototyping-tool
+* Débogueur - Facebook for Developers : https://developers.facebook.com/tools/debug/
+* Google Fonts : https://fonts.google.com/
+* Un guide de partage pour les administrateurs de sites : https://developers.facebook.com/docs/sharing/webmasters/
+* Getting started with cards — Twitter Developers : https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html
+* Font Awesome · BootstrapCDN by StackPath : https://www.bootstrapcdn.com/fontawesome/
+* uMap : http://umap.openstreetmap.fr/fr/
+* Outil de test des données structurées : https://search.google.com/structured-data/testing-tool/u/0/
+* Animista (animation on demand) : http://animista.net/
+* Microsoft lance Clarity, un outil d'A/B testing et d’analyse des sessions utilisateur - BDM : https://www.blogdumoderateur.com/microsoft-clarity-outil-a-b-testing
+* StyleURL : pour exporter les modifications CSS réalisées sur Chrome DevTools - BDM : https://www.blogdumoderateur.com/styleurl-modifier-css-chrome
+* Meta Tags : pour générer facilement des balises meta et Open Graph - BDM : https://www.blogdumoderateur.com/meta-tags-balises-open-graph
+* The Best Firefox Add-ons for Developers: 35 Tools for Programmers : https://stackify.com/the-best-firefox-add-ons-for-developers/
+* The 25 Best Sublime Text Plugins for Front End Developers : https://www.shopify.com/partners/blog/sublime-text-plugins-2018
+* Atom : https://atom.io/
+* Hosted Libraries  |  Hosted Libraries  |  Google Developers : https://developers.google.com/speed/libraries/
+* Avoir un code JS & CSS propre grâce à Webpack – Kevin Marques – Medium : https://medium.com/@MarquesDev/avoir-un-code-js-css-propre-gr%C3%A2ce-%C3%A0-webpack-a23dcb2d80bb
+* Construire une application JS depuis zéro (1/3) – OpenClassrooms Produit, Design et ingénierie – Medium : https://medium.com/openclassrooms-produit-design-et-ing%C3%A9nierie/construire-une-application-js-depuis-z%C3%A9ro-1-3-ad4047420824
+* HTTP View | Intercept, explore & debug HTTP : https://httptoolkit.tech/view
+* Adobe Color : un outil pour créer une palette de couleurs facilement et trouver de l'inspiration - BDM : https://www.blogdumoderateur.com/adobe-color-palette-couleurs
+* Meet the Flexbox Inspector | Geddski : https://gedd.ski/post/flexbox-inspector/
+* Loripsum.net - The 'lorem ipsum' generator that doesn't suck. : https://loripsum.net/
+* Placeholder.com: Placeholder Images Made For You [JPG, GIF & PNG] : https://placeholder.com/
+* lorempixel - placeholder images for every case : https://lorempixel.com/
+* Random User Generator | Home : https://randomuser.me/
+* Flexbox Froggy : https://flexboxfroggy.com/#fr
+* Canvas : dimensions & coordonnées by Catox on CodePen : https://codepen.io/Catox/post/canvas-dimensions-coordonnees
+* Un site qui recense de nombreuses API publiques : https://public-apis.xyz/
+* Notifier instantanément si votre site est en panne | IsPage.Online : https://ispage.online/en
+* Subdelirium | Création de site Internet | Générateur de mentions légales gratuit : https://www.subdelirium.com/generateur-de-mentions-legales/
+* Tutoriel Vidéo Laragon : https://www.grafikart.fr/tutoriels/laragon-1010
+* Glyphy | Copy & paste glyphs with ease : https://www.glyphy.io/
+* Diagram.Codes : https://www.diagram.codes/
 
 
 ## :warning: VALIDATEURS
@@ -222,9 +255,32 @@
 
 ### CSS
 
+* CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
+* 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
 * Overflow In CSS : https://ishadeed.com/article/overflow-css/
+* Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
+* How to Center in CSS : http://howtocenterincss.com/#contentType=text&horizontal=center&vertical=middle&browser.IE=none
+* Complex Selectors - Learn to Code Advanced HTML & CSS : https://learn.shayhowe.com/advanced-html-css/complex-selectors/
+* Clippy — CSS clip-path maker : http://bennettfeely.com/clippy/
+* faviconit :: création de favicon et d'icones apple touch compatible tous périphériques et tous navigateurs : http://faviconit.com/fr
+* css - Setting a minimum width to fit on responsive website - Stack Overflow : https://stackoverflow.com/questions/22946264/setting-a-minimum-width-to-fit-on-responsive-website
+* Edit Shape Paths in CSS - Firefox Developer Tools | MDN : https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector/How_to/Edit_CSS_shapes
+* All in One Tool for Makers - Indie Makers Tools : https://www.indiemakers.tools
+* css selectors - Why selecting by ID is not recommended in CSS? - Stack Overflow : https://stackoverflow.com/questions/8084555/why-selecting-by-id-is-not-recommended-in-css
+* Browse by color | Dribbble : https://dribbble.com/colors/faddd1.faddd1
+* Avataaars Generator - A free online avatar generator for anyone to make their beautiful personal avatar easily! : https://getavataaars.com/?avatarStyle=Circle
+* Flexulator : https://www.flexulator.com/
+* Really Good Emails - The Best Email Designs in the Universe (that came into my inbox) : https://reallygoodemails.com/
+* How To Align Things In CSS — Smashing Magazine : https://www.smashingmagazine.com/2019/03/css-alignment
+* Data Color Picker – Learn UI Design : https://learnui.design/tools/data-color-picker.html
+* Releases · webkul/coolhue · GitHub : https://github.com/webkul/coolhue/releases
+* An Illustrated (and Musical) Guide to Map, Reduce, and Filter Array Methods | CSS-Tricks : https://css-tricks.com/an-illustrated-and-musical-guide-to-map-reduce-and-filter-array-methods
+* Web Maker : https://webmaker.app
+* What’s New In CSS? : https://noti.st/rachelandrew/Kr6L2U/whats-new-in-css#suLES0g
+* Gradient CSS Generator | CSSmatic : https://www.cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28top\%2C\%20rgba\%28109\%2C0\%2C25\%2C1\%29\%200\%25\%2C\%20rgba\%28143\%2C2\%2C34\%2C0\.44\%29\%2056\%25\%2C\%20rgba\%28255\%2C255\%2C255\%2C0\%29\%20100\%25\%29\%3B'
+* ColorKitty - Find the perfect color palettes from pictures. : https://colorkitty.com
 
 
 ### BOOTSTRAP

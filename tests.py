@@ -202,3 +202,24 @@ def toJadenCase(NonJadenStrings):
 def positive_sum(arr):
     positives = [number for number in arr if number > 0]
     return sum(positives)
+
+
+## REPERER UN NOMBRE DIFFERENT (PAIR OU IMPAIR) DANS UN STRING
+
+# create a program that among the given numbers finds one that is different in evenness, 
+# and return a position of this number
+# Examples :
+# iq_test("2 4 7 8 10") => 3 // Third number is odd, while the rest of the numbers are even
+# iq_test("1 2 1 1") => 2 // Second number is even, while the rest of the numbers are odd
+
+def iq_test(numbers):
+    listNumbers = [int(i) for i in numbers.split(" ")] # string => list of numbers
+    pairNumbers = [i for i in listNumbers if i % 2 == 0]
+    index = 0
+
+    if len(pairNumbers) > (len(listNumbers) / 2):
+        index = [i + 1 for i, x in enumerate(listNumbers) if x % 2 == 1]
+    else:
+        index = [i + 1 for i, x in enumerate(listNumbers) if x % 2 == 0]
+
+    return int(index[0]) # result of list comprehension is a list
