@@ -168,3 +168,19 @@ Namespaces are one honking great idea -- let's do more of those!
 >>> json.dumps({all: 'yup'})
 TypeError: keys must be a string
 ```
+
+## Function argument unpacking in Python
+
+```py
+def myfunc(x, y, z):
+    print(x, y, z)
+
+tuple_vec = (1, 0, 1)
+dict_vec = {'x': 1, 'y': 0, 'z': 1}
+
+>>> myfunc(*tuple_vec)
+1, 0, 1
+
+>>> myfunc(**dict_vec)
+1, 0, 1
+```

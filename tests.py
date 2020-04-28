@@ -223,3 +223,79 @@ def iq_test(numbers):
         index = [i + 1 for i, x in enumerate(listNumbers) if x % 2 == 0]
 
     return int(index[0]) # result of list comprehension is a list
+
+
+# solutions populaires
+
+def iq_test(numbers):
+    e = [int(i) % 2 == 0 for i in numbers.split()] # e = list de True ou False
+
+    return e.index(True) + 1 if e.count(True) == 1 else e.index(False) + 1
+
+
+def iq_test(n):
+    n = [int(i) % 2 for i in n.split()] # n = list de 1 (True) et 0 (False)
+    if n.count(0) > 1:
+        return n.index(1)+1
+    else:
+        return n.index(0)+1
+
+
+def iq_test(numbers):
+    indexEven = 0
+    indexOdd = 0
+    numEven = 0
+    numOdd = 0
+    nums = numbers.split(" ")
+    for i in range(len(nums)):
+        if int(nums[i]) % 2 == 0:
+            numEven += 1
+            indexEven = i + 1
+        else:
+            numOdd += 1
+            indexOdd = i + 1
+    if numEven == 1:
+        return indexEven
+    else:
+        return indexOdd
+
+
+# RETOURNER LA PROCHAIN CARRE D'UN NOMBRE
+# Return the next square if sq is a square, -1 otherwise
+import math
+
+def find_next_square(sq):
+    square_root = math.sqrt(sq)
+    if square_root == int(math.sqrt(sq)):
+        return (square_root + 1) ** 2
+    return -1
+
+# solutions populaires :
+
+def find_next_square(sq):
+    root = sq ** 0.5
+    if root.is_integer():
+        return (root + 1) ** 2
+    return -1
+
+
+# Take every 2nd char from the string, then the other chars, 
+# that are not every 2nd char, and concat them as new String.
+# Do this n times!
+# Examples :
+# "This is a test!", 1 -> "hsi  etTi sats!"
+# "This is a test!", 2 -> "hsi  etTi sats!" -> "s eT ashi tist!"
+
+def decrypt(encrypted_text, n):
+    if n <= 0:
+        return encrypted_text
+    result = encrypted_text
+    for i in range(n):
+        second_char = [x for i, x in enumerate(result) if i % 2]
+        odd_char = [x for i, x in enumerate(result) if i % 2 == 0]
+        result = "".join(second_char) + "".join(odd_char)
+        print(result)
+    return result
+
+def encrypt(text, n):
+    return "Hello"

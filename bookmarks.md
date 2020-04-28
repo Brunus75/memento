@@ -243,6 +243,12 @@
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
 
 
+### FONTS
+
+* 5 outils en ligne pour rechercher et télécharger des polices d’écriture : https://www.blogdumoderateur.com/outils-recherche-police-ecriture
+
+
+
 ### HTML
 
 * Upload & Convert | Favicon.io : https://favicon.io/favicon-converter/
