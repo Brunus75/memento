@@ -286,16 +286,34 @@ def find_next_square(sq):
 # "This is a test!", 1 -> "hsi  etTi sats!"
 # "This is a test!", 2 -> "hsi  etTi sats!" -> "s eT ashi tist!"
 
-def decrypt(encrypted_text, n):
+def decrypt(encrypted_text, n): # "hsi  etTi sats!", 1 => "This is a test!"
     if n <= 0:
         return encrypted_text
     result = encrypted_text
     for i in range(n):
+        letters = list(result)
+        middle = int((len(letters) / 2) - 1)  # milieu de liste
+        second_char = letters[:middle + 1] # début -> milieu de liste
+        odd_char = letters[middle + 1:] # milieu +1 -> fin de liste
+        odd_index = 0
+        second_index = 0
+        for i, x in enumerate(letters):
+            if i % 2 == 0:
+                letters[i] = odd_char[odd_index]
+                odd_index += 1
+            else:
+                letters[i] = second_char[second_index]
+                second_index += 1
+        result = "".join(letters)
+    return result
+
+
+def encrypt(text, n): # "This is a test!", 1 -> "hsi  etTi sats!"
+    if n <= 0:
+        return text
+    result = text
+    for i in range(n):
         second_char = [x for i, x in enumerate(result) if i % 2]
         odd_char = [x for i, x in enumerate(result) if i % 2 == 0]
         result = "".join(second_char) + "".join(odd_char)
-        print(result)
     return result
-
-def encrypt(text, n):
-    return "Hello"

@@ -13,6 +13,7 @@
 * https://www.reddit.com/
 * https://www.barbuduweb.com/
 * https://stephaniewalter.design/blog/
+* https://abduzeedo.com/
 
 
 ## :gun: WEB TOOLS
@@ -158,7 +159,7 @@
 * https://stackoverflow.com/questions/3292903/in-markdown-what-is-the-best-way-to-link-to-a-fragment-of-a-page-i-e-some-id?noredirect=1&lq=1
 * Anchor links : https://docs.microsoft.com/en-us/azure/devops/project/wiki/markdown-guidance?view=azure-devops#anchor-links
 * https://github.com/ikatyang/emoji-cheat-sheet
-
+* Markmap : créez des graphes mindmap avec du Markdown : https://markmap.js.org/repl/
 
 ## :hammer_and_wrench: BACK-END
 
@@ -339,6 +340,11 @@
 * Line Awesome : 1 400 icônes modernes, gratuites et open source - BDM : https://www.blogdumoderateur.com/line-awesome-icones-modernes-gratuites
 * Make sense of rounded corners on buttons : https://uxdesign.cc/make-sense-of-rounded-corners-on-buttons-dfc8e13ea7f7
 * 7 Practical Tips for Cheating at Design : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
+
+
+### DESIGN
+
+* https://abduzeedo.com/web-design-inspiration-landing-pages
 
 
 ## :joystick: API

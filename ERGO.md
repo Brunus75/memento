@@ -9,3 +9,7 @@
 ## JUSTINMIND
 
 * créer une règle : survoler les règles du projet, cliquer, puis déplacer la règle. Pour l'effacer, clic-droit sur la règle
+* choisir un template 960 grid 12 colonnes, choisir 1000px de largeur (simule le quadrilage en 12 de Bootstrap)
+* Double-clic sur Screens > Edit > Center screen's content
+* Penser à changer de template (de grid à basique) avant chaque simulation
+* Désactiver les éléments transparents du template : View / Fade Template Components
