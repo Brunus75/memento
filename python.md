@@ -73,6 +73,7 @@
 * https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/235263-de-bonnes-pratiques
 * https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask/4526533-testez-le-parcours-utilisateur-avec-les-tests-fonctionnels 
 * https://github.com/trending/python
+* New Features in Python 3.9 You Should Know About : https://medium.com/@martin.heinz/new-features-in-python-3-9-you-should-know-about-14f3c647c2b4
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -88,7 +89,13 @@
 * ~ https://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide
 * ~ https://www.tutorialsteacher.com/python/database-crud-operation-in-python
 * ~ https://realpython.com/oop-in-python-vs-java/
-* ~ https://docs.python.org/3/tutorial/classes.html    
+* ~ https://docs.python.org/3/tutorial/classes.html
+* ~ what kind of goals/benchmarks can I set for myself along the way? https://old.reddit.com/r/learnpython/comments/g7rpwu/ok_so_im_committed_to_1_year_of_coding_in_python/
+* ~ https://realpython.com/python-application-layouts/
+* ~ Effective Python Testing With Pytest : https://realpython.com/pytest-python-testing/
+* ~ Python Coding Interviews: Tips & Best Practices : https://realpython.com/courses/python-coding-interviews-tips-best-practices
+* ~ https://realpython.com/preview/python-eval-function
+* ~ Regular Expressions: Regexes in Python, Part 1 : https://realpython.com/regex-python/    
 
 
 ## INSTALLATION
@@ -110,6 +117,10 @@
 * lancer python en mode interactive : python -i
 * lancer une version précise de python : py -3.7
 * exit() pour en sortir
+
+## PYCHARM
+* IDE Python
+* Version gratuite "Community" accessible : https://www.jetbrains.com/fr-fr/pycharm/features/editions_comparison_matrix.html
 
 
 ## <a name="raccourcis-code"></a> RACCOURCIS VS CODE

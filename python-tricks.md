@@ -207,3 +207,24 @@ dict_vec = {'x': 1, 'y': 0, 'z': 1}
 
 0.24581470699922647
 ```
+
+## Python's shorthand for in-place value swapping
+
+```py
+# In-place value swapping
+
+# Let's say we want to swap
+# the values of a and b...
+a = 23
+b = 42
+
+# The "classic" way to do it
+# with a temporary variable:
+tmp = a
+a = b
+b = tmp
+
+# Python also lets us
+# use this short-hand:
+a, b = b, a
+```

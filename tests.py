@@ -317,3 +317,43 @@ def encrypt(text, n): # "This is a test!", 1 -> "hsi  etTi sats!"
         odd_char = [x for i, x in enumerate(result) if i % 2 == 0]
         result = "".join(second_char) + "".join(odd_char)
     return result
+
+
+# solutions populaires
+
+def decrypt(text, n):
+    if text in ("", None):
+        return text
+
+    ndx = len(text) // 2 # round middle
+
+    for i in range(n):
+        a = text[:ndx]
+        b = text[ndx:]
+        text = "".join(b[i:i+1] + a[i:i+1] for i in range(ndx + 1))
+    return text
+
+def encrypt(text, n):
+    for i in range(n):
+        text = text[1::2] + text[::2]
+        # récupère une lettre sur 2, à partir du 2ème élément
+        # + récupère une lettre sur 2, à partir du 1er élément
+    return text
+
+# solution 2
+
+def decrypt(text, n):
+    if not text:
+        return text
+    half = len(text) // 2
+    arr = list(text)
+    for _ in range(n):
+        arr[1::2], arr[::2] = arr[:half], arr[half:]
+        # remplace les lettres impaires et paires
+        # par la fin du texte et le début du texte
+    return ''.join(arr)
+
+def encrypt(text, n):
+    for i in range(n):
+        text = text[1::2] + text[::2]
+    return text

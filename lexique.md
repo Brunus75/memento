@@ -124,3 +124,5 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 * :world_map: **Pointeur** : variable qui contient l’adresse d’une donnée contenue en mémoire
 
 * :notebook: **Prototypage** : réalisation du prototype, du brouillon d'un produit final
+
+* :card_index_dividers: **Registre (ou base de registre)** : fichier où sont stockés les paramètres d'un ordinateur Windows, sous-divisé en dossiers appelés "clé" qui contiennent les informations du registre. Chacune des clés est dédiée à un domaine de Windows et peut contenir des sous-clés afin d'affiner le rangement

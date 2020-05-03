@@ -14,6 +14,7 @@
 * https://www.barbuduweb.com/
 * https://stephaniewalter.design/blog/
 * https://abduzeedo.com/
+* https://www.webdesignernews.com/
 
 
 ## :gun: WEB TOOLS
@@ -91,6 +92,8 @@
 * Test d'optimisation mobile - Google Search Console : https://search.google.com/test/mobile-friendly
 * Comment devenir bon programmeur : https://programmation.developpez.com/tutoriel/comment-devenir-bon-programmeur/?page=intermediaire
 * DevOps Tools Report 2020 | GitKraken Resources : https://www.gitkraken.com/resources/devops-report-2020
+* https://apprendre-a-coder.com/
+* https://emploi.developpez.com/actu/300602/Emploi-developpeur-2019-les-tendances-et-les-effets-de-mode-les-nouveaux-metiers-et-technologies-sur-le-marche-de-l-emploi/
 
 
 ## :mag_right: SEO
@@ -147,6 +150,7 @@
 * Semantic Versioning 2.0.0 | Semantic Versioning : https://semver.org/
 * Pushing and Pulling : https://support.gitkraken.com/working-with-repositories/pushing-and-pulling/
 * Learn Git - Tutorial Videos | GitKraken Resources : https://www.gitkraken.com/resources/learn-git
+* Mettre en ligne son site web statique et évaluer sa qualité : Partie 1 — Création d’un dépôt sur Github et activation de Github Pages : https://medium.com/@JeremyRaffin/site-web-statique-optimis%C3%A9-avec-github-pages-cr%C3%A9ation-du-d%C3%A9p%C3%B4t-et-activation-de-github-pages-1-4-2537061ef3dd
 
 
 ## :memo: MARKDOWN
@@ -176,6 +180,10 @@
 * LinkedIn : https://www.linkedin.com/feed/update/urn:li:activity:6601056850412740608/
 * Composer - Dev vs Production : PHP : https://www.reddit.com/r/PHP/comments/8pzdpn/composer_dev_vs_production/
 * PHP: composer does not belong in production! - Thomas Dutrion - Medium : https://medium.com/@tdutrion/php-composer-does-not-belong-in-production-11e7eb17cce5
+* Intégrer le MVC en PHP : https://www.youtube.com/playlist?list=PLCg7bb2BzkP3BjEkpMw7_ppGgDcc73oSM
+* Évoluer vers une architecture MVC en PHP : https://bpesquet.developpez.com/tutoriels/php/evoluer-architecture-mvc/
+* https://www.grafikart.fr/search?q=MVC
+
 
 ### SYMFONY
 
@@ -242,6 +250,7 @@
 
 * Front-end Developer Handbook 2019 - Learn the entire JavaScript, CSS and HTML development practice! : https://frontendmasters.com/books/front-end-handbook/2019/#4.10
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
+* 25 Bootstrap Tables : https://freefrontend.com/bootstrap-tables/
 
 
 ### FONTS
@@ -340,6 +349,7 @@
 * Line Awesome : 1 400 icônes modernes, gratuites et open source - BDM : https://www.blogdumoderateur.com/line-awesome-icones-modernes-gratuites
 * Make sense of rounded corners on buttons : https://uxdesign.cc/make-sense-of-rounded-corners-on-buttons-dfc8e13ea7f7
 * 7 Practical Tips for Cheating at Design : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
+* 10 open source SVG icon libraries that you can use for your next project : https://themesberg.com/blog/open-source/10-open-source-free-svg-icon-libraries
 
 
 ### DESIGN

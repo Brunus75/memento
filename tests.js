@@ -384,3 +384,41 @@ var gimme = function (inputArray) {
 };
 
 
+/* ---------- CREER DES ESPACES DANS UNE CHAINE DE CARACTERES ---------- */
+// un string en camelCase, le retourner en camel Case
+// solution("camelCasing")  ==  "camel Casing"
+
+function solution(string) {
+  array = string.split(''); // [... string]
+
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] == array[i].toUpperCase()) { // si le caractere est en MAJUSCULE
+      array[i] = " " + array[i] // on ajoute un espace avant
+    }
+  }
+
+  return array.join('')
+}
+
+// solution populaire 1 
+
+function solution(string) {
+  return (string.replace(/([A-Z])/g, ' $1'));
+  // g : global search = permet de rendre le sujet itérable
+  // $1 : contenu capturé par le regex
+  // remplace l'occurence trouvée par le regex par ' occurence'
+  
+  // string.replace(/[A-Z]/g, ' $&') marche aussi
+}
+
+// solution populaire 2 avec map()
+
+function solution(string) {
+  string = string.split('').map(function (el) {
+    if (el === el.toUpperCase()) {
+      el = ' ' + el
+    }
+    return el
+  })
+  return string.join('')
+}

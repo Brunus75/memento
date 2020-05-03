@@ -4,6 +4,9 @@
 ## RESSOURCES
 
 * https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding-style/
+* https://www.udemy.com/course/creer-une-application-web-avec-django
+* https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django
+* https://openclassrooms.com/fr/courses/4425076-decouvrez-le-framework-django
 * ~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
 * ~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
 * ~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
@@ -24,6 +27,7 @@
 * [INSTALLATION](#installation)
 * [SQLITE](#sqlite)
 * [DJANGO](#django)
+* [ARCHITECTURE](#architecture)
 * [GESTION DE PROJET](#gestion-projet)
 * [LES BASE DE DONNEES](#base-donnees)
 * [ORGANISER SES VUES](#organiser-vues)
@@ -211,7 +215,7 @@ qu’une certaine syntaxe particulière définissant comment insérer le contenu
 py - 3.7 - m venv env  # -m pour module
 aller dans env/Scripts/
 dans le terminal: source activate
-on est dans l'environnement virtuel'
+on est dans l''environnement virtuel
 which pip pour vérifier si on est dans un environnement virtuel
 deactivate pour en sortir
 
@@ -230,7 +234,7 @@ python -i
 VS Code gère les environnements virtuels
 il suffit de lancer le projet dans VS Code
 se placer dans le projet + taper: code . dans git bash
-ou copier-glisser le projet sur l'icône' VS du bureau
+ou copier-glisser le projet sur l''icône VS du bureau
 ```
 
 ## SQLITE
@@ -253,6 +257,24 @@ Show Table => execute commande SQL pour afficher la table
 * Ex. d'applications' : un forum, une galerie de photos ; modules réutilisables
 
 
+## ARCHITECTURE
+
+```shell
+dossier_projet/
+    venv/
+    src/ # nom de dossier Django, initialement "nom_projet", renommé "src" par souci de clarté
+        nom_projet/
+            __init__.py
+            settings.py
+            urls.py
+            wsgi.py
+        application1/
+        application2/
+        api.py # ajout d'un fichier externe, comme une API
+        manage.py
+```
+
+
 ## <a name="gestion-projet"></a> GESTION DE PROJET
 ```py
 # Création de projet
@@ -260,7 +282,7 @@ outil de commande Django : django-admin
 se déplacer dans le dossier où le projet sera créé
 django-admin startproject nom_projet
 
-crepes_bretonnes/
+crepes_bretonnes/ # src/
 ├── crepes_bretonnes
 │   ├── __init__.py # non modifiable
 │   ├── settings.py # configuration
