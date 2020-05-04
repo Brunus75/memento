@@ -13,3 +13,4 @@
 * Double-clic sur Screens > Edit > Center screen's content
 * Penser à changer de template (de grid à basique) avant chaque simulation
 * Désactiver les éléments transparents du template : View / Fade Template Components
+* Ctrl + MAJ pour dupliquer un élément harmonieusement

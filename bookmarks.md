@@ -118,6 +118,7 @@
 * 12 SEO Best Practices That Everyone Should Follow : https://ahrefs.com/blog/seo-best-practices/
 * Optimiser et accélérer les pages web - lehollandaisvolant.net : https://lehollandaisvolant.net/tuto/pagespd/#css-squelette
 * Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
+* Les 12 meilleurs outils gratuits de 2020 pour la recherche de mots-clés : https://fr.semrush.com/blog/12-meilleurs-outils-gratuits-2020-recherche-mots-cles/
 
 
 ## :bulb: ORGANISATION
