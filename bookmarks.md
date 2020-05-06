@@ -15,6 +15,8 @@
 * https://stephaniewalter.design/blog/
 * https://abduzeedo.com/
 * https://www.webdesignernews.com/
+* https://www.webdesignerdepot.com
+* https://wweb.dev
 
 
 ## :gun: WEB TOOLS
@@ -64,6 +66,48 @@
 * Tutoriel Vidéo Laragon : https://www.grafikart.fr/tutoriels/laragon-1010
 * Glyphy | Copy & paste glyphs with ease : https://www.glyphy.io/
 * Diagram.Codes : https://www.diagram.codes/
+* Google lance web.dev : évaluez les performances de votre site web et apprenez à concevoir des sites web efficaces - Blog du Modérateur : https://www.blogdumoderateur.com/google-webdev-test
+* Vous pouvez maintenant tester le concurrent français de Google Maps en alpha : https://www.presse-citron.net/vous-pouvez-maintenant-tester-le-concurrent-francais-de-google-maps-en-alpha
+
+
+## :pushpin: WEB DOCS
+
+* CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
+* Combinaisons et groupes de sélecteurs | MDN : https://developer.mozilla.org/fr/docs/Apprendre/CSS/Introduction_%C3%A0_CSS/Combinators_and_multiple_selectors
+* CSS font-display et le chargement des polices web - Alsacreations : https://www.alsacreations.com/article/lire/1779-CSS-font-display-et-le-chargement-des-polices-web.html
+* < pre > : l'élément de texte préformaté - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/pre
+* Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
+* box-sizing - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/box-sizing
+* text-overflow - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/text-overflow
+* ::before (:before) - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/::before
+* < hr > : l'élément de rupture thématique (règle horizontale) - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/hr
+* inherit - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/inherit
+* transform - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/transform
+* Disable CSS transitions and animations… temporarily or permanently! – onezeronull.com : http://onezeronull.com/2016/10/06/disable-css-transitions-and-animations-temporarily-or-permanently/
+* When to use margin vs padding in CSS - Stack Overflow : https://stackoverflow.com/questions/2189452/when-to-use-margin-vs-padding-in-css
+* Jump links and viewport positioning – Nicolas Gallagher : http://nicolasgallagher.com/jump-links-and-viewport-positioning/
+* html - Creating a line with circle in the middle - Stack Overflow : https://stackoverflow.com/questions/34969341/creating-a-line-with-circle-in-the-middle
+* Create Shapes Using Pure CSS : http://www.webtutorialsource.com/tutorial/shapes-using-pure-css/
+* 8 simple CSS3 transitions that will wow your users | Webdesigner Depot : https://www.webdesignerdepot.com/2014/05/8-simple-css3-transitions-that-will-wow-your-users/
+* css - How to write :hover condition for a:before and a:after? - Stack Overflow : https://stackoverflow.com/questions/5777210/how-to-write-hover-condition-for-abefore-and-aafter
+* html - CSS triangle :before element - Stack Overflow : https://stackoverflow.com/questions/20589780/css-triangle-before-element
+* CSS Flexbox Inspector: Examine Flexbox layouts - Firefox Developer Tools | MDN : https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector/How_to/Examine_Flexbox_layouts
+* CSS Tip: Fixed Headers and Section Anchors | Caktus Group : https://www.caktusgroup.com/blog/2017/10/23/css-tip-fixed-headers-and-section-anchors/
+* CSS hue-rotate() Function : https://www.quackit.com/css/functions/css_hue-rotate_function.cfm
+* filter - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/filter
+* css - How to make a image center in a div? - Stack Overflow : https://stackoverflow.com/questions/16818192/how-to-make-a-image-center-in-a-div
+* html - How to center a "position: absolute" element - Stack Overflow : https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
+* html - position:absolute in media query is overriding all other rules - Stack Overflow : https://stackoverflow.com/questions/34445409/positionabsolute-in-media-query-is-overriding-all-other-rules
+* Implementing a variable font with fallback web fonts – Zeichenschatz : https://www.zeichenschatz.net/typografie/implementing-a-variable-font-with-fallback-web-fonts.html
+* Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/
+* Google facilite les échanges entre les entreprises et leurs clients sur Google Maps - Blog du Modérateur : https://www.blogdumoderateur.com/google-maps-my-business
+* HTML CSS - Désactiver un lien href par CSS - INFORMATUX Développements PHP JQUERY Mobile Cross-platform Sécurité Web : https://informatux.com/news/article/7/desactiver-un-lien-href-par-css
+* SVG Path : https://www.w3schools.com/graphics/svg_path.asp
+* The CSS Working Group At TPAC: What’s New In CSS? — Smashing Magazine : https://www.smashingmagazine.com/2018/10/tpac-css-working-group-new
+* CSS Frameworks Or CSS Grid: What Should I Use For My Project? — Smashing Magazine : https://www.smashingmagazine.com/2018/11/css-frameworks-css-grid
+* How Much Should You Get Paid To Build Websites In 2019? — Smashing Magazine : https://www.smashingmagazine.com/2019/01/costs-building-websites-2019
+* Improve Animated GIF Performance With HTML5 Video — Smashing Magazine : https://www.smashingmagazine.com/2018/11/gif-to-video
+* Designing Experiences To Improve Mental Health — Smashing Magazine : https://www.smashingmagazine.com/2018/10/designing-experiences-improving-mental-health/
 
 
 ## :warning: VALIDATEURS
@@ -98,6 +142,10 @@
 
 ## :mag_right: SEO
 
+* Schema creator : créez vos premières balises sémantiques grâce à un formulaire qui vous affichera le code HTML correspondant : https://seoscout.com/tools/schema-generator
+* JSON-LD Schema Generator For SEO : https://hallanalysis.com/json-ld-generator/
+* Structured Data Testing Tool : cherchez une page contenant des balises sémantiques et laissez Google vous afficher ce qu’il en a compris : https://search.google.com/structured-data/testing-tool
+* Ajouter les metatags : https://openclassrooms.com/fr/courses/3504431-decoupez-et-integrez-une-maquette/3605786-ajouter-les-metatags
 * Open Graph Meta Tags: Everything You Need to Know : https://ahrefs.com/blog/open-graph-meta-tags/
 * Alt Text for SEO: How to Optimize Your Images : https://ahrefs.com/blog/alt-text/
 * SEO : les erreurs les plus fréquentes qui pénalisent le référencement des sites web : https://www.blogdumoderateur.com/seo-erreurs-frequentes
@@ -119,6 +167,12 @@
 * Optimiser et accélérer les pages web - lehollandaisvolant.net : https://lehollandaisvolant.net/tuto/pagespd/#css-squelette
 * Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
 * Les 12 meilleurs outils gratuits de 2020 pour la recherche de mots-clés : https://fr.semrush.com/blog/12-meilleurs-outils-gratuits-2020-recherche-mots-cles/
+* Le Guide ultime des Titres (Hn) sous WordPress pour mieux les utiliser ! : https://wpformation.com/guide-ultime-titres-wordpress/
+* Mettre en place un balisage sémantique Schema.org : https://www.lafabriquedunet.fr/seo/articles/mettre-en-place-installer-balisage-semantique-schema-org/
+* Getting Started - schema.org : https://schema.org/docs/gs.html#microdata_itemscope_itemtype
+* WebSite - schema.org : https://schema.org/WebSite
+* Balise title : combien de caractères pour les titres sur Google ? - Blog du Modérateur : https://www.blogdumoderateur.com/title-nombre-caracteres-google/
+* Rich snippets : les résultats enrichis pour les questions/réponses - Blog du Modérateur : https://www.blogdumoderateur.com/rich-snippets-questions-reponses
 
 
 ## :bulb: ORGANISATION
@@ -166,6 +220,7 @@
 * https://github.com/ikatyang/emoji-cheat-sheet
 * Markmap : créez des graphes mindmap avec du Markdown : https://markmap.js.org/repl/
 
+
 ## :hammer_and_wrench: BACK-END
 
 ### PHP
@@ -208,7 +263,7 @@
 * AFSY - Association Francophone des Utilisateurs de Symfony - calendrier de l'avent 2019 - Jour 11 - Petit précis des images responsives avec Symfony : https://afsy.fr/avent/2019/11-images-responsives-avec-symfony
 * symfony-docs/setup.rst at master · symfony/symfony-docs : https://github.com/symfony/symfony-docs/blob/master/setup.rst
 * symfony/demo: Symfony Demo Application : https://github.com/symfony/demo
-
+* Thomas Boileau - Youtube : https://www.youtube.com/user/SqAE28/videos
 
 
 ### PYTHON
@@ -252,12 +307,12 @@
 * Front-end Developer Handbook 2019 - Learn the entire JavaScript, CSS and HTML development practice! : https://frontendmasters.com/books/front-end-handbook/2019/#4.10
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
 * 25 Bootstrap Tables : https://freefrontend.com/bootstrap-tables/
+* Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
 
 
 ### FONTS
 
 * 5 outils en ligne pour rechercher et télécharger des polices d’écriture : https://www.blogdumoderateur.com/outils-recherche-police-ecriture
-
 
 
 ### HTML
@@ -273,6 +328,7 @@
 ### CSS
 
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
+* CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
 * 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
@@ -298,6 +354,7 @@
 * What’s New In CSS? : https://noti.st/rachelandrew/Kr6L2U/whats-new-in-css#suLES0g
 * Gradient CSS Generator | CSSmatic : https://www.cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28top\%2C\%20rgba\%28109\%2C0\%2C25\%2C1\%29\%200\%25\%2C\%20rgba\%28143\%2C2\%2C34\%2C0\.44\%29\%2056\%25\%2C\%20rgba\%28255\%2C255\%2C255\%2C0\%29\%20100\%25\%29\%3B'
 * ColorKitty - Find the perfect color palettes from pictures. : https://colorkitty.com
+* Selection in CSS : https://ishadeed.com/article/selection-in-css
 
 
 ### BOOTSTRAP
@@ -326,6 +383,7 @@
 * Tutoriel Vidéo Slider Javascript avec jQuery : https://www.grafikart.fr/tutoriels/slider-javascript-jquery-54
 * javascript - Marker in leaflet, click event - Stack Overflow : https://stackoverflow.com/questions/16927793/marker-in-leaflet-click-event
 * Canvas : dimensions & coordonnées by Catox on CodePen : https://codepen.io/Catox/post/canvas-dimensions-coordonnees
+* jquery - What's the difference between keyup, keydown, keypress and input events? - Stack Overflow : https://stackoverflow.com/questions/38502560/whats-the-difference-between-keyup-keydown-keypress-and-input-events
 
 
 ### REACT
@@ -351,6 +409,7 @@
 * Make sense of rounded corners on buttons : https://uxdesign.cc/make-sense-of-rounded-corners-on-buttons-dfc8e13ea7f7
 * 7 Practical Tips for Cheating at Design : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * 10 open source SVG icon libraries that you can use for your next project : https://themesberg.com/blog/open-source/10-open-source-free-svg-icon-libraries
+* Ux Design | Menu Hamburger : icône appétissante ou indigeste ? : https://vanillefraise.eu/navigation-menu-hamburger-icone-appetissante-ou-indigeste/
 
 
 ### DESIGN
@@ -367,6 +426,14 @@
 * Leaflet - a JavaScript library for interactive maps : https://leafletjs.com/
 
 
+## :speech_balloon: WORDPRESS
+
+* Le Guide ultime des Titres (Hn) sous WordPress pour mieux les utiliser ! : https://wpformation.com/guide-ultime-titres-wordpress/
+* Comment activer l'éditeur dans wordpress en 3 minutes ! Tutoriel Français - YouTube : https://www.youtube.com/watch?v=bGUFGD7yYt0
+* Installez WordPress chez 1and1 facilement en 2014 ! : https://wp-infinity.com/tutoriels/installer-wordpress/1and1-hebergement-mutualise/
+* WordPress : Comment créer un PLAN de SITE (ou sitemap HTML) ? : https://wpformation.com/plan-de-site-sitemap-html-wordpress/
+
+
 ## :card_file_box: BASE DE DONNEES
 
 ### POSTGRES
@@ -378,6 +445,7 @@
 
 * Programming with Mosh - YouTube : https://www.youtube.com/user/programmingwithmosh/videos
 * Server side vs Client side Postgres Cursors with psycopg2 - YouTube : https://www.youtube.com/watch?v=dLKZWbTHfgA
+* mmtuts - YouTube : https://www.youtube.com/user/TheCharmefis/videos
 
 
 ## :alembic: TESTS
@@ -425,3 +493,5 @@
 ## :heavy_heart_exclamation: SITES WEB
 
 * https://stephaniewalter.design/
+* https://wattenberger.com/blog/gauge
+* Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
