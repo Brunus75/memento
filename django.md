@@ -15,7 +15,9 @@
 * ~ https://docs.djangoproject.com/fr/3.0/howto/custom-lookups/
 * ~ https://docs.djangoproject.com/fr/3.0/topics/auth/
 * ~ https://docs.djangoproject.com/fr/3.0/releases/
-* ~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#   
+* ~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#
+* ~ Caching in Django : https://testdriven.io/blog/django-caching/
+* ~ User Interaction With Forms : https://www.mattlayman.com/understand-django/user-interaction-forms/   
 
 
 ## SOMMAIRE

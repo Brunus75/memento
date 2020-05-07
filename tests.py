@@ -357,3 +357,51 @@ def encrypt(text, n):
     for i in range(n):
         text = text[1::2] + text[::2]
     return text
+
+
+## COUNTING DUPLICATES IN STRING
+# "abcde" -> 0 # no characters repeats more than once
+# "aabbcde" -> 2 # 'a' and 'b'
+# "aabBcde" -> 2 # 'a' occurs twice and 'b' twice (`b` and `B`)
+# "indivisibility" -> 1 # 'i' occurs six times
+# "Indivisibilities" -> 2 # 'i' occurs seven times and 's' occurs twice
+# "aA11" -> 2 # 'a' and '1'
+# "ABBA" -> 2 # 'A' and 'B' each occur twice
+
+def duplicate_count(text):
+    text = text.lower()
+    duplicates = []
+    for char in text:
+       if char not in duplicates and text.count(char) > 1:
+           duplicates.append(char)
+    return len(duplicates)
+
+# solution populaire
+
+def duplicate_count(text):
+  return len([char for char in set(text.lower()) if text.lower().count(char) > 1])
+  # boucle sur les lettres uniques
+  # retourne la lettre si elle se trouve plus d'une fois dans le texte
+
+
+# DUBSTEP
+# ENLEVER ET REMPLACER DES RECCURENCES "WUB" DANS UNE CHAINE
+# song_decoder("WUBWEWUBAREWUBWUBTHEWUBCHAMPIONSWUBMYWUBFRIENDWUB")
+# # =>  WE ARE THE CHAMPIONS MY FRIEND
+# song_decoder("AWUBBWUBC"), "A B C", "WUB should be replaced by 1 space")
+# song_decoder("AWUBWUBWUBBWUBWUBWUBC"), "A B C", "multiples WUB should be replaced by only 1 space")
+# song_decoder("WUBAWUBBWUBCWUB"), "A B C", "heading or trailing spaces should be removed")
+
+def song_decoder(song):
+    list_song = song.split("WUB") # remove the WUB
+    strip_song = [i for i in list_song if i] # remove the spaces
+    return " ".join(strip_song)
+
+# solutions populaires
+
+def song_decoder(song):
+    return " ".join(song.replace('WUB', ' ').split())
+    # split va créer une liste SEULEMENT avec les MOTS (supprimant ainsi les espaces)
+
+def song_decoder(song):
+    return ' '.join([a for a in song.split('WUB') if a])

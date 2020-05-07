@@ -59,6 +59,7 @@
    * [EXPRESSIONS REGULIERES](#expressions-regulieres)
 * [10 ERREURS DU DEBUTANT](#erreurs-debutant)
 * [ASTUCES](#astuces)
+* [MES ASTUCES](#mes-astuces)
 * [LIBRAIRIES](#librairies)
 * [PYTHON & HTML](#python-html)
 
@@ -74,6 +75,7 @@
 * https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask/4526533-testez-le-parcours-utilisateur-avec-les-tests-fonctionnels 
 * https://github.com/trending/python
 * New Features in Python 3.9 You Should Know About : https://medium.com/@martin.heinz/new-features-in-python-3-9-you-should-know-about-14f3c647c2b4
+* Python DateTime, TimeDelta, Strftime(Format) with Examples : https://www.guru99.com/date-time-and-datetime-classes-in-python.html
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -95,7 +97,9 @@
 * ~ Effective Python Testing With Pytest : https://realpython.com/pytest-python-testing/
 * ~ Python Coding Interviews: Tips & Best Practices : https://realpython.com/courses/python-coding-interviews-tips-best-practices
 * ~ https://realpython.com/preview/python-eval-function
-* ~ Regular Expressions: Regexes in Python, Part 1 : https://realpython.com/regex-python/    
+* ~ Regular Expressions: Regexes in Python, Part 1 : https://realpython.com/regex-python/
+* ~ The Hitchhiker's Guide to CLIs in Python : https://vinayak.io/2020/05/04/the-hitchhikers-guide-to-clis-in-python/
+* ~ Datetime Module (Dates and Times) || Python Tutorial || Learn Python Programming : https://www.youtube.com/watch?v=RjMbCUpvIgw    
 
 
 ## INSTALLATION
@@ -4539,6 +4543,22 @@ print(list(r))
 # Avec les listes en compréhension
 r = [i for i in liste if i % 2 == 0]
 print(r)
+
+# boucles multiples
+# Imagine that you need a list of coordinate pairs in an x/y plane. 
+# Instead of writing nested for loops, like so:
+xs = range(10)
+ys = range(10)
+pairs = 
+for x in xs:
+    for y in ys:
+        pairs.append((x, y))
+
+# You can write the more concise version :
+xs = range(10)
+ys = range(10)
+pairs = [(x, y) for x in xs
+                for y in ys]
 ```
 
 ### LES ITERATEURS
@@ -5768,6 +5788,32 @@ def recuperer_extension2(fichier):
 
 print(recuperer_extension("C:/mon_programme/test.py")) 
 # py
+```
+
+## MES ASTUCES
+
+### Find day by the given date, in French
+```py
+import locale
+import datetime
+
+my_locale = locale.getlocale()
+print(my_locale)
+
+locale.setlocale(locale.LC_ALL, '')
+# An empty string specifies the user’s default settings
+help(locale.setlocale)
+
+now = datetime.datetime.now()
+# future = datetime.datetime(2022, 3, 24)
+print(f"{now.strftime('%A').capitalize()} de la semaine n° {int(now.strftime('%W')) + 1}")
+# Jeudi de la semaine n° 19
+
+# https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+
+# https://docs.python.org/3/library/calendar.html
+# pour générer des calendriers
+# https://realpython.com/python-time-module/
 ```
 
 ## LIBRAIRIES

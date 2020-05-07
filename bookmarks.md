@@ -22,7 +22,6 @@
 ## :gun: WEB TOOLS
 
 * Fonty: the new way for testing web fonts : https://fonty.dizoo.bg/
-* Color Picker by WebpageFX : https://www.webpagefx.com/web-design/color-picker/
 * colorPicker - Modules pour Firefox : https://addons.mozilla.org/fr/firefox/addon/colorpicker/
 * ColorZilla - Chrome Web Store : https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp
 * Can I use... Support tables for HTML5, CSS3, etc : https://www.caniuse.com/
@@ -52,7 +51,6 @@
 * Avoir un code JS & CSS propre grâce à Webpack – Kevin Marques – Medium : https://medium.com/@MarquesDev/avoir-un-code-js-css-propre-gr%C3%A2ce-%C3%A0-webpack-a23dcb2d80bb
 * Construire une application JS depuis zéro (1/3) – OpenClassrooms Produit, Design et ingénierie – Medium : https://medium.com/openclassrooms-produit-design-et-ing%C3%A9nierie/construire-une-application-js-depuis-z%C3%A9ro-1-3-ad4047420824
 * HTTP View | Intercept, explore & debug HTTP : https://httptoolkit.tech/view
-* Adobe Color : un outil pour créer une palette de couleurs facilement et trouver de l'inspiration - BDM : https://www.blogdumoderateur.com/adobe-color-palette-couleurs
 * Meet the Flexbox Inspector | Geddski : https://gedd.ski/post/flexbox-inspector/
 * Loripsum.net - The 'lorem ipsum' generator that doesn't suck. : https://loripsum.net/
 * Placeholder.com: Placeholder Images Made For You [JPG, GIF & PNG] : https://placeholder.com/
@@ -68,6 +66,8 @@
 * Diagram.Codes : https://www.diagram.codes/
 * Google lance web.dev : évaluez les performances de votre site web et apprenez à concevoir des sites web efficaces - Blog du Modérateur : https://www.blogdumoderateur.com/google-webdev-test
 * Vous pouvez maintenant tester le concurrent français de Google Maps en alpha : https://www.presse-citron.net/vous-pouvez-maintenant-tester-le-concurrent-francais-de-google-maps-en-alpha
+* Inspect, edit, and save CSS without leaving your browser : https://stylestash.dev
+* Avataaars Generator - A free online avatar generator for anyone to make their beautiful personal avatar easily! : https://getavataaars.com/?avatarStyle=Circle
 
 
 ## :pushpin: WEB DOCS
@@ -308,6 +308,7 @@
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
 * 25 Bootstrap Tables : https://freefrontend.com/bootstrap-tables/
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
+* 34 JavaScript Menus : https://freefrontend.com/html-menu-with-javascript
 
 
 ### FONTS
@@ -322,14 +323,14 @@
 * What Is Rel=Nofollow & How Do I Use Nofollow Links On My Site? : https://www.hobo-web.co.uk/what-is-nofollow/#example-nofollow-link-code
 * Exemple masquage accessible et aria-hidden - recommandations accessibilité web Orange : https://a11y-guidelines.orange.com/web/exemples/masquage/index.html
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
-* * Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
+* Pompage.net - Bien utiliser le texte alternatif : http://www.pompage.net/traduction/Bien-utiliser-le-texte-alternatif
 
 
 ### CSS
 
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
+*  A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
 * CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
-* 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
 * Overflow In CSS : https://ishadeed.com/article/overflow-css/
@@ -342,18 +343,14 @@
 * Edit Shape Paths in CSS - Firefox Developer Tools | MDN : https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector/How_to/Edit_CSS_shapes
 * All in One Tool for Makers - Indie Makers Tools : https://www.indiemakers.tools
 * css selectors - Why selecting by ID is not recommended in CSS? - Stack Overflow : https://stackoverflow.com/questions/8084555/why-selecting-by-id-is-not-recommended-in-css
-* Browse by color | Dribbble : https://dribbble.com/colors/faddd1.faddd1
-* Avataaars Generator - A free online avatar generator for anyone to make their beautiful personal avatar easily! : https://getavataaars.com/?avatarStyle=Circle
 * Flexulator : https://www.flexulator.com/
 * Really Good Emails - The Best Email Designs in the Universe (that came into my inbox) : https://reallygoodemails.com/
 * How To Align Things In CSS — Smashing Magazine : https://www.smashingmagazine.com/2019/03/css-alignment
-* Data Color Picker – Learn UI Design : https://learnui.design/tools/data-color-picker.html
 * Releases · webkul/coolhue · GitHub : https://github.com/webkul/coolhue/releases
 * An Illustrated (and Musical) Guide to Map, Reduce, and Filter Array Methods | CSS-Tricks : https://css-tricks.com/an-illustrated-and-musical-guide-to-map-reduce-and-filter-array-methods
 * Web Maker : https://webmaker.app
 * What’s New In CSS? : https://noti.st/rachelandrew/Kr6L2U/whats-new-in-css#suLES0g
 * Gradient CSS Generator | CSSmatic : https://www.cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28top\%2C\%20rgba\%28109\%2C0\%2C25\%2C1\%29\%200\%25\%2C\%20rgba\%28143\%2C2\%2C34\%2C0\.44\%29\%2056\%25\%2C\%20rgba\%28255\%2C255\%2C255\%2C0\%29\%20100\%25\%29\%3B'
-* ColorKitty - Find the perfect color palettes from pictures. : https://colorkitty.com
 * Selection in CSS : https://ishadeed.com/article/selection-in-css
 
 
@@ -374,6 +371,8 @@
 
 
 ### JAVASCRIPT
+
+* A list of commonly used JavaScript one-liners for easy copying : https://1loc.dev
 
 ### JQUERY
 
@@ -396,6 +395,21 @@
 ### ANGULAR
 
 
+## :shaved_ice: WEBDESIGN
+
+### DESIGN
+
+* 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
+* https://abduzeedo.com/web-design-inspiration-landing-pages
+*  40 Free HTML landing page templates : https://dev.to/davidepacilio/40-free-html-landing-page-templates-3gfp
+* Create a color palette between 2 colors : https://dribbble.com/shots/11089484-Create-a-color-palette-between-2-colors
+* Eva Design System | Deep learning color generator : https://colors.eva.design/
+* ColorKitty - Find the perfect color palettes from pictures. : https://colorkitty.com
+* Data Color Picker – Learn UI Design : https://learnui.design/tools/data-color-picker.html
+* Adobe Color : un outil pour créer une palette de couleurs facilement et trouver de l'inspiration - BDM : https://www.blogdumoderateur.com/adobe-color-palette-couleurs
+* Browse by color | Dribbble : https://dribbble.com/colors/faddd1.faddd1
+* Color Picker by WebpageFX : https://www.webpagefx.com/web-design/color-picker/
+
 ### UX/UI
 
 * Make sense of rounded corners on buttons – UX Collective : https://uxdesign.cc/make-sense-of-rounded-corners-on-buttons-dfc8e13ea7f7
@@ -410,11 +424,7 @@
 * 7 Practical Tips for Cheating at Design : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * 10 open source SVG icon libraries that you can use for your next project : https://themesberg.com/blog/open-source/10-open-source-free-svg-icon-libraries
 * Ux Design | Menu Hamburger : icône appétissante ou indigeste ? : https://vanillefraise.eu/navigation-menu-hamburger-icone-appetissante-ou-indigeste/
-
-
-### DESIGN
-
-* https://abduzeedo.com/web-design-inspiration-landing-pages
+* How to Create a Perfect Dropdown : https://dribbble.com/shots/10604215-How-to-Create-a-Perfect-Dropdown
 
 
 ## :joystick: API
@@ -495,3 +505,4 @@
 * https://stephaniewalter.design/
 * https://wattenberger.com/blog/gauge
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
+* https://css-tricks.com
