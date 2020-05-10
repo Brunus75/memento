@@ -66,6 +66,7 @@
 
 ## RESSOURCES
 
+* Clean Code concepts adapted for Python : https://github.com/zedr/clean-code-python
 * https://www.udemy.com/course/formation-complete-python/
 * https://www.udemy.com/course/cours-python-avance/
 * https://realpython.com/pointers-in-python/
@@ -316,6 +317,28 @@ def greet_me(**kwargs):
 >>> greet_me(name="yasoob")
 name = yasoob
 ```
+
+### Context manager
+```py
+a context manager (like with) is some code that implements an __enter__ and __exit__ method
+Python let’s you create your own context managers. 
+Check out contextlib for more info
+
+>>> from contextlib import contextmanager
+>>> @contextmanager
+... def praise():
+...     print('You can do it.')
+...     yield
+...     print('You made it.')
+...
+>>> with praise():
+...     print('I am trying to code.')
+...
+You can do it.
+I am trying to code.
+You made it.
+```
+
 
 ## LE TERMINAL
 ```py
@@ -5792,10 +5815,11 @@ print(recuperer_extension("C:/mon_programme/test.py"))
 
 ## MES ASTUCES
 
-### Find day by the given date, in French
+### Find day by the given date, in French and generate a calendar
 ```py
 import locale
 import datetime
+import calendar
 
 my_locale = locale.getlocale()
 print(my_locale)
@@ -5809,9 +5833,36 @@ now = datetime.datetime.now()
 print(f"{now.strftime('%A').capitalize()} de la semaine n° {int(now.strftime('%W')) + 1}")
 # Jeudi de la semaine n° 19
 
-# https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+# créer des calendrier avec le module calendar
+my_calendar = calendar.TextCalendar(calendar.SUNDAY)
+calendar_2022 = my_calendar.formatyear(2022)
+print(calendar_2022)
+#      janvier                   février                     mars
+# di lu ma me je ve sa      di lu ma me je ve sa      di lu ma me je ve sa
+#                    1             1  2  3  4  5             1  2  3  4  5
+#  2  3  4  5  6  7  8       6  7  8  9 10 11 12       6  7  8  9 10 11 12
+#  9 10 11 12 13 14 15      13 14 15 16 17 18 19      13 14 15 16 17 18 19
+# 16 17 18 19 20 21 22      20 21 22 23 24 25 26      20 21 22 23 24 25 26
+# 23 24 25 26 27 28 29      27 28                     27 28 29 30 31
+# 30 31
+
+# génère un calendrier de datetime
+generate_2022 = calendar.Calendar(calendar.MONDAY).yeardatescalendar(2022, 1)
+# Calendar(firstweekday : 0 or calendar.MONDAY, 6 or calendar.SUNDAY, ect.)
+# yeardatescalendar(YEAR, number of month / row)
+first_month_2022 = generate_2022[0][0]
+first_week_2022 = generate_2022[0][0][0]
+first_day_2022 = generate_2022[0][0][0][0] # 2021-12-27
+print(first_month_2022)
+# Return the data for the specified year ready for formatting. 
+# The return value is a list of month rows. 
+# Each month row contains up to width months (defaulting to 3). 
+# Each month contains between 4 and 6 weeks and each week contains 1–7 days. 
+# Days are datetime.date objects.
+# [[[[datetime.date(2021, 12, 27), datetime.date(2021, 12, 28), ...]]]]
 
 # https://docs.python.org/3/library/calendar.html
+# https://www.guru99.com/calendar-in-python.html
 # pour générer des calendriers
 # https://realpython.com/python-time-module/
 ```

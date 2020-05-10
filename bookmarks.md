@@ -17,6 +17,7 @@
 * https://www.webdesignernews.com/
 * https://www.webdesignerdepot.com
 * https://wweb.dev
+* https://medium.muz.li/
 
 
 ## :gun: WEB TOOLS
@@ -191,6 +192,7 @@
 
 ## :octocat: GIT, GITHUB, GITFLOW
 
+* GitHub Codespaces : un nouvel environnement de développement complet sur navigateur : https://www.blogdumoderateur.com/github-codespaces
 * Gitflow : est-il le workflow dont j’ai besoin ? - Blog Xebia - Expertise Technologique & Méthodes Agiles : https://blog.xebia.fr/2018/03/28/gitflow-est-il-le-workflow-dont-jai-besoin/
 * Improving your Development Processes with Git Best Practices - YouTube : https://www.youtube.com/watch?v=ww4xpcvzLHc
 * Comment et pourquoi utiliser GitFlow - Nils Truchaud - Medium : https://medium.com/@vaedan/comment-et-pourquoi-utiliser-gitflow-2a7c20dbf7e0
@@ -352,6 +354,7 @@
 * What’s New In CSS? : https://noti.st/rachelandrew/Kr6L2U/whats-new-in-css#suLES0g
 * Gradient CSS Generator | CSSmatic : https://www.cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28top\%2C\%20rgba\%28109\%2C0\%2C25\%2C1\%29\%200\%25\%2C\%20rgba\%28143\%2C2\%2C34\%2C0\.44\%29\%2056\%25\%2C\%20rgba\%28255\%2C255\%2C255\%2C0\%29\%20100\%25\%29\%3B'
 * Selection in CSS : https://ishadeed.com/article/selection-in-css
+* New media queries you need to know : https://blog.logrocket.com/new-media-queries-you-need-to-know
 
 
 ### BOOTSTRAP
@@ -399,6 +402,7 @@
 
 ### DESIGN
 
+* The 50 + Best FREE resources for learning design & grow your career (so far) : https://medium.muz.li/the-50-best-free-resources-for-learning-design-grow-your-career-so-far-da310fe7aad2
 * 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * https://abduzeedo.com/web-design-inspiration-landing-pages
 *  40 Free HTML landing page templates : https://dev.to/davidepacilio/40-free-html-landing-page-templates-3gfp
@@ -409,6 +413,8 @@
 * Adobe Color : un outil pour créer une palette de couleurs facilement et trouver de l'inspiration - BDM : https://www.blogdumoderateur.com/adobe-color-palette-couleurs
 * Browse by color | Dribbble : https://dribbble.com/colors/faddd1.faddd1
 * Color Picker by WebpageFX : https://www.webpagefx.com/web-design/color-picker/
+* Search by Muzli : https://search.muz.li/
+* Color Palette Generator : https://colors.muz.li/
 
 ### UX/UI
 
@@ -473,6 +479,7 @@
 * https://www.reddit.com/r/learnprogramming/comments/eelexn/list_of_programming_challenge_websites/
 * https://www.freecodecamp.org/news/the-10-most-popular-coding-challenge-websites-of-2016-fb8a5672d22f/
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
+* SQL Police Department : https://sqlpd.com/
 
 
 ## :slot_machine: REGEX
