@@ -5815,8 +5815,10 @@ print(recuperer_extension("C:/mon_programme/test.py"))
 
 ## MES ASTUCES
 
-### Find day by the given date, in French and generate a calendar
+### Find day by the given date in French and generate a calendar
 ```py
+from calendar import monthrange
+from collections import namedtuple
 import locale
 import datetime
 import calendar
@@ -5824,16 +5826,19 @@ import calendar
 my_locale = locale.getlocale()
 print(my_locale)
 
+# ◘ Initialiser la langue locale
 locale.setlocale(locale.LC_ALL, '')
 # An empty string specifies the user’s default settings
 help(locale.setlocale)
 
+# ◘ Récupérer le jour d'un datetime en français
 now = datetime.datetime.now()
 # future = datetime.datetime(2022, 3, 24)
 print(f"{now.strftime('%A').capitalize()} de la semaine n° {int(now.strftime('%W')) + 1}")
 # Jeudi de la semaine n° 19
 
-# créer des calendrier avec le module calendar
+# ◘ Créer des calendrier avec le module calendar
+# import calendar
 my_calendar = calendar.TextCalendar(calendar.SUNDAY)
 calendar_2022 = my_calendar.formatyear(2022)
 print(calendar_2022)
@@ -5846,14 +5851,14 @@ print(calendar_2022)
 # 23 24 25 26 27 28 29      27 28                     27 28 29 30 31
 # 30 31
 
-# génère un calendrier de datetime
+# ◘ Génère un calendrier de datetime
 generate_2022 = calendar.Calendar(calendar.MONDAY).yeardatescalendar(2022, 1)
 # Calendar(firstweekday : 0 or calendar.MONDAY, 6 or calendar.SUNDAY, ect.)
 # yeardatescalendar(YEAR, number of month / row)
 first_month_2022 = generate_2022[0][0]
 first_week_2022 = generate_2022[0][0][0]
 first_day_2022 = generate_2022[0][0][0][0] # 2021-12-27
-print(first_month_2022)
+print(first_day_2022)
 # Return the data for the specified year ready for formatting. 
 # The return value is a list of month rows. 
 # Each month row contains up to width months (defaulting to 3). 
@@ -5861,9 +5866,52 @@ print(first_month_2022)
 # Days are datetime.date objects.
 # [[[[datetime.date(2021, 12, 27), datetime.date(2021, 12, 28), ...]]]]
 
+# ◘ Génère toutes les dates d'une année (1er Janvier au 31 Décembre), associée à leur jour
+# from calendar import monthrange
+# from collections import namedtuple
+Date = namedtuple("Date", ["datetime", "day"])
+
+def all_dates_in_year(year):
+    for month in range(1, 13):  # for month in 12 months
+        for day in range(1, monthrange(year, month)[1] + 1):
+            # for day in number of days in month
+            # monthrange(year, month)[1] = number of days in month
+            # monthrange(year, month)[0] = weekday of first day of the month
+            yield Date(datetime.datetime(year, month, day), 
+                datetime.datetime(year, month, day).strftime('%A').capitalize())
+
+for date in all_dates_in_year(2020):
+    print(date)
+    # Date(datetime=datetime.datetime(2020, 1, 1, 0, 0), day='Mercredi')
+
+# ◘ Génère toutes les dates d'une année, avec semaines complètes
+# associée à une date en abréviation
+# commence le 1er Lundi, si Lundi est choisi comme premier jour de l'année
+abr_days = {
+    'Lundi': 'L',
+    'Mardi': 'M',
+    'Mercredi': 'Me',
+    'Jeudi': 'J',
+    'Vendredi': 'V',
+    'Samedi': 'S',
+    'Dimanche': 'D'
+}
+
+def full_calendar(year):
+    new_calendar = calendar.Calendar(calendar.MONDAY)
+    for month in range(1, 13):
+        for date in new_calendar.itermonthdates(year, month):
+            yield (date, abr_days.get(date.strftime('%A').capitalize()))
+            # (datetime.date(2019, 12, 30), abr_days.get('Lundi'))
+
+for day in full_calendar(2020):
+    print(day)
+    # (datetime.date(2019, 12, 30), 'L')
+
 # https://docs.python.org/3/library/calendar.html
 # https://www.guru99.com/calendar-in-python.html
-# pour générer des calendriers
+# https://ispycode.com/Python/Calendar/Iterate-Days-In-A-Month
+# https://techoverflow.net/2019/05/16/how-to-iterate-all-days-of-year-using-python/
 # https://realpython.com/python-time-module/
 ```
 
