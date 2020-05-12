@@ -990,6 +990,10 @@ liste = sorted(liste)
 "100".isdigit() # True si contient uniquement des chiffres
 "photo.jpg".endswith("jpg") # True/False
 "photo.jpg".startswith("jpg") # True/False
+banana_centered_in_20 = "banana".center(20) #       banana       
+# print un string de 20 caractères avec le mot banana au milieu
+# si nombre > nombre caractères du mot, entoure le mot d'espaces
+# pour que le milieu du mot soit le milieu du nombre donné
 
 # Muable et Immuable (mutable ou immutable)
 # 2 catégories d'objets :
@@ -2700,7 +2704,8 @@ class Circle:
     def __init__(self, radius):
         self._radius = radius
 
-    @property # plus besoin de () pour l'appeler : 
+    @property # équivalent de getter
+    # plus besoin de () pour l'appeler : 
     # la méthode est considérée comme une propriété
     # ex. c = Circle(5)
     # c.radius => 5
@@ -2711,6 +2716,8 @@ class Circle:
     # However, by defining a setter method, we can do some error testing 
     # to make sure it’s not set to a nonsensical negative number
     @radius.setter
+    # équivalent de setter
+    # c.radius = 5
     def radius(self, value):
         """Set radius, raise error if negative"""
         if value >= 0:
@@ -2736,6 +2743,25 @@ class Circle:
     def pi():
         """Value of π, could use math.pi instead though"""
         return 3.1415926535
+
+# un autre exemple :
+class AwwYeah:
+
+    def __init__(self):
+        self._bar = ''
+
+    @property # getter
+    def foo(self):
+        return 'More awesome please: {}'.format(self._bar)
+
+    @foo.setter # setter
+    def foo(self, value):
+        self._bar = '{} is great.'.format(value)
+
+>>> a = AwwYeah()
+>>> a.foo = 'Python' # appel du setter, sans ()
+>>> a.foo # appel du getter, sans ()
+'More awesome please: Python is great.'
 
 # créer ses propres décorateurs
 # un @decorator est une fonction qui prend en paramètre une fonction

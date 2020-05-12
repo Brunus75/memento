@@ -320,6 +320,7 @@
 
 ### HTML
 
+* The ultimate favicon generator : https://favicon.io/favicon-generator
 * Upload & Convert | Favicon.io : https://favicon.io/favicon-converter/
 * A Complete Guide to Data Attributes | CSS-Tricks : https://css-tricks.com/a-complete-guide-to-data-attributes/
 * What Is Rel=Nofollow & How Do I Use Nofollow Links On My Site? : https://www.hobo-web.co.uk/what-is-nofollow/#example-nofollow-link-code
@@ -355,6 +356,8 @@
 * Gradient CSS Generator | CSSmatic : https://www.cssmatic.com/gradient-generator#'\-moz\-linear\-gradient\%28top\%2C\%20rgba\%28109\%2C0\%2C25\%2C1\%29\%200\%25\%2C\%20rgba\%28143\%2C2\%2C34\%2C0\.44\%29\%2056\%25\%2C\%20rgba\%28255\%2C255\%2C255\%2C0\%29\%20100\%25\%29\%3B'
 * Selection in CSS : https://ishadeed.com/article/selection-in-css
 * New media queries you need to know : https://blog.logrocket.com/new-media-queries-you-need-to-know
+* Modern CSS Solutions for Old CSS Problems : https://moderncss.dev/
+
 
 
 ### BOOTSTRAP
@@ -415,6 +418,7 @@
 * Color Picker by WebpageFX : https://www.webpagefx.com/web-design/color-picker/
 * Search by Muzli : https://search.muz.li/
 * Color Palette Generator : https://colors.muz.li/
+* HTML Color Picker : https://www.w3schools.com/colors/colors_picker.asp
 
 ### UX/UI
 

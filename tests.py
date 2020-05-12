@@ -405,3 +405,42 @@ def song_decoder(song):
 
 def song_decoder(song):
     return ' '.join([a for a in song.split('WUB') if a])
+
+
+# ENLEVER N OCCURENCES D'UNE LISTE
+# delete_nth([LISTE D'OCCURENCES], NOMBRE D'OCCURENCES ACCEPTEES)
+# delete_nth ([1,1,1,1],2) # return [1,1]
+# delete_nth ([20,37,20,21],1) # return [20,37,21]
+
+def delete_nth(order,max_e):
+    result = []
+    
+    for i in order:
+        if result.count(i) < max_e: # si le nombre d'occurences est < à la limite
+            result.append(i)
+        
+    return result
+
+
+# BUILD TOWER
+# tower_builder(nombre de rangées)
+# test.assert_equals(tower_builder(1), ['*', ])
+# test.assert_equals(tower_builder(2), [' * ', '***'])
+# test.assert_equals(tower_builder(3), ['  *  ', ' *** ', '*****'])
+# a tower of 6 floors looks like below
+# [
+#   '     *     ', 
+#   '    ***    ', 
+#   '   *****   ', 
+#   '  *******  ', 
+#   ' ********* ', 
+#   '***********'
+# ]
+
+def tower_builder(n_floors):
+    tower = []
+    spaces = n_floors - 1
+    for i in range(n_floors):
+        tower.append(spaces * ' ' + ((i * 2 + 1) * '*') + spaces * ' ')
+        spaces -= 1
+    return tower
