@@ -444,3 +444,34 @@ def tower_builder(n_floors):
         tower.append(spaces * ' ' + ((i * 2 + 1) * '*') + spaces * ' ')
         spaces -= 1
     return tower
+
+
+# COMPTER LE NOMBRE DE SMILEYS DANS UN ARRAY
+# -Each smiley face must contain a valid pair of eyes. Eyes can be marked as: or;
+# -A smiley face can have a nose but it does not have to. Valid characters for a nose are - or ~
+# -Every smiling face must have a smiling mouth that should be marked with either) or D.
+# Valid smiley face examples:
+# :) :D ;-D :~)
+# Invalid smiley faces:
+# ;( :> :} :]
+# countSmileys([':)', ';(', ';}', ':-D']);       // should return 2;
+# countSmileys([';D', ':-(', ':-)', ';~)']);     // should return 3;
+# countSmileys([';]', ':[', ';*', ':$', ';-D']); // should return 1;
+
+import re
+
+def count_smileys(arr):
+    smileys = []
+    
+    for str in arr:
+        if re.match(r"^[:;]{1}[~-]?[)D]{1}$", str):
+            smileys.append(str)
+    
+    return len(smileys)
+
+
+# solution populaire
+from re import findall
+
+def count_smileys(arr):
+    return len(list(findall(r"[:;][-~]?[)D]", " ".join(arr))))

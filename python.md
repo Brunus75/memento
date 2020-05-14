@@ -4,6 +4,7 @@
 ## SOMMAIRE
 
 * [INSTALLATION](#installation)
+* [FORMATTING](#formatting)
 * [RACCOURCIS VS CODE](#raccourcis-code)
 * [EXTENSIONS VS CODE](#extensions-code)
 * [OUTILS](#outils)
@@ -77,6 +78,7 @@
 * https://github.com/trending/python
 * New Features in Python 3.9 You Should Know About : https://medium.com/@martin.heinz/new-features-in-python-3-9-you-should-know-about-14f3c647c2b4
 * Python DateTime, TimeDelta, Strftime(Format) with Examples : https://www.guru99.com/date-time-and-datetime-classes-in-python.html
+* Development Environment in Python : https://www.pythonforbeginners.com/development/development-environment-in-python
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -123,6 +125,10 @@
 * lancer une version précise de python : py -3.7
 * exit() pour en sortir
 
+## FORMATTING
+* Auto formatters for Python : https://www.kevinpeters.net/auto-formatters-for-python
+* Editing Python in Visual Studio Code : https://code.visualstudio.com/docs/python/editing#_formatting
+
 ## PYCHARM
 * IDE Python
 * Version gratuite "Community" accessible : https://www.jetbrains.com/fr-fr/pycharm/features/editions_comparison_matrix.html
@@ -132,12 +138,13 @@
 * Ctrl + : => commente une ligne/plusieurs lignes
 * Ctrl + Shift + : => commente plusieurs lignes
 * Ctrl + Shift + P : => montre les commandes disponibles (SQLite, par ex.)
-
+* Shift + Alt + F => formate le fichier selon le formatter choisi
 
 ## <a name="extensions-code"></a> EXTENSIONS VS CODE
 * Python
 * autoDocstring
 * SQLite
+* Formatter = "Black"
 
 
 ## OUTILS
@@ -192,6 +199,7 @@ True
     use the other one to avoid backslashes in the string.
 """
 ```
+"J'écris une phrase en guillemets", 'clé', 'valeur'
 
 
 ## BONNES PRATIQUES
@@ -2271,7 +2279,7 @@ logging.critical("Erreur critique")
 ```
 
 ## <a name="pip"></a> INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP
-```py
+```s
 # documentation : https://pip.pypa.io/en/stable/
 # pip (Pip Installs Packages)
 # petit utilitaire qu'on appelle 'gestionnaire de paquets' 
@@ -2280,11 +2288,20 @@ logging.critical("Erreur critique")
 # qui sont hébergés sur le site http://pypi.org
 
 Ouvrir GitBash (ou Cmder)
-taper pip3.7 (c'est un alias') # sinon utiliser le chemin .../Python/Scripts/pip3.7.exe
+taper pip3.7 (c''est un alias) # sinon utiliser le chemin .../Python/Scripts/pip3.7.exe
 (!) taper pip (tout seul) si une seule version de Python est installée
 
+# indispensables
+pip help
+
+# quel pip est utilisé
+which pip
+
 # Chercher des packages sur PyPI et avec pip
-https: // pypi.org/search 
+https://pypi.org/search
++ chercher l''auteur, le homepage et les notes
+
+# sur la console
 pip3.7 search requête(nom du module ou description)
 pip search pyside # dans le nom ou description du module
 
@@ -2302,36 +2319,68 @@ pip install --upgrade --force-reinstall --ignore-installed pip
 pip install package
 pip3.7 install requests # toujours en mode admin sur Windows
 sudo pip3.7 install requests # pour Linux/Mac
+pip install requests==2.1.3 # installer un package précis
+pip install requests>=2,<3 # between 2.0 and 3.0
+pip install requests~=2.1.3 # any 2.1.X version >= 2.1.3
+# depuis github :
+pip install git+https://github.com/user/repo.git@branch
+# install from branch :
+pip install git+https://github.com/kennethreitz/requests.git@master
+# install from commit hash :
+pip install git+https://github.com/kennethreitz/requests.git@2aaf6ac
+# install from tag/release :
+pip install git+https://github.com/kennethreitz/requests.git@v2.13.0  
+
+# trouver les metadatas d'une dépendance (location, dependancies, ect.)
+pip show package_installé
 
 # lister les packages avec pip
-pip 'list' # sans les apostrophes
-pip 'list' -o # lesquels ne sont plus à jour ?
-pip3.7 'list' 
+pip list
+pip list -o # lesquels ne sont plus à jour ? [pip list --outdated en verbose]
+pip3.7 list # pip de Python 3.7
+
+# mettre à jour un package
+pip install --upgrade package
 
 # désinstaller un package avec pip
 pip uninstall package
 pip3.7 uninstall nomDuPackage
+# ! ne supprime pas les dépendances du packages ! (les dépendances secondaires)
 ```
 
 ## <a name="virtuel-env"></a> LES ENVIRONNEMENTS VIRTUELS
-```py
+```s
 # autre version de Python, qui va être isolée du python installé sur l'ordinateur
 # on crée généralement un environnement virtuel par projet 
 
 # créer un environnement virtuel
 # se placer dans le dossier principal
-py -3.7 -m venv env # -m pour module
-aller dans Scripts/
+py -3.7 -m venv venv # -m pour module
+source venv/scripts/activate # activer le venv, version longue
+aller dans venv/Scripts/ # version flemme, venv/bin pour les autres OS que Windows
 dans le terminal : source activate
-on est dans l'environnement virtuel'
+on est dans l''environnement virtuel
 which pip pour vérifier si on est dans un environnement virtuel
 deactivate pour en sortir
+# détruire un venv
+rm venv/ # à faire avec prudence (le mieux est de supprimer le venv manuellement)
+# créer des alias
+# ~/.bash_profile
+alias ae='deactivate &> /dev/null; source ./venv/bin/activate' # deactivate + activate
+alias de='deactivate'
+# les utiliser
+$ cd project
+$ ae
+(venv) $ # Work on the project...
+$ de
+# lien pour créer des alias avec gitbash :
+https://coderwall.com/p/_-ypzq/git-bash-fixing-it-with-alias-and-functions 
 
 # VS Code et les environnements virtuels
 VS Code gère les environnements virtuels
 il suffit de lancer le projet dans VS Code
 se placer dans le projet + taper : code . dans git bash
-ou copier-glisser le projet sur l'icône' VS du bureau
+ou copier-glisser le projet sur l''icône VS du bureau
 ```
 
 ## <a name="objet-part1"></a> L'ORIENTÉ OBJET (partie 1)
@@ -5282,7 +5331,9 @@ def recuperer_extension(fichier):
 
 recuperer_extension("document.doc") # doc
 
-
+# match or search ?
+if you need to match at the beginning of the string, or to match the entire string use match. 
+It is faster. Otherwise use search.
 
 # - Tester ses expressions régulières avec Regex101.com
 # Regarder Quick Reference pour bâtir ses regex

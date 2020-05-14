@@ -69,6 +69,8 @@
 * Vous pouvez maintenant tester le concurrent français de Google Maps en alpha : https://www.presse-citron.net/vous-pouvez-maintenant-tester-le-concurrent-francais-de-google-maps-en-alpha
 * Inspect, edit, and save CSS without leaving your browser : https://stylestash.dev
 * Avataaars Generator - A free online avatar generator for anyone to make their beautiful personal avatar easily! : https://getavataaars.com/?avatarStyle=Circle
+* Get a unique public url to capture and analyze http request info with this tool: https://www.endpoints.dev/
+* Draw.io VS Code Integration : https://github.com/hediet/vscode-drawio
 
 
 ## :pushpin: WEB DOCS
@@ -311,6 +313,7 @@
 * 25 Bootstrap Tables : https://freefrontend.com/bootstrap-tables/
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
 * 34 JavaScript Menus : https://freefrontend.com/html-menu-with-javascript
+* Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 
 
 ### FONTS
@@ -332,7 +335,7 @@
 ### CSS
 
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
-*  A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
+* A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
 * CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
@@ -357,7 +360,7 @@
 * Selection in CSS : https://ishadeed.com/article/selection-in-css
 * New media queries you need to know : https://blog.logrocket.com/new-media-queries-you-need-to-know
 * Modern CSS Solutions for Old CSS Problems : https://moderncss.dev/
-
+* CSS Grid Generator : https://cssgrid-generator.netlify.app/
 
 
 ### BOOTSTRAP
@@ -379,6 +382,7 @@
 ### JAVASCRIPT
 
 * A list of commonly used JavaScript one-liners for easy copying : https://1loc.dev
+* Modern JavaScript Cheatsheet : https://www.cyanhall.com/posts/notes/8.javascript-cheatsheet
 
 ### JQUERY
 
@@ -405,6 +409,7 @@
 
 ### DESIGN
 
+* Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 * The 50 + Best FREE resources for learning design & grow your career (so far) : https://medium.muz.li/the-50-best-free-resources-for-learning-design-grow-your-career-so-far-da310fe7aad2
 * 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * https://abduzeedo.com/web-design-inspiration-landing-pages
@@ -419,6 +424,7 @@
 * Search by Muzli : https://search.muz.li/
 * Color Palette Generator : https://colors.muz.li/
 * HTML Color Picker : https://www.w3schools.com/colors/colors_picker.asp
+* Blush, Illustrations for Everyone : https://blush.design
 
 ### UX/UI
 

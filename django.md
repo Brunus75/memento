@@ -4,9 +4,12 @@
 ## RESSOURCES
 
 * https://docs.djangoproject.com/fr/3.0/internals/contributing/writing-code/coding-style/
+* https://realpython.com/get-started-with-django-1/
 * https://www.udemy.com/course/creer-une-application-web-avec-django
 * https://openclassrooms.com/fr/courses/1871271-developpez-votre-site-web-avec-le-framework-django
 * https://openclassrooms.com/fr/courses/4425076-decouvrez-le-framework-django
+* https://www.agileleaf.com/blog/a-better-way-to-manage-settings-py-in-your-django-projects/
+* https://hostadvice.com/how-to/how-to-create-a-virtual-environment-for-your-django-projects-using-virtualenv/
 * ~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
 * ~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
 * ~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
@@ -57,20 +60,59 @@
 
 ## GITHUB
 
-1. initialiser le repo
+1. initialiser le repo   
+   * Initialize this repository with a README :heavy_check_mark:
+   * Add .gitignore => Python :heavy_check_mark:
 2. cloner le repo
-3. créer un environnement virtuel dans le repo
-4. lancer l'environnement virtuel', installer django
-```
-dossier_projet/
+3. créer un environnement virtuel dans le dossier du repo   
+   * cd dossier_repo/
+   ```s
+   $ py -3.7 -m venv venv
+   ```
+4. lancer l'environnement virtuel, installer django   
+   * cd venv/Scripts (Windows)
+   ```s
+   $ source activate
+   ```
+   * ajouter Django aux librairies
+   ```s
+   $ install Django # ou install Django==2.2
+   ```
+   * cd ../.. (dossier_repo) (venv activé) + installer un projet Django
+   ```s
+   $ django-admin startproject nom_projet_django # underscores
+   ```
+   * vérifier que l'install s'est bien déroulée
+   ```s
+   $ python manage.py runserver # dans le projet django, terminale VS Code, par ex
+   ```
+```py
+dossier_projet/ # repo
     env/
-    projet_django/
+    projet_django/ # projet django
 ```
 * le fichier settings.py renferme de nombreuses informations privées
-* créer settings.py.dist ou settings_public.py
-* créer un gitignore à la racine du projet
+* créer local_settings.py, dans le dossier de settings.py
+```py
+# local_settings.py
+SECRET_KEY = 'my_real_secret_key'
+
+DATABASES = {
+    'default': {
+        # tous les paramètres de la BDD
+    }
+}
+
+# settings.py
+# end of file because it overrides every variable
+try:
+   from .local_settings import *
+except ImportError:
+    raise Exception("A local_settings.py file is required to run this project")
+```
+* créer/modifier le gitignore à la racine du projet
 * un gitignore exhaustif : https://github.com/github/gitignore/blob/master/Python.gitignore
-* créer son gitignore: http://gitignore.io/api/django
+* ajouter les éléments Django de ce gitignore: http://gitignore.io/api/django
 * :exclamation: à ne jamais sauvegarder en clair :   
    - SECRET_KEY
    - DATABASES
@@ -82,7 +124,17 @@ pour installer les dépendances listées dans requirements.txt :
 pip install -r requirements.txt 
 """
 ```
-
+* travailler avec le venv : ouvrir le projet **Django** + changer d'environnement virtuel directement sur VS Code
+```s
+créé un dossier .vscode à la racine du projet ouvert
+avec un fichier .json qui donne l''adresse du venv à sourcer (venv/Scripts/Python.exe)
+$ python manage.py version # version de Django qui tourne
+```
+* ajouter un requirements.txt (racine du projet, aux côtés du README et du gitignore)
+```s
+pip freeze -l > requirements.txt
+# l pour environnement local (installe seulement les dépendances de notre venv)
+```
 
 ## BONS PLANS
 
@@ -91,6 +143,7 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
+ctrl + c pour interrompre le terminal
 ```
 
 ## BONNES PRATIQUES
@@ -184,6 +237,8 @@ as this way they will be added immediately.
 """
 ```
 * Prenez soin de placer votre code Python en dehors de la racine du serveur Web.
+* https://stackoverflow.com/questions/42077532/django-security-and-settings
+* https://stackoverflow.com/questions/5583077/django-settings-py-separate-local-and-global-configuration
 
 
 ## LEXIQUE
@@ -234,8 +289,8 @@ python -i
 
 # VS Code et les environnements virtuels
 VS Code gère les environnements virtuels
-il suffit de lancer le projet dans VS Code
-se placer dans le projet + taper: code . dans git bash
+il suffit de lancer le projet (qui contient venv/) dans VS Code
+se placer dans le projet (qui contient venv/) + taper: code . dans git bash
 ou copier-glisser le projet sur l''icône VS du bureau
 ```
 
@@ -261,6 +316,7 @@ Show Table => execute commande SQL pour afficher la table
 
 ## ARCHITECTURE
 
+* https://stackoverflow.com/questions/22841764/best-practice-for-django-project-working-directory-structure
 ```shell
 dossier_projet/
     venv/
@@ -274,6 +330,8 @@ dossier_projet/
         application2/
         api.py # ajout d'un fichier externe, comme une API
         manage.py
+    README.me
+    requirements.txt
 ```
 
 

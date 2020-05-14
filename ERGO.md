@@ -14,3 +14,5 @@
 * Penser à changer de template (de grid à basique) avant chaque simulation
 * Désactiver les éléments transparents du template : View / Fade Template Components
 * Ctrl + MAJ pour dupliquer un élément harmonieusement
+* /!\ créer les règles de 12 avant le passage en version gratuite
+* /!\ récupérer les templates avant le passage en version gratuite
