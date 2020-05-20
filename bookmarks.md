@@ -22,6 +22,7 @@
 
 ## :gun: WEB TOOLS
 
+* Tiny Helpers : A collection of free single-purpose online tools for web developers : https://tiny-helpers.dev
 * Fonty: the new way for testing web fonts : https://fonty.dizoo.bg/
 * colorPicker - Modules pour Firefox : https://addons.mozilla.org/fr/firefox/addon/colorpicker/
 * ColorZilla - Chrome Web Store : https://chrome.google.com/webstore/detail/colorzilla/bhlhnicpbhignbdhedgjhgdocnmhomnp
@@ -71,6 +72,8 @@
 * Avataaars Generator - A free online avatar generator for anyone to make their beautiful personal avatar easily! : https://getavataaars.com/?avatarStyle=Circle
 * Get a unique public url to capture and analyze http request info with this tool: https://www.endpoints.dev/
 * Draw.io VS Code Integration : https://github.com/hediet/vscode-drawio
+* How URLs work ? https://howurls.work/#/
+* Smart PNG and JPEG compression : https://tinypng.com/
 
 
 ## :pushpin: WEB DOCS
@@ -195,6 +198,7 @@
 ## :octocat: GIT, GITHUB, GITFLOW
 
 * GitHub Codespaces : un nouvel environnement de développement complet sur navigateur : https://www.blogdumoderateur.com/github-codespaces
+* GitHub Desktop : https://desktop.github.com/
 * Gitflow : est-il le workflow dont j’ai besoin ? - Blog Xebia - Expertise Technologique & Méthodes Agiles : https://blog.xebia.fr/2018/03/28/gitflow-est-il-le-workflow-dont-jai-besoin/
 * Improving your Development Processes with Git Best Practices - YouTube : https://www.youtube.com/watch?v=ww4xpcvzLHc
 * Comment et pourquoi utiliser GitFlow - Nils Truchaud - Medium : https://medium.com/@vaedan/comment-et-pourquoi-utiliser-gitflow-2a7c20dbf7e0
@@ -243,6 +247,7 @@
 * Intégrer le MVC en PHP : https://www.youtube.com/playlist?list=PLCg7bb2BzkP3BjEkpMw7_ppGgDcc73oSM
 * Évoluer vers une architecture MVC en PHP : https://bpesquet.developpez.com/tutoriels/php/evoluer-architecture-mvc/
 * https://www.grafikart.fr/search?q=MVC
+* A curated list of amazingly awesome PHP libraries, resources and shiny things : https://github.com/ziadoz/awesome-php
 
 
 ### SYMFONY
@@ -319,7 +324,7 @@
 ### FONTS
 
 * 5 outils en ligne pour rechercher et télécharger des polices d’écriture : https://www.blogdumoderateur.com/outils-recherche-police-ecriture
-
+* Best places to find Font Icons : https://iconscout.com/blog/best-places-to-find-font-icons
 
 ### HTML
 
@@ -361,6 +366,9 @@
 * New media queries you need to know : https://blog.logrocket.com/new-media-queries-you-need-to-know
 * Modern CSS Solutions for Old CSS Problems : https://moderncss.dev/
 * CSS Grid Generator : https://cssgrid-generator.netlify.app/
+* SVG Path Visualizer : https://svg-path-visualizer.netlify.app
+* The Most Popular CSS Frameworks Comparison 2020 : https://themeselection.com/the-most-popular-css-framework-comparison-2020
+* Compat Report : problèmes de compatibilité sur les navigateurs principaux : https://addons.mozilla.org/fr/firefox/addon/compat-report/
 
 
 ### BOOTSTRAP
@@ -383,6 +391,7 @@
 
 * A list of commonly used JavaScript one-liners for easy copying : https://1loc.dev
 * Modern JavaScript Cheatsheet : https://www.cyanhall.com/posts/notes/8.javascript-cheatsheet
+* Error Handling in JavaScript : https://blog.alexdevero.com/error-handling-javascript
 
 ### JQUERY
 
@@ -400,12 +409,20 @@
 * ericclemmons/codelift: A "No Code" GUI for your existing React code. : https://github.com/ericclemmons/codelift#codelift
 * Les refs et le DOM – React : https://fr.reactjs.org/docs/refs-and-the-dom.html
 * État et cycle de vie – React : https://fr.reactjs.org/docs/state-and-lifecycle.html
+* A VS Code plugin to transform JSX-Tags with style-props to styled components : https://github.com/agreon/styco
 
 
 ### ANGULAR
 
 
 ## :shaved_ice: WEBDESIGN
+
+### INSPIRATION
+
+* https://www.behance.net/search
+* https://search.muz.li/inspiration/mobile-app-design-inspiration/
+* https://search.muz.li/search/map
+
 
 ### DESIGN
 
@@ -523,3 +540,4 @@
 * https://wattenberger.com/blog/gauge
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
 * https://css-tricks.com
+* https://www.framer.com/

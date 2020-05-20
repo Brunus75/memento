@@ -315,3 +315,63 @@ None
 >>> dispatch_dict('unknown', 2, 8)
 None
 ```
+
+## Python's built-in HTTP server
+```py
+# Python has a HTTP server built into the
+# standard library. This is super handy for
+# previewing websites.
+
+# Python 3.x
+$ python3 -m http.server
+
+# Python 2.x
+$ python -m SimpleHTTPServer 8000
+
+# (This will serve the current directory at
+#  http://localhost:8000)
+```
+
+## Convert String to Int
+```py
+# All integer prefixes are in the form 0?, in which you replace ? with a character that refers to the number system:
+    # b: binary (base 2)
+    # o: octal (base 8)
+    # d: decimal (base 10)
+    # x: hexadecimal (base 16)
+>>> decimal = 303
+>>> hexadecimal_with_prefix = 0x12F
+
+# The string representation of an integer is more flexible because 
+# a string holds arbitrary text data:
+>>> decimal = "303"
+>>> hexadecimal_with_prefix = "0x12F"
+>>> hexadecimal_no_prefix = "12F"
+# Each of these strings represent the same integer.
+
+>>> int("10")
+10
+# When you pass a string to int(), you can specify the number system 
+# that you’re using to represent the integer. 
+# The way to specify the number system is to use base:
+>>> int("0x12F", base=16)
+303
+# The argument that you pass to base is not limited to 2, 8, 10, and 16:
+>>> int("10", base=3)
+3
+
+# Converting a Python int to a String
+>>> str(10)
+'10'
+# str() behaves like int() in that it results in a decimal representation:
+>>> str(0b11010010)
+'210'
+# If you want a string to represent an integer in another number system, then you use a formatted string, such as an f-string (in Python 3.6+), and an option that specifies the base:
+>>> octal = 0o1073
+>>> f"{octal}"  # Decimal
+'571'
+>>> f"{octal:x}"  # Hexadecimal
+'23b'
+>>> f"{octal:b}"  # Binary
+'1000111011'
+```

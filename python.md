@@ -32,6 +32,7 @@
 * [LA GESTION D'ERREURS AVEC LES EXCEPTIONS](#exceptions)
 * [LE LOGGING](#le-logging)
 * [INSTALLER DES PACKAGES SUPPLEMENTAIRES AVEC PIP](#pip)
+* [TROUVER LE BON PACKAGE](#trouver-le-bon-package)
 * [LES ENVIRONNEMENTS VIRTUELS](#virtuel-env)
 * [L'ORIENTÉ OBJET (partie 1)](#objet-part1)
 * [L'ORIENTÉ OBJET (partie 2)](#objet-part2)
@@ -40,6 +41,7 @@
 * [LES BASES DE DONNEES](#bdd)
 * [ARCHITECTURE](#architecture)
 * [CREER UNE APP](#creer-une-app)
+* [GERER LES DEPENDANCES D'UNE APP](#dependances-app)
 * [PROJET CONVERTISSEUR DE DEVISES avec PYSIDE](#projet-devises-pyside)
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API)](#projet-cine-pyside-1)
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)](#projet-cine-pyside-2)
@@ -68,6 +70,8 @@
 ## RESSOURCES
 
 * Clean Code concepts adapted for Python : https://github.com/zedr/clean-code-python
+* Les fonctions de Python : https://docs.python.org/3/library/functions.html
+* Real Python: Python 3 Cheat Sheet : https://static.realpython.com/python-cheat-sheet.pdf
 * https://www.udemy.com/course/formation-complete-python/
 * https://www.udemy.com/course/cours-python-avance/
 * https://realpython.com/pointers-in-python/
@@ -79,6 +83,8 @@
 * New Features in Python 3.9 You Should Know About : https://medium.com/@martin.heinz/new-features-in-python-3-9-you-should-know-about-14f3c647c2b4
 * Python DateTime, TimeDelta, Strftime(Format) with Examples : https://www.guru99.com/date-time-and-datetime-classes-in-python.html
 * Development Environment in Python : https://www.pythonforbeginners.com/development/development-environment-in-python
+* https://dbader.org/
+* Python Developers Survey 2019 Results : https://www.jetbrains.com/lp/python-developers-survey-2019/
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -978,6 +984,7 @@ print(a ^ b) # {1, 2, 5, 6}
 ```
 
 ## <a name="methodes-utiles"></a> METHODES ET FONCTIONS UTILES
+* Les fonctions de Python : https://docs.python.org/3/library/functions.html
 ```py
 # méthode agit directement sur l'objet, pas besoin de lui attribuer une nouvelle variable
 liste.sort() # la liste est triée, on peut l'utiliser
@@ -2346,6 +2353,54 @@ pip install --upgrade package
 pip uninstall package
 pip3.7 uninstall nomDuPackage
 # ! ne supprime pas les dépendances du packages ! (les dépendances secondaires)
+```
+
+## TROUVER LE BON PACKAGE
+```s
+# Python Standard Library Cheat Sheet
+Python 3.x: https://docs.python.org/3/py-modindex.html
+Python 2.7: https://docs.python.org/2/py-modindex.html
+# Curated list
+https://awesome-python.com/
+https://python.libhunt.com/ # liste d'awesome-python + détaillée
+# ↑ recherche avancée, popularité, comparaisons, ect.
+https://docs.python-guide.org/#scenario-guide-for-python-applications
+# ↑ moins fourni mais packages + détaillés
+https://pymotw.com/3/ # librairies de Python
+https://wiki.python.org/moin/
+
+# Les 7 étapes pour choisir un bon package
+1. Trouver les candidats
+* browse curated list above
+* google search 2-5 relevant keywords "s3 upload Python"
+* stackoverflow search "s3 upload Python" + sélectionner l''onglet "Votes" (most upvoted answers)
+* Reddit search, Hacker News search (https://hn.algolia.com/), Twitter Search
+* search on PyPi if no candidates
+* Ask questions on Reddit or Stackoverflow
+2. Vérifier la popularité des candidats
+* Google/Reddit/Stack overflow recommandations
+* GitHub stars (équivalent de J''aime de Twitter : appréciation + favori)
+* Utiliser l''indicateur de popularité de https://python.libhunt.com/
+3. Parcourir le homepage du package (sur Pypi or Awesome Python)
+* est-ce utile ? maintenu ? intuituitf et réussi ?
+4. Lire le README du package
+* est-ce exhaustif ? comment l''installer ?
+* license ? auteur(s) ? combien de personnes y participent ?
+* dbader.org/blog/write-a-great-readme-for-your-github-project
+* choosealicense.com/licenses/
+5. Le projet est-il (activement) maintenu ?
+* Parcourir l''historique des changelog/update (PyPi ou GitHub)
+* Les bugs sont-ils pris en charge ?
+* La date du dernier commit
+6. Inspecter le code source
+* Best-practices : consistent formatting, docstrings
+* automated tests ?
+* experience des développeurs principaux
+* Serais-je assez à l''aise avec le code pour faire des changements dans le package si j''en étais obligé ? (fin de la maintenance d''un projet) (cad le code est-il aéré, intuitif, bien documenté et agréable)
+7. Essayer quelques candidats
+* Utiliser le venv + interpreteur
+* Vérifier la facilité/propreté de l''installation + import
+* Facteur d''appréciation (le package est-il agréable, intuitif et fun à utiliser)
 ```
 
 ## <a name="virtuel-env"></a> LES ENVIRONNEMENTS VIRTUELS
@@ -4118,6 +4173,48 @@ pip3.7 install module_a_telecharger
 
 + créer un .gitignore
 + créer un requirements.txt
+```
+
+## <a name="dependances-app"></a> GERER LES DEPENDANCES D'UNE APP
+```s
+requirements.txt # liste des dépendances (une liste de pip install)
+    requests==2.13.0
+    # commentaire (expliquer une dépendance)
+    schedule==0.4.2
+    ipdb
+    # ne pas indiquer de version précise pour des packages qui ont besoin d'être à jour
+    # ex. : debugger, tests, ect.
+
+# créer un requirements.txt
+$ (venv) pip freeze > requirements.txt
+
+# restaurer les dépendances d'un requirements.txt
+$ (venv) pip install -r requirements.txt
+
+# separer Development and Production Dependencies
+requirements-dev.txt            requirements.txt
+--------------------            ----------------
+-r requirements.txt             requests==2.1.3
+# installe les dependances      # ...
+# du fichier principal
+pytest==2.0.0
+
+# best practices pour l'organisation
+* utiliser la version exacte (ex.==2.2.2) la majorité du temps
+* inclure les dépendances secondaires
+* pas de version spéciale pour ce qui ont besoin d''être à jour : debuggers, ect.
+* requirements.txt + requirements-dev.txt
+# aussi : requirements.pip requirements.lock
+* à la racine du projet
+* # utiliser les commentaires, notamment les différences prod vs dev, explication choix, ect.
+* Odre des dépendances :
+# Direct dependancies, sorted alphabetically
+Flask==0.12
+requests==2.13.0
+schedule==0.4.2
+# secondary dependancies, sorted alphabetically
+Jinja2==2.9.5
+Werkzeug==0.12
 ```
 
 ## <a name="projet-devises-pyside"></a> PROJET CONVERTISSEUR DE DEVISES avec PYSIDE 
