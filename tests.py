@@ -475,3 +475,61 @@ from re import findall
 
 def count_smileys(arr):
     return len(list(findall(r"[:;][-~]?[)D]", " ".join(arr))))
+
+
+# Word a10n (abbreviation)
+# Ojectif : créer des abréviations sur un string donné
+# Créer des abréviations sur des MOTS de 4 lettres ou +
+# débutMot + nombreDeLettresEnlevées + finMot
+# "internationalization" => "i18n"
+# "accessibility" => "a11y"
+# "Accessibility" => "A11y"
+# "elephant-ride" => "e6t-r2e"
+
+import re
+
+def abbreviate(s):
+    words = re.split('(\d|\W|_)', s) # split with digits, non-words and underscore
+    # If capture groups are used with re.split()
+    # then the matched text is also included in the result
+    # ex. ['cat', '_', '', '5', ' ', '-', etc.]
+    result = []
+    for word in words:
+        if re.match(r'\d|\W|_', word) or len(word) < 4: # if non-word
+            result.append(word)
+        else:
+            result.append(word[0] + str(len(word) - 2) + word[-1]) # abreviation logic
+    return "".join(result)
+
+# solution populaire
+import re
+
+regex = re.compile('[a-z]{4,}', re.IGNORECASE)
+
+def replace(match):
+    word = match.group(0)
+    return word[0] + str(len(word) - 2) + word[-1]
+
+def abbreviate(s):
+    return regex.sub(replace, s)
+
+
+# KEBABIZE
+#  converts a camel case string into a kebab case.
+# kebabize('camelsHaveThreeHumps') // camels-have-three-humps
+# kebabize('camelsHave3Humps') // camels-have-humps
+# kebabize('myCamelCasedString'), 'my-camel-cased-string')
+# kebabize('myCamelHas3Humps'), 'my-camel-has-humps')
+# kebabize('SOS'), 's-o-s')
+# kebabize('42'), '')
+# kebabize('CodeWars'), 'code-wars')
+
+import re
+
+def kebabize(string):
+    words = re.findall('[a-zA-Z][^A-Z]*', string)
+    # trouve les mots commençant par une lettre, suivi de 0 ou + minuscules
+    # words : ['my', 'Camel', 'Has', 'Humps', 'Ex8mple'] (le chiffre est à enlever)
+    result = [''.join(letter for letter in word if not letter.isdigit()) 
+    for word in words] # enleve le chiffre de chaque mot
+    return "-".join(result).lower()

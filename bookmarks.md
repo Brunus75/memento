@@ -78,6 +78,7 @@
 
 ## :pushpin: WEB DOCS
 
+* Roadmap to becoming a web developer in 2020 : https://github.com/kamranahmedse/developer-roadmap
 * CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
 * Combinaisons et groupes de sélecteurs | MDN : https://developer.mozilla.org/fr/docs/Apprendre/CSS/Introduction_%C3%A0_CSS/Combinators_and_multiple_selectors
 * CSS font-display et le chargement des polices web - Alsacreations : https://www.alsacreations.com/article/lire/1779-CSS-font-display-et-le-chargement-des-polices-web.html
@@ -216,6 +217,11 @@
 * Mettre en ligne son site web statique et évaluer sa qualité : Partie 1 — Création d’un dépôt sur Github et activation de Github Pages : https://medium.com/@JeremyRaffin/site-web-statique-optimis%C3%A9-avec-github-pages-cr%C3%A9ation-du-d%C3%A9p%C3%B4t-et-activation-de-github-pages-1-4-2537061ef3dd
 
 
+## :nazar_amulet: VISUAL STUDIO CODE
+
+* https://visualstudio.developpez.com/
+
+
 ## :memo: MARKDOWN
 
 * Markdown Cheatsheet · adam-p/markdown-here Wiki : https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
@@ -319,6 +325,7 @@
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
 * 34 JavaScript Menus : https://freefrontend.com/html-menu-with-javascript
 * Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
+* Resources : https://mentor.silvestar.codes/resources
 
 
 ### FONTS
@@ -392,6 +399,8 @@
 * A list of commonly used JavaScript one-liners for easy copying : https://1loc.dev
 * Modern JavaScript Cheatsheet : https://www.cyanhall.com/posts/notes/8.javascript-cheatsheet
 * Error Handling in JavaScript : https://blog.alexdevero.com/error-handling-javascript
+* JavaScript Array Functions CheatSheet : https://wweb.dev/resources/js-array-functions-cheatsheet
+* The Complete Guide to JavaScript Classes : https://dmitripavlutin.com/javascript-classes-complete-guide/
 
 ### JQUERY
 

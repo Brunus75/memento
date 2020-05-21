@@ -70,6 +70,7 @@
 ## RESSOURCES
 
 * Clean Code concepts adapted for Python : https://github.com/zedr/clean-code-python
+* The Python Standard Library : https://docs.python.org/3/library/index.html
 * Les fonctions de Python : https://docs.python.org/3/library/functions.html
 * Real Python: Python 3 Cheat Sheet : https://static.realpython.com/python-cheat-sheet.pdf
 * https://www.udemy.com/course/formation-complete-python/
@@ -85,6 +86,7 @@
 * Development Environment in Python : https://www.pythonforbeginners.com/development/development-environment-in-python
 * https://dbader.org/
 * Python Developers Survey 2019 Results : https://www.jetbrains.com/lp/python-developers-survey-2019/
+* Finding secrets by decompiling Python bytecode in public repositories : https://blog.jse.li/posts/pyc/
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -108,7 +110,8 @@
 * ~ https://realpython.com/preview/python-eval-function
 * ~ Regular Expressions: Regexes in Python, Part 1 : https://realpython.com/regex-python/
 * ~ The Hitchhiker's Guide to CLIs in Python : https://vinayak.io/2020/05/04/the-hitchhikers-guide-to-clis-in-python/
-* ~ Datetime Module (Dates and Times) || Python Tutorial || Learn Python Programming : https://www.youtube.com/watch?v=RjMbCUpvIgw    
+* ~ Datetime Module (Dates and Times) || Python Tutorial || Learn Python Programming : https://www.youtube.com/watch?v=RjMbCUpvIgw
+* ~ How Python Can Create Better Content Briefs and Improve SEO : https://www.semrush.com/blog/python-content-briefs-seo/    
 
 
 ## INSTALLATION
@@ -687,6 +690,8 @@ os.makedirs(dossier, exist_ok = True) # (name, mode:int, exist_ok: bool)
 # supprimer un dossier
 if os.path.exists(dossier):
     os.removedirs(dossier)
+# You can remove files (os.remove), make directories (os.mkdir), 
+# and take action on every file in a directory by “walking” through it (os.walk)
 
 # chercher l'aide avec dir et help 
 import random
@@ -721,6 +726,29 @@ elif (nombre_essai > nombre_mystere):
     print(f"Le nombre mystère est inférieur à {nombre_essai}")
 else:
     print("Bravo, vous avez trouvez le nombre mystère !")
+
+
+# The Excel task
+import csv
+
+with open('financials.csv') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        print(row['profit'], row['revenue'])
+# This example shows financial data added to standard Python dictionary objects. 
+# The keys to the dictionary are determined by the first row of the CSV file.
+
+import shutil
+# a module that I use specifically for two functions: shutil.copytree and shutil.rmtree. 
+# These two functions let you copy or delete an entire directory and all its contents
+
+import pathlib
+# newest module to shake things up in file handling
+>>> from pathlib import Path
+>>> p = Path('data')
+>>> q = p / 'to' / 'data.csv'
+>>> q
+PosixPath('data/to/data.csv')
 ```
 
 ## LES LISTES
@@ -868,6 +896,10 @@ courses = courses.split(", ")
 print(courses)  # ['Riz', 'Pomme', 'Lait', 'Salade', 'Saumon', 'Beurre']
 courses = courses.split("-") # caractère pas présent
 print(courses) # ['Riz, Pomme, Lait, Salade, Saumon, Beurre']
+# Specify the maximum number of split: maxsplit
+print(s_comma.split(',', 2))
+# ['one', 'two', 'three,four,five']
+# Ressource : https://note.nkmk.me/en/python-split-rsplit-splitlines-re/
 
 # les opérateurs d'appartenance
 # vérifier si un élément ou non appartient à une structure de données
@@ -5387,6 +5419,55 @@ a = re.split(r' \| | - ', texte)
 #                | OU -
 print(a) # ['item01', 'item02', 'item03', 'item04', 'item05']
 
+# subtilité de re.split() = peut spliter les résultats de la regex
+words = re.split('(\d|\W|_)', s) # split with digits, non-words and underscore
+# If capture groups are used with re.split()
+# then the matched text is also included in the result
+# ex. ['cat', '_', '', '5', ' ', '-', etc.]
+
+# https://note.nkmk.me/en/python-split-rsplit-splitlines-re/
+# https://howtodoinjava.com/python/split-string/
+
+# liste d'exemples de re.split :
+import re
+
+s_nums = 'one1two22three333four'
+print(re.split('\d+', s_nums))
+# ['one', 'two', 'three', 'four']
+# The maximum number of splits can be specified in the third parameter maxsplit.
+print(re.split('\d+', s_nums, 2))
+# ['one', 'two', 'three333four']
+
+## Split by multiple different delimiters
+
+s_marks = 'one-two+three#four'
+print(re.split('[-+#]', s_marks))
+# ['one', 'two', 'three', 'four']
+
+s_strs = 'oneXXXtwoYYYthreeZZZfour'
+print(re.split('XXX|YYY|ZZZ', s_strs))
+# ['one', 'two', 'three', 'four']
+
+>>> import re
+>>> line = 'how to; do, in,java,      dot, com'
+>>> re.split(r'[;,\s]\s*', line)
+# split with delimiters comma, semicolon and space 
+# followed by any amount of extra whitespace.
+['how', 'to', 'do', 'in', 'java', 'dot', 'com']
+
+# When using re.split(), you need to be a bit careful should the regular expression pattern 
+# involve a capture group enclosed in parentheses. 
+# If capture groups are used, then the matched text is also included in the result.
+>>> import re
+>>> line = 'how to; do, in,java,      dot, com'
+>>> re.split(r'(;|,|\s)\s*', line)
+# split with delimiters comma, semicolon and space 
+# followed by any amount of extra whitespace.
+['how', ' ', 'to', ';', 'do', ',', 'in', ',', 'java', ',', 'dot', ',', 'com']
+
+# Ressources : https://note.nkmk.me/en/python-split-rsplit-splitlines-re/
+# https://howtodoinjava.com/python/split-string/
+
 # ex. Vérifier la validité d'un numéro de téléphone
 import re
 # 0 => 1 fois
@@ -5432,11 +5513,40 @@ recuperer_extension("document.doc") # doc
 if you need to match at the beginning of the string, or to match the entire string use match. 
 It is faster. Otherwise use search.
 
-# - Tester ses expressions régulières avec Regex101.com
+# exemples
+>>> import re
+>>> pattern = re.compile('abc')
+>>> bool(pattern.match('abcde'))
+True
+>>> bool(pattern.match('def'))
+False
+>>> bool(pattern.match('ABC'))
+False
+>>> pattern = re.compile('abc', re.IGNORECASE)
+>>> bool(pattern.match('ABC'))
+True
+
+>>> pattern = re.compile('Hi, (\w+)')
+>>> match = pattern.match('Hi, Matt')
+>>> match.group(1)
+'Matt'
+
+re.compile() # créé un objet regex réutilisable
+
+prog = re.compile(pattern)
+result = prog.match(string)
+# is equivalent to
+result = re.match(pattern, string)
+# re.compile is more efficient when the expression will be used several times 
+# in a single program
+
+
+# Tester ses expressions régulières avec Regex101.com
 # Regarder Quick Reference pour bâtir ses regex
+# Aussi utilisé : re.sub, re.findall
 ```
-https://regex101.com/
-https://regexr.com/
+* https://regex101.com/
+* https://regexr.com/
 
 
 ## <a name="erreurs-debutant"></a> 10 ERREURS DU DEBUTANT
