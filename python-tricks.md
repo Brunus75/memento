@@ -397,3 +397,42 @@ for value in collection:
 >>> even_squares
 [0, 4, 16, 36, 64]
 ```
+
+## Python 3.5+ type annotations
+```py
+# Python 3.5+ supports 'type annotations' that can be
+# used with tools like Mypy to write statically typed Python:
+
+def my_add(a: int, b: int) -> int:
+    return a + b
+```
+
+## Python list slice syntax fun
+```py
+# Python's list slice syntax can be used without indices
+# for a few fun and useful things:
+
+# You can clear all elements from a list:
+>>> lst = [1, 2, 3, 4, 5]
+>>> del lst[:]
+>>> lst
+[]
+
+# You can replace all elements of a list
+# without creating a new list object:
+>>> a = lst
+>>> lst[:] = [7, 8, 9]
+>>> lst
+[7, 8, 9]
+>>> a
+[7, 8, 9]
+>>> a is lst
+True
+
+# You can also create a (shallow) copy of a list:
+>>> b = lst[:]
+>>> b
+[7, 8, 9]
+>>> b is lst
+False
+```

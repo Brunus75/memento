@@ -515,7 +515,7 @@ def abbreviate(s):
 
 
 # KEBABIZE
-#  converts a camel case string into a kebab case.
+# converts a camel case string into a kebab case.
 # kebabize('camelsHaveThreeHumps') // camels-have-three-humps
 # kebabize('camelsHave3Humps') // camels-have-humps
 # kebabize('myCamelCasedString'), 'my-camel-cased-string')
@@ -533,3 +533,94 @@ def kebabize(string):
     result = [''.join(letter for letter in word if not letter.isdigit()) 
     for word in words] # enleve le chiffre de chaque mot
     return "-".join(result).lower()
+
+
+# solutions populaires
+
+def kebabize(s):
+    return ''.join(c if c.islower() else '-' + c.lower() for c in s if c.isalpha()).strip('-')
+    # boucle sur toutes les lettres avec un if/else pour la logique
+    # strip(element) enlève l'élément au début et à la fin du string
+
+def kebabize(string):
+  return ''.join(c if c.islower() else f'-{c.lower()}' for c in [c for c in string if c.isalpha()]).strip('-')
+
+
+# DASHATIZE IT
+# Séparer les nombres pairs et impairs par des tirets
+# dashatize(274) -> '2-7-4'
+# dashatize(6815) -> '68-1-5'
+# dashatize(None),"None", "Should return None");
+# dashatize(0),"0", "Should return 0");
+# dashatize(-1),"1", "Should return 1");
+# dashatize(-28369),"28-3-6-9", "Should return 28-3-6-9")
+
+import re
+
+def dashatize(num):
+    if num is None:
+        return "None"
+    num_dash = [i if i.isdigit() and int(i) % 2 == 0 else f" {i} " for i in str(num)]
+    result = "".join(num_dash).strip(" -")
+    return re.sub(r"\s+", "-", result)
+    # remplace 1 ou plusieurs espaces par des tirets
+
+# solutions populaires
+
+def dashatize(num):
+    try:
+        return ''.join(['-'+i+'-' if int(i)%2 else i for i in str(abs(num))]).replace('--','-').strip('-')
+    except:
+        return 'None'
+
+# 2 -------
+import re
+
+def dashatize(num):
+  return 'None' if num is None else '-'.join(w for w in re.split(r'([13579])', str(abs(num))) if len(w)>0)
+  # re.split sur chaque nombre impair, en les gardant dans la list (utilisation des ())
+
+
+# UNIQUE IN ORDER
+# Un iterable, supprimer tous les élements qui se répètent
+# et renvoyer la liste expurgée
+# unique_in_order('AAAABBBCCDAABBB'), ['A', 'B', 'C', 'D', 'A', 'B'])
+
+def unique_in_order(iterable):
+    if iterable in (None, ''):
+        return []
+
+    result = [iterable[0]] # permet d'avoir un premier élément de base dans la liste
+    i_result = 0 # index de la liste (élément vérifié dans la boucle)
+    for index, element in enumerate(iterable):
+        if index > 0 and element != result[i_result]:
+            result.append(element)
+            i_result += 1
+    return result
+
+# solutions populaires 
+
+def unique_in_order(iterable):
+    res = []
+    for item in iterable:
+        if len(res) == 0 or item != res[-1]:
+            res.append(item)
+    return res
+
+# 2 -----
+from itertools import groupby
+
+def unique_in_order(iterable):
+    return [k for (k, _) in groupby(iterable)]
+
+# 3 ----- (modifiée)
+def unique_in_order(iterable):
+    result = []
+    prev = None
+    for el in iterable:
+        if el != prev:
+            result.append(el)
+            prev = el
+    return result
+
+            

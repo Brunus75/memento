@@ -21,7 +21,9 @@
 * ~ Utiliser Django comme API (couplage avec Angular) : https://www.django-rest-framework.org/#
 * ~ Caching in Django : https://testdriven.io/blog/django-caching/
 * ~ User Interaction With Forms : https://www.mattlayman.com/understand-django/user-interaction-forms/
-* ~ Optimizing Django ORM Queries : http://schegel.net/posts/optimizing-django-orm-queries/   
+* ~ Optimizing Django ORM Queries : http://schegel.net/posts/optimizing-django-orm-queries/
+* ~ How to Write an Installable Django App : https://realpython.com/preview/installable-django-app/
+* ~ Preventing SQL injection: a Django author's perspective : https://r2c.dev/blog/2020/preventing-sql-injection-a-django-authors-perspective/   
 
 
 ## SOMMAIRE

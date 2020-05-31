@@ -18,10 +18,15 @@
 * https://www.webdesignerdepot.com
 * https://wweb.dev
 * https://medium.muz.li/
+* https://www.rooki.design/
 
 
 ## :gun: WEB TOOLS
 
+* Getting Started With Chrome and Firefox Developer Tools : https://designmodo.com/browser-developer-tools
+* The Ultimate Web Code Generator : https://webcode.tools/
+* These free tools for developers are 🔥🔥🔥 : https://dev.to/fayazara/this-free-tools-for-developers-are-45p3
+* Experimental search engine for developers : https://quickref.dev
 * Tiny Helpers : A collection of free single-purpose online tools for web developers : https://tiny-helpers.dev
 * Fonty: the new way for testing web fonts : https://fonty.dizoo.bg/
 * colorPicker - Modules pour Firefox : https://addons.mozilla.org/fr/firefox/addon/colorpicker/
@@ -74,10 +79,19 @@
 * Draw.io VS Code Integration : https://github.com/hediet/vscode-drawio
 * How URLs work ? https://howurls.work/#/
 * Smart PNG and JPEG compression : https://tinypng.com/
+* Apply Dev, a directory of tools, utilities, apps, resources : https://appy-dev.netlify.app
+* Rnume, a tool to run your application from any public Git-repo : https://runme.io/
+* Firefox Profiler — Web app for Firefox performance analysis : https://profiler.firefox.com/
+* wweb.dev vérifications :   
+   * the website is fast with Lighthouse (https://developers.google.com/web/tools/lighthouse/) or Pagespeed Insights (https://developers.google.com/speed/pagespeed/insights/)
+   * the website is accessible with WAVE (https://wave.webaim.org/)
+   * that the website has proper SEO with Seoptimer (https://www.seoptimer.com/)
+
 
 
 ## :pushpin: WEB DOCS
 
+* DevTut : https://devtut.github.io/
 * Roadmap to becoming a web developer in 2020 : https://github.com/kamranahmedse/developer-roadmap
 * CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
 * Combinaisons et groupes de sélecteurs | MDN : https://developer.mozilla.org/fr/docs/Apprendre/CSS/Introduction_%C3%A0_CSS/Combinators_and_multiple_selectors
@@ -115,6 +129,9 @@
 * How Much Should You Get Paid To Build Websites In 2019? — Smashing Magazine : https://www.smashingmagazine.com/2019/01/costs-building-websites-2019
 * Improve Animated GIF Performance With HTML5 Video — Smashing Magazine : https://www.smashingmagazine.com/2018/11/gif-to-video
 * Designing Experiences To Improve Mental Health — Smashing Magazine : https://www.smashingmagazine.com/2018/10/designing-experiences-improving-mental-health/
+* My Web Accessibility Testing Process : https://www.a11ywithlindsey.com/blog/web-accessibility-testing-process
+* Hacking Digital Style Guides for Accessibility: Type, Colour, Imagery : https://www.youtube.com/watch?v=tvpstrkDgeM
+* How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
 
 
 ## :warning: VALIDATEURS
@@ -180,6 +197,13 @@
 * WebSite - schema.org : https://schema.org/WebSite
 * Balise title : combien de caractères pour les titres sur Google ? - Blog du Modérateur : https://www.blogdumoderateur.com/title-nombre-caracteres-google/
 * Rich snippets : les résultats enrichis pour les questions/réponses - Blog du Modérateur : https://www.blogdumoderateur.com/rich-snippets-questions-reponses
+* Metatags : Generate and preview all Meta tags, and Social media tags from a webpage : https://metatags.io/
+* Webcode Tools : Generate Scehmas, Tags, and a lot of repeated code snippets. : https://webcode.tools/
+* Lighthouse : comprendre le score de performance web attribué à votre site : https://www.blogdumoderateur.com/lighthouse-score-performance-web
+* SEO Cheat Sheet : https://9elements.com/seo-cheat-sheet
+* 27 des plus grosses erreurs SEO qui peuvent nuire à votre site web : https://fr.semrush.com/blog/27-erreurs-seo/
+* How to Create SEO-Friendly URLs (Step-by-Step) : https://ahrefs.com/blog/seo-friendly-urls/
+* 9 SEO Best Practices That You Should Follow in 2020 : https://www.semrush.com/blog/seo-best-practices/
 
 
 ## :bulb: ORGANISATION
@@ -215,6 +239,7 @@
 * Pushing and Pulling : https://support.gitkraken.com/working-with-repositories/pushing-and-pulling/
 * Learn Git - Tutorial Videos | GitKraken Resources : https://www.gitkraken.com/resources/learn-git
 * Mettre en ligne son site web statique et évaluer sa qualité : Partie 1 — Création d’un dépôt sur Github et activation de Github Pages : https://medium.com/@JeremyRaffin/site-web-statique-optimis%C3%A9-avec-github-pages-cr%C3%A9ation-du-d%C3%A9p%C3%B4t-et-activation-de-github-pages-1-4-2537061ef3dd
+* https://github.com/features/security
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -288,7 +313,7 @@
 * comp3321 NSA Python Training Document : NSA : Free Download, Borrow, and Streaming : Internet Archive : https://archive.org/details/comp3321/page/n15/mode/2up/search/device
 * DocstringFr/la-formation-complete-python: Code et ressources pour La Formation Complète Python : https://github.com/DocstringFr/la-formation-complete-python
 * Le guide de l’auto-stoppeur pour Python! — The Hitchhiker's Guide to Python : https://python-guide-pt-br.readthedocs.io/fr/latest/index.html
-
+* Shopify Customer Service Chatbot using Python Automation : https://www.youtube.com/watch?v=xof1OgxcRhY&feature=youtu.be
 
 ### DJANGO
 
@@ -326,12 +351,24 @@
 * 34 JavaScript Menus : https://freefrontend.com/html-menu-with-javascript
 * Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 * Resources : https://mentor.silvestar.codes/resources
+* 16+ Multi step HTML forms : https://csshint.com/multi-step-html-forms
+* UN PLAN DE TESTS AUTOMATISÉS POUR VOTRE FRONT-END - GAËL POUPARD : https://www.youtube.com/watch?v=JD1nrs2yH88
+
+### SANDBOX
+
+* https://codepen.io/
+* https://jsfiddle.net/
 
 
 ### FONTS
 
 * 5 outils en ligne pour rechercher et télécharger des polices d’écriture : https://www.blogdumoderateur.com/outils-recherche-police-ecriture
 * Best places to find Font Icons : https://iconscout.com/blog/best-places-to-find-font-icons
+* 10 excellent font pairing tools for designers : https://dribbble.com/stories/2020/05/27/font-pairing-tools-for-designers
+* https://uxpro.cc/toolbox/visual-design/fonts/
+* Choosing Web Fonts: A Beginner’s Guide : https://design.google/library/choosing-web-fonts-beginners-guide/
+* How to choose a font for a project : https://betterwebtype.com/articles/2019/10/20/how-to-choose-a-font-for-a-project/
+
 
 ### HTML
 
@@ -348,6 +385,7 @@
 
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
 * A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
+* Selectors Explained : https://hugogiraudel.github.io/selectors-explained/
 * CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
@@ -376,6 +414,17 @@
 * SVG Path Visualizer : https://svg-path-visualizer.netlify.app
 * The Most Popular CSS Frameworks Comparison 2020 : https://themeselection.com/the-most-popular-css-framework-comparison-2020
 * Compat Report : problèmes de compatibilité sur les navigateurs principaux : https://addons.mozilla.org/fr/firefox/addon/compat-report/
+* 15+ Cool Animated CSS Hover Effects : https://csshint.com/animated-css-hover-effects
+* Best Practices With CSS Grid Layout — Smashing Magazine : https://www.smashingmagazine.com/2018/04/best-practices-grid-layout/
+* Imagehover.css - A Pure CSS Image Hover Effect Library | imagehover.css : http://imagehover.io/
+* Digging Into The Display Property: The Two Values Of Display — Smashing Magazine : https://www.smashingmagazine.com/2019/04/display-two-value
+* Managing Z-Index In A Component-Based Web Application — Smashing Magazine : https://www.smashingmagazine.com/2019/04/z-index-component-based-web-application
+* Sélecteur de Couleur — Codes Couleur HTML : https://htmlcolorcodes.com/fr/selecteur-de-couleur/
+* Jardin Zen CSS : La beauté de la conception CSS : http://www.csszengarden.com/tr/francais/
+* CSS ICON -- project by Wenting Zhang : https://cssicon.space/#/
+* dotCSS 2016 - Wenting Zhang - Make CSS your secret super drawing tool - YouTube : https://www.youtube.com/watch?v=Y0_FMCji3iE
+* Keyframes : Create basic or complex CSS @keyframe animations with a visual timeline editor : https://keyframes.app
+* 4 CSS Grid Properties (and One Value) for Most of Your Layout Needs : https://css-tricks.com/4-css-grid-properties-and-one-value-for-most-of-your-layout-needs/
 
 
 ### BOOTSTRAP
@@ -392,6 +441,8 @@
 * Crunch 2 | The editor and compiler app for awesome people. : https://getcrunch.co/
 * Free Bootstrap Themes & Templates - Start Bootstrap - Start Bootstrap : https://startbootstrap.com/themes/
 * css - Change bootstrap navbar collapse breakpoint without using LESS - Stack Overflow : https://stackoverflow.com/questions/19827605/change-bootstrap-navbar-collapse-breakpoint-without-using-less
+* CSS can do that? - DEV Community 👩‍💻👨‍💻 : https://dev.to/ananyaneogi/css-can-do-that-18g7
+* 24+ CSS Text Effects : https://csshint.com/css-text-effects
 
 
 ### JAVASCRIPT
@@ -401,6 +452,40 @@
 * Error Handling in JavaScript : https://blog.alexdevero.com/error-handling-javascript
 * JavaScript Array Functions CheatSheet : https://wweb.dev/resources/js-array-functions-cheatsheet
 * The Complete Guide to JavaScript Classes : https://dmitripavlutin.com/javascript-classes-complete-guide/
+* JavaScript: What’s new in ECMAScript 2018 (ES2018)? : https://medium.com/@bramus/javascript-whats-new-in-ecmascript-2018-es2018-17ede97f36d5
+* Babel · The compiler for next generation JavaScript : https://babeljs.io
+* Tutoriel Vidéo ECMAScript 2015 : https://www.grafikart.fr/tutoriels/ecmascript-2015-757
+* Configurez votre environnement de travail - Apprenez à coder avec JavaScript - OpenClassrooms : https://openclassrooms.com/fr/courses/2984401-apprenez-a-coder-avec-javascript/2984416-configurez-votre-environnement-de-travail
+* Create a new fiddle - JSFiddle : https://jsfiddle.net/
+* JS Bin - Collaborative JavaScript Debugging : http://jsbin.com/?html,output
+* CodePen - Front End Developer Playground & Code Editor in the Browser : https://codepen.io/#
+* Apperçu des fonctionnalités de JavaScript ES6 : https://web.developpez.com/tutoriels/fonctionnalite-javascript-es6/
+* ES6 : les principales features à connaître | M@XCode : https://maximilienandile.github.io/2016/12/18/ES6-les-principales-features-a-connaitre/
+* Writing a Simple MVC App in Plain JavaScript : https://www.taniarascia.com/javascript-mvc-todo-app/
+* parseFloat() | MDN : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/parseFloat
+* javascript - push object into array - Stack Overflow : https://stackoverflow.com/questions/40250139/push-object-into-array
+* javascript - How to add an object to an array - Stack Overflow : https://stackoverflow.com/questions/6254050/how-to-add-an-object-to-an-array
+* 10 Essential Sublime Text Plugins for JavaScript Developers — SitePoint : https://www.sitepoint.com/essential-sublime-text-javascript-plugins/
+* How To Create a Slideshow : https://www.w3schools.com/howto/howto_js_slideshow.asp
+* Create a Full-Screen Slider Using HTML, CSS3 and jQuery - Designmodo : https://designmodo.com/create-full-screen-slider/
+* javascript - Calling a method from another method in the same class - Stack Overflow : https://stackoverflow.com/questions/43642729/calling-a-method-from-another-method-in-the-same-class
+* Fonctions fléchées - JavaScript | MDN : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Fonctions/Fonctions_fl%C3%A9ch%C3%A9es
+* javascript - "This" within es6 class method - Stack Overflow : https://stackoverflow.com/questions/36489579/this-within-es6-class-method
+* String.prototype.replace() - JavaScript | MDN : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace
+* JavaScript parseInt() Function : https://www.w3schools.com/jsref/jsref_parseint.asp
+* Strip all non-numeric characters from string in JavaScript - Stack Overflow : https://stackoverflow.com/questions/1862130/strip-all-non-numeric-characters-from-string-in-javascript
+* c# - Regex for numbers only - Stack Overflow : https://stackoverflow.com/questions/273141/regex-for-numbers-only
+* Object-oriented JavaScript: A Deep Dive into ES6 Classes — SitePoint : https://www.sitepoint.com/object-oriented-javascript-deep-dive-es6-classes/
+* New JavaScript Features That Will Change How You Write Regex — Smashing Magazine : https://www.smashingmagazine.com/2019/02/regexp-features-regular-expressions
+* How to create a dark\light mode switch in CSS and Javascript | CodyHouse : https://codyhouse.co/blog/post/dark-light-switch-css-javascript
+* Avoir un code JS & CSS propre grâce à Webpack – Kevin Marques – Medium : https://medium.com/@MarquesDev/avoir-un-code-js-css-propre-gr%C3%A2ce-%C3%A0-webpack-a23dcb2d80bb
+* Construire une application JS depuis zéro (1/3) – OpenClassrooms Produit, Design et ingénierie – Medium : https://medium.com/openclassrooms-produit-design-et-ing%C3%A9nierie/construire-une-application-js-depuis-z%C3%A9ro-1-3-ad4047420824
+* 11 JavaScript Tricks You Won’t Find in Most Tutorials : https://medium.com/@bretcameron/12-javascript-tricks-you-wont-find-in-most-tutorials-a9c9331f169d
+* Canvas : dimensions & coordonnées by Catox on CodePen : https://codepen.io/Catox/post/canvas-dimensions-coordonnees
+* État de JavaScript en 2019 : les développeurs aiment un peu plus React, Angular est en déclin, un groupe de développeurs pensent que JS est « trop complexe » : https://javascript.developpez.com/actu/289055/Etat-de-JavaScript-en-2019-les-developpeurs-aiment-un-peu-plus-React-Angular-est-en-declin-un-groupe-de-developpeurs-pensent-que-JS-est-trop-complexe/
+* Javascript Tools and Libraries for Creating, Customizing and Validation Forms : https://flatlogic.com/blog/javascript-tools-and-libraries-for-creating-customizing-and-validation-forms
+* Installez correctement vos dépendances : https://medium.com/@remi.michel38/installez-correctement-vos-d%C3%A9pendances-6ca64d47a432
+
 
 ### JQUERY
 
@@ -419,18 +504,23 @@
 * Les refs et le DOM – React : https://fr.reactjs.org/docs/refs-and-the-dom.html
 * État et cycle de vie – React : https://fr.reactjs.org/docs/state-and-lifecycle.html
 * A VS Code plugin to transform JSX-Tags with style-props to styled components : https://github.com/agreon/styco
+* Spinners React : https://github.com/adexin/spinners-react
 
 
 ### ANGULAR
 
+* TypeScript 3.9 est disponible et s'accompagne d'améliorations du processus d'inférence : https://typescript.developpez.com/actu/302117/TypeScript-3-9-est-disponible-et-s-accompagne-d-ameliorations-du-processus-d-inference-des-verifications-des-fonctions-non-appelees-et-bien-d-autres/
 
 ## :shaved_ice: WEBDESIGN
 
 ### INSPIRATION
 
 * https://www.behance.net/search
+* https://dribbble.com/search/
 * https://search.muz.li/inspiration/mobile-app-design-inspiration/
 * https://search.muz.li/search/map
+* https://www.creative-portfolios.com/
+* A collection of ui/ux design components, patterns, examples and inspiration : https://www.niceverynice.com/components
 
 
 ### DESIGN
@@ -451,6 +541,17 @@
 * Color Palette Generator : https://colors.muz.li/
 * HTML Color Picker : https://www.w3schools.com/colors/colors_picker.asp
 * Blush, Illustrations for Everyone : https://blush.design
+* The Complete Practical Guide To Logos And Logo Design In 2020 : https://logobly.com/blog/logo-design
+* Shapy | Gradient Generator : https://shapy.app
+* Explore - Coolors.co : https://coolors.co/palettes/trending
+* Adobe Color : un outil pour créer une palette de couleurs facilement et trouver de l'inspiration - BDM : https://www.blogdumoderateur.com/adobe-color-palette-couleurs/
+* Colour palette with names and HEX code : https://dribbble.com/shots/11434688-Colour-palette-with-names-and-HEX-code
+* Interfaces.pro | Brand-focused collection of UI design examples : https://interfaces.pro/
+* The worst logos ever, Redesigned : https://www.behance.net/gallery/95359633/The-worst-logos-ever-Redesigned
+* Top 10 Sites for Free Illustrations : https://topix10.com/top-10-sites-for-free-illustrations
+* How To Succeed In Wireframe Design : https://www.smashingmagazine.com/2020/04/wireframe-design-success
+* Best Character Creators and Vector Libraries to Favor The UX : https://thedesignest.net/free-illustrations-character-creators
+
 
 ### UX/UI
 
@@ -467,6 +568,13 @@
 * 10 open source SVG icon libraries that you can use for your next project : https://themesberg.com/blog/open-source/10-open-source-free-svg-icon-libraries
 * Ux Design | Menu Hamburger : icône appétissante ou indigeste ? : https://vanillefraise.eu/navigation-menu-hamburger-icone-appetissante-ou-indigeste/
 * How to Create a Perfect Dropdown : https://dribbble.com/shots/10604215-How-to-Create-a-Perfect-Dropdown
+* Beautiful Examples of Login Forms for Websites and Apps : https://designmodo.com/login-forms-websites-apps
+* Ikonate – fully customisable & accessible vector icons : https://www.ikonate.com
+* Ikonate, un set gratuit de 234 icônes personnalisables en SVG - BDM : https://www.blogdumoderateur.com/ikonate-icones-svg
+* SVG Colorizer, colorize SVG icons and SVG vectors automatically : https://www.iconshock.com/svg-color/
+* How I Organize Colors for a UI Design Project : https://www.youtube.com/watch?v=9S8LGdpNh4Q
+* Norde Source : An SVG Icon manager and editor for easily customizing entire icon sets : https://norde.io/
+* 13 Bootstrap Date Pickers Examples : https://flatlogic.com/blog/13-bootstrap-date-pickers-examples
 
 
 ## :joystick: API
@@ -498,6 +606,10 @@
 * Programming with Mosh - YouTube : https://www.youtube.com/user/programmingwithmosh/videos
 * Server side vs Client side Postgres Cursors with psycopg2 - YouTube : https://www.youtube.com/watch?v=dLKZWbTHfgA
 * mmtuts - YouTube : https://www.youtube.com/user/TheCharmefis/videos
+* DevTut : https://devtut.github.io/
+* Nouvelle Techno : https://www.youtube.com/channel/UCVPd3h_V_hGjMZ8jNMt939Q/videos
+* Développeur Libre : https://www.youtube.com/channel/UCjDg7LaaMzmuhj6I1jTzb1Q/videos
+* Potion de vie : https://www.youtube.com/user/Potiondevie/videos
 
 
 ## :alembic: TESTS
@@ -550,3 +662,4 @@
 * Websites For Inspiration : https://wweb.dev/resources/websites-for-inspiration
 * https://css-tricks.com
 * https://www.framer.com/
+* https://waster.fr/

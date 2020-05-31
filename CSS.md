@@ -7,6 +7,7 @@
 * min() — accepts one or more possible values or calculations to choose from, and ensures that the value used in all situations will be the smallest of the possibilities. In effect, this provides a range of values for responsive designs, along with a maximum allowed value
 * max() — accepts one or more possible values or calculations to choose from, and ensures that the value used in all situations will be the largest of the possibilities. In effect, this provides a range of values for responsive designs, along with a minimum allowed value.
 * clamp() — accepts three values or calculations: a minimum, preferred, and a maximum. The minimum or maximum will be used if the computed value falls below the minimum or above the maximum. The preferred value will be used if the computed value falls between the two. This allows the property value to adapt to changes in the element or page it is assigned to, while remaining between the minimum and maximum values.
+* Everything I Learned About min(), max(), clamp() In CSS : https://ishadeed.com/article/css-min-max-clamp/
 
 ```css
 html {

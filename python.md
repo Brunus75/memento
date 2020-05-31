@@ -73,6 +73,7 @@
 * The Python Standard Library : https://docs.python.org/3/library/index.html
 * Les fonctions de Python : https://docs.python.org/3/library/functions.html
 * Real Python: Python 3 Cheat Sheet : https://static.realpython.com/python-cheat-sheet.pdf
+* Top 10 Python Tools To Make a Developer’s Life Easier : https://www.activestate.com/blog/top-10-python-tools-to-make-your-life-easier
 * https://www.udemy.com/course/formation-complete-python/
 * https://www.udemy.com/course/cours-python-avance/
 * https://realpython.com/pointers-in-python/
@@ -87,6 +88,7 @@
 * https://dbader.org/
 * Python Developers Survey 2019 Results : https://www.jetbrains.com/lp/python-developers-survey-2019/
 * Finding secrets by decompiling Python bytecode in public repositories : https://blog.jse.li/posts/pyc/
+* Python String Methods : https://www.programiz.com/python-programming/methods/string/capitalize
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -111,7 +113,10 @@
 * ~ Regular Expressions: Regexes in Python, Part 1 : https://realpython.com/regex-python/
 * ~ The Hitchhiker's Guide to CLIs in Python : https://vinayak.io/2020/05/04/the-hitchhikers-guide-to-clis-in-python/
 * ~ Datetime Module (Dates and Times) || Python Tutorial || Learn Python Programming : https://www.youtube.com/watch?v=RjMbCUpvIgw
-* ~ How Python Can Create Better Content Briefs and Improve SEO : https://www.semrush.com/blog/python-content-briefs-seo/    
+* ~ How Python Can Create Better Content Briefs and Improve SEO : https://www.semrush.com/blog/python-content-briefs-seo/
+* ~ Your Guide to the Python print() Function : https://realpython.com/python-print/
+* ~ FunctionTrace : a graphical Python profiler that provides a clear view of your application's execution while being both low-overhead and easy to use : https://functiontrace.com/
+* ~ Python Engineer - Free Python and Machine Learning Tutorials : https://www.python-engineer.com/   
 
 
 ## INSTALLATION
@@ -509,9 +514,14 @@ d = "L'addition de 10 + 5 est égal à " + str(10 + 5)
 + - * /
 print(6 / 2) # 3.0
 print("Python" * 3)  # PythonPythonPython
-% # modulo, récupère le reste de la division
+% # modulo, récupère le reste (positif) de la division
+# représente le plus petit nombre positif possible
 print(10 % 2) # 0, car 2x5 = 10 tout round
 print(6 % 4) # 2, car 4x1 = 4, il reste 2 pour arriver à 6
+print(-11 % 5) # 4, car le reste ne peut être que POSITIF
+# 5 * (-3) + 4 = -11
+print(-7 % 4) # 1 (4 x -2 = -8 | pour aller à -7 = +1)
+print(7 % -4) # -1
 // # division entière : récupère un nombre entier
 print(10 // 3) # 3
 ** # puissance
@@ -749,6 +759,15 @@ import pathlib
 >>> q = p / 'to' / 'data.csv'
 >>> q
 PosixPath('data/to/data.csv')
+
+# la méthode groupby() du module itertools
+from itertools import groupby
+
+# regrouper tous les éléments qui se suivent en un élément
+[k for (k, _) in groupby('AAAABBBCCDAABBB')] # --> A B C D A B
+[k for k, g in groupby('AAAABBBCCDAABBB')] # --> A B C D A B
+
+[list(g) for k, g in groupby('AAAABBBCCD')] # --> AAAA BBB CC D
 ```
 
 ## LES LISTES
@@ -843,6 +862,12 @@ liste = ["Utilisateur1",
 middle = int(((len(liste) - 1) / 2))
 print(middle) # 3
 print(liste[middle:(-middle)]) # ['Utilisateur4']
+
+# créer une liste à partir d'une liste
+liste = liste_double[:] # le slice permet de créer une nouvelle liste (nouvel objet dans la mémoire)
+# et l'assigner à la variable liste
+# sinon liste_double et liste auront le même id (chaque changement sur l'un se répercutera sur l'autre)
+# aussi possible avec list(list_double)
 
 # la méthode index, qui renvoie l'index de l'élément
 employes =["Carlos", "Max", "Martine", "Patrick", "Alex"]
@@ -1041,6 +1066,31 @@ banana_centered_in_20 = "banana".center(20) #       banana
 # print un string de 20 caractères avec le mot banana au milieu
 # si nombre > nombre caractères du mot, entoure le mot d'espaces
 # pour que le milieu du mot soit le milieu du nombre donné
+
+"XmotX".strip("X") # enlève les caractères en argument en début et fin de string
+# et retourne le string altéré
+# de gauche à droite (puis inverse), chaque caractère est confronté aux
+# caractères en argument
+# le processus s'arrête quand le caractère du string ne correspond
+# à aucun caractère en argument
+string = '  xoxo love xoxo   '
+# Leading and trailing whitespaces are removed
+print(string.strip())
+>>> xoxo love xoxo
+# All <whitespace>,x,o,e characters in the left
+# and right of string are removed
+print(string.strip(' xoe'))
+>>> lov
+# Argument doesn't contain space
+# No characters are removed.
+print(string.strip('stx'))
+>>>   xoxo love xoxo   
+string = 'android is awesome'
+print(string.strip('an'))
+>>> droid is awesome
+# il existe aussi :
+"Xmot".lstrip("X")
+"motX".rstrip("X")
 
 # Muable et Immuable (mutable ou immutable)
 # 2 catégories d'objets :
@@ -2385,6 +2435,21 @@ pip install --upgrade package
 pip uninstall package
 pip3.7 uninstall nomDuPackage
 # ! ne supprime pas les dépendances du packages ! (les dépendances secondaires)
+
+# fetch website's data with requests
+import requests
+response = requests.get('https://www.example.com/api/')
+data = response.json()
+# In this example, the code fetches the data from example.com 
+# and converts it into a dictionary or list that you can use in the rest of your code
+
+One excellent tool for communicating with a database is SQLAlchemy
+pip install SQLAlchemy # to get started
+SQLAlchemy gives developers a Python API to make database queries. 
+A snippet of code looks like:
+>>> our_user = session.query(User).filter_by(name='ed').first()
+>>> our_user
+<User(name='ed', fullname='Ed Jones', password='edspassword')>
 ```
 
 ## TROUVER LE BON PACKAGE
@@ -5531,7 +5596,7 @@ True
 >>> match.group(1)
 'Matt'
 
-re.compile() # créé un objet regex réutilisable
+re.compile() # crée un objet regex réutilisable
 
 prog = re.compile(pattern)
 result = prog.match(string)
@@ -5540,10 +5605,17 @@ result = re.match(pattern, string)
 # re.compile is more efficient when the expression will be used several times 
 # in a single program
 
+re.findall() # crée une liste d'élement qui valident la regex
+words = re.findall('[a-zA-Z][^A-Z]*', string)
+# trouve les mots commençant par une lettre, suivi de 0 ou + minuscules
+# words : ['my', 'Camel', 'Has', 'Humps', 'Ex8mple']
+
+re.sub(regex, subst, string) # créer un nouveau string grâce à une regex
+re.sub(r"\s+", "-", result) # remplace les espaces par des tirets
+# dans le string nommé result
 
 # Tester ses expressions régulières avec Regex101.com
 # Regarder Quick Reference pour bâtir ses regex
-# Aussi utilisé : re.sub, re.findall
 ```
 * https://regex101.com/
 * https://regexr.com/
@@ -6096,6 +6168,24 @@ def recuperer_extension2(fichier):
 print(recuperer_extension("C:/mon_programme/test.py")) 
 # py
 ```
+
+### Chronométrer des actions de module
+```py
+> time pip --version
+0.34 seconds
+
+> time virtualenv -p (which python3) venv
+6.24 seconds
+
+> time pytest  # in an EMPTY directory
+0.32 seconds
+
+> time pip install pytest  # already installed!!!
+0.85 seconds
+
+# https://kodare.net/2020/05/19/python-is-slow-does-not-have-to-be.html
+```
+
 
 ## MES ASTUCES
 

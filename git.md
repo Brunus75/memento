@@ -1,10 +1,14 @@
 # MEMOMENTO GIT & GITHUB
 
 * Cours OC > https://openclassrooms.com/fr/courses/2342361-gerez-votre-code-avec-git-et-github/2433596-installez-git
+* https://www.webfx.com/blog/web-design/interactive-git-tutorials/
+* https://git-school.github.io/visualizing-git/
+* https://gitup.co/
 
 ## SOMMAIRE
 
 * [Bonnes pratiques](#bonnes-pratiques)
+* [CHEATSHEET](#cheatsheet)
 * [Les commandes de base de la console](#commandes-base)
 * [TELECHARGER GIT](#telecharger-git)
 * [EDITEUR DE TEXTE](#editeur-de-texte)
@@ -30,6 +34,17 @@
 ## Bonnes pratiques
 
 * Créer son repository + son readme sur Github puis cloner le projet sur son disque dur et ajouter progressivement ses fichiers
+
+## CHEATSHEET
+
+* https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet/
+
+* Bases : https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf
+* Bases : https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
+* https://dev.to/zinox9/git-github-cheatsheet-22ok
+* https://www.keycdn.com/blog/git-cheat-sheet
+* https://scotch.io/bar-talk/git-cheat-sheet
+* https://education.github.com/git-cheat-sheet-education.pdf
 
 ## <a name="commandes-base"></a> Les commandes de base de la console
 ```shell
