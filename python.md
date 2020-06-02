@@ -89,6 +89,7 @@
 * Python Developers Survey 2019 Results : https://www.jetbrains.com/lp/python-developers-survey-2019/
 * Finding secrets by decompiling Python bytecode in public repositories : https://blog.jse.li/posts/pyc/
 * Python String Methods : https://www.programiz.com/python-programming/methods/string/capitalize
+* 5 ressources pour débuter en Python ! : https://medium.com/@camille.clarret/5-ressources-pour-d%C3%A9buter-en-python-ec524289ea86
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/

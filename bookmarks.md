@@ -173,6 +173,7 @@
 * Open Graph Meta Tags: Everything You Need to Know : https://ahrefs.com/blog/open-graph-meta-tags/
 * Alt Text for SEO: How to Optimize Your Images : https://ahrefs.com/blog/alt-text/
 * SEO : les erreurs les plus fréquentes qui pénalisent le référencement des sites web : https://www.blogdumoderateur.com/seo-erreurs-frequentes
+* SEMrush - service for competitors research, shows organic and Ads keywords for any site or domain : https://www.semrush.com/
 * La Google Search Console se dote d’un nouveau rapport de vitesse - BDM : https://www.blogdumoderateur.com/google-search-console-nouveau-rapport-vitesse
 * What Is Rel=Nofollow & How Do I Use Nofollow Links On My Site? : https://www.hobo-web.co.uk/what-is-nofollow/#example-nofollow-link-code
 * Exemple masquage accessible et aria-hidden - recommandations accessibilité web Orange : https://a11y-guidelines.orange.com/web/exemples/masquage/index.html
@@ -204,9 +205,16 @@
 * 27 des plus grosses erreurs SEO qui peuvent nuire à votre site web : https://fr.semrush.com/blog/27-erreurs-seo/
 * How to Create SEO-Friendly URLs (Step-by-Step) : https://ahrefs.com/blog/seo-friendly-urls/
 * 9 SEO Best Practices That You Should Follow in 2020 : https://www.semrush.com/blog/seo-best-practices/
+* Les clés pour réussir son référencement web - OpenClassrooms : https://openclassrooms.com/fr/courses/2465141-les-cles-pour-reussir-son-referencement-web
+* Bienvenue dans Google Search Console : https://search.google.com/search-console/welcome
+* Majestic®: Moteur de recherche marketing et outil SEO Backlink Checker : https://fr.majestic.com/
+* Le meilleur SEO de France : https://www.journaldunet.com/solutions/seo-referencement/1108423-le-meilleur-seo-de-france/
+* Lazy-loading natif : Chrome et Firefox vont faciliter l'optimisation du chargement des images - BDM : https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif
 
 
 ## :bulb: ORGANISATION
+
+* Tools for better thinking : https://untools.co/
 
 ### UML
 
@@ -245,6 +253,7 @@
 ## :nazar_amulet: VISUAL STUDIO CODE
 
 * https://visualstudio.developpez.com/
+* * Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
 
 
 ## :memo: MARKDOWN
@@ -279,6 +288,7 @@
 * Évoluer vers une architecture MVC en PHP : https://bpesquet.developpez.com/tutoriels/php/evoluer-architecture-mvc/
 * https://www.grafikart.fr/search?q=MVC
 * A curated list of amazingly awesome PHP libraries, resources and shiny things : https://github.com/ziadoz/awesome-php
+* Composer, autoloader, namespaces: La gestion des dépendances en PHP : https://medium.com/@remi.michel38/composer-autoloader-namespaces-la-gestion-des-d%C3%A9pendances-en-php-50dfd4652c0
 
 
 ### SYMFONY
@@ -314,6 +324,7 @@
 * DocstringFr/la-formation-complete-python: Code et ressources pour La Formation Complète Python : https://github.com/DocstringFr/la-formation-complete-python
 * Le guide de l’auto-stoppeur pour Python! — The Hitchhiker's Guide to Python : https://python-guide-pt-br.readthedocs.io/fr/latest/index.html
 * Shopify Customer Service Chatbot using Python Automation : https://www.youtube.com/watch?v=xof1OgxcRhY&feature=youtu.be
+
 
 ### DJANGO
 
@@ -353,6 +364,8 @@
 * Resources : https://mentor.silvestar.codes/resources
 * 16+ Multi step HTML forms : https://csshint.com/multi-step-html-forms
 * UN PLAN DE TESTS AUTOMATISÉS POUR VOTRE FRONT-END - GAËL POUPARD : https://www.youtube.com/watch?v=JD1nrs2yH88
+* https://codepen.io/popular/pens/
+
 
 ### SANDBOX
 
@@ -368,6 +381,11 @@
 * https://uxpro.cc/toolbox/visual-design/fonts/
 * Choosing Web Fonts: A Beginner’s Guide : https://design.google/library/choosing-web-fonts-beginners-guide/
 * How to choose a font for a project : https://betterwebtype.com/articles/2019/10/20/how-to-choose-a-font-for-a-project/
+* The Fastest Google Fonts : https://csswizardry.com/2020/05/the-fastest-google-fonts/
+* Google Fonts et les polices variables - La Ferme du Web : https://www.lafermeduweb.net/veille/google-fonts-variables-fonts
+* https://variablefonts.io/
+* https://www.typewolf.com/top-10-serif-fonts
+* https://fr.tuto.com/blog/2020/06/31-fonts-gratuites-fraichement-creees-mai-2020.htm?mc_cid=ed65afff92&mc_eid=c8463de306
 
 
 ### HTML
@@ -386,6 +404,7 @@
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
 * A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
 * Selectors Explained : https://hugogiraudel.github.io/selectors-explained/
+* CSS Pseudo-elements : https://www.w3schools.com/css/css_pseudo_elements.asp
 * CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
@@ -425,6 +444,12 @@
 * dotCSS 2016 - Wenting Zhang - Make CSS your secret super drawing tool - YouTube : https://www.youtube.com/watch?v=Y0_FMCji3iE
 * Keyframes : Create basic or complex CSS @keyframe animations with a visual timeline editor : https://keyframes.app
 * 4 CSS Grid Properties (and One Value) for Most of Your Layout Needs : https://css-tricks.com/4-css-grid-properties-and-one-value-for-most-of-your-layout-needs/
+* Créer un header caméléon qui change de style au scroll - La Ferme du Web : https://www.lafermeduweb.net/veille/creer-un-header-cameleon-qui-change-de-style-au-scroll
+* Créer un Sticky footer CSS avec des flexbox - La Ferme du Web : https://www.lafermeduweb.net/veille/creer-un-sticky-footer-css-avec-des-flexbox
+* Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
+* Créez des animations CSS modernes : https://openclassrooms.com/fr/courses/5919246-creez-des-animations-css-modernes
+* CSS Transitions and Transforms for Beginners : https://thoughtbot.com/blog/transitions-and-transforms
+* A user’s guide to CSS variables : https://increment.com/frontend/a-users-guide-to-css-variables/
 
 
 ### BOOTSTRAP
@@ -485,6 +510,8 @@
 * État de JavaScript en 2019 : les développeurs aiment un peu plus React, Angular est en déclin, un groupe de développeurs pensent que JS est « trop complexe » : https://javascript.developpez.com/actu/289055/Etat-de-JavaScript-en-2019-les-developpeurs-aiment-un-peu-plus-React-Angular-est-en-declin-un-groupe-de-developpeurs-pensent-que-JS-est-trop-complexe/
 * Javascript Tools and Libraries for Creating, Customizing and Validation Forms : https://flatlogic.com/blog/javascript-tools-and-libraries-for-creating-customizing-and-validation-forms
 * Installez correctement vos dépendances : https://medium.com/@remi.michel38/installez-correctement-vos-d%C3%A9pendances-6ca64d47a432
+* An Introduction to JavaScript Generators – What You Need to Know : https://blog.alexdevero.com/javascript-generators
+* 25+ CSS Slider : https://csshint.com/css-slider
 
 
 ### JQUERY
@@ -521,6 +548,8 @@
 * https://search.muz.li/search/map
 * https://www.creative-portfolios.com/
 * A collection of ui/ux design components, patterns, examples and inspiration : https://www.niceverynice.com/components
+* https://codepen.io/popular/pens/
+* http://www.migulko.cz/
 
 
 ### DESIGN
@@ -551,6 +580,10 @@
 * Top 10 Sites for Free Illustrations : https://topix10.com/top-10-sites-for-free-illustrations
 * How To Succeed In Wireframe Design : https://www.smashingmagazine.com/2020/04/wireframe-design-success
 * Best Character Creators and Vector Libraries to Favor The UX : https://thedesignest.net/free-illustrations-character-creators
+* Muzli Colors : l'outil parfait pour générer des palettes de couleurs - BDM : https://www.blogdumoderateur.com/muzli-colors-palettes-couleurs
+* Multicolor CSS Gradients, JPG Downloads, 100% Free! | Gradienta : https://gradienta.io/
+* Leonardo : un générateur de palette de couleurs avec contraste idéal et accessible - La Ferme du Web : https://www.lafermeduweb.net/veille/leonardo-un-generateur-de-palette-de-couleurs-avec-contraste-ideal-et-accessible
+* Colorsinspo, une bibliothèque de ressources complète sur les couleurs - BDM : https://www.blogdumoderateur.com/colorsinspo-bibliotheque-couleurs
 
 
 ### UX/UI
@@ -575,6 +608,9 @@
 * How I Organize Colors for a UI Design Project : https://www.youtube.com/watch?v=9S8LGdpNh4Q
 * Norde Source : An SVG Icon manager and editor for easily customizing entire icon sets : https://norde.io/
 * 13 Bootstrap Date Pickers Examples : https://flatlogic.com/blog/13-bootstrap-date-pickers-examples
+* 500+ CSS Icons, Customizable, Retina Ready & API : https://css.gg/
+* CSS gg : plus de 500 icônes CSS personnalisables et compatibles retina - La Ferme du Web
+* 10 examples of custom 404 pages ranked from best to worst : https://uxdesign.cc/10-examples-of-custom-404-pages-ranked-from-best-to-worst-9c74825c18c9
 
 
 ## :joystick: API
@@ -592,6 +628,14 @@
 * Comment activer l'éditeur dans wordpress en 3 minutes ! Tutoriel Français - YouTube : https://www.youtube.com/watch?v=bGUFGD7yYt0
 * Installez WordPress chez 1and1 facilement en 2014 ! : https://wp-infinity.com/tutoriels/installer-wordpress/1and1-hebergement-mutualise/
 * WordPress : Comment créer un PLAN de SITE (ou sitemap HTML) ? : https://wpformation.com/plan-de-site-sitemap-html-wordpress/
+* How to Block IP Addresses in WordPress: Stop Spam + Secure Your Site : https://themeisle.com/blog/how-to-block-ip-addresses-in-wordpress/
+```
+WP White Security Tip: If you already have an .htaccess file in the root of your WordPress, download the existing one and add the below at the end of the .htaccess file. It is important to always add content outside the # BEGIN WordPress and # END WordPress lines.
+```
+
+## :no_entry: SECURITY
+
+* How to Block IP Address with .htaccess : https://htaccessbook.com/block-ip-address/
 
 
 ## :card_file_box: BASE DE DONNEES
@@ -655,6 +699,16 @@
 * https://www.pexels.com/
 
 
+## :iphone: :computer: :desktop_computer: MOCKUP
+
+* Gravity Psd Devices UI Mockup Set v7 | Psd Mock Up Templates | Pixeden : https://www.pixeden.com/psd-mock-up-templates/gravity-psd-devices-ui-mockup-set-v7
+* http://www.pixeden.com/html5-website-templates/london-html5-modern-website-template
+* http://www.pixeden.com/html5-website-templates/proteos-html5-modern-website-template
+* https://www.pixeden.com/psd-web-elements/modern-psd-responsive-showcase
+* https://www.pixeden.com/psd-web-elements/psd-screen-web-showcase
+* Mirror Resume | spovv.com : http://spovv.com/mirror-resume
+
+
 ## :heavy_heart_exclamation: SITES WEB
 
 * https://stephaniewalter.design/
@@ -663,3 +717,4 @@
 * https://css-tricks.com
 * https://www.framer.com/
 * https://waster.fr/
+* http://www.migulko.cz/

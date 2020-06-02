@@ -35,6 +35,29 @@ p {
   it will start to grow at the point that 1.2vw’s 
   computed value is larger than 1.2rems’ computed value */
 }
+```
 
+## CSS Variable
+```css
+/* The var() function is used to reference a custom property declared earlier in the document. */
+html {
+  --color: orange;
+}
 
+p {
+  color: var(--color);
+}
+
+/* It is incredibly powerful when combined with calc(). */
+html {
+  --scale: 1.2;
+  --size: 0.8rem;
+}
+
+.size-2 {
+  font-size: calc(var(--size) * var(--scale));
+}
+.size-2 {
+  font-size: calc(var(--size) * var(--scale) * var(--scale));
+}
 ```

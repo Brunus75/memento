@@ -1,9 +1,18 @@
 # MEMOMENTO GIT & GITHUB
 
+
+## RESSOURCES
+
 * Cours OC > https://openclassrooms.com/fr/courses/2342361-gerez-votre-code-avec-git-et-github/2433596-installez-git
 * https://www.webfx.com/blog/web-design/interactive-git-tutorials/
 * https://git-school.github.io/visualizing-git/
 * https://gitup.co/
+* Comprendre Git (1/18) : Qu'est ce que git ? : https://www.youtube.com/watch?v=rP3T0Ee6pLU&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP
+* Débuter avec Git et Github : https://www.youtube.com/watch?v=V6Zo68uQPqE
+* Débuter avec Git et Github en 30 min : https://www.youtube.com/watch?v=hPfgekYUKgk&feature=youtu.be
+* Gérez vos codes source avec Git : https://openclassrooms.com/fr/courses/1233741-gerez-vos-codes-source-avec-git
+* Git & GitHub : Le Cours Pour Les Débutants : https://www.youtube.com/watch?v=4o9qzbssfII
+
 
 ## SOMMAIRE
 
