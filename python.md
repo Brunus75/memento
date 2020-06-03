@@ -69,6 +69,7 @@
 
 ## RESSOURCES
 
+* Article à la une : https://www.docstring.fr/blog/
 * Clean Code concepts adapted for Python : https://github.com/zedr/clean-code-python
 * The Python Standard Library : https://docs.python.org/3/library/index.html
 * Les fonctions de Python : https://docs.python.org/3/library/functions.html

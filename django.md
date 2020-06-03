@@ -23,7 +23,9 @@
 * ~ User Interaction With Forms : https://www.mattlayman.com/understand-django/user-interaction-forms/
 * ~ Optimizing Django ORM Queries : http://schegel.net/posts/optimizing-django-orm-queries/
 * ~ How to Write an Installable Django App : https://realpython.com/preview/installable-django-app/
-* ~ Preventing SQL injection: a Django author's perspective : https://r2c.dev/blog/2020/preventing-sql-injection-a-django-authors-perspective/   
+* ~ Preventing SQL injection: a Django author's perspective : https://r2c.dev/blog/2020/preventing-sql-injection-a-django-authors-perspective/
+* ~ Remodeling Data Relationships - Building SaaS #55 : https://www.mattlayman.com/building-saas/remodeling-data-relationships/
+* ~ How To Fix A Bug - Building SaaS #56 : https://www.mattlayman.com/building-saas/how-to-fix-a-bug/   
 
 
 ## SOMMAIRE

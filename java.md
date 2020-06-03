@@ -1834,7 +1834,7 @@ long numberLong = number.longValue();
 // • les types énumérés
 // restreindre les valeurs possibles d'une variable à une gamme prédéterminée
 // Avant sur JAVA :
-public class Voiture extends Vehicule implements Vidangeable {r
+public class Voiture extends Vehicule implements Vidangeable {
     // boolean automatic;
     int typeBoite; // ++
 }
