@@ -128,3 +128,5 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 * :card_index_dividers: **Registre (ou base de registre)** : fichier où sont stockés les paramètres d'un ordinateur Windows, sous-divisé en dossiers appelés "clé" qui contiennent les informations du registre. Chacune des clés est dédiée à un domaine de Windows et peut contenir des sous-clés afin d'affiner le rangement
 
 * :dark_sunglasses: **Dark patterns** : User interface elements that have been carefully crafted to trick users into doing things they might not otherwise do, often utilizing psychological manipulation
+
+* **URI** : Uniform Resource Identifier. URLs (uniform resource locators) are a common kind of URI.

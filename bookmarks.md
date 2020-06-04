@@ -86,11 +86,12 @@
    * the website is fast with Lighthouse (https://developers.google.com/web/tools/lighthouse/) or Pagespeed Insights (https://developers.google.com/speed/pagespeed/insights/)
    * the website is accessible with WAVE (https://wave.webaim.org/)
    * that the website has proper SEO with Seoptimer (https://www.seoptimer.com/)
-
+* Un terminal pour Windows : https://www.docstring.fr/blog/un-terminal-pour-windows/
 
 
 ## :pushpin: WEB DOCS
 
+* 20 plateformes pour apprendre à coder gratuitement : https://www.journaldunet.com/solutions/dsi/1491765-ou-apprendre-a-coder-gratuitement-20-plateformes-presentees/
 * DevTut : https://devtut.github.io/
 * Roadmap to becoming a web developer in 2020 : https://github.com/kamranahmedse/developer-roadmap
 * CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
@@ -248,6 +249,7 @@
 * Learn Git - Tutorial Videos | GitKraken Resources : https://www.gitkraken.com/resources/learn-git
 * Mettre en ligne son site web statique et évaluer sa qualité : Partie 1 — Création d’un dépôt sur Github et activation de Github Pages : https://medium.com/@JeremyRaffin/site-web-statique-optimis%C3%A9-avec-github-pages-cr%C3%A9ation-du-d%C3%A9p%C3%B4t-et-activation-de-github-pages-1-4-2537061ef3dd
 * https://github.com/features/security
+* GitKraken Cheat Sheet : https://www.gitkraken.com/resources/gitkraken-cheat-sheet
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -450,6 +452,7 @@
 * Créez des animations CSS modernes : https://openclassrooms.com/fr/courses/5919246-creez-des-animations-css-modernes
 * CSS Transitions and Transforms for Beginners : https://thoughtbot.com/blog/transitions-and-transforms
 * A user’s guide to CSS variables : https://increment.com/frontend/a-users-guide-to-css-variables/
+* A nice copywriting template for product landing pages : https://uselander.xyz/index.html
 
 
 ### BOOTSTRAP
@@ -468,6 +471,7 @@
 * css - Change bootstrap navbar collapse breakpoint without using LESS - Stack Overflow : https://stackoverflow.com/questions/19827605/change-bootstrap-navbar-collapse-breakpoint-without-using-less
 * CSS can do that? - DEV Community 👩‍💻👨‍💻 : https://dev.to/ananyaneogi/css-can-do-that-18g7
 * 24+ CSS Text Effects : https://csshint.com/css-text-effects
+* A collection of customizable, ready-to-use Tailwind CSS blocks : https://mertjf.github.io/tailblocks/
 
 
 ### JAVASCRIPT
@@ -632,6 +636,7 @@
 ```
 WP White Security Tip: If you already have an .htaccess file in the root of your WordPress, download the existing one and add the below at the end of the .htaccess file. It is important to always add content outside the # BEGIN WordPress and # END WordPress lines.
 ```
+* Hacked: What to Do When Your WordPress Website Has Been Compromised : https://speckyboy.com/wordpress-compromised
 
 ## :no_entry: SECURITY
 

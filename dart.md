@@ -7,7 +7,7 @@
 * Dart language specification : https://dart.dev/guides/language/spec
 * Dart Pad : https://dartpad.dev/
 * dart:core library : https://api.dart.dev/stable/2.8.3/dart-core/dart-core-library.html
-* Guidelines(DO and DON'T) : https://dart.dev/guides/language/effective-dart/design
+* Guidelines (DO and DON'T) : https://dart.dev/guides/language/effective-dart/design
 * Guidelines Types : https://dart.dev/guides/language/effective-dart/design#types
 * https://www.reddit.com/r/dartlang/
 * Dart/Python : https://www.reddit.com/r/dartlang/comments/gs4hlu/dart_is_now_7_on_the_most_loved_and_now_moved/fs3954s/
@@ -16,12 +16,58 @@
 ## SOMMAIRE
 
 * [DART](#dart)
-* [VARIABLES ET TYPES](#variables-et-types)
-* [LES CONDITIONS](#les-conditions)
-* [LES BOUCLES](#les-boucles)
-* [OPERATEURS](#operateurs)
-* [LES FONCTIONS](#les-fonctions)
+* [VARIABLES ET TYPES](#variables-et-types)   
+   * [VARIABLES](#variables)
+   * [STRING](#string)
+   * [NUMBERS](#numbers)
+   * [BOOLEANS](#booleans)
+   * [LISTS](#lists)
+   * [MAPS](#maps)
+   * [SETS](#sets)
+* [LES CONDITIONS](#les-conditions)   
+   * [IF ELSE TERNAIRE](#if-else-ternaire)
+   * [SWITCH](#switch)
+* [LES BOUCLES](#les-boucles)   
+   * [BOUCLE FOR](#boucle-for)
+   * [BOUCLE WHILE](#boucle-while)
+   * [ASSERT](#assert)
+* [OPERATEURS](#operateurs)   
+   * [ARITHMETIQUES](#arithmetiques)
+   * [TYPE TEST OPERATORS](#type-test-operators)
+   * [ASSIGNMENT OPERATORS](#assignment-operators)
+   * [LOGICAL OPERATORS](#logical-operators)
+   * [CASCADE NOTATION](#cascade-notation)
+* [LES FONCTIONS](#les-fonctions)   
+   * [FONCTIONS DE BASE](#fonctions-de-base)
+   * [FONCTIONS AVEC PARAMETRES](#fonctions-avec-parametres)
+   * [FONCTIONS AVEC RETOUR](#fonctions-avec-retour)
+   * [OPTIONAL PARAMETERS](#optional-parameters)
+   * [MAIN FUNCTION](#main-function)
+   * [FUNCTION AS PARAMETER](#function-as-parameter)
+   * [ANONYMOUS FUNCTIONS](#anonymous-functions)
+   * [LEXICAL SCOPE](#lexical-scope)
+   * [LEXICAL CLOSURES](#lexical-closures)
+   * [TESTING FUNCTIONS FOR EQUALITY](#testing-functions-for-equality)
+   * [RETURN VALUES](#return-values)
 * [PROGRAMMATION ORIENTEE OBJET](#programmation-orientee-objet)
+* [EXCEPTIONS](#exceptions)   
+   * [THROW](#throw)
+   * [CATCH](#catch)
+   * [FINALLY](#finally)
+* [GENERICS](#generics)   
+   * [EXEMPLES](#exemples)
+   * [COLLECTION LITERALS](#collection-literals)
+   * [PARAMETERIZED TYPES WITH CONSTRUCTORS](#parameterized-types-with-constructors)
+   * [FIND TYPES](#find-types)
+   * [RESTRICTING PARAMETERIZED TYPE](#restricting-parameterized-type)
+   * [GENERIC METHODS](#generic-methods)
+* [LIBRAIRIES ET VISIBILITE](#librairies-et-visibilite)   
+   * [LIBRARIES](#libraries)
+   * [LIBRARY PREFIX](#library-prefix)
+   * [IMPORT A PART](#import-a-part)
+   * [LAZY LOADING](#lazy-loading)
+   * [CREATE LIBRARY](#create-library)
+
 
 ## DART
 
@@ -29,7 +75,7 @@
 * Langage Front ET Back (serveur)
 * Taillé pour la performance et les gros projets
 * Mélange JAVA (orienté objet, typage), JavaScript (variables dynamiques, const, var, commentaires, String interpolation) et Python (print(), _fonction_privee)
-* Typage optionnel (langage dynamique)
+* Typage optionnel (langage dynamique), mais peut imposer un typage fort (avec les generics)
 * Tout est objet sur Dart !
 * Adresse en mémoire ? Pointeurs ?
 ```
@@ -40,6 +86,8 @@ different memory locations during a garbage collection.
 Within the Dart virtual machine Dart objects are almost exclusively accessed and passed around via
 handles and not raw pointers for this very reason.
 ```
+* Instance variables are sometimes known as fields or properties.
+* Unlike Java, Dart doesn’t have the keywords public, protected, and private. If an identifier starts with an underscore (_), it’s private to its library.
 
 ## VARIABLES ET TYPES
 
@@ -57,10 +105,14 @@ String nom = "Calembour"; // préciser le type
 int lineCount; // null
 
 // final and constant variable : inchangeable
-const lieuNaissance = "Marseille";
-const int annee = 1998;
-final parents = 2;
+const lieuNaissance = "Marseille"; // const variables are implicitly final
+const int annee = 1998; // a const variable is a compile-time constant
+final parents = 2; // ne peut être assigné QU'UNE SEULE FOIS
 final String passion = "Dérober des banques";
+
+// compile time constant = a constant value that is known at compile time
+private final int x = 10;
+// the compiler will replace every occurrence of x in the code with literal 10
 
 // You can change the value of a non-final, non-const variable, 
 // even if it used to have a const value
@@ -383,7 +435,7 @@ assert(ingredients.containsAll(['titanium', 'xenon']));
 
 ## LES CONDITIONS
 
-### LES CONDITIONS
+### IF ELSE TERNAIRE
 ```java
 // opérateurs
 // ==, !=, >, <, >=, <=
@@ -418,7 +470,7 @@ String playerName(String name) => name ?? 'Guest';
 // équivalent à : 
 // String playerName(String name) => name != null ? name : 'Guest';
 ```
-### LES SWITCH
+### SWITCH
 ```java
 var command = 'OPEN';
 switch (command) {
@@ -635,7 +687,7 @@ if (!done && (col == 0 || col == 3)) {
   // ...Do something...
 }
 ```
-### CASCADE NOTATION (..)
+### CASCADE NOTATION
 ```java
 // allow you to make a sequence of operations on the same object
 //  In addition to function calls, you can also access fields on that same object
@@ -666,7 +718,7 @@ final addressBook = (AddressBookBuilder()
 * Functions are objects and have a type, Function
 * Functions can be assigned to variables or passed as arguments to other functions
 * Effective Dart recommends type annotations for public APIs
-### LES FONCTIONS DE BASE
+### FONCTIONS DE BASE
 ```java
   // ici indiquer void est optionnel
   // mais recommandé
@@ -712,7 +764,7 @@ bool isNoble(int atomicNumber) => _nobleGases[atomicNumber] != null;
 // The => expr syntax is a shorthand for { return expr; }. 
 // The => notation is sometimes referred to as arrow syntax
 ```
-### OPTIONNAL PARAMETERS
+### OPTIONAL PARAMETERS
 ```java
 // ◘ NAMED PARAMETERS (kwargs (key arguments) : parameters in map)
 
@@ -778,7 +830,7 @@ void doStuff(
   print('gifts: $gifts');
 }
 ```
-### THE MAIN() FUNCTION
+### MAIN FUNCTION
 * Point d'entrée de l'application
 * Retourne void()
 * Has an optional List<String> parameter for arguments
@@ -953,7 +1005,7 @@ assert(foo() == null);
 
 ## PROGRAMMATION ORIENTEE OBJET
 
-### OBJET & CLASSE
+### OBJET ET CLASSE
 * Rappel : avec Dart, tout est objet (comme Python)
 ```java
 void main() {
@@ -1003,12 +1055,12 @@ class Voiture {
   }
 }
 ```
-### RECUPERER LE TYPE D'UN OBJET
+### RECUPERER LE TYPE D UN OBJET
 ```java
 // use Object’s runtimeType property, which returns a Type object.
 print('The type of a is ${a.runtimeType}');
 ```
-### GETTERS & SETTERS
+### GETTERS AND SETTERS
 * Each instance variable has an implicit getter, plus a setter if appropriate
 * You can create additional properties by implementing getters and setters, using the get and set keywords:
 ```java
@@ -1252,6 +1304,53 @@ switch (aColor) {
     print(aColor); // 'Color.blue'
 }
 ```
+### IMPLICIT INTERFACES
+* Unlike other traditional programming languages like C# and JAVA, Dart does not have explicit interface types
+* Each class, by default, defines its own interface composed of public fields and methods (except constructors)
+* So, every class can act as an interface in Dart
+* Chaque classe peut jouer le rôle d'interface
+* On implémente une interface avec le mot-clé "implements"
+* Une classe peut implémenter plusieurs interfaces
+* Elle doit obligatoirement réécrire les méthodes/attributs de l'interface
+```java
+void main() {
+  // call function
+  String greetBob(Person person) => person.greet('Bob');
+  
+  print(greetBob(Person('Kathy'))); // Hello, Bob. I am Kathy.
+  print(greetBob(Impostor())); // Hi Bob. Do you know who I am?
+
+  var imposteur = Impostor();
+  print(imposteur._name); // Imposteur
+  var jean = Person("Jean");
+  print(jean._name); // Jean
+}
+
+// A person. The implicit interface contains greet().
+class Person {
+  // In the interface, but visible only in this library.
+  final _name;
+
+  // Not in the interface, since this is a constructor.
+  Person(this._name);
+
+  // In the interface.
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+
+// An implementation of the Person interface.
+class Impostor implements Person {
+  // mandatory : getter of the interface _name field
+  get _name => 'Imposteur';
+
+  // rewrite the method of the Person interface
+  String greet(String who) => 'Hi $who. Do you know who I am?';
+}
+
+// specifying that a class implements multiple interfaces:
+class Point implements Comparable, Location {...}
+```
+
 ### CLASSES ABSTRAITES
 * Ne peuvent être instancialisées
 * But = définir des interfaces, établir un brouillon, un concept
@@ -1309,9 +1408,14 @@ print('42'.padLeft(5)); // Use a String method.
 print('42'.parseInt()); // Use an extension method.
 
 ```
-### MIXINS (AJOUTER DES FONCTIONNALITES A UNE CLASSE)
-* a way of reusing a class’s code in multiple class hierarchies
-* To use a mixin, use the with keyword followed by one or more mixin names
+### MIXINS
+* But = ajouter des fonctionnalités à une classe
+* A class that contains methods for use by other classes
+* Unlike the interface and inheritance approach, a mixin doesn’t have to be the parent class of those other classes
+* A way of reusing a class’s code in multiple class hierarchies
+* Another way to add functionalities to your class because in Dart multi extends doesn't exist 
+* One usually put common functions inside a mixin
+* To use a mixin, use the "with" keyword followed by one or more mixin names
 ```java
 class Musician extends Performer with Musical {
   // ···
@@ -1350,7 +1454,7 @@ mixin MusicalPerformer on Musician {
   // ···
 }
 ```
-### CLASS VARIABLES & METHODS
+### CLASS VARIABLES AND METHODS
 * Mot-clé "static"
 * Variables et méthodes attachées à la classe
 * Elle ne peuvent être appelées que sur leur classe
@@ -1391,3 +1495,340 @@ void main() {
   print(distance);
 }
 ```
+
+## EXCEPTIONS
+* In contrast to Java, all of Dart’s exceptions are unchecked exceptions
+* Methods do not declare which exceptions they might throw, and you are not required to catch any exceptions
+* Dart provides Exception and Error types, as well as numerous predefined subtypes
+* Dart programs can throw any non-null object—not just Exception and Error objects—as an exception
+* You can define your own exceptions
+
+### THROW
+```java
+// Here’s an example of throwing, or raising, an exception:
+throw FormatException('Expected at least 1 section');
+```
+### CATCH
+* To handle code that can throw more than one type of exception, you can specify multiple catch clauses
+* The first catch clause that matches the thrown object’s type handles the exception
+* If the catch clause does not specify a type, that clause can handle any type of thrown object
+```java
+try {
+  breedMoreLlamas();
+} on OutOfLlamasException {
+  // A specific exception
+  buyMoreLlamas();
+} on Exception catch (e) {
+  // Anything else that is an exception
+  print('Unknown exception: $e');
+} catch (e) {
+  // No specified type, handles all
+  print('Something really unknown: $e');
+}
+
+// (!) One can use either on or catch or both. 
+// Use "on" when you need to specify the exception type. 
+// Use "catch" when your exception handler needs the exception object.
+
+
+// You can specify one or two parameters to catch()
+// The first is the exception that was thrown, and the second is the stack trace 
+// (a StackTrace object)
+try {
+  // ···
+} on Exception catch (e) {
+  print('Exception details:\n $e');
+} catch (e, s) {
+  print('Exception details:\n $e');
+  print('Stack trace:\n $s');
+}
+
+// To partially handle an exception, while allowing it to propagate, 
+// use the "rethrow" keyword :
+void main() {
+  try {
+    misbehave(); // faulty function
+  } catch (e) { // retrieve faulty function error
+    print('main() finished handling ${e.runtimeType}.');
+  }
+  
+  // console :
+  // misbehave() partially handled JsNoSuchMethodError.
+  // main() finished handling JsNoSuchMethodError.
+}
+
+void misbehave() {
+  try {
+    dynamic foo = true;
+    print(foo++); // Runtime error
+  } catch (e) {
+    print('misbehave() partially handled ${e.runtimeType}.');
+    rethrow; // Allow callers to see the exception.
+  }
+}
+```
+### FINALLY
+* To ensure that some code runs whether or not an exception is thrown, use a finally clause
+* If no catch clause matches the exception, the exception is propagated after the finally clause runs
+```java
+try {
+  breedMoreLlamas();
+} finally {
+  // Always clean up, even if an exception is thrown.
+  cleanLlamaStalls();
+}
+
+// The finally clause runs after any matching catch clauses:
+try {
+  breedMoreLlamas();
+} catch (e) {
+  print('Error: $e'); // Handle the exception first.
+} finally {
+  cleanLlamaStalls(); // Then clean up.
+}
+```
+
+## GENERICS
+
+* Generics = type avec un type de paramètres prédéterminé
+* Ex. : List< E >. (sans espaces)
+* Le <…> indique que la liste est un "generic"; un type (List) dont le type des paramètres est prédéterminé (E)
+* But :   
+   * Type safety
+   * better generated code
+   * reduce code duplication
+
+### EXEMPLES
+```java
+// a list that contains only strings
+var names = List<String>();
+names.addAll(['Seth', 'Kathy', 'Lars']);
+names.add(42); // Error
+
+// reduce code duplication
+// you create an interface for caching an object:
+abstract class ObjectCache {
+  Object getByKey(String key);
+  void setByKey(String key, Object value);
+}
+// You discover that you want a string-specific version of this interface, 
+// so you create another interface:
+abstract class StringCache {
+  String getByKey(String key);
+  void setByKey(String key, String value);
+}
+// Generic types can save you the trouble of creating all these interfaces. 
+// Instead, you can create a single interface that takes a type parameter:
+abstract class Cache<T> {
+  T getByKey(String key);
+  void setByKey(String key, T value);
+}
+```
+### COLLECTION LITERALS
+* List, set, and map literals can be parameterized
+* One add <type> (for lists and sets) or <keyType, valueType> (for maps) before the opening bracket
+```java
+var names = <String>['Seth', 'Kathy', 'Lars'];
+var uniqueNames = <String>{'Seth', 'Kathy', 'Lars'};
+var pages = <String, String>{
+  'index.html': 'Homepage',
+  'robots.txt': 'Hints for web robots',
+  'humans.txt': 'We are people, not machines'
+};
+```
+### PARAMETERIZED TYPES WITH CONSTRUCTORS
+* To specify one or more types when using a constructor, put the types in angle brackets (<...>) just after the class name
+```java
+var nameSet = Set<String>.from(names);
+
+// The following code creates a map that has integer keys and values of type View:
+var views = Map<int, View>();
+```
+### FIND TYPES
+* Dart generic types are reified, which means that they carry their type information around at runtime
+```java
+// test the type of a collection :
+var names = List<String>();
+names.addAll(['Seth', 'Kathy', 'Lars']);
+print(names is List<String>); // true
+```
+### RESTRICTING PARAMETERIZED TYPE
+* Goal = limit the types of its parameters
+* How = using extends
+```java
+class Foo<T extends SomeBaseClass> {
+  // Implementation goes here...
+  String toString() => "Instance of 'Foo<$T>'";
+}
+
+class Extender extends SomeBaseClass {...}
+
+var someBaseClassFoo = Foo<SomeBaseClass>(); // OK
+var extenderFoo = Foo<Extender>(); // OK, grâce à l'héritage
+
+var foo = Foo(); // OK, pas besoin d'arguments
+print(foo); // Instance of 'Foo<SomeBaseClass>'
+
+var foo = Foo<Object>(); // Error, Object is not SomeBaseClass
+```
+### GENERIC METHODS
+* Using Generic Methods : https://github.com/dart-lang/sdk/blob/master/pkg/dev_compiler/doc/GENERIC_METHODS.md
+```java
+T first<T>(List<T> ts) {
+  // Do some initial work or error checking, then...
+  T tmp = ts[0];
+  // Do some additional checking or processing...
+  return tmp;
+}
+
+// Here the generic type parameter on first (<T>) allows you to use 
+// the type argument T in several places:
+// • In the function’s return type (T).
+// • In the type of an argument (List<T>).
+// • In the type of a local variable (T tmp).
+```
+
+## LIBRAIRIES ET VISIBILITE
+
+* Every Dart app is a library
+* identifiers that start with an underscore (_) are visible only inside the library
+* Libraries can be distributed using packages
+
+### LIBRARIES
+* (!) URI stands for uniform resource identifier. URLs (uniform resource locators) are a common kind of URI
+```java
+// Dart web apps generally use the dart:html library, which they can import like this:
+import 'dart:html';
+// For built-in libraries, the URI has the special dart: scheme. 
+// For other libraries, you can use a file system path or the package: scheme. 
+// The package: scheme specifies libraries provided by a package manager such as the pub tool. 
+// For example:
+import 'package:test/test.dart';
+```
+### LIBRARY PREFIX
+* But = éviter les conflits de noms
+```java
+import 'package:lib1/lib1.dart';
+import 'package:lib2/lib2.dart' as lib2;
+
+// Uses Element from lib1.
+Element element1 = Element();
+
+// Uses Element from lib2.
+lib2.Element element2 = lib2.Element();
+```
+### IMPORT A PART
+* But = importer une partie de la librairie
+```java
+// Import only foo.
+import 'package:lib1/lib1.dart' show foo;
+
+// Import all names EXCEPT foo.
+import 'package:lib2/lib2.dart' hide foo;
+```
+### LAZY LOADING
+* But = autoriser une application à charger une librairie que si celle-ci est demandée
+* Gain de temps au démarrage, gain de performance
+* **(!)** Only dart2js supports deferred loading. **Flutter**, the Dart VM, and dartdevc don’t support deferred loading
+```java
+// To lazily load a library, you must first import it using deferred as.
+import 'package:greetings/hello.dart' deferred as hello;
+
+// When you need the library, invoke loadLibrary() using the library’s identifier.
+Future greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+// You can invoke loadLibrary() multiple times on a library without problems. 
+// The library is loaded only once.
+```
+### CREATE LIBRARY
+* Create Library Packages : https://dart.dev/guides/libraries/create-library-packages
+
+
+## ASYNCHRONE
+
+* On utilise les mots-clés "async" et "await" pour faire de la programmation asynchrone (comme JavaScript moderne)
+* La programmation asynchrone permet au script de ne pas attendre que l'opération demandée soit complétée (l'opération est non bloquante : elle est exécutée dans l'ordre des instructions, comme du code synchrone, mais on n'attend pas sa réponse pour passer à la ligne suivante)
+* Les librairies Dart asynchrones renvoient des objets **Future** ou **Stream**
+* Future = une Promesse
+* Stream = un flot de Promesses
+
+### FUTURES
+
+* Return a Future object
+* This Future object indicates a promise to return an object
+* When you need the result of a completed Future, you have two options :   
+   * Use async and await.
+   * Use the Future API, as described in the library tour : https://dart.dev/guides/libraries/library-tour#future
+```java
+// some code that uses await to wait for the result of an asynchronous function:
+await lookUpVersion(); // return Future object
+
+// To use await, code must be in an async function — a function marked as async:
+Future checkVersion() async {
+  var version = await lookUpVersion();
+  // Do something with version
+}
+
+// Use try, catch, and finally to handle errors and cleanup in code that uses await:
+try {
+  version = await lookUpVersion();
+} catch (e) {
+  // React to inability to look up the version
+}
+
+// You can use await multiple times in an async function. 
+//For example, the following code waits three times for the results of functions:
+var entrypoint = await findEntrypoint();
+var exitCode = await runExecutable(entrypoint, args);
+await flushThenExit(exitCode);
+
+// If you get a compile-time error when using await, make sure await is in an async function. 
+// For example, to use await in your app’s main() function, 
+// the body of main() must be marked as async:
+Future main() async {
+  checkVersion();
+  print('In main: version is ${await lookUpVersion()}');
+}
+```
+### DECLARE ASYNC FUNCTIONS
+* Adding the async keyword to a function makes it return a Future
+* For an interactive introduction to using futures, async, and await, see the asynchronous programming codelab : https://dart.dev/codelabs/async-await
+```java
+// consider this synchronous function, which returns a String:
+String lookUpVersion() => '1.0.0';
+
+// If you change it to be an async function—for example, 
+// because a future implementation will be time consuming—the returned value is a Future:
+Future<String> lookUpVersion() async => '1.0.0';
+// (!) If your function doesn’t return a useful value, make its return type Future<void>
+```
+### STREAMS
+* When you need to get values from a Stream, you have two options:   
+   * Use async and an asynchronous for loop (await for).
+   * Use the Stream API, as described in the library tour : https://dart.dev/guides/libraries/library-tour#stream
+```java
+// an asynchronous for loop has the following form:
+await for (varOrType identifier in expression) {
+  // Executes each time the stream emits a value.
+}
+```
+* The value of expression must have type Stream. Execution proceeds as follows:
+   1. Wait until the stream emits a value.
+   2. Execute the body of the for loop, with the variable set to that emitted value.
+   3. Repeat 1 and 2 until the stream is closed.
+   4. To stop listening to the stream, you can use a **break** or **return** statement, which breaks out of the for loop and unsubscribes from the stream
+* If you get a compile-time error when implementing an asynchronous for loop, make sure the await for is in an async function
+```java
+// For example, to use an asynchronous for loop in your app’s main() function, 
+// the body of main() must be marked as async:
+Future main() async {
+  // ...
+  await for (var request in requestServer) {
+    handleRequest(request);
+  }
+  // ...
+}
+```
+* For more information about asynchronous programming, in general, see the dart:async section of the library tour : https://dart.dev/guides/libraries/library-tour#dartasync---asynchronous-programming

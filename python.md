@@ -118,7 +118,8 @@
 * ~ How Python Can Create Better Content Briefs and Improve SEO : https://www.semrush.com/blog/python-content-briefs-seo/
 * ~ Your Guide to the Python print() Function : https://realpython.com/python-print/
 * ~ FunctionTrace : a graphical Python profiler that provides a clear view of your application's execution while being both low-overhead and easy to use : https://functiontrace.com/
-* ~ Python Engineer - Free Python and Machine Learning Tutorials : https://www.python-engineer.com/   
+* ~ Python Engineer - Free Python and Machine Learning Tutorials : https://www.python-engineer.com/
+* ~  A Pythonic Guide to SOLID Design Principles : https://dev.to/ezzy1337/a-pythonic-guide-to-solid-design-principles-4c8i   
 
 
 ## INSTALLATION
