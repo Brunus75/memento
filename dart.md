@@ -4,6 +4,8 @@
 
 * Dart doc : https://dart.dev/guides
 * Dart Cheatsheet : https://dart.dev/guides/language/language-tour  https://dart.dev/codelabs/dart-cheatsheet
+* A Tour of the Dart Libraries : https://dart.dev/guides/libraries/library-tour
+* Effective Dart : https://dart.dev/guides/language/effective-dart
 * Dart language specification : https://dart.dev/guides/language/spec
 * Dart Pad : https://dartpad.dev/
 * dart:core library : https://api.dart.dev/stable/2.8.3/dart-core/dart-core-library.html
@@ -11,7 +13,9 @@
 * Guidelines Types : https://dart.dev/guides/language/effective-dart/design#types
 * https://www.reddit.com/r/dartlang/
 * Dart/Python : https://www.reddit.com/r/dartlang/comments/gs4hlu/dart_is_now_7_on_the_most_loved_and_now_moved/fs3954s/
-* ~ Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
+* Fluttering Dart : https://medium.com/tag/fluttering-dart/archive
+* Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
+
 
 ## SOMMAIRE
 
@@ -49,7 +53,20 @@
    * [LEXICAL CLOSURES](#lexical-closures)
    * [TESTING FUNCTIONS FOR EQUALITY](#testing-functions-for-equality)
    * [RETURN VALUES](#return-values)
-* [PROGRAMMATION ORIENTEE OBJET](#programmation-orientee-objet)
+* [PROGRAMMATION ORIENTEE OBJET](#programmation-orientee-objet)   
+   * [OBJET ET CLASSE](#objet-et-classe)
+   * [RECUPERER LE TYPE D'UN OBJET](#recuperer-le-type-d-un-objet)
+   * [GETTERS AND SETTERS](#getters-and-setters)
+   * [HERITAGE](#heritage)
+   * [POLYMORPHISME](#polymorphisme)
+   * [LES ENUM](#les-enum)
+   * [IMPLICIT INTERFACES](#implicit-interfaces)
+   * [CLASSES ABSTRAITES](#classes-abstraites)
+   * [METHODES ABSTRAITES](#methodes-abstraites)
+   * [NOSUCHMETHOD](#nosuchmethod)
+   * [EXTENSION METHODS](#extension-methods)
+   * [MIXINS](#mixins)
+   * [CLASS VARIABLES AND METHODS](#class-variables-and-methods)
 * [EXCEPTIONS](#exceptions)   
    * [THROW](#throw)
    * [CATCH](#catch)
@@ -65,8 +82,14 @@
    * [LIBRARIES](#libraries)
    * [LIBRARY PREFIX](#library-prefix)
    * [IMPORT A PART](#import-a-part)
+   * [PRIVACY](#privacy)
    * [LAZY LOADING](#lazy-loading)
    * [CREATE LIBRARY](#create-library)
+* [GENERATORS](#generators)
+* [CALLABLE CLASS](#callable-class)
+* [TYPEDEFS](#typedefs)
+* [METADATA](#metadata)
+* [COMMENTS](#comments)
 
 
 ## DART
@@ -87,11 +110,13 @@ Within the Dart virtual machine Dart objects are almost exclusively accessed and
 handles and not raw pointers for this very reason.
 ```
 * Instance variables are sometimes known as fields or properties.
+* Dart supports generic types, like List```<int>``` (a list of integers) or List```<dynamic>``` (a list of objects of any type)
 * Unlike Java, Dart doesn’t have the keywords public, protected, and private. If an identifier starts with an underscore (_), it’s private to its library.
 
 ## VARIABLES ET TYPES
 
 ### VARIABLES
+* When you want to explicitly say that no type is expected, use the special type ```dynamic```
 ```java
 var name = "Pablo"; // name sera définitivement un String
 print(name); // Pablo
@@ -101,7 +126,7 @@ name = 33; /* error : A value of type 'int' can't be assigned to a variable
 of type 'String' - line 7 */
 
 String nom = "Calembour"; // préciser le type
-
+dynamic name = 'Bob'; // un objet sans restriction de type
 int lineCount; // null
 
 // final and constant variable : inchangeable
@@ -142,7 +167,8 @@ String multiline = '''A
 // concaténation
 'Dart ' + 'is ' + 'fun!'; // 'Dart is fun!'
 'Dart ' 'is ' 'fun!';    // 'Dart is fun!'
-// + simple = les $
+// + simple = les $ (String interpolation)
+// $variableName (or ${expression})
 var language = 'dartlang';
 '$language has ${language.length} letters'; // 'dartlang has 8 letters
 
@@ -287,6 +313,12 @@ print(maListe); // [Jacques, Georges, Pierre]
 // vider une liste
 maListe.clear();
 
+// une liste dynamique (sans restriction de type)
+var maListe = []; // revient à List<dynamic> maListe = []
+maListe.add("Georges");
+maListe.add(1);
+print(maListe); // [Georges, 1]
+
 // spread operator (...) [Dart 2.3]
 // use the spread operator (...) to insert all the elements of a list into another list:
 var list1 = [1, 2, 3];
@@ -336,6 +368,13 @@ var chapters = [
     if (chapter.isTranslated) chapter.translation,
   ...backMatter,
 };
+
+// Using for and if in an empty collection literal gives you a syntax not too far 
+// from the special "list comprehension" syntax supported by some other languages like Python:
+[for (var i = 1; i <= 5; i++) if (i.isOdd) i * i] // [1, 9, 25].
+
+// You can even nest for:
+[for (var x in hor) for (var y in vert) Point(x, y)]
 ```
 ### MAPS
 * https://dart.dev/guides/language/language-tour#maps
@@ -387,7 +426,18 @@ print(maMap); // {Paul: 23, Jacques: 183, Georges: 1248}
 maMap.clear();
 print(maMap); // {}
 
-// As of Dart 2.3, maps support spread operators (... and ...?) and collection if and for, just like lists do
+// As of Dart 2.3, maps support spread operators (... and ...?) and collection if and for, 
+// just like lists do
+Map<String, WidgetBuilder>.fromIterable(
+  allGalleryDemos.where((demo) => demo.exists),
+  key: (demo) => '${demo.routeName}',
+  value: (demo) => demo.buildRoute,
+);
+// Can be rewritten as:
+{
+  for (var demo in allGalleryDemos)
+    if (demo.exists) '${demo.routeName}': demo.buildRoute,
+};
 ```
 ### SETS
 * https://dart.dev/guides/language/language-tour#sets
@@ -396,6 +446,7 @@ print(maMap); // {}
 * control flow collections proposal : https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Sets : https://dart.dev/guides/libraries/library-tour#sets
+* If you forget the type annotation on {} or the variable it’s assigned to, then Dart creates an object of type Map```<dynamic, dynamic>```
 ```java
 var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
 
@@ -1027,6 +1078,7 @@ class Voiture {
   // If you don’t declare a constructor, a default constructor is provided for you
   Voiture() {}
   // The default constructor has no arguments and invokes the no-argument constructor in the superclass
+  // if you declare a constructor there will be no default constructor
   
   // (!) Constructors aren’t inherited !
   // Subclasses don’t inherit constructors from their superclass
@@ -1084,6 +1136,7 @@ void main() {
 }
 ```
 ### HERITAGE
+* There’s no final class in Dart, so a class can always be extended
 * https://stackoverflow.com/questions/13272035/how-do-i-call-a-super-constructor-in-dart
 * https://www.reddit.com/r/dartlang/comments/5r02tm/supercall_must_be_last_in_initializer_list/
 ```java
@@ -1131,14 +1184,24 @@ class Cabriolet extends Voiture {
   }
 }
 
+// Named conbstructors
+class Cat {
+  DateTime birthday;  
+  
+  // named
+  Cat.baby() {
+    birthday = DateTime.now();
+  }
+}
+
 // an example with both default constructor and named constructor:
 class Foo {
   Foo(int a, int b) {
-    //Code of constructor
+    // Code of constructor
   }
 
   Foo.named(int c, int d) {
-    //Code of named constructor
+    // Code of named constructor
   }
 }
 
@@ -1173,22 +1236,23 @@ class CBar extends Foo {
   CBar(int a, int b, int cParam) :
     c = cParam,
     super(a, b);
-
+}
 
 // Redirecting constructors
-// A redirecting constructor’s body is empty, with the constructor call appearing after a colon (:).
-class Point {
-  double x, y;
-
-  // The main constructor for this class.
-  Point(this.x, this.y);
-
-  // Delegates to the main constructor.
-  Point.alongXAxis(double x) : this(x, 0);
-}
+// A redirecting constructor’s body is empty, 
+// with the constructor call appearing after a colon (:)
+class Cat {
+  DateTime birthday;
+ 
+  // main cosntructor
+  Cat(this.birthday); 
+  
+  // delegating to main constructor
+  Cat.withBirthday(DateTime birthday) : this(birthday);
 }
 ```
 ### POLYMORPHISME
+* Représente l'abilité d'un objet à copier le comportement d'un autre objet
 * Désigne le fait de pouvoir appeler la même méthode dans des objets différents
 * Et donc d'effectuer la même action, dans des objets différents
 * Idée : remplir le même contrat, même si l'objet est différent
@@ -1382,7 +1446,7 @@ class EffectiveDoer extends Doer {
   }
 }
 ```
-### NOSUCHMETHOD()
+### NOSUCHMETHOD
 * But = réagir quand le code appelle une méthode inconnue
 * https://github.com/dart-lang/sdk/blob/master/docs/language/informal/nosuchmethod-forwarding.md
 ```java
@@ -1591,7 +1655,7 @@ try {
 ## GENERICS
 
 * Generics = type avec un type de paramètres prédéterminé
-* Ex. : List< E >. (sans espaces)
+* Ex. : List```<E>```
 * Le <…> indique que la liste est un "generic"; un type (List) dont le type des paramètres est prédéterminé (E)
 * But :   
    * Type safety
@@ -1726,6 +1790,98 @@ import 'package:lib1/lib1.dart' show foo;
 // Import all names EXCEPT foo.
 import 'package:lib2/lib2.dart' hide foo;
 ```
+### PRIVACY
+* Privacy and Encapsulation in Dart exists at the library, rather than the class level
+* Any identifer that starts with an underscore _ is private to its library
+* Une variable privée est accessible SEULEMENT dans sa librairie (fichier où elle apparait)
+* Au sein de son fichier, elle n'est pas privée (par exemple, on peut y accéder depuis l'extérieur de sa classe, voir dernier exemple)
+* Si on importe la variable privée et sa librairie dans un fichier A, elle sera inaccessible dans le fichier A
+```java
+// If you were to put class A into a separate library file (eg, other.dart), such as:
+library other;
+
+class A {
+  int _private = 0;
+
+  testA() {
+    print('int value: $_private');  // 0
+    _private = 5;
+    print('int value: $_private'); // 5
+  }
+}
+
+// and then import it into your main app, such as:
+import 'other.dart';
+
+void main() {
+  var b = new B();
+  b.testB();    
+}
+
+class B extends A {
+  String _private;
+
+  testB() {
+    _private = 'Hello';
+    print('String value: $_private'); // Hello
+    testA();
+    print('String value: $_private'); // Hello
+  }
+}
+
+// You get the expected output:
+String value: Hello
+int value: 0
+int value: 5
+String value: Hello
+
+
+// another exemple :
+
+// File: cake.dart
+library cake;
+
+class MainCake{
+  // non-private property : list of strings
+  List<String> randomPieceOfCakes = ['cake3', 'cake4', 'cake5', 'cake6'];
+
+  String _pieceOfCake1 = "cake1"; // private property
+  String pieceOfCake2 = "cake2";
+}
+
+// File: main.dart
+import 'cake.dart';
+
+void main() {
+  MainCake newCake = new MainCake();
+  // non-private property -  randomPieceOfCakes
+  print(newCake.randomPieceOfCakes);
+
+  // private property - piece of cake
+  print(newCake._pieceOfCake1); // private property error
+
+  // non-private property - piece of cake
+  print(newCake.pieceOfCake2);
+}
+
+
+// derniere illustration :
+
+class Software {
+  double version = 2.0; // public
+  int _password = 8888; // privé
+}
+
+void main() {
+  var logiciel = Software();
+  print(logiciel.version); // 2 (valeur publique)
+  print(logiciel._password); // 8888 (valeur privée)
+  // non privé au niveau des classes
+  // est accessible depuis l'extérieur d'une classe
+  // car elle est privée seulement pour sa libraire
+  // cad le fichier où la valeur privée se trouve
+}
+```
 ### LAZY LOADING
 * But = autoriser une application à charger une librairie que si celle-ci est demandée
 * Gain de temps au démarrage, gain de performance
@@ -1832,3 +1988,219 @@ Future main() async {
 }
 ```
 * For more information about asynchronous programming, in general, see the dart:async section of the library tour : https://dart.dev/guides/libraries/library-tour#dartasync---asynchronous-programming
+
+## GENERATORS
+
+* Rappel : générateur = itérateur simplifié (à préférer pour la simplicité du code)
+* Synchronous generator: Returns an Iterable object.
+* Asynchronous generator: Returns a Stream object.
+```java
+// To implement a synchronous generator function, 
+// mark the function body as sync*, and use yield statements to deliver values:
+Iterable<int> naturalsTo(int n) sync* {
+  for (int k = 0; k <= n; k++) {
+    yield k;
+  }
+}
+  
+// exemple d'utilisation :
+var naturals = naturalsTo(10);
+for (var natural in naturals) {
+  print(natural); // 0 1 2 ... 10
+}
+
+// To implement an asynchronous generator function, 
+// mark the function body as async*, and use yield statements to deliver values:
+Stream<int> asynchronousNaturalsTo(int n) async* {
+  int k = 0;
+  while (k < n) yield k++;
+}
+
+// If your generator is recursive, you can improve its performance by using yield*:
+Iterable<int> naturalsDownFrom(int n) sync* {
+  if (n > 0) {
+    yield n;
+    yield* naturalsDownFrom(n - 1);
+  }
+}
+```
+
+## CALLABLE CLASS
+
+* To allow an instance of your Dart class to be called like a function, implement the call() method.
+* Se rapproche de l'idéee du def ```__str__``` en Python
+* Classe qui peut êre appelée comme une fonction
+```java
+class WannabeFunction {
+  String call(String a, String b, String c) => '$a $b $c!';
+}
+
+var wf = WannabeFunction();
+var out = wf('Hi', 'there,', 'gang');
+
+main() => print(out); // Hi there, gang!
+
+
+// autre exemple
+class Cat {
+  DateTime birthday;
+
+  Cat(this.birthday);  
+  
+  String call() {
+    print('Meow!');
+  }
+}
+
+void main() {
+  var cat = Cat(DateTime.now());
+  cat(); // prints Meow!
+}
+```
+
+## TYPEDEFS
+
+* In Dart, functions are objects, just like strings and numbers are objects
+* Typedefs = alias
+* Donne au type de la fonction un nom, un alias, utilisé pour déclarer les propriétés et méthodes
+```java
+// the following code doesn’t use a typedef:
+class SortedCollection {
+  Function compare;
+
+  SortedCollection(int f(Object a, Object b)) {
+    compare = f;
+  }
+}
+
+// Initial, broken implementation.
+int sort(Object a, Object b) => 0;
+
+void main() {
+  SortedCollection coll = SortedCollection(sort);
+
+  // All we know is that compare is a function,
+  // but what type of function?
+  assert(coll.compare is Function);
+}
+
+// If we change the code to use explicit names and retain type information, 
+//both developers and tools can use that information.
+typedef Compare = int Function(Object a, Object b); // gives typedef to Function()
+
+class SortedCollection {
+  Compare compare; // compare property is type Compare
+
+  SortedCollection(this.compare);
+}
+
+// Initial, broken implementation.
+int sort(Object a, Object b) => 0;
+
+void main() {
+  SortedCollection coll = SortedCollection(sort);
+  assert(coll.compare is Function);
+  assert(coll.compare is Compare);
+}
+
+// Because typedefs are simply aliases, they offer a way to check the type of any function:
+typedef Compare<T> = int Function(T a, T b);
+
+int sort(int a, int b) => a - b;
+
+void main() {
+  assert(sort is Compare<int>); // True!
+}
+```
+
+## METADATA
+
+* But = rajouter de l'information sur le code
+* Two annotations are available to all Dart code: @deprecated and @override
+* Metadata can appear before a library, class, typedef, type parameter, constructor, factory, function, field, parameter, or variable declaration and before an import or export directive. You can retrieve metadata at runtime using reflection.
+```java
+class Television {
+  /// _Deprecated: Use [turnOn] instead._
+  @deprecated
+  void activate() {
+    turnOn();
+  }
+
+  /// Turns the TV's power on.
+  void turnOn() {...}
+}
+```
+* You can define your own metadata annotations
+```java
+// Here’s an example of defining a @todo annotation that takes two arguments:
+library todo;
+
+class Todo {
+  final String who;
+  final String what;
+
+  const Todo(this.who, this.what);
+}
+
+// And here’s an example of using that @todo annotation:
+import 'todo.dart';
+
+@Todo('seth', 'make this do something')
+void doSomething() {
+  print('do something');
+}
+```
+
+## COMMENTS
+* Single-line comments
+```java
+void main() {
+  // TODO: refactor into an AbstractLlamaGreetingFactory?
+  print('Welcome to my Llama farm!');
+}
+```
+* Multi-line comments (can nest)
+```java
+void main() {
+  /*
+   * This is a lot of work. Consider raising chickens.
+
+  Llama larry = Llama();
+  larry.feed();
+  larry.exercise();
+  larry.clean();
+   */
+}
+```
+### Documentation comments
+* multi-line or single-line comments that begin with /// or /**
+* Inside a documentation comment, the Dart compiler ignores all text unless it is enclosed in brackets
+* Using brackets, you can refer to classes, methods, fields, top-level variables, functions, and parameters
+```java
+// Here is an example of documentation comments with references to other classes and arguments:
+
+/// A domesticated South American camelid (Lama glama).
+///
+/// Andean cultures have used llamas as meat and pack
+/// animals since pre-Hispanic times.
+class Llama {
+  String name;
+
+  /// Feeds your llama [Food].
+  ///
+  /// The typical llama eats one bale of hay per week.
+  void feed(Food food) {
+    // ...
+  }
+
+  /// Exercises your llama with an [activity] for
+  /// [timeLimit] minutes.
+  void exercise(Activity activity, int timeLimit) {
+    // ...
+  }
+}
+```
+* In the generated documentation, [Food] becomes a link to the API docs for the Food class
+* To parse Dart code and generate HTML documentation, you can use the SDK’s documentation generation tool : https://github.com/dart-lang/dartdoc#dartdoc
+* For an example of generated documentation, see the Dart API documentation : https://api.dart.dev/stable
+* For advice on how to structure your comments, see Guidelines for Dart Doc Comments : https://dart.dev/guides/language/effective-dart/documentation

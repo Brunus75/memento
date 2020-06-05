@@ -87,6 +87,7 @@
    * the website is accessible with WAVE (https://wave.webaim.org/)
    * that the website has proper SEO with Seoptimer (https://www.seoptimer.com/)
 * Un terminal pour Windows : https://www.docstring.fr/blog/un-terminal-pour-windows/
+* WAVE Web Accessibility Evaluation Tool : https://wave.webaim.org/
 
 
 ## :pushpin: WEB DOCS
@@ -140,6 +141,7 @@
 * (niveau A) IDI Web Accessibility Checker : Web Accessibility Checker : https://achecker.ca/checker/index.php
 * The W3C Markup Validation Service : https://validator.w3.org/
 * Service de validation CSS du W3C : https://jigsaw.w3.org/css-validator/
+* WAVE Web Accessibility Evaluation Tool : https://wave.webaim.org/
 
 
 ## :globe_with_meridians: GENERAL

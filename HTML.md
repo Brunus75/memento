@@ -24,6 +24,21 @@
 <img src="image.jpg" loading="lazy" alt="..." />
 ```
 
+## L'élément ```<picture>```
+* L'élément HTML ```<picture>``` est un conteneur utilisé afin de définir zéro ou plusieurs éléments ```<source>``` destinés à un élément ```<img>```
+* Le navigateur choisira la source la plus pertinente selon la disposition de la page
+* The ```<picture>``` element contains two tags: one or more ```<source>``` tags and one ```<img>``` tag
+* https://developer.mozilla.org/fr/docs/Web/HTML/Element/picture
+```html
+ <picture>
+  <source media="(min-width:650px)" srcset="img_pink_flowers.jpg">
+  <source media="(min-width:465px)" srcset="img_white_flower.jpg">
+  <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;">
+  <!-- The <img> element is required as the last child of the <picture> element, 
+  as a fallback option if none of the source tags matches -->
+</picture> 
+```
+
 <h1 id="memomento">MEMOMENTO</h1>
 
 <p>Aller directement à la partie traitant de :

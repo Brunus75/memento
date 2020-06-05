@@ -90,7 +90,7 @@ Content-Type: application/json
 
 * :electric_plug: **Pilote informatique** : programme informatique destiné à permettre à un autre programme (souvent un système d'exploitation) d'interagir avec un périphérique
 
-* :car: :truck: :tractor: **Polymorphisme** : un même objet peut revêtir différentes formes, différents types (classe parent, classe objet, classe interface) : forme d’héritage : on utilise le polymorphisme pour éviter la duplication de code, car l’objet peut revêtir sa forme la plus générale (sa classe parent) et on l’affine pour des besoins plus précis. Les formes sont interchangeables à tout moment. C’est aussi un concept qui indique que l’on peut utiliser les méthodes de la classe mère de la même façon chez les classes filles => la méthode peut donc avoir différentes entités
+* :car: :truck: :tractor: **Polymorphisme** : représente l'abilité d'un objet à copier le comportement d'un autre objet. Un même objet peut revêtir différentes formes, différents types (classe parent, classe objet, classe interface) : forme d’héritage : on utilise le polymorphisme pour éviter la duplication de code, car l’objet peut revêtir sa forme la plus générale (sa classe parent) et on l’affine pour des besoins plus précis. Les formes sont interchangeables à tout moment. C’est aussi un concept qui indique que l’on peut utiliser les méthodes de la classe mère de la même façon chez les classes filles => la méthode peut donc avoir différentes entités. 
 
 * :question: **Pattern** : exprime une solution générale à un problème de conception commun
 

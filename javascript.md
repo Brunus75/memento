@@ -1054,3 +1054,11 @@ number = "8";
 console.log(+number); // 8
 console.log(+number + 8); // 16
 ```
+
+### Rendre un block cliquable
+```html
+<div class="block" onclick="window.location.href='https://www.google.fr/'">
+  <h2>Je suis un titre</h2>
+  <p>Je suis un paragraphe</p>
+</div>
+```
