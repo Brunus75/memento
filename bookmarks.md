@@ -165,6 +165,8 @@
 * DevOps Tools Report 2020 | GitKraken Resources : https://www.gitkraken.com/resources/devops-report-2020
 * https://apprendre-a-coder.com/
 * https://emploi.developpez.com/actu/300602/Emploi-developpeur-2019-les-tendances-et-les-effets-de-mode-les-nouveaux-metiers-et-technologies-sur-le-marche-de-l-emploi/
+* 5 design and code tips for a cleaner website : https://uxdesign.cc/5-tips-to-kickstart-your-website-777541b6386e
+* 2020 Developer Survey by Stack Overflow : https://insights.stackoverflow.com/survey/2020#overview
 
 
 ## :mag_right: SEO
@@ -213,6 +215,7 @@
 * Majestic®: Moteur de recherche marketing et outil SEO Backlink Checker : https://fr.majestic.com/
 * Le meilleur SEO de France : https://www.journaldunet.com/solutions/seo-referencement/1108423-le-meilleur-seo-de-france/
 * Lazy-loading natif : Chrome et Firefox vont faciliter l'optimisation du chargement des images - BDM : https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif
+* Infographie : 8 conseils pour un article parfait en SEO : https://www.abondance.com/20200605-42941-infographie-8-conseils-pour-un-article-parfait-en-seo.html
 
 
 ## :bulb: ORGANISATION
@@ -369,6 +372,8 @@
 * 16+ Multi step HTML forms : https://csshint.com/multi-step-html-forms
 * UN PLAN DE TESTS AUTOMATISÉS POUR VOTRE FRONT-END - GAËL POUPARD : https://www.youtube.com/watch?v=JD1nrs2yH88
 * https://codepen.io/popular/pens/
+* A tool to create unique, seamless, royalty-free SVG patterns : https://doodad.dev/pattern-generator/
+* https://wweb.dev/weekly/library
 
 
 ### SANDBOX
@@ -474,6 +479,7 @@
 * CSS can do that? - DEV Community 👩‍💻👨‍💻 : https://dev.to/ananyaneogi/css-can-do-that-18g7
 * 24+ CSS Text Effects : https://csshint.com/css-text-effects
 * A collection of customizable, ready-to-use Tailwind CSS blocks : https://mertjf.github.io/tailblocks/
+* 24 Bootstrap Menus : https://freefrontend.com/bootstrap-menus
 
 
 ### JAVASCRIPT
@@ -556,6 +562,10 @@
 * A collection of ui/ux design components, patterns, examples and inspiration : https://www.niceverynice.com/components
 * https://codepen.io/popular/pens/
 * http://www.migulko.cz/
+* https://www.awwwards.com/
+* https://www.cssawards.net/
+* https://www.cssdesignawards.com/
+* A frequently updated collection of Design System examples, articles, tools, and talks : https://designsystemsrepo.com/
 
 
 ### DESIGN
@@ -590,6 +600,11 @@
 * Multicolor CSS Gradients, JPG Downloads, 100% Free! | Gradienta : https://gradienta.io/
 * Leonardo : un générateur de palette de couleurs avec contraste idéal et accessible - La Ferme du Web : https://www.lafermeduweb.net/veille/leonardo-un-generateur-de-palette-de-couleurs-avec-contraste-ideal-et-accessible
 * Colorsinspo, une bibliothèque de ressources complète sur les couleurs - BDM : https://www.blogdumoderateur.com/colorsinspo-bibliotheque-couleurs
+* Royalty-free illustrations, which are customizable by color : https://delesign.com/free-designs/graphics
+* Free packs of high-quality, Royalty-free vector illustrations : https://getillustrations.com/illustration-packs/freebie
+* A bunch of cool vector illustrations & animations under the MIT License : https://www.pixeltrue.com/free-illustrations
+* 43 illustrations resources, which are accumulated from different websites : https://www.uistore.design/categories/illustrations/
+* 100+ vectorized scribbbles, which can be added to existing images and illustrations : https://www.scribbbles.design/
 
 
 ### UX/UI
@@ -617,6 +632,7 @@
 * 500+ CSS Icons, Customizable, Retina Ready & API : https://css.gg/
 * CSS gg : plus de 500 icônes CSS personnalisables et compatibles retina - La Ferme du Web
 * 10 examples of custom 404 pages ranked from best to worst : https://uxdesign.cc/10-examples-of-custom-404-pages-ranked-from-best-to-worst-9c74825c18c9
+* A huge database of vector icons and illustrations : https://www.flaticon.com/
 
 
 ## :joystick: API

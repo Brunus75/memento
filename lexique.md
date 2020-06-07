@@ -130,3 +130,15 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 * :dark_sunglasses: **Dark patterns** : User interface elements that have been carefully crafted to trick users into doing things they might not otherwise do, often utilizing psychological manipulation
 
 * **URI** : Uniform Resource Identifier. URLs (uniform resource locators) are a common kind of URI.
+* **Loi Demeter** : « Ne parlez qu'à vos amis immédiats ». Un objet ne doit interagir qu'avec celui avec qui il a une relation
+```
+- La classe A possède une relation avec la classe B
+- La classe B possède une relation avec la classe C
+* La loi de Demeter dit que A ne peut pas connaître l'existence de C
+* A ne peut pas utiliser B pour accéder aux services de C
+* B pourrait être modifié si nécessaire pour que A puisse faire la requête directement à B, 
+et B propagera la requête au composant ou sous-composant approprié
+(Par conséquent, le chaînage de méthodes est une mauvaise pratique)
+* Rend le logiciel résultat plus maintenable, plus adaptable et minimise le risque d'erreurs
+https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
+```

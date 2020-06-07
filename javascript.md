@@ -24,6 +24,7 @@
 
 * Compilez et exécutez votre code : https://openclassrooms.com/fr/courses/5543061-ecrivez-du-javascript-pour-le-web/5577766-compilez-et-executez-votre-code
 * https://hacks.mozilla.org/2020/04/firefox-75-ambitions-for-april/
+* https://medium.com/@remi.michel38/javascript-a-la-d%C3%A9couverte-des2020-44a0affcc9ec
 
 
 ## LEXIQUE
@@ -1009,13 +1010,75 @@ arr.values()
 
 ## ASTUCES
 
-### Nullish coalescing operator
+### Nullish coalescing operator (ES2020)
 ```js
 // The nullish coalescing operator, ??, returns its right-hand side operand 
 // when its left-hand side operand is null or undefined. 
 // Otherwise, it returns its left-hand side operand.
 let value;
-value = value ?? 'default';
+value = value ?? 'default'; // si value = null or undefined, value = 'default'
+
+// avant
+const values = {
+    nullValue: null,
+    falseValue: false,
+}
+//En utilisant ||
+console.log(values.nullValue || 'defaut') // defaut
+console.log(values.falseValue || 'defaut') // defaut (alors que nous voulons false)
+
+// après
+console.log(values.nullValue ?? 'defaut') // defaut
+console.log(values.falseValue ?? 'defaut') // false
+```
+
+### Optional Chaining (ES2020)
+```js
+// avant
+if (obj.d) {
+    console.log(e)
+}
+
+// Avec l'opérateur
+console.log(obj.d?.e)
+```
+
+### String.prototype.matchAll (ES2020)
+* permet de retrouver sous forme d’itérateur, toutes les correspondances entre une chaine et une expression régulière
+```js
+const regexp = RegExp('foo*','g');
+const str = 'table football, foosball';
+
+for(const match of str.matchAll(regexp)){
+    console.log(match)
+}
+```
+
+### Promise.allSettled (ES2020)
+* Nous disposions précédemment de la méthode all attachée à nos promesses permettant de faire un traitement une fois que toutes les promesses avaient été résolues
+* Le problème résidait dans le fait que certaines promesses pouvaient se retrouver rejetées et donc interrompre le traitement en cours de route
+```js
+const p1 = Promise.resolve('OK')
+const p2 = Promise.reject('KO') // promesse défectueuse
+const p3 = Promise.resolve('OK')
+
+// Avec l'opérateur all
+Promise
+    .all([p1, p2, p3])
+    .then(
+        (res) => console.log('SUCCESS =>', res),
+        (err) => console.log('ERROR =>', err) // 'ERROR => KO'
+        // Le block de succès ne se lèvera jamais car une promesse dans notre chaîne est rejetée
+    )
+
+// Grâce à la méthode allSettled, on obtient le résultat de chaque promesse 
+// peu importe qu’elle soit dans un état résolue ou rejetée
+Promise
+    .allSettled([p1, p2, p3])
+    .then(
+        (res) => console.log('SUCCESS =>', res),
+        (err) => console.log('ERROR =>', err)
+    )
 ```
 
 ### Trouver un élément dans un tableau
