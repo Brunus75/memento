@@ -168,6 +168,11 @@
 * 5 design and code tips for a cleaner website : https://uxdesign.cc/5-tips-to-kickstart-your-website-777541b6386e
 * 2020 Developer Survey by Stack Overflow : https://insights.stackoverflow.com/survey/2020#overview
 
+## WINDOWS
+
+* Windows 10 May 2020 Update est disponible et apporte WSL2 par défaut avec un véritable noyau Linux : https://windows.developpez.com/actu/304457/Windows-10-May-2020-Update-est-disponible-et-apporte-WSL2-par-defaut-avec-un-veritable-noyau-Linux-ainsi-que-la-possibilite-de-renommer-des-bureaux-virtuels/
+* How to Use Windows Subsystem for Linux 2 and Windows Terminal : https://www.sitepoint.com/wsl2-windows-terminal/
+
 
 ## :mag_right: SEO
 
@@ -260,7 +265,8 @@
 ## :nazar_amulet: VISUAL STUDIO CODE
 
 * https://visualstudio.developpez.com/
-* * Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
+* Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
+* https://github.com/godcrampy/cheat-sheets/blob/master/vscode/vscode-cheatsheet.pdf
 
 
 ## :memo: MARKDOWN
@@ -374,6 +380,8 @@
 * https://codepen.io/popular/pens/
 * A tool to create unique, seamless, royalty-free SVG patterns : https://doodad.dev/pattern-generator/
 * https://wweb.dev/weekly/library
+* 30 Life-saving Tools for Front-end Developers : https://www.sitepoint.com/life-saving-tools-for-front-end-developers/
+* A collection of tools for developers who have little to no artistic talent : https://nodesign.dev
 
 
 ### SANDBOX
@@ -395,6 +403,7 @@
 * https://variablefonts.io/
 * https://www.typewolf.com/top-10-serif-fonts
 * https://fr.tuto.com/blog/2020/06/31-fonts-gratuites-fraichement-creees-mai-2020.htm?mc_cid=ed65afff92&mc_eid=c8463de306
+* How to font pair effectively: tricks and tools : https://www.melted.design/tricks-tools-font-pair-effectively
 
 
 ### HTML
@@ -460,6 +469,7 @@
 * CSS Transitions and Transforms for Beginners : https://thoughtbot.com/blog/transitions-and-transforms
 * A user’s guide to CSS variables : https://increment.com/frontend/a-users-guide-to-css-variables/
 * A nice copywriting template for product landing pages : https://uselander.xyz/index.html
+* 25+ CSS Slider : https://csshint.com/css-slider
 
 
 ### BOOTSTRAP
@@ -523,7 +533,7 @@
 * Javascript Tools and Libraries for Creating, Customizing and Validation Forms : https://flatlogic.com/blog/javascript-tools-and-libraries-for-creating-customizing-and-validation-forms
 * Installez correctement vos dépendances : https://medium.com/@remi.michel38/installez-correctement-vos-d%C3%A9pendances-6ca64d47a432
 * An Introduction to JavaScript Generators – What You Need to Know : https://blog.alexdevero.com/javascript-generators
-* 25+ CSS Slider : https://csshint.com/css-slider
+* How to Implement Smooth Scrolling With Vanilla JavaScript : https://webdesign.tutsplus.com/tutorials/smooth-scrolling-vanilla-javascript--cms-35165
 
 
 ### JQUERY
@@ -566,6 +576,7 @@
 * https://www.cssawards.net/
 * https://www.cssdesignawards.com/
 * A frequently updated collection of Design System examples, articles, tools, and talks : https://designsystemsrepo.com/
+* 10 Newest and promising UI design trends : https://uxdesign.cc/10-newest-and-promising-ui-design-trends-929562b25ad6
 
 
 ### DESIGN
@@ -605,7 +616,7 @@
 * A bunch of cool vector illustrations & animations under the MIT License : https://www.pixeltrue.com/free-illustrations
 * 43 illustrations resources, which are accumulated from different websites : https://www.uistore.design/categories/illustrations/
 * 100+ vectorized scribbbles, which can be added to existing images and illustrations : https://www.scribbbles.design/
-
+* Blobmaker - Make organic SVG shapes for your next design : https://www.blobmaker.app/
 
 ### UX/UI
 

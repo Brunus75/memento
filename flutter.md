@@ -38,6 +38,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [INSTALLATION](#installation)
 * [ANDROID STUDIO](#android-studio)
 * [MAIN.DART](#main-dart)
+* [WIDGETS](#widgets)   
+   * [WIDGETS DE BASE](#widgets-de-base)
 
 
 
@@ -52,6 +54,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Accès facile à la batterie, géolocalisation, appareil photo, ect.
 * Les bases à connaître sur les widgets : https://flutter.dev/docs/development/ui/widgets/basics
 * Créer une app avec Flutter = créer une construction avec des legos ; les widgets s'empilent les uns sous les autres
+* Comme tout est objet sur Dart, tout est objet sur Flutter
+* Les widgets = des constructeurs(param1, param2, ect.)
 * Architecture :
 ```
 Scaffold (structure)
@@ -62,6 +66,47 @@ Scaffold (structure)
                 Text
                 Icon
     Texte, Image, ect.
+```
+### GLOSSAIRE
+* Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application
+```java
+class MyApp extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context) { // ne sera appelée qu'une seule fois
+    return MaterialApp(
+      title: 'Flutter Demo',
+      // ...
+    );
+  }
+}
+```
+* Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application
+```java
+class MyHomePage extends StatefulWidget { // création d'un Stateful Widget
+  @override // de createState()
+  _MyHomePageState createState() => _MyHomePageState(); // création de l'état de la classe
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override // de build()
+  Widget build(BuildContext context) { // implémentation du build
+    return OneOrMoreWidgets; // qui retourne l'ensemble des widgets de l'appli
+  }
+}
+```
+* Material Design = langage visuel développé par Google qui reprend les principes d'un design de qualité, responsive et multi-plateforme
+* Scaffold = template (équivalent du head + body en html)
+### CONSEILS
+* Toujours finir les éléments d'un objet, même le dernier, par une virgule
+```java
+MaterialApp(
+  title: 'Flutter Demo',
+  theme: ThemeData(
+    primarySwatch: Colors.green,
+    visualDensity: VisualDensity.adaptivePlatformDensity,
+  ),
+  home: MyHomePage(title: 'Flutter Demo Home Page'),
+);
 ```
 
 ## INSTALLATION
@@ -100,6 +145,9 @@ flutter doctor
 * Keymap pour changer les raccourcis clavier
 ### TROUBLESHOOTING
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/17119662#bookmarks
+### NOUVEAU PROJET FLUTTER
+* package name = pour se différencier sur Play Store / Apple Store
+* Décocher Include Kotlin + Include Swift
 
 ## ANDROID STUDIO
 * Fonctionnalités : https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14481906#questions
@@ -132,7 +180,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget { // page principale
   MyHomePage({Key key, this.title}) : super(key: key); // constructeur
 
-  final String title;
+  final String title; // propriété
 
   @override
   _MyHomePageState createState() => _MyHomePageState(); // état de la classe
@@ -151,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold( // structure principale
+    return Scaffold( // structure principale, conteneur de tous les éléments
       appBar: AppBar( // nav vbar
         title: Text(widget.title),
       ),
@@ -267,4 +315,185 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+```
+
+## WIDGETS
+
+* https://flutter.dev/docs/development/ui/widgets
+
+### WIDGETS DE BASE
+
+* https://flutter.dev/docs/development/ui/widgets/basics
+
+#### MATERIAL APP
+* https://api.flutter.dev/flutter/material/MaterialApp-class.html
+```java
+import 'package:flutter/material.dart'; // obligatoire
+
+void main() {
+  runApp(MyApp()); // lance l'appli
+}
+
+class MyApp extends StatelessWidget { // l'appli
+
+  @override // obligatoire
+  Widget build(BuildContext context) {
+    return MaterialApp( // ce qui est à renvoyer
+      // regarder MaterialApp sur la doc pour implémenter le constructeur
+      title: "Les widgets basiques",
+      theme: ThemeData(
+        primarySwatch: Colors.red, // couleur de base
+      ),
+      debugShowCheckedModeBanner: false, // true dans le constructeur de la doc
+      home: // à implémenter, page principale de l'appli
+    );
+  }
+}
+```
+#### SCAFFOLD
+```java
+import 'package:flutter/material.dart'; // obligatoire
+
+void main() {
+  runApp(MyApp()); // lance l'appli
+}
+
+class MyApp extends StatelessWidget { // l'appli
+
+  @override // obligatoire
+  Widget build(BuildContext context) {
+    return MaterialApp( // ce qui est à renvoyer
+      // regarder MaterialApp sur la doc pour implémenter le constructeur
+      title: "Les widgets basiques",
+      theme: ThemeData(
+        primarySwatch: Colors.red, // couleur de base
+      ),
+      debugShowCheckedModeBanner: false, // true dans le constructeur de la doc
+      home: Home(), // ++
+    );
+  }
+}
+
+class Home extends StatefulWidget { // page principale
+  @override
+  State<StatefulWidget> createState() { // création de son état
+    return _Home();
+  }
+}
+
+class _Home extends State<Home> { // convention pour indiquer qu'il s'agit du state de Home
+  // hérite du state de Home 
+  // (generic type = le <Home> est un paramètre de la classe générique State)
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold( // notre template
+      // on y renseigne tous les widgets que l'on ajouter à notre template
+      backgroundColor: Colors.teal,
+    );
+  }
+}
+```
+#### APPBAR
+```java
+class _Home extends State<Home> { 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar( // widget AppBar
+        title: Text("Mon menu de navigation"),
+        leading: Icon(Icons.account_circle), // extrémité gauche de la nav bar
+        actions: <Widget>[ // liste d'actions, extrémité droite de la nav bar
+          Icon(Icons.navigation),
+          Icon(Icons.menu),
+        ],
+        elevation: 10.0, // effet de profondeur, demandé double dans la doc
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.teal,
+    );
+  }
+}
+```
+#### LE CONTAINER
+* But : pouvoir ajouter background-color, décorations, padding et margin au widget
+```java
+class _Home extends State<Home> { 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar( // widget AppBar
+        title: Text("Mon menu de navigation"),
+        leading: Icon(Icons.account_circle), // extrémité gauche de la nav bar
+        actions: <Widget>[ // liste d'actions, extrémité droite de la nav bar
+          Icon(Icons.navigation),
+          Icon(Icons.menu),
+        ],
+        elevation: 10.0, // effet de profondeur, demandé double dans la doc
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.teal,
+      body: Container( // ++ body du template
+        // color: Colors.blue,
+        // height: 30.0,
+        // height divisée par 2 :
+        height: MediaQuery.of(context).size.height / 2,
+        margin: EdgeInsets.all(10.0), // équivalent de margin = 10
+        padding: EdgeInsets.only(top: 15.0, bottom: 5.0), // padding-top = 15
+        decoration: BoxDecoration( // ajouter des bordures, un box-shadow, ect.
+          color: Colors.blue, // remplace color du container
+          border: Border.all(
+            color: Colors.white,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        child:
+          // élément contenu dans le container
+      ),
+    );
+  }
+
+}
+```
+#### LE CENTER
+* Container qui centre l'enfant qu'il contient
+```java
+class _Home extends State<Home> { @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ...
+      body: Container( // body du template
+        // color: Colors.blue,
+        // height: 30.0,
+        // height divisée par 2 :
+        height: MediaQuery.of(context).size.height / 2,
+        margin: EdgeInsets.all(10.0), // équivalent de margin = 10
+        padding: EdgeInsets.only(top: 15.0, bottom: 5.0), // padding-top = 15
+        decoration: BoxDecoration( // ajouter des bordures, un box-shadow, ect.
+          color: Colors.blue, // remplace color du container
+          border: Border.all(
+            color: Colors.white,
+            width: 2.0,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        child: // élément contenu dans le container
+          Center(
+            child: Container(
+              color: Colors.red,
+              width: 20.0,
+              height: 20.0,
+            )
+          )
+      ),
+    );
+  }
+}
+```
+#### LE CARD
+* Container avec des bords arrondis et une ombre
+```java
+
+
 ```

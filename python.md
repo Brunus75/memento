@@ -122,7 +122,8 @@
 * ~  A Pythonic Guide to SOLID Design Principles : https://dev.to/ezzy1337/a-pythonic-guide-to-solid-design-principles-4c8i
 * ~ Generating color palettes from movies with Python : https://www.youtube.com/watch?v=F5FxuJBHdvo
 * ~ Ultimate Guide to Python Debugging : https://martinheinz.dev/blog/24
-* ~ How To Send Mail With Python : https://www.youtube.com/watch?v=tsutigPVnaY&feature=youtu.be   
+* ~ How To Send Mail With Python : https://www.youtube.com/watch?v=tsutigPVnaY&feature=youtu.be
+* ~ Python vs JavaScript for Pythonistas : https://realpython.com/python-vs-javascript/   
 
 
 ## INSTALLATION

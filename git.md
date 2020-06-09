@@ -50,6 +50,7 @@
 
 * Bases : https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf
 * Bases : https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
+* Bases : https://github.com/godcrampy/cheat-sheets/blob/master/git/git-cheatsheet.pdf
 * https://dev.to/zinox9/git-github-cheatsheet-22ok
 * https://www.keycdn.com/blog/git-cheat-sheet
 * https://scotch.io/bar-talk/git-cheat-sheet

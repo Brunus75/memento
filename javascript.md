@@ -25,6 +25,7 @@
 * Compilez et exécutez votre code : https://openclassrooms.com/fr/courses/5543061-ecrivez-du-javascript-pour-le-web/5577766-compilez-et-executez-votre-code
 * https://hacks.mozilla.org/2020/04/firefox-75-ambitions-for-april/
 * https://medium.com/@remi.michel38/javascript-a-la-d%C3%A9couverte-des2020-44a0affcc9ec
+* ~ Python vs JavaScript for Pythonistas : https://realpython.com/python-vs-javascript/ 
 
 
 ## LEXIQUE
