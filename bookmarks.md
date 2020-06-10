@@ -92,6 +92,7 @@
 
 ## :pushpin: WEB DOCS
 
+* Best GitHub Repos for Web Developers  : https://dev.to/sayanide/best-github-repos-for-web-developers-9id
 * 20 plateformes pour apprendre à coder gratuitement : https://www.journaldunet.com/solutions/dsi/1491765-ou-apprendre-a-coder-gratuitement-20-plateformes-presentees/
 * DevTut : https://devtut.github.io/
 * Roadmap to becoming a web developer in 2020 : https://github.com/kamranahmedse/developer-roadmap
@@ -470,6 +471,8 @@
 * A user’s guide to CSS variables : https://increment.com/frontend/a-users-guide-to-css-variables/
 * A nice copywriting template for product landing pages : https://uselander.xyz/index.html
 * 25+ CSS Slider : https://csshint.com/css-slider
+* Flexbox Generator : https://loading.io/flexbox/
+* CSS :is() and :where() are coming to browsers : https://webplatform.news/issues/2020-06-04
 
 
 ### BOOTSTRAP
@@ -534,6 +537,7 @@
 * Installez correctement vos dépendances : https://medium.com/@remi.michel38/installez-correctement-vos-d%C3%A9pendances-6ca64d47a432
 * An Introduction to JavaScript Generators – What You Need to Know : https://blog.alexdevero.com/javascript-generators
 * How to Implement Smooth Scrolling With Vanilla JavaScript : https://webdesign.tutsplus.com/tutorials/smooth-scrolling-vanilla-javascript--cms-35165
+* A plugin for scroll-based animations with minimal code : https://greensock.com/scrolltrigger
 
 
 ### JQUERY
@@ -617,6 +621,7 @@
 * 43 illustrations resources, which are accumulated from different websites : https://www.uistore.design/categories/illustrations/
 * 100+ vectorized scribbbles, which can be added to existing images and illustrations : https://www.scribbbles.design/
 * Blobmaker - Make organic SVG shapes for your next design : https://www.blobmaker.app/
+* A generator for beautiful SVG shape dividers : https://www.shapedivider.app/
 
 ### UX/UI
 

@@ -7,6 +7,8 @@
 * Doc Dart : https://dart.dev/
 * DartPad : https://dartpad.dev/dart
 * Doc Flutter : https://flutter.dev/docs/get-started/install
+* Palette des couleurs : https://api.flutter.dev/flutter/material/Colors-class.html
+* Liste des icônes : https://material.io/resources/icons/?style=baseline
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
 * Widget catalog : https://flutter.dev/docs/development/ui/widgets
 * Top Flutter packages : https://pub.dev/flutter/packages
@@ -14,6 +16,7 @@
 * https://github.com/flutter/flutter
 * Catalogue d’applications Flutter développées par la communauté : https://github.com/flutter/samples/blob/master/INDEX.md
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
+* What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -36,7 +39,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 
 * [FLUTTER](#flutter)
 * [INSTALLATION](#installation)
-* [ANDROID STUDIO](#android-studio)
+* [ANDROID STUDIO](#android-studio)   
+   * [RACCOURCIS](#raccourcis)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
    * [WIDGETS DE BASE](#widgets-de-base)
@@ -68,7 +72,7 @@ Scaffold (structure)
     Texte, Image, ect.
 ```
 ### GLOSSAIRE
-* Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application
+* Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application => **statique**
 ```java
 class MyApp extends StatelessWidget {
   @override 
@@ -80,7 +84,7 @@ class MyApp extends StatelessWidget {
   }
 }
 ```
-* Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application
+* Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application => **dynamique**
 ```java
 class MyHomePage extends StatefulWidget { // création d'un Stateful Widget
   @override // de createState()
@@ -107,6 +111,17 @@ MaterialApp(
   ),
   home: MyHomePage(title: 'Flutter Demo Home Page'),
 );
+```
+* Tous les nombres (liés aux éléments de Flutter) sont des double
+```java
+int _counter = 0, // variable perso
+fontSize: 20.0, // variable Flutter
+// exceptions :
+maxLines: 2,
+```
+* String en single quotes (convention Dart)
+```java
+String exemple = 'Je suis un string';
 ```
 
 ## INSTALLATION
@@ -153,6 +168,12 @@ flutter doctor
 * Fonctionnalités : https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14481906#questions
 * AVD Manager : lieu où l'on stocke tous nos appareils virtuels (différents téléphones)
 * Problème de Black Screen au démarrage du Nexus 6 > Wipe Data > Lancer Nexus 6
+* Enlever le bandeau Debug => Flutter Inspector => More action => Hide Debug Mode Banner
+### RACCOURCIS
+* Alt+Insérer (Code => Generate) in the editor => generate the getter and setter methods for any fields of your class
+* Clic-droit => Reformat
+* Rester sur le widget => cliquer sur l'ampoule => Wrap with...
+
 
 ## MAIN DART
 ```java
@@ -326,6 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
 * https://flutter.dev/docs/development/ui/widgets/basics
 
 #### MATERIAL APP
+* Structure de l'application, basée sur le Material Design
 * https://api.flutter.dev/flutter/material/MaterialApp-class.html
 ```java
 import 'package:flutter/material.dart'; // obligatoire
@@ -351,6 +373,7 @@ class MyApp extends StatelessWidget { // l'appli
 }
 ```
 #### SCAFFOLD
+* Equivalent du template
 ```java
 import 'package:flutter/material.dart'; // obligatoire
 
@@ -395,6 +418,7 @@ class _Home extends State<Home> { // convention pour indiquer qu'il s'agit du st
 }
 ```
 #### APPBAR
+* Equivalent d'une nav bar
 ```java
 class _Home extends State<Home> { 
   @override
@@ -415,24 +439,15 @@ class _Home extends State<Home> {
   }
 }
 ```
-#### LE CONTAINER
+#### CONTAINER
+* Un conteneur qui ne peut contenir qu'un enfant (widget)
 * But : pouvoir ajouter background-color, décorations, padding et margin au widget
 ```java
 class _Home extends State<Home> { 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( // widget AppBar
-        title: Text("Mon menu de navigation"),
-        leading: Icon(Icons.account_circle), // extrémité gauche de la nav bar
-        actions: <Widget>[ // liste d'actions, extrémité droite de la nav bar
-          Icon(Icons.navigation),
-          Icon(Icons.menu),
-        ],
-        elevation: 10.0, // effet de profondeur, demandé double dans la doc
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.teal,
+      // ...
       body: Container( // ++ body du template
         // color: Colors.blue,
         // height: 30.0,
@@ -456,7 +471,7 @@ class _Home extends State<Home> {
 
 }
 ```
-#### LE CENTER
+#### CENTER
 * Container qui centre l'enfant qu'il contient
 ```java
 class _Home extends State<Home> { @override
@@ -491,9 +506,493 @@ class _Home extends State<Home> { @override
   }
 }
 ```
-#### LE CARD
+#### CARD
 * Container avec des bords arrondis et une ombre
 ```java
-
-
+class _Home extends State<Home> { 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container( 
+        child: // élément contenu dans le container
+          Center(
+            child: Card( // ++
+              elevation: 5.0,
+              color: Colors.teal,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: 250.0,
+              ),
+            )
+          )
+      ),
+    );
+  }
+}
 ```
+#### IMAGE.NETWORK
+* Récupérer une image sur le web
+```java
+class _Home extends State<Home> { 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container( 
+        child: // élément contenu dans le container
+          Center(
+            child: Card(
+              elevation: 5.0,
+              color: Colors.teal,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: 250.0,
+                // accepte liens http également ↓
+                child: Image.network("https://flutter.dev/assets/flutter-lockup-c13da9c9303e26b8d5fc208d2a1fa20c1ef47eb021ecadf27046dea04c0cebf6.png",
+                fit: BoxFit.cover)
+              ),
+            )
+          )
+      ),
+    );
+  }
+}
+```
+#### IMAGE.ASSETS
+* Utiliser une image en local
+* Sur AS, clic-droit sur le projet (ici "basic_widgets") => New directory => images
+* Copier-coller l'image dans le dossier créé sur AS
+* pubspec.yaml
+```yaml
+# To add assets to your application, add an assets section, like this:
+assets:
+  - images/computer.jpg # Copy Path => Path from content root
+  - images/ # plus simple et à privilégier, récupère toutes les images
+```
+en haut du fichier => pub get
+* main.dart
+```java
+class _Home extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: // élément contenu dans le container
+          Center(
+            child: Card(
+              elevation: 5.0,
+              color: Colors.teal,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2,
+                height: 250.0,
+                child: Image.asset("images/computer.jpg", // ++
+                fit: BoxFit.cover),
+              ),
+            )
+          )
+      ),
+    );
+  }
+}
+```
+#### TEXT
+```java
+class _Home extends State<Home> { 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        // élément contenu dans le container ↓
+        child: Center(
+          child: Text(
+            "Apprentissage de Flutter : si j'utilise plusieurs lignes, le text-align fait son effet",
+            textAlign: TextAlign.end, // la deuxième ligne est collée à gauche
+            textAlign: TextAlign.center,
+            textScaleFactor: 2.0, // fontSize 2 * plus grande
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+              fontStyle: FontStyle.italic,
+            ),
+            maxLines: 2, // nombre de lignes maximum diffusées
+          ),
+        )
+        // autre possibilité : un texte non centré :
+        child: Text(
+          "Aprentissage de Flutter", // le container s'adapte à la taille de son enfant
+        ),
+      ),
+    );
+  }
+
+}
+```
+#### COLUMN
+* widget qui affiche ses enfants en colonne
+* éléments ordonnés en colonne, verticalement
+* reprend les principes du flexbox column
+* Problème d'espace : utiliser ListView à la place
+```java
+class _Home extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // principe du flexbox
+            // .end = tout à la fin, .start = tout au début
+            // .spaceEvenly = éléments espacés harmonieusement
+            // .spaceBetween = éléments au début, au centre, à la fin
+            // .spaceAround = spaceEvenly (distribués harmonieusement)
+            children: <Widget>[
+              Text(
+                "Apprentissage du widget Column",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.deepOrange[100], // cf palette de couleurs Flutter
+                  fontSize: 30.0,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Card(
+                elevation: 10.0,
+                child: Container(
+                  width: 250.0,
+                  height: 250.0,
+                  child: Image.asset(
+                      "images/computer.jpg",
+                      fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.red[800],
+                height: 100.0, // la largeur prend tout l'écran
+              )
+            ],
+          ),
+        ));
+  }
+}
+```
+#### ROW
+* widget qui affiche ses enfants en rangée
+* éléments ordonnés en rangée, horizontalement
+* reprend les principes du flexbox row
+* Problème d'espace : utiliser ListView à la place
+```java
+class _Home extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ....
+        body: Center(
+          child: Column(
+            // ...
+              Container(
+                color: Colors.red[800],
+                height: 100.0, // la largeur prend tout l'écran
+                margin: EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      height: 65.0,
+                      width: 65.0,
+                      color: Colors.amber
+                    ),
+                    Container(
+                        height: 65.0,
+                        width: 65.0,
+                        color: Colors.blue
+                    ),
+                    Container(
+                        height: 65.0,
+                        width: 65.0,
+                        color: Colors.lightGreenAccent
+                    ),
+                    Container(
+                        height: 65.0,
+                        width: 65.0,
+                        color: Colors.deepPurple
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}
+
+// problème : si l'on rajoute des container dans la row, cela déborde
+// avec une erreur à l'écran
+// solution : les pourcentages
+// 1) on récupère la largeur de l'écran (haut du code)
+
+class _Home extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+
+    var appWidth = MediaQuery.of(context).size.width; // ++ récupère la largeur de l'app
+    
+    return Scaffold(
+      // ...
+        body: Center(
+          child: Column(
+            // ...
+              Container(
+                color: Colors.red[800],
+                height: appWidth / 5, // ++ hauteur malléable
+                margin: EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Container(
+                      height: appWidth / 8,
+                      width: appWidth / 8, // divisé par 8
+                        // car 6 containers
+                        // mais il faut aussi compter les margins
+                        // plus d'erreur, les 6 rentrent sur une ligne
+                      color: Colors.amber
+                    ),
+                    Container(
+                        height: appWidth / 8,
+                        width: appWidth / 8,
+                        color: Colors.blue
+                    ),
+                    Container(
+                        height: appWidth / 8,
+                        width: appWidth / 8,
+                        color: Colors.lightGreenAccent
+                    ),
+                    Container(
+                        height: appWidth / 8,
+                        width: appWidth / 8,
+                        color: Colors.deepPurple
+                    ),
+                    Container(
+                        height: appWidth / 8,
+                        width: appWidth / 8,
+                        color: Colors.lightGreenAccent
+                    ),
+                    Container(
+                        height: appWidth / 8,
+                        width: appWidth / 8,
+                        color: Colors.deepPurple
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}
+```
+#### ICON
+```java
+class _Home extends State<Home> {@override
+  Widget build(BuildContext context) {
+    var appWidth = MediaQuery.of(context).size.width; // récupère la largeur de l'app
+    return Scaffold(
+        body: Center(
+          // ...
+              Container(
+                color: Colors.red[800],
+                height: appWidth / 5, // ++ hauteur malléable
+                margin: EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Icon(
+                      Icons.airport_shuttle,
+                      color: Colors.white,
+                      size: appWidth / 10,
+                      semanticLabel: "Un camion roulant vers la droite",
+                    ),
+                    Icon(
+                      Icons.timeline,
+                      color: Colors.white,
+                      size: appWidth / 10,
+                      semanticLabel: "Une ligne marquée de jalons",
+                    ),
+                    Icon(
+                      Icons.thumb_up,
+                      color: Colors.white,
+                      size: appWidth / 10,
+                      semanticLabel: "Un pouce levé vers le haut",
+                    ),
+                    Icon(
+                      Icons.flag,
+                      color: Colors.white,
+                      size: appWidth / 10,
+                      semanticLabel: "Un drapeau flottant",
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+}
+```
+#### ICON BUTTON
+* Icone cliquable
+```java
+class _Home extends State<Home> {
+  // convention pour indiquer qu'il s'agit du state de Home
+  // hérite du state de Home (generic type = le <Home> est un paramètre de la classe générique State)
+  
+  bool changedToWhite = false; // ++
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              IconButton(
+                  icon: Icon( // ++
+                    Icons.calendar_today,
+                    color: Colors.amberAccent,
+                    size: 50.0,
+                  ),
+                  onPressed: () {
+                    print("J'ai appuyé sur le bouton !");
+                    // on avertit tous les widgets
+                    // du changement interne de l'application
+                    setState(() {
+                      changedToWhite = !changedToWhite; // alterne les couleurs
+                    });
+                  }
+              ),
+              // ...
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+```
+#### FLOATING ACTION BUTTON
+* Bouton circulaire qui flotte au-dessus du body
+```java
+class _Home extends State<Home> {
+
+  bool changedToWhite = false; // ++
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // ...
+      floatingActionButton: FloatingActionButton(
+        onPressed: pressButton, // ajout de la méthode
+        elevation: 8.0,
+        tooltip: "Change text color of main text",
+        child: Icon(
+            Icons.autorenew
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  void pressButton() {
+    print("J'ai appuyé sur le bouton !");
+    setState(() {
+      changedToWhite = !changedToWhite;
+    });
+  }
+}
+```
+#### FLAT BUTTON
+* Bouton plat, sans relief
+```java
+class _Home extends State<Home> {
+  bool changedToWhite = false; // ++
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FlatButton( // ++
+              onPressed: pressButton,
+              child: Text("Appuyez-moi !"),
+              color: Colors.cyanAccent,
+            )
+                ],
+              ),
+            ),
+          ],
+        ),
+    );
+  }
+
+  void pressButton() {
+    print("J'ai appuyé sur le bouton !");
+    setState(() {
+      changedToWhite = !changedToWhite;
+    });
+  }
+
+}
+```
+#### RAISED BUTTON
+* Bouton avec effet de profondeur
+```java
+class _Home extends State<Home> {
+  bool changedToWhite = false; // ++
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            FlatButton(
+              onPressed: pressButton,
+              child: Text("Appuyez-moi !"),
+              color: Colors.cyanAccent,
+            ),
+            RaisedButton( // ++
+              onPressed: pressButton,
+              child: Text("Je suis un RaisedButton !"),
+              elevation: 10.5, // différence avec le Flat Button
+              color: Colors.lightGreen,
+              textColor: Colors.teal[900],
+            ),
+            Tooltip( // affiche un message quand le widget est appuyé longtemps
+              message: "Bouton pour changer la couleur du texte principal",
+              child: RaisedButton(
+                onPressed: pressButton,
+                child: Text("Je suis un RaisedButton !"),
+                elevation: 10.5, // différence avec le Flat Button
+                color: Colors.lightGreen,
+                textColor: Colors.teal[900],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  }
+
+  void pressButton() {
+    print("J'ai appuyé sur le bouton !");
+    setState(() {
+      changedToWhite = !changedToWhite;
+    });
+  }
+
+}
+```
+
+## PERSONNALISATION
+
+### ICONE DE L'APPLI
+* Aller sur appicon.co, sélectionner Iphone et Android
+* https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14482060#bookmarks

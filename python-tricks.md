@@ -459,3 +459,38 @@ Counter({'l': 3, 'o': 2, 'e': 1, 'd': 1, 'h': 1, 'r': 1, 'w': 1})
 >>> c.most_common(3)
 [('l', 3), ('o', 2), ('e', 1)]
 ```
+
+## itertools.permutations()
+```py
+# itertools.permutations() generates permutations 
+# for an iterable. Time to brute-force those passwords ;-)
+
+>>> import itertools
+>>> for p in itertools.permutations('ABCD'):
+...     print(p)
+
+('A', 'B', 'C', 'D')
+('A', 'B', 'D', 'C')
+('A', 'C', 'B', 'D')
+('A', 'C', 'D', 'B')
+('A', 'D', 'B', 'C')
+('A', 'D', 'C', 'B')
+('B', 'A', 'C', 'D')
+('B', 'A', 'D', 'C')
+('B', 'C', 'A', 'D')
+('B', 'C', 'D', 'A')
+('B', 'D', 'A', 'C')
+('B', 'D', 'C', 'A')
+('C', 'A', 'B', 'D')
+('C', 'A', 'D', 'B')
+('C', 'B', 'A', 'D')
+('C', 'B', 'D', 'A')
+('C', 'D', 'A', 'B')
+('C', 'D', 'B', 'A')
+('D', 'A', 'B', 'C')
+('D', 'A', 'C', 'B')
+('D', 'B', 'A', 'C')
+('D', 'B', 'C', 'A')
+('D', 'C', 'A', 'B')
+('D', 'C', 'B', 'A')
+```
