@@ -17,6 +17,7 @@
 * Catalogue d’applications Flutter développées par la communauté : https://github.com/flutter/samples/blob/master/INDEX.md
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
+* ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -37,14 +38,18 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 
 ## SOMMAIRE
 
-* [FLUTTER](#flutter)
+* [FLUTTER](#flutter)   
+   * [GLOSSAIRE](#glossaire)
+   * [CONSEILS](#conseils)
 * [INSTALLATION](#installation)
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
    * [WIDGETS DE BASE](#widgets-de-base)
-
+* [EX. D'APPLI : CODAMUSIC](#codamusic)
+* [POP-UP ET NAVIGATOR](#pop-up-et-navigator)
+* [EX. D'APPLI : JEU DE QUIZZ](#jeu-de-quizz)
 
 
 ## FLUTTER
@@ -87,11 +92,16 @@ class MyApp extends StatelessWidget {
 * Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application => **dynamique**
 ```java
 class MyHomePage extends StatefulWidget { // création d'un Stateful Widget
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
   @override // de createState()
   _MyHomePageState createState() => _MyHomePageState(); // création de l'état de la classe
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
   @override // de build()
   Widget build(BuildContext context) { // implémentation du build
     return OneOrMoreWidgets; // qui retourne l'ensemble des widgets de l'appli
@@ -100,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
 ```
 * Material Design = langage visuel développé par Google qui reprend les principes d'un design de qualité, responsive et multi-plateforme
 * Scaffold = template (équivalent du head + body en html)
+* context = localisation du widget dans l'architecture de l'application
 ### CONSEILS
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
 ```java
@@ -123,6 +134,12 @@ maxLines: 2,
 ```java
 String exemple = 'Je suis un string';
 ```
+* Toujours préférer le pourcentage aux proportions précises
+```java
+height: MediaQuery.of(context).size.height / 2,
+textScaleFactor: 2.0, // fontSize 2 * plus grande
+```
+
 
 ## INSTALLATION
 
@@ -173,6 +190,7 @@ flutter doctor
 * Alt+Insérer (Code => Generate) in the editor => generate the getter and setter methods for any fields of your class
 * Clic-droit => Reformat
 * Rester sur le widget => cliquer sur l'ampoule => Wrap with...
+* Sélectionner les occurences => Edit => Find => Select All occurences (Ctrl+Maj+Alt+J)
 
 
 ## MAIN DART
@@ -186,7 +204,8 @@ void main() { // fonction principale
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override // on ré-écrit la méthode de la classe mère
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { // méthode qui sera appelée à chaque chargement de l'appli
+  // à chaque fois que setState() sera appelée
     return MaterialApp( // widget de base = squelette de l'application
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -996,3 +1015,674 @@ class _Home extends State<Home> {
 ### ICONE DE L'APPLI
 * Aller sur appicon.co, sélectionner Iphone et Android
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14482060#bookmarks
+
+## CODAMUSIC
+* Objectif = créer une application de musique qui affiche les chansons à l'écoute
+* Trouver le player de musique => "audioplayer Flutter sur Google" => https://pub.dev/packages/audioplayer => onglet Installing
+* pubspec.yaml
+```yaml
+name: coda_music
+description: A new Flutter application.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  audioplayer: ^0.8.1 # ajout de notre plugin audioplayer
+  # pub get pour l'intégrer au projet
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/ # pub get pour sauvegarder
+  #  - assets/deux.jpg
+  #  - assets/un.jpg
+```
+* main.dart
+```java
+import 'dart:async'; // permet de faire de l'asynchrone
+
+import 'package:flutter/material.dart';
+import 'musique.dart'; // classe Musique créée dans notre lib/
+import 'package:audioplayer/audioplayer.dart';
+
+void main() => runApp(new MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Coda Music',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Coda Music'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  List<Musique> maListeDeMusiques = [
+    // création de mes musiques
+    Musique('Theme Swift', 'Codabee', 'assets/un.jpg',
+        'https://codabee.com/wp-content/uploads/2018/06/un.mp3'),
+    Musique('Theme Flutter', 'Codabee', 'assets/deux.jpg',
+        'https://codabee.com/wp-content/uploads/2018/06/deux.mp3'),
+  ];
+
+  AudioPlayer audioPlayer;
+  StreamSubscription positionSub;
+  StreamSubscription stateSubscription;
+  Musique maMusiqueActuelle;
+  Duration position = Duration(seconds: 0);
+  Duration duree = Duration(seconds: 10);
+  PlayerState statut = PlayerState.stopped;
+  int index = 0;
+
+  @override
+  void initState() {
+    // quand l'état de la page d'accueil s'initialise
+    super.initState();
+    maMusiqueActuelle = maListeDeMusiques[index];
+    // on diffuse une musique de la liste (la première par défaut)
+    configurationAudioPlayer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
+        title: Text(widget.title), // variable title de notre widget
+      ),
+      backgroundColor: Colors.grey[800],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Card(
+              elevation: 9.0,
+              child: Container(
+                width: MediaQuery.of(context).size.height / 2.5,
+                child: Image.asset(maMusiqueActuelle.imagePath),
+                // attention : le hot reload peut présenter des erreurs avec le initState()
+                // solution : relancer l'appli
+              ),
+            ),
+            // ajoute le texte (personnalisé) de l'appli, grâce à la méthode texteAvecStyle()
+            texteAvecStyle(maMusiqueActuelle.titre, 1.5),
+            texteAvecStyle(maMusiqueActuelle.artiste, 1.0),
+            // ↓ rangée des boutons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // alignés au centre
+              children: <Widget>[
+                bouton(Icons.fast_rewind, 30.0, ActionMusic.rewind),
+                // ↓ logique ternaire pour changer de bouton
+                bouton((statut == PlayerState.playing) ? Icons.pause : Icons.play_arrow,
+                    45.0,
+                    (statut == PlayerState.playing) ? ActionMusic.pause : ActionMusic.play),
+                bouton(Icons.fast_forward, 30.0, ActionMusic.forward)
+              ],
+            ),
+            // ↓ rangée de la progression de la musique [00:00 - 00:22]
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                texteAvecStyle(fromDuration(position), 0.8),
+                texteAvecStyle(fromDuration(duree), 0.8)
+              ],
+            ),
+            // ↓ slider (progression de la musique sur une ligne)
+            Slider(
+                value: position.inSeconds.toDouble(),
+                min: 0.0,
+                max: 30.0,
+                inactiveColor: Colors.white,
+                activeColor: Colors.red,
+                onChanged: (double d) {
+                  setState(() {
+                    audioPlayer.seek(d);
+                  });
+                })
+          ],
+        ),
+      ),
+    );
+  }
+
+  // fonction qui renvoie les boutons de l'appli
+  // ActionMusic est un enum (choix = play, pause, ect.)
+  IconButton bouton(IconData icone, double taille, ActionMusic action) {
+    return IconButton(
+      iconSize: taille,
+      color: Colors.white,
+      icon: Icon(icone),
+      onPressed: () {
+        switch (action) {
+          case ActionMusic.play:
+            play();
+            break;
+          case ActionMusic.pause:
+            pause();
+            break;
+          case ActionMusic.forward:
+            forward();
+            break;
+          case ActionMusic.rewind:
+            rewind();
+            break;
+        }
+      },
+    );
+  }
+
+  // fonction pour ajouter le texte de l'application
+  Text texteAvecStyle(String data, double scale) {
+    return Text(
+      data,
+      textScaleFactor: scale,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          color: Colors.white, fontSize: 20.0, fontStyle: FontStyle.italic),
+    );
+  }
+
+  void configurationAudioPlayer() {
+    audioPlayer = AudioPlayer();
+    positionSub = audioPlayer.onAudioPositionChanged
+        .listen((pos) => setState(() => position = pos));
+    stateSubscription = audioPlayer.onPlayerStateChanged.listen((state) {
+      if (state == AudioPlayerState.PLAYING) {
+        setState(() {
+          duree = audioPlayer.duration;
+        });
+      } else if (state == AudioPlayerState.STOPPED) {
+        setState(() {
+          statut = PlayerState.stopped;
+        });
+      }
+    }, onError: (message) {
+      print('erreur: $message');
+      setState(() {
+        statut = PlayerState.stopped;
+        duree = Duration(seconds: 0);
+        position = Duration(seconds: 0);
+      });
+    });
+  }
+
+  Future play() async {
+    // attend la réponse de la promesse (Future)
+    await audioPlayer.play(maMusiqueActuelle.urlSong);
+    // quand la promesse est résolue on lance ↓
+    setState(() {
+      statut = PlayerState.playing;
+    });
+  }
+
+  Future pause() async {
+    await audioPlayer.pause();
+    setState(() {
+      statut = PlayerState.paused;
+    });
+  }
+
+  void forward() {
+    // si on est au dernier élément de la liste
+    if (index == maListeDeMusiques.length - 1) {
+      index = 0;
+    } else {
+      index++;
+    }
+    maMusiqueActuelle = maListeDeMusiques[index];
+    audioPlayer.stop();
+    configurationAudioPlayer();
+    play();
+  }
+
+  String fromDuration(Duration duree) {
+    print(duree);
+    return duree.toString().split('.').first;
+  }
+
+  void rewind() {
+    // si la musique est lancée depuis plus de 3 secondes
+    if (position > Duration(seconds: 3)) {
+      audioPlayer.seek(0.0);
+    } else {
+      if (index == 0) {
+        index = maListeDeMusiques.length - 1;
+      } else {
+        index--;
+      }
+      maMusiqueActuelle = maListeDeMusiques[index];
+      audioPlayer.stop();
+      configurationAudioPlayer();
+      play();
+    }
+  }
+}
+
+enum ActionMusic { play, pause, rewind, forward }
+
+enum PlayerState { playing, stopped, paused }
+```
+* musique.dart
+```java
+// lib/musique.dart
+class Musique {
+
+  String titre;
+  String artiste;
+  String imagePath;
+  String urlSong;
+
+  Musique(this.titre, this.artiste, this.imagePath, this.urlSong);
+  // constructeur simplifié
+}
+```
+
+## POP-UP ET NAVIGATOR
+
+### AJOUT D UN BODY EXTERNE
+* body.dart (autre façon d'ajouter un body)
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: pressButton,
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  void pressButton() {
+    print("Bouton appuyé !");
+  }
+}
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'body.dart'; // on importe notre classe Body
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Body(), // on ajoute notre classe body
+    );
+  }
+}
+```
+### SNACKBAR
+* Barre informative et éphémère qui remonte du footer puis disparaît
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: callSnack, // ++ on appelle la snackbar
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  // il faut créer un widget hors du Scaffold
+  // pour récupérer son contexte
+  void callSnack() {
+    SnackBar snackbar = SnackBar(
+      // ↓ The primary content of the snack bar
+        content: Text(
+          "Je suis une SnackBar !",
+          textScaleFactor: 2.5,
+          textAlign: TextAlign.center,
+        ),
+      duration: Duration(seconds: 5),
+    );
+    // doc : To display a snack bar, call Scaffold.of(context).showSnackBar(),
+    // passing an instance of SnackBar that describes the message
+    Scaffold.of(context).showSnackBar(snackbar);
+  }
+}
+```
+### ALERTDIALOG
+* Modale d'alerte
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: callAlert, // ++ on appelle l'alerte
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  // méthode asynchrone
+  // ici marche sans l'import de async
+  Future<Null> callAlert() async {
+    // contexte (emplacement) de notre widget
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // obligation d'appuyer sur un bouton
+      // ↑ si true, un appui n'importe où ferme la fenêtre
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Ceci est une alerte !",
+            textScaleFactor: 1.5,
+          ),
+          content: Text("Nous avons un problème avec l'application."
+              "Souhaitez-vous continuer ?"), // """ pour les string sur plusieurs lignes """
+          contentPadding: EdgeInsets.all(5.0),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                print("Refusé !");
+                // ↓ on referme et on revient en arrière
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              )
+            ),
+            FlatButton(
+                onPressed: () {
+                  print("Accepté !");
+                  // ↓ on referme et on revient en arrière
+                  Navigator.pop(context);
+                },
+                  child: Text(
+                  "Continuer",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+            )
+          ],
+        );
+      }
+    );
+  }
+}
+```
+#### SIMPLEDIALOG
+* Un modal qui renseigne sur plusieurs choix
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        // ↓ pour éviter l'erreur de type 'Future<Null>' can't be assigned to the parameter type 'void Function()'
+        // on le transforme en fonction fléchée
+        onPressed: () => callSimple("Ceci est le titre", "Ceci est la description"), // ++
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  Future<Null> callSimple(String title, String description) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true, // true par défaut
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(title, textScaleFactor: 1.4,),
+          children: <Widget>[
+            Text(description),
+            // ↓ pour créer un espace
+            Container(height: 20.0),
+            RaisedButton(
+              color: Colors.teal,
+              textColor: Colors.white,
+              child: Text("OK"),
+              onPressed: () {
+                print("Appuyé !");
+                Navigator.pop(context);
+              }
+            )
+          ],
+        );
+      }
+    );
+  }
+
+// un Simple Dialog avec des options :
+Future<void> _askedToLead() async {
+  switch (await showDialog<Department>(
+    context: context,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: const Text('Select assignment'),
+        children: <Widget>[
+          SimpleDialogOption(
+            onPressed: () { Navigator.pop(context, Department.treasury); },
+            child: const Text('Treasury department'),
+          ),
+          SimpleDialogOption(
+            onPressed: () { Navigator.pop(context, Department.state); },
+            child: const Text('State department'),
+          ),
+        ],
+      );
+    }
+  )) {
+    case Department.treasury:
+      // Let's go.
+      // ...
+    break;
+    case Department.state:
+      // ...
+    break;
+  }
+}
+```
+### NAVIGUER VERS UN SECOND SCAFFOLD
+* https://api.flutter.dev/flutter/widgets/Navigator-class.html
+* nouvelle_page.dart
+```java
+import 'package:flutter/material.dart';
+
+class NouvellePage extends StatelessWidget {
+  String title;
+
+  NouvellePage(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    // pas besoin de StatefulWidget si les éléments sont statiques
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title), // title dynamique
+      ),
+      body: Center(
+        child: Text(
+          "Je suis une nouvelle page !",
+          textScaleFactor: 2.0,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.teal,
+            fontStyle: FontStyle.italic,
+          )
+        ),
+      ),
+    );
+  }
+}
+```
+* body.dart
+```java
+import 'package:flutter/material.dart';
+import 'nouvelle_page.dart'; // ++
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: toNouvellePage, // ++
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+  
+  void toNouvellePage() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (BuildContext context) {
+          return NouvellePage("Je suis la nouvelle page !");
+        }
+    ));
+  }
+```
+
+## JEU DE QUIZZ
+* Création d'une application de Quizz
+* Structure :
+```py
+quizz/
+  lib/
+    # ↓ nos objets
+    models/ # lib => package => models
+      questions.dart
+    widgets/ # tous les Stateful Widgets
+      custom_text.dart
+      home.dart
+      my_app.dart
+      page_quizz.dart
+    main.dart
+quizz assets/
+```

@@ -19,6 +19,7 @@
 * https://wweb.dev
 * https://medium.muz.li/
 * https://www.rooki.design/
+* https://www.jesuisundev.com/
 
 
 ## :gun: WEB TOOLS
@@ -168,11 +169,19 @@
 * https://emploi.developpez.com/actu/300602/Emploi-developpeur-2019-les-tendances-et-les-effets-de-mode-les-nouveaux-metiers-et-technologies-sur-le-marche-de-l-emploi/
 * 5 design and code tips for a cleaner website : https://uxdesign.cc/5-tips-to-kickstart-your-website-777541b6386e
 * 2020 Developer Survey by Stack Overflow : https://insights.stackoverflow.com/survey/2020#overview
+* Comprendre WebAssembly en 5 minutes : https://www.jesuisundev.com/comprendre-webassembly-en-5-minutes/
+* 8 habitudes de développeur(euse)s qui font progresser : https://www.jesuisundev.com/8-habitudes-de-developpeurs/
 
-## WINDOWS
+
+## :keyboard: WINDOWS
 
 * Windows 10 May 2020 Update est disponible et apporte WSL2 par défaut avec un véritable noyau Linux : https://windows.developpez.com/actu/304457/Windows-10-May-2020-Update-est-disponible-et-apporte-WSL2-par-defaut-avec-un-veritable-noyau-Linux-ainsi-que-la-possibilite-de-renommer-des-bureaux-virtuels/
 * How to Use Windows Subsystem for Linux 2 and Windows Terminal : https://www.sitepoint.com/wsl2-windows-terminal/
+
+
+## :fox_face: MOZILLA
+
+* https://hacks.mozilla.org/
 
 
 ## :mag_right: SEO
@@ -717,6 +726,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 
 * https://regexr.com/
 * https://regex101.com/
+* https://www.rexegg.com/regex-quickstart.html
 
 
 ## :e-mail: MAILING
@@ -757,3 +767,10 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.framer.com/
 * https://waster.fr/
 * http://www.migulko.cz/
+
+
+## :monocle_face: TENDANCES
+
+* NoCode
+* WebAssembly
+* Rust
