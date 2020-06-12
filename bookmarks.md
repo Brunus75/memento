@@ -20,6 +20,7 @@
 * https://medium.muz.li/
 * https://www.rooki.design/
 * https://www.jesuisundev.com/
+* https://dev.to/
 
 
 ## :gun: WEB TOOLS
@@ -136,6 +137,8 @@
 * My Web Accessibility Testing Process : https://www.a11ywithlindsey.com/blog/web-accessibility-testing-process
 * Hacking Digital Style Guides for Accessibility: Type, Colour, Imagery : https://www.youtube.com/watch?v=tvpstrkDgeM
 * How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
+
+## :flying_saucer: ANDROID
 
 
 ## :warning: VALIDATEURS
@@ -680,6 +683,8 @@
 WP White Security Tip: If you already have an .htaccess file in the root of your WordPress, download the existing one and add the below at the end of the .htaccess file. It is important to always add content outside the # BEGIN WordPress and # END WordPress lines.
 ```
 * Hacked: What to Do When Your WordPress Website Has Been Compromised : https://speckyboy.com/wordpress-compromised
+* 20 Tips to Secure Your WordPress Website : https://joetechreviews.com/20-tips-to-secure-your-wordpress-website
+
 
 ## :no_entry: SECURITY
 
@@ -772,5 +777,12 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 ## :monocle_face: TENDANCES
 
 * NoCode
+* TypeScript
 * WebAssembly
 * Rust
+```
+Rust de Mozilla Research est le type de langage de programmation auquel ceux qui écrivent du code pour
+des systèmes d’entrée/sortie de base (BIOS), des chargeurs d’amorce, des systèmes d’exploitation, etc.
+portent un intérêt. 
+D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
+```

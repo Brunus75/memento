@@ -288,6 +288,10 @@ assert(iMeantToDoThis.isNaN);
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Collections: https://dart.dev/guides/libraries/library-tour#collections
 ```java
+// initialiser une liste
+var maListe = []; // préférable
+var maListe = List();
+
 var maListe = ["Pierre", "Paul", "Jacques"];
 // Dart assume alors que c'est une liste de String
 // et de String seulement => List<String> maListe = ...

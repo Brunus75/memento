@@ -7,6 +7,7 @@
 * Doc Dart : https://dart.dev/
 * DartPad : https://dartpad.dev/dart
 * Doc Flutter : https://flutter.dev/docs/get-started/install
+* Page YT Flutter :  https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw/videos
 * Palette des couleurs : https://api.flutter.dev/flutter/material/Colors-class.html
 * Liste des icônes : https://material.io/resources/icons/?style=baseline
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
@@ -18,6 +19,7 @@
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
+* ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -32,6 +34,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * “A month of Flutter” : https://bendyworks.com/blog/a-month-of-flutter
 * https://www.facebook.com/pg/CodaBeeOfficial/posts/?ref=page_internal
 * Codabee Flutter: le forum d'entraide : https://www.facebook.com/groups/225660591356238
+* Dart Async Library : https://api.flutter.dev/flutter/dart-async/dart-async-library.html
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -46,10 +49,12 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [RACCOURCIS](#raccourcis)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
-   * [WIDGETS DE BASE](#widgets-de-base)
-* [EX. D'APPLI : CODAMUSIC](#codamusic)
-* [POP-UP ET NAVIGATOR](#pop-up-et-navigator)
-* [EX. D'APPLI : JEU DE QUIZZ](#jeu-de-quizz)
+   * [WIDGETS DE BASE (1)](#widgets-de-base)
+   * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)
+   * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
+* [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
+* [EX. D'APPLI (2) : JEU DE QUIZZ](#jeu-de-quizz)
+* [EX. D'APPLI (3) : CALCUL DE CALORIES](#calcul-calories)
 
 
 ## FLUTTER
@@ -138,6 +143,10 @@ String exemple = 'Je suis un string';
 ```java
 height: MediaQuery.of(context).size.height / 2,
 textScaleFactor: 2.0, // fontSize 2 * plus grande
+```
+* Pas besoin d'importer async de Dart depuis sa version 2.1
+```
+After 2.1 the Future class was exported by dart core so you don't need to import async anymore
 ```
 
 
@@ -1009,6 +1018,814 @@ class _Home extends State<Home> {
 
 }
 ```
+### POP-UP ET NAVIGATOR
+
+#### AJOUT D UN BODY EXTERNE
+* body.dart (autre façon d'ajouter un body)
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: pressButton,
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  void pressButton() {
+    print("Bouton appuyé !");
+  }
+}
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'body.dart'; // on importe notre classe Body
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Body(), // on ajoute notre classe body
+    );
+  }
+}
+```
+#### SNACKBAR
+* Barre informative et éphémère qui remonte du footer puis disparaît
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: callSnack, // ++ on appelle la snackbar
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  // il faut créer un widget hors du Scaffold
+  // pour récupérer son contexte
+  void callSnack() {
+    SnackBar snackbar = SnackBar(
+      // ↓ The primary content of the snack bar
+        content: Text(
+          "Je suis une SnackBar !",
+          textScaleFactor: 2.5,
+          textAlign: TextAlign.center,
+        ),
+      duration: Duration(seconds: 5),
+    );
+    // doc : To display a snack bar, call Scaffold.of(context).showSnackBar(),
+    // passing an instance of SnackBar that describes the message
+    Scaffold.of(context).showSnackBar(snackbar);
+  }
+}
+```
+#### ALERTDIALOG
+* Modale d'alerte
+* Renvoie une Future (promesse) => programmation asynchrone
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: callAlert, // ++ on appelle l'alerte
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  // méthode asynchrone
+  // ici marche sans l'import de async
+  Future<Null> callAlert() async {
+    // contexte (emplacement) de notre widget
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // obligation d'appuyer sur un bouton
+      // ↑ si true, un appui n'importe où ferme la fenêtre
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Ceci est une alerte !",
+            textScaleFactor: 1.5,
+          ),
+          content: Text("Nous avons un problème avec l'application."
+              "Souhaitez-vous continuer ?"), // """ pour les string sur plusieurs lignes """
+          contentPadding: EdgeInsets.all(5.0),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                print("Refusé !");
+                // ↓ on referme et on revient en arrière
+                Navigator.pop(context);
+              },
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              )
+            ),
+            FlatButton(
+                onPressed: () {
+                  print("Accepté !");
+                  // ↓ on referme et on revient en arrière
+                  Navigator.pop(context);
+                },
+                  child: Text(
+                  "Continuer",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+            )
+          ],
+        );
+      }
+    );
+  }
+}
+```
+#### SIMPLEDIALOG
+* Un modal qui renseigne sur plusieurs choix
+* Renvoie une Future (promesse) => programmation asynchrone
+```java
+import 'package:flutter/material.dart';
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        // ↓ pour éviter l'erreur de type 'Future<Null>' can't be assigned to the parameter type 'void Function()'
+        // on le transforme en fonction fléchée
+        onPressed: () => callSimple("Ceci est le titre", "Ceci est la description"), // ++
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+
+  Future<Null> callSimple(String title, String description) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true, // true par défaut
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(title, textScaleFactor: 1.4,),
+          children: <Widget>[
+            Text(description),
+            // ↓ pour créer un espace
+            Container(height: 20.0),
+            RaisedButton(
+              color: Colors.teal,
+              textColor: Colors.white,
+              child: Text("OK"),
+              onPressed: () {
+                print("Appuyé !");
+                Navigator.pop(context);
+              }
+            )
+          ],
+        );
+      }
+    );
+  }
+
+// un Simple Dialog avec des options :
+Future<void> _askedToLead() async {
+  switch (await showDialog<Department>(
+    context: context,
+    builder: (BuildContext context) {
+      return SimpleDialog(
+        title: const Text('Select assignment'),
+        children: <Widget>[
+          SimpleDialogOption(
+            onPressed: () { Navigator.pop(context, Department.treasury); },
+            child: const Text('Treasury department'),
+          ),
+          SimpleDialogOption(
+            onPressed: () { Navigator.pop(context, Department.state); },
+            child: const Text('State department'),
+          ),
+        ],
+      );
+    }
+  )) {
+    case Department.treasury:
+      // Let's go.
+      // ...
+    break;
+    case Department.state:
+      // ...
+    break;
+  }
+}
+```
+#### NAVIGUER VERS UN SECOND SCAFFOLD
+* https://api.flutter.dev/flutter/widgets/Navigator-class.html
+* https://api.flutter.dev/flutter/widgets/Navigator/pop.html
+* nouvelle_page.dart
+```java
+import 'package:flutter/material.dart';
+
+class NouvellePage extends StatelessWidget {
+  String title;
+
+  NouvellePage(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    // pas besoin de StatefulWidget si les éléments sont statiques
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title), // title dynamique
+      ),
+      body: Center(
+        child: Text(
+          "Je suis une nouvelle page !",
+          textScaleFactor: 2.0,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.teal,
+            fontStyle: FontStyle.italic,
+          )
+        ),
+      ),
+    );
+  }
+}
+```
+* body.dart
+```java
+import 'package:flutter/material.dart';
+import 'nouvelle_page.dart'; // ++
+
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+// état de notre classe, qui contient tous les champs
+class _BodyState extends State<Body> {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: toNouvellePage, // ++
+        child: Text(
+          "Je suis un bouton",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+        color: Colors.red,
+        elevation: 10.0,
+      ),
+    );
+  }
+  
+  void toNouvellePage() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (BuildContext context) {
+          return NouvellePage("Je suis la nouvelle page !");
+        }
+    ));
+  }
+```
+### WIDGETS INTERACTIFS
+
+#### TEXTFIELD
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  String changed;
+  String submitted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              // ↓ apparence du clavier
+              // .number pour juste des nombres
+              keyboardType: TextInputType.text,
+              onChanged: (String value) {
+                setState(() {
+                  // ↓ changement à la volée
+                  changed = value;
+                });
+              },
+              onSubmitted: (String value) {
+                setState(() {
+                  // ↓ changement à la soumission du formulaire
+                  submitted = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: "Entrez votre nom",
+              ),
+            ),
+            Text(changed ?? ""),
+            Text(submitted ?? ""),
+          ],
+        )
+      ),
+    );
+  }
+}
+
+// (!) number avec IOS
+class _MyHomePageState extends State<MyHomePage> {
+
+  String changed;
+  String submitted;
+
+  @override
+  Widget build(BuildContext context) {
+    // ↓ palier l'abscence de submit pour les numbers chez IOS
+    // rentre le clavier quand l'utilisateur touche l'écran
+    // (sinon il ne peut pas quitter le clavier)
+    return GestureDetector( // A widget that detects gestures
+      onTap: () {
+        Focus.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  // ↓ apparence du clavier
+                  // .number pour juste des nombres
+                  keyboardType: TextInputType.number,
+                  onChanged: (String value) {
+                    setState(() {
+                      // ↓ changement à la volée
+                      changed = value;
+                    });
+                  },
+                  onSubmitted: (String value) {
+                    setState(() {
+                      // ↓ changement à la soumission du formulaire
+                      submitted = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Entrez votre nom",
+                  ),
+                ),
+                Text(changed ?? ""),
+                Text(submitted ?? ""),
+              ],
+            )
+        ),
+      ),
+    );
+  }
+}
+```
+#### CHECKBOX
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  Map check = {
+    'Carottes': false,
+    'Bananes': false,
+    'Yaourt': false,
+    'Pain': false,
+  };
+
+  // méthode qui crée nos widgets <row>checkbox</row>
+  List<Widget> checkList() {
+    // ajouter = [] pour palier l'erreur de type
+    // The method 'add' was called on null
+    List<Widget> myList = [];
+    check.forEach((key, value) {
+      Row row = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(key,
+          style: TextStyle(
+            // change l'apparence du texte à la volée
+            color: value ? Colors.blue : Colors.red,
+          )),
+          Checkbox(
+              value: value,
+              onChanged: (bool answer) {
+                setState(() {
+                  check[key] = answer;
+                });
+              }
+          )
+        ],
+      );
+      myList.add(row);
+    });
+    return myList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: checkList(),
+        )
+      ),
+    );
+  }
+}
+```
+#### RADIO
+* https://api.flutter.dev/flutter/material/Radio-class.html
+* Exemple : ListTile = https://api.flutter.dev/flutter/material/ListTile-class.html
+* ListTile permet de faire des row homogènes avec 3 éléments
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  int itemSelected;
+
+  List<Widget> radios() {
+    List<Widget> myList = [];
+    for (int i = 0; i < 4; i++) {
+      Row row = Row(
+        children: <Widget>[
+          Text("Choix numéro ${i + 1}"),
+          Radio(
+            value: i,
+            groupValue: itemSelected, // valeur choisie
+            onChanged: (int answer) {
+              setState(() {
+                itemSelected = answer;
+              });
+          })
+        ],
+      );
+      myList.add(row);
+    }
+    return myList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: radios(), // ++
+        )
+      ),
+    );
+  }
+}
+
+// ↓ avec ListTile
+enum SingingCharacter { lafayette, jefferson }
+
+// ...
+// ↓ les ListTile possède le même groupValue
+SingingCharacter _character = SingingCharacter.lafayette;
+
+Widget build(BuildContext context) {
+  return Column(
+    children: <Widget>[
+      ListTile( // première row avec checkbox
+        title: const Text('Lafayette'),
+        leading: Radio(
+          value: SingingCharacter.lafayette,
+          groupValue: _character,
+          onChanged: (SingingCharacter value) {
+            setState(() { _character = value; });
+          },
+        ),
+      ),
+      ListTile( // deuxième row avec checkbox
+        title: const Text('Thomas Jefferson'),
+        leading: Radio(
+          value: SingingCharacter.jefferson,
+          groupValue: _character,
+          onChanged: (SingingCharacter value) {
+            setState(() { _character = value; });
+          },
+        ),
+      ),
+    ],
+  );
+}
+```
+#### SWITCH
+* Choix True/False
+* Equivalent de Toggle Switch de Bootstrap
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  bool interrupteur = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Aimez-vous le gras ?",
+              style: TextStyle(
+                // ↓ change le texte selon la réponse du switch
+                color: interrupteur ? Colors.green : Colors.red,
+              )
+            ),
+            Switch(
+              value: interrupteur,
+              // ↓ interrupteur = false
+              inactiveTrackColor: Colors.red,
+              // ↓ interrupteur = true
+              activeColor: Colors.green,
+              onChanged: (bool answer) {
+                setState(() {
+                  interrupteur = answer;
+                });
+              }
+            )
+          ],
+        )
+      ),
+    );
+  }
+}
+```
+#### SLIDER
+* Principe = curseur coulissant sur une ligne
+* But = sélectionner une rangée de valeurs
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  double numSlider = 0.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Valeur du slider : $numSlider",
+              style: TextStyle(
+                color: interrupteur ? Colors.green : Colors.red,
+              )
+            ),
+            Slider(
+              value: numSlider,
+              min: 0.0,
+              max: 10.0,
+              // ↓ partie devant le curseur (inexplorée)
+              inactiveColor: Colors.black,
+              // ↓ partie derrière le curseur (explorée)
+              activeColor: Colors.pinkAccent,
+              // ↓ points d'arrêts
+              divisions: 5,
+              onChanged: (double mouse) {
+                setState(() {
+                  numSlider = mouse;
+                });
+              }
+            )
+          ],
+        )
+      ),
+    );
+  }
+}
+```
+#### DATE TIME PICKERS
+```java
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // supporter les locales
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      localizationsDelegates: [ // ++
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [ // ++
+        const Locale('en', 'US'),
+        const Locale('ru', 'RU'),
+        const Locale('fr', 'FR'),
+      ],
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  DateTime myDate; // ++
+  TimeOfDay myTime; // ++
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                showCalendar();
+              },
+              child: Text((myDate == null) ? 'Choisir une date' : myDate.toString())
+            ),
+            FlatButton(
+              onPressed: () {
+                showHour();
+              },
+              child: Text((myTime == null) ? 'Choisir une heure' : myTime.toString())
+            ),
+          ],
+        )
+      ),
+    );
+  }
+
+  Future<void> showCalendar() async {
+    // ↓ affichage d'un calendrier
+    DateTime choice = await showDatePicker(
+        context: context,
+        // ↓ choix de l'année PUIS choix du mois/jour
+        initialDatePickerMode: DatePickerMode.year,
+        initialDate: DateTime.now(), // date à l'ouverture du calendrier
+        firstDate: DateTime(2018), // début du calendrier
+        lastDate: DateTime(2022), // fin du calendrier
+        locale: const Locale('fr', 'FR'), // nomination fr
+    );
+
+    if (choice != null) {
+      setState(() {
+        myDate = choice;
+      });
+    }
+  }
+
+  Future<void> showHour() async {
+    // ↓ affichage d'une horloge
+    TimeOfDay hour = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now()
+    );
+
+    if (hour != null) {
+      setState(() {
+        myTime = hour;
+      });
+    }
+  }
+}
+```
+* pubspec.yaml :
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations: # ++
+    sdk: flutter
+```
 
 ## PERSONNALISATION
 
@@ -1297,377 +2114,6 @@ class Musique {
 }
 ```
 
-## POP-UP ET NAVIGATOR
-
-### AJOUT D UN BODY EXTERNE
-* body.dart (autre façon d'ajouter un body)
-```java
-import 'package:flutter/material.dart';
-
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-// état de notre classe, qui contient tous les champs
-class _BodyState extends State<Body> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: pressButton,
-        child: Text(
-          "Je suis un bouton",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.red,
-        elevation: 10.0,
-      ),
-    );
-  }
-
-  void pressButton() {
-    print("Bouton appuyé !");
-  }
-}
-```
-* main.dart
-```java
-import 'package:flutter/material.dart';
-import 'body.dart'; // on importe notre classe Body
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Body(), // on ajoute notre classe body
-    );
-  }
-}
-```
-### SNACKBAR
-* Barre informative et éphémère qui remonte du footer puis disparaît
-```java
-import 'package:flutter/material.dart';
-
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-// état de notre classe, qui contient tous les champs
-class _BodyState extends State<Body> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: callSnack, // ++ on appelle la snackbar
-        child: Text(
-          "Je suis un bouton",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.red,
-        elevation: 10.0,
-      ),
-    );
-  }
-
-  // il faut créer un widget hors du Scaffold
-  // pour récupérer son contexte
-  void callSnack() {
-    SnackBar snackbar = SnackBar(
-      // ↓ The primary content of the snack bar
-        content: Text(
-          "Je suis une SnackBar !",
-          textScaleFactor: 2.5,
-          textAlign: TextAlign.center,
-        ),
-      duration: Duration(seconds: 5),
-    );
-    // doc : To display a snack bar, call Scaffold.of(context).showSnackBar(),
-    // passing an instance of SnackBar that describes the message
-    Scaffold.of(context).showSnackBar(snackbar);
-  }
-}
-```
-### ALERTDIALOG
-* Modale d'alerte
-```java
-import 'package:flutter/material.dart';
-
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-// état de notre classe, qui contient tous les champs
-class _BodyState extends State<Body> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: callAlert, // ++ on appelle l'alerte
-        child: Text(
-          "Je suis un bouton",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.red,
-        elevation: 10.0,
-      ),
-    );
-  }
-
-  // méthode asynchrone
-  // ici marche sans l'import de async
-  Future<Null> callAlert() async {
-    // contexte (emplacement) de notre widget
-    return showDialog(
-      context: context,
-      barrierDismissible: false, // obligation d'appuyer sur un bouton
-      // ↑ si true, un appui n'importe où ferme la fenêtre
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Ceci est une alerte !",
-            textScaleFactor: 1.5,
-          ),
-          content: Text("Nous avons un problème avec l'application."
-              "Souhaitez-vous continuer ?"), // """ pour les string sur plusieurs lignes """
-          contentPadding: EdgeInsets.all(5.0),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () {
-                print("Refusé !");
-                // ↓ on referme et on revient en arrière
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Annuler",
-                style: TextStyle(
-                  color: Colors.red,
-                ),
-              )
-            ),
-            FlatButton(
-                onPressed: () {
-                  print("Accepté !");
-                  // ↓ on referme et on revient en arrière
-                  Navigator.pop(context);
-                },
-                  child: Text(
-                  "Continuer",
-                  style: TextStyle(
-                    color: Colors.green,
-                  ),
-                ),
-            )
-          ],
-        );
-      }
-    );
-  }
-}
-```
-#### SIMPLEDIALOG
-* Un modal qui renseigne sur plusieurs choix
-```java
-import 'package:flutter/material.dart';
-
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-// état de notre classe, qui contient tous les champs
-class _BodyState extends State<Body> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        // ↓ pour éviter l'erreur de type 'Future<Null>' can't be assigned to the parameter type 'void Function()'
-        // on le transforme en fonction fléchée
-        onPressed: () => callSimple("Ceci est le titre", "Ceci est la description"), // ++
-        child: Text(
-          "Je suis un bouton",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.red,
-        elevation: 10.0,
-      ),
-    );
-  }
-
-  Future<Null> callSimple(String title, String description) async {
-    return showDialog(
-      context: context,
-      barrierDismissible: true, // true par défaut
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(title, textScaleFactor: 1.4,),
-          children: <Widget>[
-            Text(description),
-            // ↓ pour créer un espace
-            Container(height: 20.0),
-            RaisedButton(
-              color: Colors.teal,
-              textColor: Colors.white,
-              child: Text("OK"),
-              onPressed: () {
-                print("Appuyé !");
-                Navigator.pop(context);
-              }
-            )
-          ],
-        );
-      }
-    );
-  }
-
-// un Simple Dialog avec des options :
-Future<void> _askedToLead() async {
-  switch (await showDialog<Department>(
-    context: context,
-    builder: (BuildContext context) {
-      return SimpleDialog(
-        title: const Text('Select assignment'),
-        children: <Widget>[
-          SimpleDialogOption(
-            onPressed: () { Navigator.pop(context, Department.treasury); },
-            child: const Text('Treasury department'),
-          ),
-          SimpleDialogOption(
-            onPressed: () { Navigator.pop(context, Department.state); },
-            child: const Text('State department'),
-          ),
-        ],
-      );
-    }
-  )) {
-    case Department.treasury:
-      // Let's go.
-      // ...
-    break;
-    case Department.state:
-      // ...
-    break;
-  }
-}
-```
-### NAVIGUER VERS UN SECOND SCAFFOLD
-* https://api.flutter.dev/flutter/widgets/Navigator-class.html
-* nouvelle_page.dart
-```java
-import 'package:flutter/material.dart';
-
-class NouvellePage extends StatelessWidget {
-  String title;
-
-  NouvellePage(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    // pas besoin de StatefulWidget si les éléments sont statiques
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title), // title dynamique
-      ),
-      body: Center(
-        child: Text(
-          "Je suis une nouvelle page !",
-          textScaleFactor: 2.0,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.teal,
-            fontStyle: FontStyle.italic,
-          )
-        ),
-      ),
-    );
-  }
-}
-```
-* body.dart
-```java
-import 'package:flutter/material.dart';
-import 'nouvelle_page.dart'; // ++
-
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-// état de notre classe, qui contient tous les champs
-class _BodyState extends State<Body> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: toNouvellePage, // ++
-        child: Text(
-          "Je suis un bouton",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
-        ),
-        color: Colors.red,
-        elevation: 10.0,
-      ),
-    );
-  }
-  
-  void toNouvellePage() {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (BuildContext context) {
-          return NouvellePage("Je suis la nouvelle page !");
-        }
-    ));
-  }
-```
 
 ## JEU DE QUIZZ
 * Création d'une application de Quizz
@@ -1685,4 +2131,595 @@ quizz/
       page_quizz.dart
     main.dart
 quizz assets/
+```
+* pubspec.yaml
+```yaml
+# ...
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - quizz assets/
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:quizz/widgets/my_app.dart';
+// ↑ chercher des fichiers hors package
+
+void main() => runApp(MyApp());
+```
+* widgets/my_app.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:quizz/widgets/home.dart';
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Quizz vrai ou faux'),
+    );
+  }
+}
+```
+* widgets/home.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:quizz/widgets/custom_text.dart';
+import 'page_quizz.dart';
+
+class MyHomePage extends StatefulWidget {
+
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Card(
+              elevation: 10.0,
+              child: Container(
+                height: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Image.asset("quizz assets/cover.jpg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            RaisedButton(
+              color: Colors.blue,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                    return PageQuizz();
+                  }));
+                },
+              // ↓ notre widget texte personnalisé
+              child: CustomText("Commencer le quizz", factor: 1.5),
+            )
+          ],
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+```
+* widgets/page_quizz.dart
+```java
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'custom_text.dart'; // pas de package: on est dans le même package
+import 'package:quizz/models/question.dart';
+
+class PageQuizz extends StatefulWidget {
+
+  @override
+  _PageQuizzState createState() => _PageQuizzState();
+  
+}
+
+class _PageQuizzState extends State<PageQuizz> {
+
+  Question question;
+
+  List<Question> listeQuestions = [
+    Question('La devise de la Belgique est l\'union fait la force', true, '', 'belgique.JPG'),
+    Question('La lune va finir par tomber sur terre à cause de la gravité', false, 'Au contraire la lune s\'éloigne', 'lune.jpg'),
+    Question('La Russie est plus grande en superficie que Pluton', true, '', 'russie.jpg'),
+    Question('Nyctalope est une race naine d\'antilope', false, 'C’est une aptitude à voir dans le noir', 'nyctalope.jpg'),
+    Question('Le Commodore 64 est l\’oridnateur de bureau le plus vendu', true, '', 'commodore.jpg'),
+    Question('Le nom du drapeau des pirates es black skull', false, 'Il est appelé Jolly Roger', 'pirate.png'),
+    Question('Haddock est le nom du chien Tintin', false, 'C\'est Milou', 'tintin.jpg'),
+    Question('La barbe des pharaons était fausse', true, 'A l\'époque déjà ils utilisaient des postiches', 'pharaon.jpg'),
+    Question('Au Québec tire toi une bûche veut dire viens viens t\'asseoir', true, 'La bûche, fameuse chaise de bucheron', 'buche.jpg'),
+    Question('Le module lunaire Eagle de possédait de 4Ko de Ram', true, 'Dire que je me plains avec mes 8GO de ram sur mon mac', 'eagle.jpg'),
+  ];
+
+  int index = 0;
+  int score = 0;
+
+  // à l'initialisation du widget
+  @override
+  void initState() {
+    super.initState();
+    question = listeQuestions[index];
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    double taille = MediaQuery.of(context).size.width * 0.75;
+    return Scaffold(
+      appBar: AppBar(
+        title: CustomText('Le Quizz'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            CustomText("Question numéro ${index + 1}", color: Colors.grey[900],),
+            CustomText("Score: $score / $index", color: Colors.grey[900],),
+            Card(
+              elevation: 10.0,
+              child: Container(
+                height: taille,
+                width: taille,
+                child: Image.asset(
+                    "quizz assets/${question.imagePath}",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            CustomText(question.question, color: Colors.grey[900], factor: 1.3,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                boutonBool(true),
+                boutonBool(false)
+              ],
+            )
+          ],
+        ),
+
+      ),
+    );
+  }
+  
+  RaisedButton boutonBool (bool b) {
+    return RaisedButton(
+      elevation: 10.0,
+      onPressed: (() => dialogue(b)),
+      color: Colors.blue,
+      child: CustomText((b) ? "Vrai": "Faux", factor: 1.25,),
+    );
+  }
+  
+  Future<Null> dialogue(bool b) async {
+    bool bonneReponse = (b == question.reponse);
+    String vrai = "quizz assets/vrai.jpg";
+    String faux = "quizz assets/faux.jpg";
+    if (bonneReponse) {
+      score++;
+    }
+
+    return showDialog(
+        context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+          return SimpleDialog(
+            title: CustomText((bonneReponse) ? "C'est gagné!" : "Oups! perdu...",
+              factor: 1.4, color: (bonneReponse) ? Colors.green : Colors.red,),
+            contentPadding: EdgeInsets.all(20.0),
+            children: <Widget>[
+              Image.asset((bonneReponse)? vrai: faux, fit: BoxFit.cover,),
+              Container(height: 25.0,),
+              CustomText(question.explication, factor: 1.25, color: Colors.grey[900],),
+              Container(height: 25.0,),
+              RaisedButton(onPressed: () {
+                Navigator.pop(context);
+                questionSuivante();
+              },
+              child: CustomText("Au suivant", factor: 1.25,),
+              color: Colors.blue,
+                ),
+            ],
+          );
+      }
+    );
+  }
+
+  Future<void> alerte() async {
+    return showDialog<void>(context: context,
+      barrierDismissible: false,
+      // ↓ buildContext = contexte (identifiant) du pop-up
+      builder: (BuildContext buildContext) {
+        return AlertDialog(
+          title: CustomText("C'est fini", color: Colors.blue, factor: 1.25,),
+          contentPadding: EdgeInsets.all(10.0),
+          content: CustomText("Votre score: $score / $index", color: Colors.grey[900],),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: (() {
+                  // ↓ on ferme l'identifiant du pop-up
+                  // on revient en arrière sur la page
+                  Navigator.pop(buildContext);
+                  // ↓ on ferme l'identifiant de la page
+                  // on revient sur la page précédent
+                  Navigator.pop(context);
+                }),
+                child: CustomText("OK", factor: 1.25, color: Colors.blue,))
+          ],
+        );
+      }
+    );
+  }
+
+  void questionSuivante() {
+    if (index < listeQuestions.length - 1) {
+      index++;
+      setState(() {
+        question = listeQuestions[index];
+      });
+    } else {
+      alerte();
+    }
+  }
+  
+}
+```
+* widgets/custom_text.dart
+```java
+import 'package:flutter/material.dart';
+
+// widget Text personnalisé
+class CustomText extends Text {
+                            // choix par défaut
+  CustomText(String data, {color: Colors.white, textAlign: TextAlign.center, factor: 1.0}):
+      super(data,
+          textAlign: textAlign,
+          textScaleFactor: factor,
+          style: TextStyle(color: color)
+      );
+}
+```
+* models/question.dart
+```java
+class Question {
+  String question;
+  bool reponse;
+  String explication;
+  String imagePath;
+
+  Question(this.question, this.reponse, this.explication, this.imagePath);
+}
+```
+
+## CALCUL CALORIES
+* Calcule le besoin en calories selon le sexe, âge, ect.
+* pubspec.yaml
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations: # ++
+    sdk: flutter
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // supporter les locales
+
+void main() => runApp(new MyApp());
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [ // ++
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [ // ++
+        const Locale('en', 'US'),
+        const Locale('ru', 'RU'),
+        const Locale('fr', 'FR'),
+      ],
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  int calorieBase;
+  int calorieAvecActivite;
+  int radioSelectionnee;
+  double poids;
+  double age;
+  bool genre = false;
+  double taille = 170.0;
+  Map mapActivite = {
+    0: "Faible",
+    1: "Modérée",
+    2: "Forte"
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    // ↓ pallier l'abscence de submit pour les numbers sur IOS
+    return GestureDetector(
+      onTap: (() => FocusScope.of(context).requestFocus(new FocusNode())),
+      // ↓ le GestureDetector prend la taille du Scaffold
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          backgroundColor: setColor(),
+        ),
+        // ↓ avant : Center() mais erreur d'espace dès que l'on activait le clavier
+        // ↓ élément déroulable qui s'adapte à la hauteur de l'écran
+        // ↓ problème (résolu avec le widget Padding()), tout est fixé en haut
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              padding(),
+              texteAvecStyle("Remplissez tous les champs pour obtenir votre besoin journalier en calories."),
+              padding(),
+              Card(
+                elevation: 10.0,
+                child: Column(
+                  children: <Widget>[
+                    padding(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        texteAvecStyle("Femme", color: Colors.pink),
+                        Switch(
+                            value: genre,
+                            inactiveTrackColor: Colors.pink,
+                            activeTrackColor: Colors.blue,
+                            onChanged: (bool choice) {
+                              setState(() {
+                                genre = choice;
+                              });
+                            }),
+                        texteAvecStyle("Homme", color: Colors.blue)
+                      ],
+                    ),
+                    padding(),
+                    RaisedButton(
+                      color: setColor(),
+                      child: texteAvecStyle((age == null) ? "Appuyez pour entrer votre age" :
+                        "Votre age est de : ${age.toInt()}",
+                        color: Colors.white
+                      ),
+                        onPressed: (() => montrerPicker())
+                    ),
+                    padding(),
+                    texteAvecStyle("Votre taille est de: ${taille.toInt()} cm.", color: setColor()),
+                    padding(),
+                    Slider(
+                        value: taille,
+                        activeColor: setColor(),
+                        onChanged: (double cursor) {
+                          setState(() {
+                            taille = cursor;
+                          });
+                        },
+                      max: 215.0,
+                      min: 100.0,
+                    ),
+                    padding(),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      onChanged: (String string) {
+                        setState(() {
+                          poids = double.tryParse(string); // string => double
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Entrez votre poids en kilos."
+                      ),
+                    ),
+                    padding(),
+                    texteAvecStyle("Quelle est votre activité sportive?", color: setColor()),
+                    padding(),
+                    rowRadio(),
+                    padding()
+                  ],
+                ),
+              ),
+              padding(),
+              RaisedButton(
+                color: setColor(),
+                child: texteAvecStyle("Calculer", color: Colors.white),
+                  onPressed: calculerNombreDeCalories,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  Padding padding() {
+    return Padding(padding: EdgeInsets.only(top: 20.0));
+  }
+
+  Future<void> montrerPicker() async {
+    DateTime choix = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now(),
+        initialDatePickerMode: DatePickerMode.year,
+        locale: const Locale('fr', 'FR'), // nomination fr
+    );
+    if (choix != null) {
+      // ↓ temps écoulé entre today et la date choisie
+      var difference = DateTime.now().difference(choix);
+      var jours = difference.inDays;
+      var ans = (jours / 365);
+      setState(() {
+        age = ans;
+      });
+    }
+  }
+
+  // change la couleur de l'appli selon le genre choisi
+  Color setColor() {
+    if (genre) {
+      return Colors.blue;
+    }
+    return Colors.pink;
+  }
+  
+  Text texteAvecStyle(String data, {color: Colors.black, fontSize: 15.0}) {
+    return Text(
+      data,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: color,
+        fontSize: fontSize
+      )
+    );
+  }
+  
+  Row rowRadio() {
+    List<Widget> listRadios = [];
+    mapActivite.forEach((key, value) {
+      Column colonne = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Radio(
+            activeColor: setColor(),
+            value: key,
+            groupValue: radioSelectionnee,
+            onChanged: (Object i) {
+            setState(() {
+              radioSelectionnee = i;
+            });
+          }),
+          texteAvecStyle(value, color: setColor())
+        ],
+      );
+      listRadios.add(colonne);
+    });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: listRadios,
+    );
+  }
+
+  void calculerNombreDeCalories() {
+    if (age != null && poids != null && radioSelectionnee != null) {
+      //Calculer
+      if (genre) {
+        calorieBase = (66.4730 + (13.7516 * poids) + (5.0033 * taille) - (6.7550 * age)).toInt();
+      } else {
+        calorieBase = (655.0955 + (9.5634 * poids) + (1.8496 * taille) - (4.6756 * age)).toInt();
+      }
+      switch(radioSelectionnee) {
+        case 0:
+          calorieAvecActivite = (calorieBase * 1.2).toInt();
+          break;
+        case 1:
+          calorieAvecActivite = (calorieBase * 1.5).toInt();
+          break;
+        case 2:
+          calorieAvecActivite = (calorieBase * 1.8).toInt();
+          break;
+        default:
+          calorieAvecActivite = calorieBase;
+          break;
+      }
+
+      setState(() {
+        resultat();
+      });
+
+    } else {
+      alerte();
+    }
+  }
+
+  Future<void> resultat() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext buildContext) {
+          return SimpleDialog(
+            title: texteAvecStyle("Votre besoin en calories", color: setColor()),
+            contentPadding: EdgeInsets.all(15.0),
+            children: <Widget>[
+              padding(),
+              texteAvecStyle("Votre besoin de base est de: $calorieBase"),
+              padding(),
+              texteAvecStyle("Votre besoin avec activité sportive est de : $calorieAvecActivite"),
+              RaisedButton(onPressed: () {
+                Navigator.pop(buildContext);
+              },
+              child: texteAvecStyle("OK", color: Colors.white),
+                color: setColor(),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  Future<void> alerte() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // l'utilisateur doit appuyer sur le bouton !
+      // ↓ buildcontext = #identifiant du pop-up
+      builder: (BuildContext buildContext) {
+          return AlertDialog(
+            title: texteAvecStyle("Erreur"),
+            content: texteAvecStyle("Tous les champs ne sont pas remplis"),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(buildContext); // on sort du pop-up
+                  },
+                  child: texteAvecStyle("OK", color: Colors.red))
+            ],
+          );
+      }
+    );
+  }
+}
 ```
