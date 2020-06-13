@@ -52,6 +52,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WIDGETS DE BASE (1)](#widgets-de-base)
    * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
+   * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#calcul-calories)
@@ -1826,6 +1827,237 @@ dependencies:
   flutter_localizations: # ++
     sdk: flutter
 ```
+### WIDGETS SCROLLABLES
+
+#### SINGLECHILDSCROLLVIEW
+* Permet de rendre son contenu scrollable
+* Design trop grand pour l'écran, mais pas une liste
+* https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      // ↓ avant Center() mais message d'erreur si trop d'éléments
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(height: 100.0, color: Colors.red,),
+            Container(height: 100.0, color: Colors.blue,),
+            Container(height: 100.0, color: Colors.yellow,),
+            Container(height: 100.0, color: Colors.green,),
+            Container(height: 100.0, color: Colors.red,),
+            Container(height: 100.0, color: Colors.blue,),
+            Container(height: 100.0, color: Colors.yellow,),
+            Container(height: 100.0, color: Colors.green,),
+          ],
+        ),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+```
+#### LISTVIEW ET LISTTILE
+* Création d'une liste scrollable
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: ListView.builder(
+          itemCount: activites.length, // nombre d'éléments dans la liste
+          // ↓ créateur de la liste (boucle)
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(Icons.add, color: Colors.blue), // gauche de la liste
+              title: Text('Activité ${activites[index].nom}'), // centre de la liste
+              trailing: Icon(activites[index].icone), // droite de la liste
+            );
+          }
+        ),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class Activite {
+  String nom;
+  IconData icone;
+
+  Activite(this.nom, this.icone);
+}
+```
+#### DISMISSIBLE
+* Supprimer une tile en la coulissant (swipe)
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: ListView.builder(
+          itemCount: activites.length, // nombre d'éléments dans la liste
+          // ↓ créateur de la liste (boucle)
+          itemBuilder: (context, index) {
+            Activite activite = activites[index];
+            String key = activite.nom;
+            return Dismissible(
+              key: Key(key),
+              child: ListTile(
+                leading: Icon(Icons.add, color: Colors.blue), // gauche de la liste
+                title: Text('Activité ${activite.nom}'), // centre de la liste
+                trailing: Icon(activite.icone), // droite de la liste
+              ),
+              background: Container(
+                color: Colors.red, // couleur quand on fait coulisser l'élément
+                padding: EdgeInsets.only(right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text("Supprimer", style: TextStyle(color: Colors.white)),
+                    Icon(Icons.delete, color: Colors.white,)
+                  ],
+                ),
+              ),
+              // action à faire lors du swipe
+              onDismissed: (direction) {
+                setState(() {
+                  print(activite.nom);
+                  activites.removeAt(index); // suppression de la liste
+                });
+              },
+            );
+          }
+        ),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+```
+#### CUSTOMTILE
+* Créer une tile personnalisée
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: ListView.builder(
+          itemCount: activites.length, // nombre d'éléments dans la liste
+          // ↓ créateur de la liste (boucle)
+          itemBuilder: (context, index) {
+            Activite activite = activites[index];
+            String key = activite.nom;
+            return Dismissible(
+              key: Key(key),
+              // ↓ Custom Tile
+              child: Container(
+                padding: EdgeInsets.all(5.0),
+                height: 125.0,
+                child: Card(
+                  elevation: 7.5,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        // sur la gauche : grosse icone de l'activite
+                        Icon(activite.icone, color: Colors.blue, size: 75.0,),
+                        // sur la droite :
+                        // <h3>Activite<h3>
+                        // <h2>nom de l'activite<h2>
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Activité",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text(activite.nom,
+                            style : TextStyle(
+                              color: Colors.blue[800],
+                              fontSize: 30.0,
+                            )),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              background: Container(
+                color: Colors.red, // couleur quand on fait coulisser l'élément
+                padding: EdgeInsets.only(right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text("Supprimer", style: TextStyle(color: Colors.white)),
+                    Icon(Icons.delete, color: Colors.white,)
+                  ],
+                ),
+              ),
+              onDismissed: (direction) {
+                setState(() {
+                  print(activite.nom);
+                  activites.removeAt(index);
+                });
+              },
+            );
+          }
+        ),
+      ),
+    );
+  }
+}
+```
+
 
 ## PERSONNALISATION
 
