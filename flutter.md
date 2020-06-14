@@ -54,8 +54,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
-* [EX. D'APPLI (2) : JEU DE QUIZZ](#jeu-de-quizz)
-* [EX. D'APPLI (3) : CALCUL DE CALORIES](#calcul-calories)
+* [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
+* [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
+* [EX. D'APPLI (4) : FLUX RSS](#coda-news)
 
 
 ## FLUTTER
@@ -71,6 +72,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Créer une app avec Flutter = créer une construction avec des legos ; les widgets s'empilent les uns sous les autres
 * Comme tout est objet sur Dart, tout est objet sur Flutter
 * Les widgets = des constructeurs(param1, param2, ect.)
+* Un widget est par nature “immutable”, son contenu ne peut être modifié sans reconstruire ce dernier
+* Les propriétés d’un Widget qu’il soit avec ou sans état, doivent être immutables
 * Architecture :
 ```
 Scaffold (structure)
@@ -82,6 +85,7 @@ Scaffold (structure)
                 Icon
     Texte, Image, ect.
 ```
+* A chaque fois que setState() est appelé, la méthode build() du widget est appelée et entraîne la reconstruction du widget tout en gardant le « state »
 ### GLOSSAIRE
 * Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application => **statique**
 ```java
@@ -115,8 +119,10 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 }
 ```
 * Material Design = langage visuel développé par Google qui reprend les principes d'un design de qualité, responsive et multi-plateforme
+* MaterialApp : Widget englobant des fonctionnalités requises pour les applications implémentant le material design
 * Scaffold = template (équivalent du head + body en html)
 * context = localisation du widget dans l'architecture de l'application
+* slivers = parties d'une zone scrollable
 ### CONSEILS
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
 ```java
@@ -148,6 +154,42 @@ textScaleFactor: 2.0, // fontSize 2 * plus grande
 * Pas besoin d'importer async de Dart depuis sa version 2.1
 ```
 After 2.1 the Future class was exported by dart core so you don't need to import async anymore
+```
+* Pour donner une width précise à un widget qui ne peut en avoir (ex. Card), lui donner un Container() comme enfant
+```java
+Card(
+  elevation: 7.5,
+  child: Container( // pour que Card ait une width
+    width: MediaQuery.of(context).size.width / 2.5,
+    child: Image.network(item.enclosure.url, fit: BoxFit.fill,),
+  ),
+)
+
+// même solution pour un texte qui déborde
+Container(
+  width: MediaQuery.of(context).size.width / 2.5,
+  child: TexteCodabee(item.title),
+)
+```
+* Découper en fonctions les widgets qui se répètent
+```java
+child: Column(
+  children: <Widget>[
+    padding(),
+    Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        TexteCodabee(item.author),
+        TexteCodabee(new DateConvertisseur().convertirDate(item.pubDate), color: Colors.red,)
+      ],
+    ),
+    padding(),
+    // ....
+
+Padding padding() {
+  return Padding(padding: EdgeInsets.only(top: 10.0));
+}
 ```
 
 
@@ -196,11 +238,15 @@ flutter doctor
 * AVD Manager : lieu où l'on stocke tous nos appareils virtuels (différents téléphones)
 * Problème de Black Screen au démarrage du Nexus 6 > Wipe Data > Lancer Nexus 6
 * Enlever le bandeau Debug => Flutter Inspector => More action => Hide Debug Mode Banner
+* Problème de rotation => effectuer la rotation => appuyer sur le bouton rotation qui s'affiche quelques secondes sur le bas du téléphone OU activer la rotation sur le téléphone (comme un vrai téléphone)
 ### RACCOURCIS
 * Alt+Insérer (Code => Generate) in the editor => generate the getter and setter methods for any fields of your class
 * Clic-droit => Reformat
 * Rester sur le widget => cliquer sur l'ampoule => Wrap with...
 * Sélectionner les occurences => Edit => Find => Select All occurences (Ctrl+Maj+Alt+J)
+* CTRL + / ==> To comment/uncomment a line .
+* CTRL + Shift + / ==> To comment/uncomment block of code. */
+* CTRL + Y ==> To delete a line.
 
 
 ## MAIN DART
@@ -2057,6 +2103,307 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+#### INKWELL
+* Un container qui répond au toucher
+* https://api.flutter.dev/flutter/material/InkWell-class.html
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: ListView.builder(
+          itemCount: activites.length, // nombre d'éléments dans la liste
+          // ↓ créateur de la liste (boucle)
+          itemBuilder: (context, index) {
+            Activite activite = activites[index];
+            String key = activite.nom;
+            return Dismissible(
+              key: Key(key),
+              // ↓ Custom Tile
+              child: Container(
+                padding: EdgeInsets.all(5.0),
+                height: 125.0,
+                child: Card(
+                  elevation: 7.5,
+                  // ↓ le Card devient cliquable
+                  child: InkWell(
+                    onTap: () => print("${activite.nom} tapped"),
+                    onLongPress: () => print("${activite.nom} pressed"),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Icon(activite.icone, color: Colors.blue, size: 75.0,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Activité",
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Text(activite.nom,
+                                  style : TextStyle(
+                                    color: Colors.blue[800],
+                                    fontSize: 30.0,
+                                  )),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              background: Container(
+                color: Colors.red, // couleur quand on fait coulisser l'élément
+                padding: EdgeInsets.only(right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text("Supprimer", style: TextStyle(color: Colors.white)),
+                    Icon(Icons.delete, color: Colors.white,)
+                  ],
+                ),
+              ),
+              onDismissed: (direction) {
+                setState(() {
+                  print(activite.nom);
+                  activites.removeAt(index);
+                });
+              },
+            );
+          }
+        ),
+      ),
+    );
+  }
+}
+```
+#### VERIFIER ORIENTATION DEVICE
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    // ↓ orientation de l'appareil
+    Orientation orientation = MediaQuery.of(context).orientation;
+    print(orientation); // Orientation.portrait
+    // autre choix = Orientation.landscape
+```
+#### CHOISIR ORIENTATION DEVICE
+```java
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // ++
+
+void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // force le mode portrait
+    // DeviceOrientation.landscapeLeft,
+    // DeviceOrientation.landscapeRight,
+    // DeviceOrientation.portraitDown
+  ]);
+  runApp(MyApp());
+}
+```
+#### GRIDVIEW
+* Création d'une grille de contenu qui s'adapte à l'orientation de l'appareil
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // ↓ container de notre grille
+        // s'adapate à l'orientation de l'appareil
+        child: GridView.builder(
+          // autre possiblité : SliverGridDelegateWithMaxCrossAxisExtent
+          // 3 items par ligne
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          itemCount: activites.length,
+          // ↓ constructeur de notre grille
+          itemBuilder: (context, index) {
+            return Container(
+              margin: EdgeInsets.all(2.5),
+              child: Card(
+                elevation: 10.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text("Activité", style: TextStyle(color: Colors.teal, fontSize: 15.0),),
+                    Text(activites[index].nom, style: TextStyle(color: Colors.teal[600],
+                        fontSize: 20.0, fontWeight: FontWeight.bold), ),
+                    Icon(activites[index].icone, color: Colors.teal, size: 45.0,)
+                  ],
+                ),
+              ),
+            );
+          }
+        ),
+      ),
+    );
+  }
+```
+#### LISTE OU GRILLE SELON ORIENTATION
+```java
+class _MyHomePageState extends State<MyHomePage> {
+
+  List<Activite> activites = [
+    Activite("Vélo", Icons.directions_bike),
+    Activite("Peinture", Icons.palette),
+    Activite("Golf", Icons.golf_course),
+    Activite("Arcade", Icons.gamepad),
+    Activite("Bricolage", Icons.build),
+    // en ajouter pour pouvoir scroller
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    // ↓ orientation de l'appareil
+    Orientation orientation = MediaQuery.of(context).orientation;
+    print(orientation); // Orientation.portrait
+    // autre choix = Orientation.landscape
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // ↓ un ternaire selon l'orientation
+        child: (orientation == Orientation.portrait) ? liste() : grille(),
+      ),
+    );
+  }
+
+  Widget grille() {
+    return GridView.builder(
+      // autre possiblité : SliverGridDelegateWithMaxCrossAxisExtent
+      // 3 items par ligne
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+        itemCount: activites.length,
+        // ↓ constructeur de notre grille
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.all(2.5),
+            child: Card(
+              elevation: 10.0,
+              // ↓ ajout du InkWell
+              child: InkWell(
+                onTap: () => print("Grid tapped !"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text("Activité", style: TextStyle(color: Colors.teal, fontSize: 15.0),),
+                    Text(activites[index].nom, style: TextStyle(color: Colors.teal[600],
+                        fontSize: 20.0, fontWeight: FontWeight.bold), ),
+                    Icon(activites[index].icone, color: Colors.teal, size: 45.0,)
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+    );
+  }
+
+  Widget liste() {
+    return ListView.builder(
+        itemCount: activites.length, // nombre d'éléments dans la liste
+        // ↓ créateur de la liste (boucle)
+        itemBuilder: (context, index) {
+          Activite activite = activites[index];
+          String key = activite.nom;
+          return Dismissible(
+            key: Key(key),
+            // ↓ Custom Tile
+            child: Container(
+              padding: EdgeInsets.all(5.0),
+              height: 125.0,
+              child: Card(
+                elevation: 7.5,
+                child: InkWell(
+                  onTap: () => print("${activite.nom} tapped"),
+                  onLongPress: () => print("${activite.nom} pressed"),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Icon(activite.icone, color: Colors.blue, size: 75.0,),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text("Activité",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            Text(activite.nom,
+                                style : TextStyle(
+                                  color: Colors.blue[800],
+                                  fontSize: 30.0,
+                                )),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            background: Container(
+              color: Colors.red, // couleur quand on fait coulisser l'élément
+              padding: EdgeInsets.only(right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text("Supprimer", style: TextStyle(color: Colors.white)),
+                  Icon(Icons.delete, color: Colors.white,)
+                ],
+              ),
+            ),
+            onDismissed: (direction) {
+              setState(() {
+                print(activite.nom);
+                activites.removeAt(index);
+              });
+            },
+          );
+        }
+    );
+  }
+}
+```
 
 
 ## PERSONNALISATION
@@ -2064,6 +2411,7 @@ class _MyHomePageState extends State<MyHomePage> {
 ### ICONE DE L'APPLI
 * Aller sur appicon.co, sélectionner Iphone et Android
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14482060#bookmarks
+
 
 ## CODAMUSIC
 * Objectif = créer une application de musique qui affiche les chansons à l'écoute
@@ -2347,7 +2695,7 @@ class Musique {
 ```
 
 
-## JEU DE QUIZZ
+## CODA JEU DE QUIZZ
 * Création d'une application de Quizz
 * Structure :
 ```py
@@ -2643,7 +2991,7 @@ class Question {
 }
 ```
 
-## CALCUL CALORIES
+## CODA CALCUL CALORIES
 * Calcule le besoin en calories selon le sexe, âge, ect.
 * pubspec.yaml
 ```yaml
@@ -2953,5 +3301,489 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     );
   }
+}
+```
+
+## CODA NEWS
+
+* Application de Flux RSS
+* https://pub.dev/packages/webfeed
+* https://codabee.com/convertir-string-date-swift/
+* Structure :
+```py
+coda_news/
+  lib/
+    # ↓ nos objets
+    models/ # lib => package => models
+      date_convertisseur.dart
+      parser.dart
+    widgets/ # tous les Stateful Widgets
+      chargement.dart
+      grille.dart
+      home.dart
+      liste.dart
+      my_app.dart
+      page_detail.dart
+      texte_codabee.dart
+    main.dart
+pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: coda_news
+description: A new Flutter application.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webfeed: # dépendances sans contraintes de versions
+  html: # permet de parser un document du web
+  intl: # permet de formater une date
+  http:
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:coda_news/widgets/my_app.dart';
+
+void main() => runApp(MyApp());
+```
+* my_app.dart
+```java
+import 'package:flutter/material.dart';
+import 'home.dart';
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
+      home: Home(title: 'Coda News'),
+    );
+  }
+}
+```
+* home.dart
+```java
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:coda_news/models/parser.dart';
+import 'package:webfeed/webfeed.dart';
+import 'chargement.dart';
+import 'liste.dart';
+import 'grille.dart';
+
+class Home extends StatefulWidget {
+  Home({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  RssFeed feed;
+
+  @override
+  void initState() {
+    super.initState();
+    parse(); // appelle le flux RSS au démarrage de l'appli
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.title),
+        actions: <Widget>[
+          // ↓ bouton pour rafraîchir la page
+          IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  feed = null; // supprime les infos
+                  parse(); // récupère les nouvelles données
+                });
+              })
+        ],
+      ),
+      body: choixDuBody(),
+    );
+  }
+
+  Widget choixDuBody() {
+    if (feed == null) {
+      // ↓ renvoie un message de chargement
+      return Chargement();
+    } else {
+      Orientation orientation = MediaQuery.of(context).orientation;
+      if (orientation == Orientation.portrait) {
+        // affichage d'une Liste
+        return Liste(feed);
+      } else {
+        // afiichage d'une Grille
+        return Grille(feed);
+      }
+    }
+  }
+
+  Future<void> parse() async {
+    RssFeed recu = await Parser().chargerRSS();
+    if (recu != null) {
+      setState(() {
+        feed = recu; // notre feed devient le fil RSS chargé
+        print(feed.items.length);
+        feed.items.forEach((feedItem) {
+          RssItem item = feedItem;
+          print(item.title);
+          print(item.description);
+          print(item.pubDate);
+          print(item.enclosure.url);
+        });
+      });
+    }
+  }
+}
+```
+* chargement.dart
+```java
+import 'package:flutter/material.dart';
+import 'texte_codabee.dart';
+
+// Stateless car pas besoin de le rendre dynamique
+class Chargement extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TexteCodabee("Chargement en cours...",
+        fontStyle: FontStyle.italic,
+        fontSize: 30.0,
+      ),
+    );
+  }
+
+}
+```
+* texte_codabee.dart
+```java
+import 'package:flutter/material.dart';
+
+class TexteCodabee extends Text {
+
+  TexteCodabee(String data,
+      {textAlign: TextAlign.center,
+      color: Colors.indigo,
+      fontSize: 15.0,
+      fontStyle: FontStyle.normal})
+      : super(data ?? "",
+            // si data est vide, on le remplace par un string vide
+            // prévient des erreurs potentielles
+            textAlign: textAlign,
+            style: TextStyle(
+                color: color, fontSize: fontSize, fontStyle: fontStyle));
+}
+```
+* grille.dart
+```java
+import 'package:flutter/material.dart';
+import 'texte_codabee.dart';
+import 'package:coda_news/models/date_convertisseur.dart';
+import 'package:webfeed/webfeed.dart';
+import 'page_detail.dart';
+
+class Grille extends StatefulWidget {
+  RssFeed feed;
+
+  Grille(this.feed);
+
+  @override
+  _GrilleState createState() => _GrilleState();
+}
+
+class _GrilleState extends State<Grille> {
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+        itemCount: widget.feed.items.length,
+        // slivers = parties d'une zone scrollable
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (context, i) {
+          RssItem item = widget.feed.items[i];
+          return InkWell(
+              // navigation vers le détail de l'article
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                  return PageDetail(item);
+                }));
+              },
+              child: Card(
+                elevation: 10.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // ↓ How much space should be occupied in the main axis
+                      // After allocating space to children,
+                      // there might be some remaining free space
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        TexteCodabee(item.author),
+                        TexteCodabee(DateConvertisseur().convertirDate(item.pubDate), color: Colors.red,)
+                      ],
+                    ),
+                    TexteCodabee(item.title),
+                    Card(
+                      elevation: 7.5,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        child: Image.network(item.enclosure.url, fit:  BoxFit.fill,),
+                      ),
+                    )
+
+                  ],
+                ),
+              )
+          );
+
+        });
+  }
+}
+```
+* liste.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:webfeed/webfeed.dart';
+import 'texte_codabee.dart';
+import 'package:coda_news/models/date_convertisseur.dart';
+import 'page_detail.dart';
+
+class Liste extends StatefulWidget {
+  RssFeed feed;
+
+  Liste(this.feed);
+
+  @override
+  _ListeState createState() => _ListeState();
+}
+
+class _ListeState extends State<Liste> {
+
+  @override
+  Widget build(BuildContext context) {
+    final taille = MediaQuery.of(context).size.width / 2.5;
+    return ListView.builder(
+        // widget représente la classe Liste
+        itemCount: widget.feed.items.length,
+        itemBuilder: (context, i) {
+          RssItem item = widget.feed.items[i];
+          return Container(
+            child: Card(
+                elevation: 10.0,
+                child: InkWell(
+                  // navigation vers le détail de l'article
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                      return PageDetail(item);
+                    }));
+                  },
+                  child: Column(
+                    children: <Widget>[
+                      padding(),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          TexteCodabee(item.author),
+                          TexteCodabee(DateConvertisseur().convertirDate(item.pubDate), color: Colors.red,)
+                        ],
+                      ),
+                      padding(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Card(
+                            elevation: 7.5,
+                            child: Container( // pour que Card ait une width
+                              width: taille,
+                              child: Image.network(item.enclosure.url, fit: BoxFit.fill,),
+                            ),
+                          ),
+                          Container(
+                            width: taille,
+                            child: TexteCodabee(item.title),
+                          )
+                        ],
+
+                      ),
+                      padding(),
+                    ],
+                  ),
+                )
+
+
+            ),
+            padding: EdgeInsets.only(right: 7.5, left: 7.5),
+          );
+        });
+  }
+
+  Padding padding() {
+    return Padding(padding: EdgeInsets.only(top: 10.0));
+  }
+}
+```
+* page_detail.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:webfeed/webfeed.dart';
+import 'texte_codabee.dart';
+import 'package:coda_news/models/date_convertisseur.dart';
+
+// pas d'éléments cliquables => StatelessWidget
+// pas de classe State
+class PageDetail extends StatelessWidget {
+  RssItem item;
+
+  PageDetail(this.item);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Détail de l'article"),
+      ),
+      // ↓ avant : Center() | permet le scroll sur la page
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            padding(),
+            TexteCodabee(item.title, fontSize: 25.0, fontStyle: FontStyle.italic,),
+            padding(),
+            Card(
+              elevation: 7.5,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Image.network(item.enclosure.url, fit: BoxFit.fill,),
+              ),
+            ),
+            padding(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                TexteCodabee(item.author),
+                TexteCodabee(DateConvertisseur().convertirDate(item.pubDate), color: Colors.red,),
+              ],
+            ),
+            padding(),
+            TexteCodabee(item.description),
+            padding(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding padding() {
+    return Padding(padding: EdgeInsets.only(top: 20.0));
+  }
+
+}
+```
+* parser.dart
+```java
+import 'package:webfeed/webfeed.dart'; // package webfeed
+// librairie Dart qui parse des flux RSS
+import 'package:http/http.dart'; // http package ++
+import 'dart:async'; // plus obligatoire
+
+class Parser {
+
+  // url de notre feed RSS
+  final url = "http://www.france24.com/fr/actualites/rss";
+
+  Future chargerRSS() async {
+    // tente de charger l'url
+    final reponse = await get(url);
+    // si tout est OK
+    if (reponse.statusCode == 200) {
+      // parse le résultat
+      final feed = RssFeed.parse(reponse.body);
+      // renvoie le résultat parsé
+      return feed;
+    } else {
+      print("erreur: ${reponse.statusCode}");
+    }
+  }
+}
+```
+* date_convertisseur.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+class DateConvertisseur {
+
+  String convertirDate(String string) {
+    String il = "il y a";
+    String format = "EEE, dd MMM yyyy HH:mm:ss Z";
+    var formatter = DateFormat(format);
+    DateTime dateTime = formatter.parse(string);
+    if (dateTime == null) {
+      return "Date inconnue";
+    } else {
+      var difference = new DateTime.now().difference(dateTime);
+      var jours = difference.inDays;
+      var heures = difference.inHours;
+      var minutes = difference.inMinutes;
+
+      if (jours > 1) {
+        return "$il $jours jours";
+      } else if (jours == 1) {
+        return "$il 1 jour";
+      } else if (heures > 1) {
+        return "$il $heures heures";
+      } else if (heures == 1) {
+        return "$il 1 heure";
+      } else if (minutes > 1) {
+        return "$il $minutes minutes";
+      } else if (minutes == 1) {
+        return "$il 1 minute";
+      } else {
+        return "A l'instant";
+      }
+    }
+
+  }
+
 }
 ```

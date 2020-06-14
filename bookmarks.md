@@ -20,6 +20,7 @@
 * https://medium.muz.li/
 * https://www.rooki.design/
 * https://www.jesuisundev.com/
+* https://www.jesuisundev.com/recueil-de-blogs-de-developpeurseuses/
 * https://dev.to/
 
 
@@ -485,6 +486,7 @@
 * 25+ CSS Slider : https://csshint.com/css-slider
 * Flexbox Generator : https://loading.io/flexbox/
 * CSS :is() and :where() are coming to browsers : https://webplatform.news/issues/2020-06-04
+* 32+ CSS Animation Examples : https://csshint.com/css-animation
 
 
 ### BOOTSTRAP
@@ -593,6 +595,7 @@
 * https://www.cssdesignawards.com/
 * A frequently updated collection of Design System examples, articles, tools, and talks : https://designsystemsrepo.com/
 * 10 Newest and promising UI design trends : https://uxdesign.cc/10-newest-and-promising-ui-design-trends-929562b25ad6
+* The 20 Best B2B Landing Page Examples of 2020 : https://unbounce.com/landing-page-examples/best-b2b-landing-page-examples
 
 
 ### DESIGN
