@@ -129,8 +129,8 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 
 * :dark_sunglasses: **Dark patterns** : User interface elements that have been carefully crafted to trick users into doing things they might not otherwise do, often utilizing psychological manipulation
 
-* **URI** : Uniform Resource Identifier. URLs (uniform resource locators) are a common kind of URI.
-* **Loi Demeter** : « Ne parlez qu'à vos amis immédiats ». Un objet ne doit interagir qu'avec celui avec qui il a une relation
+* :house: **URI** : Uniform Resource Identifier. URLs (uniform resource locators) are a common kind of URI.
+* :people_holding_hands: **Loi Demeter** : « Ne parlez qu'à vos amis immédiats ». Un objet ne doit interagir qu'avec celui avec qui il a une relation
 ```
 - La classe A possède une relation avec la classe B
 - La classe B possède une relation avec la classe C
@@ -142,3 +142,5 @@ et B propagera la requête au composant ou sous-composant approprié
 * Rend le logiciel résultat plus maintenable, plus adaptable et minimise le risque d'erreurs
 https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
 ```
+* :robot: **Bytecode** : code intermédiaire entre le code source et les instructions machines, écrit en code binaire (011000111), qui ne peut être interprété que par une machine virtuelle
+* :key: **JSON** : format d'échanges de données, qui est une représentation en texte d'un objet JavaScript (ressemble à une Map, avec une association clé:valeur) et qui peut être interprété par tous les langages de programmation

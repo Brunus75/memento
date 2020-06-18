@@ -200,6 +200,18 @@ split() // Splits the string at matches of the specified delimiter and returns a
 substring() // Returns the substring of this string that extends from startIndex, inclusive, to endIndex, exclusive.
 toString() // Returns a string representation of this object.
 codeUnitAt() // Returns the 16-bit UTF-16 code unit at the given index.
+
+// contains method
+// Returns true if this string contains a match of other:
+var string = 'Dart strings';
+string.contains('D');                     // true
+string.contains(new RegExp(r'[A-Z]'));    // true
+
+// If startIndex is provided, this method matches only at or after that index:
+string.contains('X', 1);                  // false
+string.contains(new RegExp(r'[A-Z]'), 1); // false
+
+
 ```
 ### NUMBERS
 * https://dart.dev/guides/language/language-tour#numbers
@@ -1913,6 +1925,7 @@ Future greet() async {
 * Les librairies Dart asynchrones renvoient des objets **Future** ou **Stream**
 * Future = une Promesse
 * Stream = un flot de Promesses
+* await ne peut être utilisé que dans une async fonction
 
 ### FUTURES
 
@@ -1963,6 +1976,10 @@ String lookUpVersion() => '1.0.0';
 // because a future implementation will be time consuming—the returned value is a Future:
 Future<String> lookUpVersion() async => '1.0.0';
 // (!) If your function doesn’t return a useful value, make its return type Future<void>
+
+// An async function runs synchronously until the first await keyword. 
+// This means that within an async function body, 
+// all synchronous code before the first await keyword executes immediately
 ```
 ### STREAMS
 * When you need to get values from a Stream, you have two options:   

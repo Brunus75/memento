@@ -11,6 +11,7 @@
 * Awwwards - Publications : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * Web Dev / Design : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * https://www.reddit.com/
+* https://www.reddit.com/r/programming/
 * https://www.barbuduweb.com/
 * https://stephaniewalter.design/blog/
 * https://abduzeedo.com/
@@ -22,6 +23,7 @@
 * https://www.jesuisundev.com/
 * https://www.jesuisundev.com/recueil-de-blogs-de-developpeurseuses/
 * https://dev.to/
+* https://news.humancoders.com/
 
 
 ## :gun: WEB TOOLS
@@ -274,6 +276,7 @@
 * Mettre en ligne son site web statique et évaluer sa qualité : Partie 1 — Création d’un dépôt sur Github et activation de Github Pages : https://medium.com/@JeremyRaffin/site-web-statique-optimis%C3%A9-avec-github-pages-cr%C3%A9ation-du-d%C3%A9p%C3%B4t-et-activation-de-github-pages-1-4-2537061ef3dd
 * https://github.com/features/security
 * GitKraken Cheat Sheet : https://www.gitkraken.com/resources/gitkraken-cheat-sheet
+* GitKraken GitHub: White paper, video and training resources : https://www.gitkraken.com/resources/github
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -418,6 +421,7 @@
 * https://www.typewolf.com/top-10-serif-fonts
 * https://fr.tuto.com/blog/2020/06/31-fonts-gratuites-fraichement-creees-mai-2020.htm?mc_cid=ed65afff92&mc_eid=c8463de306
 * How to font pair effectively: tricks and tools : https://www.melted.design/tricks-tools-font-pair-effectively
+* Fluent Icons includes 965 icons in a Microsoft-esque style : https://icons8.com/l/fluent/
 
 
 ### HTML
@@ -596,6 +600,7 @@
 * A frequently updated collection of Design System examples, articles, tools, and talks : https://designsystemsrepo.com/
 * 10 Newest and promising UI design trends : https://uxdesign.cc/10-newest-and-promising-ui-design-trends-929562b25ad6
 * The 20 Best B2B Landing Page Examples of 2020 : https://unbounce.com/landing-page-examples/best-b2b-landing-page-examples
+* 203+ Web Design Resources You’d Actually Want to Use (& Bookmark) : https://the-webdesigner.co/web-design-development-resources
 
 
 ### DESIGN
@@ -636,7 +641,10 @@
 * 43 illustrations resources, which are accumulated from different websites : https://www.uistore.design/categories/illustrations/
 * 100+ vectorized scribbbles, which can be added to existing images and illustrations : https://www.scribbbles.design/
 * Blobmaker - Make organic SVG shapes for your next design : https://www.blobmaker.app/
+* Blob generator : https://blobs.app/
 * A generator for beautiful SVG shape dividers : https://www.shapedivider.app/
+* Sorted Colors groups named CSS colors in a way that shows related colors together : https://enes.in/sorted-colors/
+* A huge library of paintings, drawings, and illustrations with no license restrictions : https://artvee.com/
 
 ### UX/UI
 

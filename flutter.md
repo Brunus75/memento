@@ -10,6 +10,7 @@
 * Page YT Flutter :  https://www.youtube.com/channel/UCwXdFgeE9KYzlDdR7TG9cMw/videos
 * Palette des couleurs : https://api.flutter.dev/flutter/material/Colors-class.html
 * Liste des icônes : https://material.io/resources/icons/?style=baseline
+* Icônes : https://www.fluttericon.com/
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
 * Widget catalog : https://flutter.dev/docs/development/ui/widgets
 * Top Flutter packages : https://pub.dev/flutter/packages
@@ -35,6 +36,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * https://www.facebook.com/pg/CodaBeeOfficial/posts/?ref=page_internal
 * Codabee Flutter: le forum d'entraide : https://www.facebook.com/groups/225660591356238
 * Dart Async Library : https://api.flutter.dev/flutter/dart-async/dart-async-library.html
+* https://www.didierboelens.com/fr/
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -47,6 +49,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [INSTALLATION](#installation)
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
+* [PACKAGES](#packages)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
    * [WIDGETS DE BASE (1)](#widgets-de-base)
@@ -57,6 +60,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
 * [EX. D'APPLI (4) : FLUX RSS](#coda-news)
+* [EX D'APPLI (5) : Drawer, SharedPreferences, JSON et API](#coda-meteo)
 
 
 ## FLUTTER
@@ -247,6 +251,17 @@ flutter doctor
 * CTRL + / ==> To comment/uncomment a line .
 * CTRL + Shift + / ==> To comment/uncomment block of code. */
 * CTRL + Y ==> To delete a line.
+
+## PACKAGES
+* https://flutter.dev/docs/development/packages-and-plugins/using-packages
+* Cheatsheet :
+```yaml
+dependencies:
+  url_launcher: ^5.4.0    # Good, any 5.4.x version where x >= 0 works.
+  image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
+  url_launcher: '>=5.4.0 <6.0.0' # range versions
+  plugin: # dernière version
+```
 
 
 ## MAIN DART
@@ -3306,7 +3321,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 ## CODA NEWS
 
-* Application de Flux RSS
+* Application de Flux RSS, malléable selon l'orientation de l'appareil et qui donne accès à une page détaillée de l'information cliquée
 * https://pub.dev/packages/webfeed
 * https://codabee.com/convertir-string-date-swift/
 * Structure :
@@ -3785,5 +3800,538 @@ class DateConvertisseur {
 
   }
 
+}
+```
+
+## CODA METEO
+* Application qui donne les paramètres métérologiques d'une ville donnée
+* https://pub.dev/packages/shared_preferences
+* https://medium.com/flutterdevs/using-sharedpreferences-in-flutter-251755f07127
+* https://medium.com/flutter-community/shared-preferences-how-to-save-flutter-application-settings-and-user-preferences-for-later-554d08671ae9
+* https://codesource.io/getting-started-with-shared-preferences-in-flutter/
+* Shared preferences :
+```js
+var preferences = await SharedPreferences.getInstance(); // Save a value
+preferences.setString('value_key', 'hello preferences'); // Retrieve value later
+var savedValue = preferences.getString('value_key');
+```
+* https://pub.dev/packages/location
+* https://pub.dev/packages/geocoder
+* https://openweathermap.org/
+* https://pub.dev/packages/http
+* Structure :
+```py
+weather_2020/
+  assets/
+    01.png
+    02.png
+    # ect.
+  flutter-icons/
+    fonts/
+      MyFlutterApp.ttf # font des icones téléchargées
+    config.json # liste des icones téléchargées
+    # my_flutter_app_icons.dart a été déplacé dans le lib/
+  lib/
+    main.dart
+    my_flutter_app_icons.dart # classe qui permet d'importer les images
+    temps.dart
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: weather2020
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: # permet d'enregister en XML des données simples (int, string, ect.)
+  location:
+  geocoder: # transforme noms de ville en position(lat, long)
+  http: # pour les requêtes HTTP (API)
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # ajout des icônes fonts :
+  fonts:
+    - family: MyFlutterApp # retrouvable dans la classe my_flutter_app_icons
+      fonts:
+        - asset: flutter-icons/fonts/MyFlutterApp.ttf
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'dart:async'; // plus obligatoire
+import 'package:shared_preferences/shared_preferences.dart';
+// ↑ import des shared preferences pour stocker des données simples
+import 'package:flutter/services.dart';
+import 'package:location/location.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:http/http.dart' as http;
+// ↑ alias, permet d'être utilisé directement dans le code
+import 'temps.dart';
+import 'dart:convert'; // convertit le JSON
+import 'my_flutter_app_icons.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // package Location ↑ s'assurer que tout est initialisé
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // ↓ initialisation du package Location suite :
+  Location location = Location();
+  LocationData position; // objet reçu vis-à-vis de notre localisation
+  try {
+    position = (await location.getLocation());
+    print(position);
+  } on PlatformException catch (e) {
+    print("Erreur: $e");
+  }
+  if (position != null) {
+    final latitude = position.latitude;
+    final longitude = position.longitude;
+    final Coordinates coordinates = Coordinates(latitude, longitude);
+    final ville = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    if (ville != null) {
+      print(ville.first.locality);
+      runApp(new MyApp(ville.first.locality));
+    }
+
+  }
+}
+
+class MyApp extends StatelessWidget {
+  MyApp(String ville) {
+    this.ville = ville;
+  }
+
+  String ville;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(ville, title: 'Coda Météo'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage(String ville, {Key key, this.title}) : super(key: key) {
+    this.villeDeLutilisateur = ville;
+  }
+
+  String villeDeLutilisateur;
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String key = "villes";
+  List<String> villes = [];
+  String villeChoisie;
+  Temps tempsActuel;
+
+  @override
+  void initState() {
+    super.initState();
+    obtenir(); // obtenir shared preferences
+    appelApi();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.title),
+      ),
+      // ↓ notre drawer, menu coulissant
+      drawer: Drawer(
+        child: Container(
+          child: ListView.builder(
+              itemCount: villes.length + 2, // car ajout d'un header + ville actuelle
+              // qui seront compris dans la liste
+              itemBuilder: (context, i) {
+                if (i == 0) { // 1er élément de la liste => header du Drawer
+                  return DrawerHeader(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        texteAvecStyle("Mes Villes", fontSize: 22.0),
+                        RaisedButton(
+                            color: Colors.white,
+                            elevation: 8.0,
+                            child: texteAvecStyle("Ajouter une ville", color: Colors.blue),
+                            onPressed: ajoutVille
+                        )
+                      ],
+                    ),
+                  );
+                } else if (i == 1) { // => 2ème élèment de la liste => ville actuelle
+                  return ListTile(
+                    title: texteAvecStyle(widget.villeDeLutilisateur),
+                    onTap: () {
+                      setState(() {
+                        villeChoisie = null;
+                        appelApi();
+                        Navigator.pop(context);
+                      });
+                    },
+                  );
+                } else { // autres éléments de la liste = les villes repertoriées
+                  String ville = villes[i - 2];
+                  return ListTile(
+                    title: texteAvecStyle(ville),
+                    trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.white,),
+                        onPressed: (() => supprimer(ville))),
+                    onTap: () {
+                      setState(() {
+                        villeChoisie = ville;
+                        appelApi();
+                        Navigator.pop(context);
+                      });
+                    },
+                  );
+                }
+              }),
+          color: Colors.blue,
+        ),
+      ),
+      body: (tempsActuel == null)
+          ? Center(
+        child: Text((villeChoisie == null)? widget.villeDeLutilisateur: villeChoisie),
+      )
+          : Container(
+        width: MediaQuery.of(context).size.width, // width auto
+        height: MediaQuery.of(context).size.height, // height auto
+        // ↓ permet l'image de fond
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(getBackground()),
+              fit: BoxFit.cover
+          ),
+        ),
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            texteAvecStyle(tempsActuel.name, fontSize: 30.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                texteAvecStyle("${tempsActuel.temp.toInt()}°C", fontSize: 60.0),
+                // pour récupérer sur le web (et non en local) :
+                // Image.network(http://openweathermap.org/img/wn/${tempsActuel.icon}.png)
+                Image.asset(getIconImage())
+              ],
+            ),
+            texteAvecStyle(tempsActuel.main, fontSize: 30.0),
+            texteAvecStyle(tempsActuel.description, fontSize: 25.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    // appel de la classe MyFlutterApp
+                    // et de ses constantes qui représentent des icônes
+                    Icon(MyFlutterApp.temperature, color: Colors.white, size: 30.0,),
+                    texteAvecStyle("${tempsActuel.pressure}", fontSize: 20.0)
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Icon(MyFlutterApp.droplet, color: Colors.white, size: 30.0,),
+                    texteAvecStyle("${tempsActuel.humidity}", fontSize: 20.0)
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Icon(MyFlutterApp.arrow_upward, color: Colors.white, size: 30.0,),
+                    texteAvecStyle("${tempsActuel.temp_max}", fontSize: 20.0)
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Icon(MyFlutterApp.arrow_downward, color: Colors.white, size: 30.0,),
+                    texteAvecStyle("${tempsActuel.temp_min}", fontSize: 20.0)
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  // ↓ choix des images de fond selon les icônes récupérées de l'API
+  String getBackground() {
+    print(tempsActuel.icon);
+    // ↓ si c'est un night icon (ex. 01n.png)
+    if (tempsActuel.icon.contains("n")) {
+      return "assets/n.jpg"; // image de nuit stockée en local
+    } else if (tempsActuel.icon.contains("01") || tempsActuel.icon.contains("02") || tempsActuel.icon.contains("03")) {
+      return "assets/d1.jpg"; // image beau temps
+    } else {
+      return "assets/d2.jpg"; // image pluie
+    }
+  }
+
+  // remplace le string de l'icone API (01d.png, 01n.png, ect.)
+  // par une image correspondante stockée en local (01.png)
+  String getIconImage() {
+    return "assets/${tempsActuel.icon.replaceAll("d", "").replaceAll("n", "")}.png";
+  }
+
+  String monAssetName() { // ma proposition (remplacée plus haut)
+    // je le laisse pour l'exemple de contains + regex
+    // les images 01.png, 02.png et 03.png représentent le beau temps
+    if (tempsActuel.icon.contains("01") || tempsActuel.icon.contains("02") || tempsActuel.icon.contains("03")) {
+      return "assets/d1.jpg";
+    // regex avec contains
+    // on va chercher les fichiers 04.png, 09.png, 10.png, 13.png, 50.png, ect.
+    // qui représentent la pluie
+    } else if (tempsActuel.icon.contains(new RegExp(r'\b(0[5-9]|[12][0-9]|50)\b'))) {
+      return "assets/d2.jpg";
+    // si aucun icônes, alors il fait nuit
+    } else {
+      return "assets/n.jpg";
+    }
+  }
+
+  Text texteAvecStyle(String data, {color: Colors.white, fontSize: 18.0, fontStyle: FontStyle.italic, textAlign: TextAlign.center}) {
+    return Text(
+      data,
+      textAlign: textAlign,
+      style: TextStyle(
+          color: color,
+          fontStyle: fontStyle,
+          fontSize: fontSize
+      ),
+    );
+  }
+
+  // simple dialog d'ajout d'une ville
+  Future<void> ajoutVille() async {
+    return showDialog(
+        barrierDismissible: true,
+        builder: (BuildContext buildcontext) {
+          return SimpleDialog(
+            contentPadding: EdgeInsets.all(20.0),
+            title: texteAvecStyle("Ajoutez une ville", fontSize: 22.0, color: Colors.blue),
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: "ville: "),
+                onSubmitted: (String str) {
+                  ajouter(str); // ajout ville au shared preferences
+                  Navigator.pop(buildcontext);
+                },
+              )
+            ],
+
+          );
+        },
+        context: context);
+  }
+
+  // obtenir mes shared preferences
+  // la sauvegarde s'effectue par le couplage clé-valeur
+  // en asynchrone car pas obtenu automatiquement
+  void obtenir() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // ↑ sauvegarde une valeur
+    List<String> liste = await sharedPreferences.getStringList(key);
+    // ↑ key = key de la valeur sauvegardé
+    // la key de la List<String> sauvegardée est la variable key (= "villes")
+    if (liste != null) {
+      setState(() {
+        villes = liste;
+      });
+    }
+  }
+
+  // ajout d'une ville à notre shared preferences
+  void ajouter(String str) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    villes.add(str); // augmente notre liste
+    // ↓ remplace la liste sauvegardée par la liste augmentée
+    await sharedPreferences.setStringList(key, villes);
+    obtenir(); // rappelle la liste sauvegardée
+  }
+
+  // supprimer une ville du shared preferences
+  void supprimer(String str) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    villes.remove(str); // réduit notre liste
+    // ↓ remplace la liste sauvegardée par notre liste réduite
+    await sharedPreferences.setStringList(key, villes);
+    obtenir(); // rappelle la liste sauvegardée
+  }
+
+  void appelApi() async {
+    String str;
+    if (villeChoisie == null) {
+      str = widget.villeDeLutilisateur;
+    } else {
+      str = villeChoisie;
+    }
+    List<Address> coord = await Geocoder.local.findAddressesFromQuery(str);
+    if (coord != null) {
+      final lat = coord.first.coordinates.latitude;
+      final lon = coord.first.coordinates.longitude;
+      // ↓ code langue de l'application
+      String lang = Localizations.localeOf(context).languageCode;
+      print("La langue utilisée est $lang");
+      // ↑ La langue utilisée est en
+      // ↓ clé de l'API
+      final key = "636bf265ae916d48a0c7e6d872fa1fd6";
+      // ↓ url personnalisée de l'API
+      String urlApi = "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=metric&lang=$lang&APPID=$key";
+      // ↓ réponse de l'API, avec l'alias http (objet Http)
+      final reponse = await http.get(urlApi);
+      if (reponse.statusCode == 200) {
+        Temps temps = Temps();
+        // ↓ on convertit le JSON avec convert
+        Map map = json.decode(reponse.body);
+        temps.fromJSON(map);
+        // ↑ on stocke les données de la réponse convertie
+        // dans un objet Temps
+        setState(() {
+          tempsActuel = temps;
+        });
+      }
+    }
+  }
+}
+```
+* temps.dart
+```java
+class Temps {
+
+  String name;
+  String main;
+  String description;
+  String icon;
+  var temp;
+  var pressure;
+  var humidity;
+  var temp_min;
+  var temp_max;
+
+  Temps();
+
+  // ↓ la réponse API est une Map, que l'on nomme map
+  void fromJSON(Map map) {
+    this.name = map["name"];
+
+    List weather = map["weather"];
+    Map mapWeather = weather[0];
+    this.main = mapWeather["main"];
+    this.description = mapWeather["description"];
+    // ↓ représentation string de l'icône dans la réponse JSON
+    // https://openweathermap.org/weather-conditions
+    String monIcone = mapWeather["icon"];
+    this.icon = monIcone;
+
+    Map main = map["main"];
+    this.temp = main["temp"];
+    this.pressure = main["pressure"];
+    this.humidity = main["humidity"];
+    this.temp_min = main["temp_min"];
+    this.temp_max = main["temp_max"];
+  }
+}
+```
+* my_flutter_app_icons.dart
+```java
+/// Flutter icons MyFlutterApp
+/// Copyright (C) 2018 by original authors @ fluttericon.com, fontello.com
+/// This font was generated by FlutterIcon.com, which is derived from Fontello.
+///
+/// To use this font, place it in your fonts/ directory and include the
+/// following in your pubspec.yaml
+///
+/// flutter:
+///   fonts:
+///    - family:  MyFlutterApp
+///      fonts:
+///       - asset: fonts/MyFlutterApp.ttf
+///
+///
+/// * Typicons, (c) Stephen Hutchings 2012
+///         Author:    Stephen Hutchings
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://typicons.com/
+/// * Entypo, Copyright (C) 2012 by Daniel Bruce
+///         Author:    Daniel Bruce
+///         License:   SIL (http://scripts.sil.org/OFL)
+///         Homepage:  http://www.entypo.com
+/// * Material Design Icons, Copyright (C) Google, Inc
+///         Author:    Google
+///         License:   Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+///         Homepage:  https://design.google.com/icons/
+///
+import 'package:flutter/widgets.dart';
+
+class MyFlutterApp {
+  MyFlutterApp._();
+
+  static const _kFontFam = 'MyFlutterApp';
+  // family: 'MyFlutterApp' dans yaml
+
+  static const IconData temperature = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData droplet = const IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData arrow_upward = const IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData arrow_downward = const IconData(0xe803, fontFamily: _kFontFam);
 }
 ```
