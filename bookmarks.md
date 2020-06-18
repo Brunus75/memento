@@ -399,6 +399,7 @@
 * https://wweb.dev/weekly/library
 * 30 Life-saving Tools for Front-end Developers : https://www.sitepoint.com/life-saving-tools-for-front-end-developers/
 * A collection of tools for developers who have little to no artistic talent : https://nodesign.dev
+* MDN Web Docs Front-end developer learning pathway : https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer
 
 
 ### SANDBOX

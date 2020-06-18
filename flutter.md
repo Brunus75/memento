@@ -11,6 +11,7 @@
 * Palette des couleurs : https://api.flutter.dev/flutter/material/Colors-class.html
 * Liste des icônes : https://material.io/resources/icons/?style=baseline
 * Icônes : https://www.fluttericon.com/
+* Material Palette (créer une palette, voir les nuances des couleurs et chercher une icone) : https://www.materialpalette.com/
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
 * Widget catalog : https://flutter.dev/docs/development/ui/widgets
 * Top Flutter packages : https://pub.dev/flutter/packages
@@ -28,6 +29,7 @@
 * #1 Fluter: Télécharger, Installer et Configurer Flutter SDK sur Windows : https://www.youtube.com/watch?v=P4Ua8cK_TeA&
 
 **DOCS**
+* Tomek's Flutter Layout Cheat Sheet : https://medium.com/flutter-community/flutter-layout-cheat-sheet-5363348d037e
 * Flutter-Course-Resources : https://github.com/londonappbrewery/Flutter-Course-Resources
 * Comment J’apprends Flutter ? : https://medium.com/@q.cornu/comment-japprends-flutter-412add79848c
 list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo  
@@ -41,11 +43,24 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
 
+**ASSETS**
+* https://www.canva.com/fr_fr/
+* https://icons8.com/
+* https://fr.vecteezy.com/
+
+**AWESOME PROJECTS**
+* https://github.com/2d-inc/HistoryOfEverything
+
+
+
 ## SOMMAIRE
 
+* [RESSOURCES](#ressources)
 * [FLUTTER](#flutter)   
    * [GLOSSAIRE](#glossaire)
    * [CONSEILS](#conseils)
+   * [ASTUCES](#astuces)
+   * [STRUCTURE](#structure)
 * [INSTALLATION](#installation)
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
@@ -90,7 +105,19 @@ Scaffold (structure)
     Texte, Image, ect.
 ```
 * A chaque fois que setState() est appelé, la méthode build() du widget est appelée et entraîne la reconstruction du widget tout en gardant le « state »
+* The majority of widgets in Flutter are simply combinations of other simpler widgets. For example, the Container.padding property causes the container to build a Padding widget and the Container.decoration property causes the container to build a DecoratedBox widget.
+
 ### GLOSSAIRE
+* Container = grosso modo une ```<div></div>```
+* SizedBox = container qui ne changera pas de taille, quelle que soit la taille de son enfant (équivaut à box-sizing : border-box)
+```java
+SizedBox(
+  width: 200.0,
+  height: 300.0,
+  // la Card fera 200 x 300, dû aux contraintes imposées par la sized box
+  child: const Card(child: Text('Hello World!')),
+)
+```
 * Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application => **statique**
 ```java
 class MyApp extends StatelessWidget {
@@ -195,6 +222,89 @@ Padding padding() {
   return Padding(padding: EdgeInsets.only(top: 10.0));
 }
 ```
+### ASTUCES
+* infinity (100%)
+```java
+Container(
+  width: double.infinity,
+)
+```
+* Ajout de padding, margin, autrement que via les propriétés
+* https://api.flutter.dev/flutter/widgets/Padding-class.html
+* https://api.flutter.dev/flutter/widgets/SizedBox-class.html
+```java
+// Column ou Container = sizedBox
+Column(
+  children: <Widget>[
+    Text(),
+    // ↓ sorte de margin
+    SizedBox(
+      height: 20.0,
+    )
+    Card(),
+    Container()
+  ]
+)
+
+// Card n'a pas de propriété padding
+// on utilise le widget padding comme child
+// qui entoure le child de la Card
+Card(
+  child: Padding(
+    padding: EdgeInsets.all(16.0),
+    child: Text('Hello World!'),
+  ),
+)
+
+// de même si seulement le texte a besoin de padding :
+Padding(
+  padding: EdgeInsets.all(16.0),
+  child: Text('Hello World!'),
+)
+```
+* Ajouter une ligne
+```java
+SizedBox( // pour un padding
+  height: 20.0,
+  width: 150.0, // la ligne prendra cette longueur
+  child: Divider( // ligne
+    color: Colors.red,
+  ),
+)
+```
+* Ajouter un widget qui remplit l'espace disponible de la largeur de son parent
+* https://api.flutter.dev/flutter/widgets/Expanded-class.html
+```java
+Container(
+  Expanded(
+    child: Image() // l'image prendra toute la largeur du Container
+  )
+)
+
+Container(
+  Expanded(
+    flex: 2,
+    child: Image() // l'image prendra 66% de la largeur du Container
+  ),
+    Expanded(
+    flex: 1,
+    child: Image() // l'image prendra 33% de la largeur du Container
+  )
+)
+```
+
+### STRUCTURE
+* Structure :
+```py
+project_name/
+  images/
+  fonts/
+  models/
+  lib/
+    main.dart
+  widgets/
+pubspec.yaml
+```
 
 
 ## INSTALLATION
@@ -229,6 +339,7 @@ flutter doctor
 ### PREFERENCES
 * Appearances => change background
 * Editor => change Font size
+* Editor => Code completion => Show the documentation popup
 * Preferences/Settings => Languages & Frameworks => cocher "Perform Hot reload on save" + "Format code on save"
 * Keymap pour changer les raccourcis clavier
 ### TROUBLESHOOTING
@@ -236,6 +347,11 @@ flutter doctor
 ### NOUVEAU PROJET FLUTTER
 * package name = pour se différencier sur Play Store / Apple Store
 * Décocher Include Kotlin + Include Swift
+### RECUPERER UN PROJET FLUTTER
+* New > Project from Version Control (lien GitHub) 
+* Clone in your directory
+* Checkout > No
+* Ouvrir un projet > ouvrir le projet cloné
 
 ## ANDROID STUDIO
 * Fonctionnalités : https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14481906#questions
@@ -250,7 +366,10 @@ flutter doctor
 * Sélectionner les occurences => Edit => Find => Select All occurences (Ctrl+Maj+Alt+J)
 * CTRL + / ==> To comment/uncomment a line .
 * CTRL + Shift + / ==> To comment/uncomment block of code. */
-* CTRL + Y ==> To delete a line.
+* CTRL + Y ==> To delete a line
+* stless => Stateless Widget
+* cliquer sur l'élément + Ctrl + Q = quick documentation
+* Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -275,8 +394,10 @@ void main() { // fonction principale
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override // on ré-écrit la méthode de la classe mère
-  Widget build(BuildContext context) { // méthode qui sera appelée à chaque chargement de l'appli
-  // à chaque fois que setState() sera appelée
+  Widget build(BuildContext context) { 
+  // ↑ méthode qui sera appelée à chaque chargement de l'appli
+  // + à chaque nouvelle version des widgets compris dans le widget
+  // + à chaque fois que setState() sera appelée
     return MaterialApp( // widget de base = squelette de l'application
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -728,6 +849,7 @@ class _Home extends State<Home> {
     return Scaffold(
         body: Center(
           child: Column(
+            crossAxisAlignment: // flexbox vertical
             mainAxisAlignment: MainAxisAlignment.center, // principe du flexbox
             // .end = tout à la fin, .start = tout au début
             // .spaceEvenly = éléments espacés harmonieusement
@@ -743,6 +865,10 @@ class _Home extends State<Home> {
                   fontStyle: FontStyle.italic,
                 ),
               ),
+              // ↓ sorte de margin
+              SizedBox(
+                height: 20.0,
+              )
               Card(
                 elevation: 10.0,
                 child: Container(
