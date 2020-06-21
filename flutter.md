@@ -222,6 +222,7 @@ Padding padding() {
   return Padding(padding: EdgeInsets.only(top: 10.0));
 }
 ```
+* Toujours spécifier la ```^version``` de ses dépendances (ne pas les laisser vides)
 ### ASTUCES
 * infinity (100%)
 ```java
@@ -292,7 +293,13 @@ Container(
   )
 )
 ```
-
+* Trouver les propriétés d'un widget => panneau Flutter Inspector
+* Ajouter des commentaires TO DO et les retrouver
+```java
+//TO DO: commentaire
+// le TO DO est retrouvable dans l'onglet TODO (bas gauche d'AS)
+```
+* Voir et sélectionner les modifications de notre code (historique) > Onglet VCS (Version Control) > Local History > Show History > Revert
 ### STRUCTURE
 * Structure :
 ```py
@@ -362,12 +369,14 @@ flutter doctor
 ### RACCOURCIS
 * Alt+Insérer (Code => Generate) in the editor => generate the getter and setter methods for any fields of your class
 * Clic-droit => Reformat
-* Rester sur le widget => cliquer sur l'ampoule => Wrap with...
+* Rester sur le widget => cliquer sur l'ampoule => Wrap with..., delete, ect. (intention actions)
+* Alt + Enter pour faire aussi apparaître les intention actions
 * Sélectionner les occurences => Edit => Find => Select All occurences (Ctrl+Maj+Alt+J)
 * CTRL + / ==> To comment/uncomment a line .
 * CTRL + Shift + / ==> To comment/uncomment block of code. */
 * CTRL + Y ==> To delete a line
 * stless => Stateless Widget
+* stful => Stateful Widget
 * cliquer sur l'élément + Ctrl + Q = quick documentation
 * Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper
 
@@ -379,7 +388,7 @@ dependencies:
   url_launcher: ^5.4.0    # Good, any 5.4.x version where x >= 0 works.
   image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
   url_launcher: '>=5.4.0 <6.0.0' # range versions
-  plugin: # dernière version
+  plugin: # dernière version stable
 ```
 
 

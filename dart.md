@@ -20,6 +20,7 @@
 ## SOMMAIRE
 
 * [DART](#dart)
+* [BONNES PRATIQUES](#bonnes-pratiques)
 * [VARIABLES ET TYPES](#variables-et-types)   
    * [VARIABLES](#variables)
    * [STRING](#string)
@@ -85,6 +86,8 @@
    * [PRIVACY](#privacy)
    * [LAZY LOADING](#lazy-loading)
    * [CREATE LIBRARY](#create-library)
+   * [SOME LIBRAIRIES](#some-library)   
+      * [MATH LIBRARY](#math-library)
 * [GENERATORS](#generators)
 * [CALLABLE CLASS](#callable-class)
 * [TYPEDEFS](#typedefs)
@@ -99,6 +102,7 @@
 * Taillé pour la performance et les gros projets
 * Mélange JAVA (orienté objet, typage), JavaScript (variables dynamiques, const, var, commentaires, String interpolation) et Python (print(), _fonction_privee)
 * Typage optionnel (langage dynamique), mais peut imposer un typage fort (avec les generics)
+* Dart est par défaut typé de façon statique (le contenu de la variable définira son type immuable) mais peut aussi, à l'instar de JavaScript être typé de façon dynamique (avec le mot clé ```dynamic```)
 * Tout est objet sur Dart !
 * Adresse en mémoire ? Pointeurs ?
 ```
@@ -112,6 +116,9 @@ handles and not raw pointers for this very reason.
 * Instance variables are sometimes known as fields or properties.
 * Dart supports generic types, like List```<int>``` (a list of integers) or List```<dynamic>``` (a list of objects of any type)
 * Unlike Java, Dart doesn’t have the keywords public, protected, and private. If an identifier starts with an underscore (_), it’s private to its library.
+
+## BONNES PRATIQUES
+* Préférer un typage défini (```String, int, bool, ect```) à ```var``` ou ```dynamic```, sauf pour une utilisation spécifique (pour des raisons de sécurité et d'erreurs)
 
 ## VARIABLES ET TYPES
 
@@ -211,7 +218,8 @@ string.contains(new RegExp(r'[A-Z]'));    // true
 string.contains('X', 1);                  // false
 string.contains(new RegExp(r'[A-Z]'), 1); // false
 
-
+// single quotes or double quotes ?
+'single quotes' // selon Angela Yu (convention)
 ```
 ### NUMBERS
 * https://dart.dev/guides/language/language-tour#numbers
@@ -310,13 +318,21 @@ var maListe = ["Pierre", "Paul", "Jacques"];
 // version explicite :
 List<String> maListe2 = ["Pierre", "Paul", "Jacques"];
 
+// propriétés d'une liste
 print(maListe.length); // 3
 print(maListe[0]); // Pierre
+// first et last :
+print(maListe.first); // Pierre
+print(maListe.last); // Jacques
+// indexOf
+print(maListe.indexOf('Pierre')); // 0
 
 // ajouter un élément
 maListe.add("Georges"); // c'est un String, c'est OK
 print(maListe); // [Pierre, Paul, Jacques, Georges]
 maListe.add(1); // Error: The argument type 'int' can't be assigned to the parameter type 'String'
+// préciser l'index d'insertion
+maListe.insert(2, 'Jean') // [Pierre, Paul, Jean, Jacques]
 
 // supprimer un élément
 maListe.add("Pierre"); // [Pierre, Paul, Jacques, Georges, Pierre]
@@ -1916,6 +1932,16 @@ Future greet() async {
 ```
 ### CREATE LIBRARY
 * Create Library Packages : https://dart.dev/guides/libraries/create-library-packages
+### SOME LIBRAIRIES
+#### MATH LIBRARY
+* https://api.dart.dev/stable/2.8.4/dart-math/dart-math-library.html
+```java
+import 'dart:math';
+// utilisation de la classe Random
+// https://api.dartlang.org/stable/2.2.0/dart-math/Random-class.html
+numberBetweenZeroAndFive = Random().nextInt(6);
+numberBetweenOneAndSix = Random().nextInt(6) + 1;
+```
 
 
 ## ASYNCHRONE

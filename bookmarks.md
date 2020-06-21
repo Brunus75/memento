@@ -237,6 +237,7 @@
 * Le meilleur SEO de France : https://www.journaldunet.com/solutions/seo-referencement/1108423-le-meilleur-seo-de-france/
 * Lazy-loading natif : Chrome et Firefox vont faciliter l'optimisation du chargement des images - BDM : https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif
 * Infographie : 8 conseils pour un article parfait en SEO : https://www.abondance.com/20200605-42941-infographie-8-conseils-pour-un-article-parfait-en-seo.html
+* Comment choisir les mots clés pour son référencement naturel ? : https://www.ideveloppement.fr/expertises/agence-seo-bordeaux/choisir-les-mots-cles-pour-son-referencement.html
 
 
 ## :bulb: ORGANISATION
@@ -492,7 +493,7 @@
 * Flexbox Generator : https://loading.io/flexbox/
 * CSS :is() and :where() are coming to browsers : https://webplatform.news/issues/2020-06-04
 * 32+ CSS Animation Examples : https://csshint.com/css-animation
-
+* 28+ CSS Image Effects : https://csshint.com/css-image-effects
 
 ### BOOTSTRAP
 
@@ -602,6 +603,7 @@
 * 10 Newest and promising UI design trends : https://uxdesign.cc/10-newest-and-promising-ui-design-trends-929562b25ad6
 * The 20 Best B2B Landing Page Examples of 2020 : https://unbounce.com/landing-page-examples/best-b2b-landing-page-examples
 * 203+ Web Design Resources You’d Actually Want to Use (& Bookmark) : https://the-webdesigner.co/web-design-development-resources
+* UI Inspiration: 22 Mobile Design Concepts with Interface Illustrations : https://icons8.com/articles/mobile-design-with-interface-illustrations
 
 
 ### DESIGN
@@ -798,3 +800,10 @@ des systèmes d’entrée/sortie de base (BIOS), des chargeurs d’amorce, des s
 portent un intérêt. 
 D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
 ```
+
+## :bookmark: TO READ
+* Grid for layout, Flexbox for components : https://ishadeed.com/article/grid-layout-flexbox-components/
+* A First Look at `aspect-ratio` : https://css-tricks.com/a-first-look-at-aspect-ratio
+* Spacing in CSS : https://ishadeed.com/article/spacing-in-css/
+* Structure HTML et rendu CSS des balises : bloc et en-ligne : https://www.alsacreations.com/tuto/lire/530-La-structure-des-balises-bloc-et-en-ligne.html
+* https://ahrefs.com/blog/alt-text/

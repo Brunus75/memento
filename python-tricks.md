@@ -494,3 +494,23 @@ Counter({'l': 3, 'o': 2, 'e': 1, 'd': 1, 'h': 1, 'r': 1, 'w': 1})
 ('D', 'C', 'A', 'B')
 ('D', 'C', 'B', 'A')
 ```
+
+## When To Use __repr__ vs __str__?
+```py
+# Emulate what the std lib does:
+>>> import datetime
+>>> today = datetime.date.today()
+
+# Result of __str__ should be readable:
+>>> str(today)
+'2017-02-02'
+
+# Result of __repr__ should be unambiguous:
+>>> repr(today)
+'datetime.date(2017, 2, 2)'
+
+# Python interpreter sessions use 
+# __repr__ to inspect objects:
+>>> today
+datetime.date(2017, 2, 2)
+```

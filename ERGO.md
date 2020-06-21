@@ -21,3 +21,4 @@
 * https://material.io/resources/devices/
 * Planche de 360px sur JUSTINMIND : tableau de border l+r de 8px, 4 cellules de l+r de 8px
 * /!\ récupérer les templates avant le passage en version gratuite
+* remplacer une image => double-clic sur l'image
