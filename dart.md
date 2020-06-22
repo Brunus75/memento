@@ -1125,6 +1125,13 @@ class Voiture {
   // Dart ajoute du sucre syntaxique pour déclarer un constructeur:
   Voiture(this.marque, this.annees);
 
+  // paramètres nommés
+  Voiture({String marque, int annees}) {
+    this.marque = marque; // this = l'instance
+    this.annees = annees;
+  }
+  // voiture = Voiture(marque: 'Whatever', annees: 2000);
+
   // Named constructor
   // to implement multiple constructors for a class or to provide extra clarity
   // not inherited by a subclass, like all constructors
@@ -1143,6 +1150,38 @@ class Voiture {
 ```java
 // use Object’s runtimeType property, which returns a Type object.
 print('The type of a is ${a.runtimeType}');
+```
+### ENCAPSULATION
+```java
+class QuizBrain {
+  int _questionNumber = 0;
+
+  // propriété privée, inaccessible depuis l'extérieur
+  List<Question> _questionBank = [
+    Question('Some cats are actually allergic to humans', true),
+    Question('You can lead a cow down stairs but not up stairs.', false),
+    // ... 
+  ];
+
+  // méthode qui interagit avec une propriété privée
+  void nextQuestion() {
+    if (_questionNumber < _questionBank.length - 1) {
+      _questionNumber++;
+    }
+  }
+
+  // getter 1
+  // appel : quizBrain.getQuestionText();
+  String getQuestionText() {
+    return _questionBank[_questionNumber].questionText;
+  }
+
+  // getter 2
+  // appel : quizBrain.getQuestionAnswer();
+  bool getCorrectAnswer() {
+    return _questionBank[_questionNumber].questionAnswer;
+  }
+}
 ```
 ### GETTERS AND SETTERS
 * Each instance variable has an implicit getter, plus a setter if appropriate

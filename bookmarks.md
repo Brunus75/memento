@@ -24,6 +24,7 @@
 * https://www.jesuisundev.com/recueil-de-blogs-de-developpeurseuses/
 * https://dev.to/
 * https://news.humancoders.com/
+* https://www.blogduwebdesign.com/
 
 
 ## :gun: WEB TOOLS
@@ -739,6 +740,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.freecodecamp.org/news/the-10-most-popular-coding-challenge-websites-of-2016-fb8a5672d22f/
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
 * SQL Police Department : https://sqlpd.com/
+* 15 jeux pour apprendre le webdesign en s’amusant : https://www.blogduwebdesign.com/jeux-apprendre-le-webdesign/
 
 
 ## :slot_machine: REGEX
@@ -786,6 +788,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.framer.com/
 * https://waster.fr/
 * http://www.migulko.cz/
+* https://www.rainforestfoods.com/experience/#!/slide-intro
 
 
 ## :monocle_face: TENDANCES
