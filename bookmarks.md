@@ -141,6 +141,7 @@
 * My Web Accessibility Testing Process : https://www.a11ywithlindsey.com/blog/web-accessibility-testing-process
 * Hacking Digital Style Guides for Accessibility: Type, Colour, Imagery : https://www.youtube.com/watch?v=tvpstrkDgeM
 * How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
+* Développeur d'application - PHP / Symfony : https://github.com/emicheldev/awesome-Openclassroom-D-veloppeur-d-application---PHP-Symfony/tree/master
 
 ## :flying_saucer: ANDROID
 
