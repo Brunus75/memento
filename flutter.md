@@ -51,6 +51,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 **AWESOME PROJECTS**
 * https://github.com/2d-inc/HistoryOfEverything
 
+**JSON**
+* Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
 
 
 ## SOMMAIRE
@@ -62,6 +64,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [ASTUCES](#astuces)
    * [STRUCTURE](#structure)
 * [INSTALLATION](#installation)
+* [LANCER FLUTTER SUR LE MOBILE](#flutter-sur-mobile)
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
 * [PACKAGES](#packages)
@@ -76,6 +79,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
 * [EX. D'APPLI (4) : FLUX RSS](#coda-news)
 * [EX D'APPLI (5) : Drawer, SharedPreferences, JSON et API](#coda-meteo)
+* [EX D'APPLI (6) : SQFLITE](#coda-sqflite)
 
 
 ## FLUTTER
@@ -300,6 +304,13 @@ Container(
 // le TO DO est retrouvable dans l'onglet TODO (bas gauche d'AS)
 ```
 * Voir et sélectionner les modifications de notre code (historique) > Onglet VCS (Version Control) > Local History > Show History > Revert
+* Factory : Use the factory ```keyword``` when implementing a constructor that doesn’t always create a new instance of its class
+```java
+factory Logger(String name) {
+  return _cache.putIfAbsent(
+      name, () => Logger._internal(name));
+}
+```
 ### STRUCTURE
 * Structure :
 ```py
@@ -311,6 +322,13 @@ project_name/
     main.dart
   widgets/
 pubspec.yaml
+```
+### COMMANDES
+```java
+flutter packages get // the package gets re-installed fresh
+flutter clean // clear Build Cache
+
+package défecteux = flutter packages + flutter clean
 ```
 
 
@@ -360,6 +378,14 @@ flutter doctor
 * Checkout > No
 * Ouvrir un projet > ouvrir le projet cloné
 
+## FLUTTER SUR MOBILE
+* Paramètres > A propos du téléphone > Informations sur le logiciel > Taper 7 fois sur le Numéro de version
+* *Mode developpeur activé*
+* Paramètres > Options de développement > Débogage USB => true
+* *Connecter le téléphone avec le cable usb*
+* *Accepter les pop-up*
+* *Lancer l'appli depuis Android Studio*
+
 ## ANDROID STUDIO
 * Fonctionnalités : https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14481906#questions
 * AVD Manager : lieu où l'on stocke tous nos appareils virtuels (différents téléphones)
@@ -378,7 +404,8 @@ flutter doctor
 * stless => Stateless Widget
 * stful => Stateful Widget
 * cliquer sur l'élément + Ctrl + Q = quick documentation
-* Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper
+* Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper$
+* Ctrl + clic sur la classe pour voir son fichier
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -4468,5 +4495,687 @@ class MyFlutterApp {
   static const IconData droplet = const IconData(0xe801, fontFamily: _kFontFam);
   static const IconData arrow_upward = const IconData(0xe802, fontFamily: _kFontFam);
   static const IconData arrow_downward = const IconData(0xe803, fontFamily: _kFontFam);
+}
+```
+
+## CODE SQFLITE
+* Application de listing d'articles, selon des thèmes
+* https://medium.com/flutter-community/using-sqlite-in-flutter-187c1a82e8b
+* Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
+* Problème Image Picker = flutter packages get + flutter clean = https://github.com/flutter/flutter/issues/24859
+* * Structure :
+```py
+je_veux/
+  images/
+    no_image.png
+  lib/
+    model/
+      article.dart
+      databaseClient.dart
+      item.dart
+    widget/
+      ajout_article.dart
+      donnees_vides.dart
+      home_controller.dart
+      item_detail.dart
+    main.dart
+pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: je_veux
+description: A new Flutter application.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: # sqlite
+  path_provider: # accéder à des chemins dans mon appli
+  image_picker: ^0.6.0+9 # accéder aux images du téléphone
+
+  cupertino_icons: ^0.1.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - images/no_image.jpg
+```
+* main.dart
+```java
+import 'package:je_veux/widget/home_controller.dart';
+
+void main() => runApp(new MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: new HomeController(title: 'Je veux...'),
+    );
+  }
+}
+```
+* home_controller.dart
+```java
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:je_veux/model/item.dart';
+import 'package:je_veux/widget/donnees_vides.dart';
+import 'package:je_veux/model/databaseClient.dart';
+import 'item_detail.dart';
+
+class HomeController extends StatefulWidget {
+  HomeController({Key key, this.title}) : super(key: key);
+  final String title;
+
+  @override
+  _HomeControllerState createState() => _HomeControllerState();
+}
+
+class _HomeControllerState extends State<HomeController> {
+
+  // ↓ catégorie d'une liste, qui comprendra plusieurs articles
+  // (ex. Jeux, Chaussures, etc.)
+  String newItem;
+  List<Item> items; // toutes les catégories
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    recuperer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: (() => ajouter(null)), 
+                child: Text("Ajouter", style: TextStyle(color: Colors.white),)
+            ),
+          ],
+        ),
+        body: (items == null||items.length == 0)
+            ? DonneesVides()
+            : ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, i) {
+              Item item = items[i];
+              return ListTile(
+                title: Text(item.nom),
+                trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      DatabaseClient().delete(item.id, 'item').then((int) {
+                        recuperer();
+                      });
+                    }),
+                leading: IconButton(icon: Icon(Icons.edit), onPressed: (() => ajouter(item))),
+                // ↓ appui sur le ListTile de l'item => ouvre sa page en détails
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext buildContext) {
+                    return ItemDetail(item);
+                  }));
+                },
+              );
+            }
+        )
+
+    );
+  }
+
+  Future<Null> ajouter(Item item) async {
+    await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext buildContext) {
+          return AlertDialog(
+            title: Text('Ajouter une liste de souhaits'),
+            content: TextField(
+              decoration: InputDecoration(
+                labelText: "liste:",
+                // ↓ sorte de placeholder
+                hintText: (item == null)? "ex: mes prochains jeux vidéos": item.nom,
+              ),
+              // ↓ réponse de l'utilisateur
+              onChanged: (String answer) {
+                newItem = answer;
+              },
+            ),
+            actions: <Widget>[
+              // ↓ BOUTON ANNULER
+              FlatButton(onPressed: (() => Navigator.pop(buildContext)), child: Text('Annuler')),
+              // ↓ BOUTON VALIDER
+              FlatButton(onPressed: () {
+                // Ajouter le code pour pouvoir ajouter à la BDD
+                if (newItem != null) {
+                  // ↓ simple ajout
+                  if (item == null) {
+                    item = Item();
+                    Map<String, dynamic> map = {'nom': newItem};
+                    item.fromMap(map);
+                  } else {
+                    item.nom = newItem;
+                  }
+                  // ↓ UPDATE le nom de l'item sauvegardé en base
+                  DatabaseClient().upsertItem(item).then((i) => recuperer());
+                  newItem = null;
+                }
+                Navigator.pop(buildContext);
+              }, child: Text('Valider', style: TextStyle(color: Colors.blue),))
+            ],
+          );
+        }
+    );
+  }
+
+  void recuperer() {
+    DatabaseClient().allItem().then((items) {
+      setState(() {
+        this.items = items;
+      });
+    });
+  }
+}
+```
+* donnees_vides.dart
+```java
+import 'package:flutter/material.dart';
+
+class DonneesVides extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Center(
+      child: new Text("Aucune donnée n'est présente",
+        textScaleFactor: 2.5,
+        textAlign: TextAlign.center,
+        style: new TextStyle(
+            color: Colors.red,
+            fontStyle: FontStyle.italic
+        ),
+      ),
+    );
+  }
+}
+```
+* item_detail.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:je_veux/model/item.dart';
+import 'package:je_veux/model/article.dart';
+import 'donnees_vides.dart';
+import 'ajout_article.dart';
+import 'package:je_veux/model/databaseClient.dart';
+import 'dart:io';
+
+class ItemDetail extends StatefulWidget {
+  Item item;
+
+  ItemDetail(this.item);
+
+  @override
+  _ItemDetailState createState() => _ItemDetailState();
+
+}
+
+class _ItemDetailState extends State<ItemDetail> {
+  List<Article> articles;
+
+  @override
+  void initState() {
+    super.initState();
+    // ↓ récupère la liste d'articles enregistrés en BDD
+    // en renseignant l'id de l'item renseigné dans le StatefulWidget
+    DatabaseClient().allArticles(widget.item.id).then((liste) {
+      setState(() {
+        articles = liste;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.item.nom),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ajouter', style: TextStyle(color: Colors.white),),
+              onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                // ↓ id de l'item sélectionné
+                // renvoie vers la page d'ajout d'un article associé à l'item
+                return Ajout(widget.item.id);
+                // push = fonction asynchrone par définition
+                // les changements sont donc pris en compte, mais plus tard
+                // solution = then((value)) { affichage du résultat }
+              })).then((value) {
+                print('On est de retour, avec les articles mis à jour');
+                DatabaseClient().allArticles(widget.item.id).then((liste) {
+                  setState(() {
+                    articles = liste;
+                  });
+                });
+              });
+              },
+            )
+          ],
+        ),
+        body: (articles == null || articles.length == 0)
+            ? DonneesVides()
+            : GridView.builder(
+            itemCount: articles.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+            itemBuilder: (context, i) {
+              Article article = articles[i];
+              return Card(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(article.nom, textScaleFactor: 1.4,),
+                    Container(
+                      height: MediaQuery.of(context).size.height / 2.5,
+                      // ↓ affichage conditionnel de l'image de l'article
+                      child: (article.image == null)
+                          ? Image.asset('images/no_image.jpg')
+                          : Image.file(File(article.image)),
+                    ),
+
+                    Text((article.prix == null)? 'Aucun prix renseigné': "Prix: ${article.prix}"),
+                    Text((article.magasin == null)? 'Aucun magasin renseigné': "Magasin: ${article.magasin}")
+                  ],
+                ),
+              );
+            })
+    );
+  }
+
+}
+```
+* ajout_article.dart
+```java
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:je_veux/model/article.dart';
+import 'package:je_veux/model/databaseClient.dart';
+import 'package:image_picker/image_picker.dart';
+
+class Ajout extends StatefulWidget {
+
+  int id;
+
+  Ajout(this.id);
+
+  @override
+  _AjoutState createState() => _AjoutState();
+
+}
+
+class _AjoutState extends State<Ajout> {
+
+  String image;
+  String nom;
+  String magasin;
+  String prix;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        // ↓ BOUTON AJOUT du formulaire
+        title: Text('Ajouter'),
+        actions: <Widget>[
+          // ajouter() gère la logique du form
+          FlatButton(onPressed: ajouter, child: Text('Valider', style: TextStyle(color: Colors.white),))
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+            children: <Widget>[
+              Text('Article à ajouter', textScaleFactor: 1.4, style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),),
+              Card(
+                elevation: 10.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    (image == null)
+                        ? Image.asset('images/no_image.jpg')
+                        : Image.file(new File(image)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(icon: Icon(Icons.camera_enhance),
+                            // ↓ ImageSource = renseigne la source de la photo à récupérer
+                            onPressed: (() => getImage(ImageSource.camera))
+                            // ↑ .camera => ouvre la camera
+                        ),
+                        IconButton(icon: Icon(Icons.photo_library),
+                            // ↓ ImageSource = renseigne la source de la photo à récupérer
+                            onPressed: (() => getImage(ImageSource.gallery))
+                            // ↑ .gallery => ouvre la gallerie de l'utilisateur
+                        )
+                      ],
+                    ),
+                    textField(TypeTextField.nom, 'Nom de l\'article'),
+                    textField(TypeTextField.prix, 'Prix'),
+                    textField(TypeTextField.magasin, 'Magasin')
+                  ],
+                ),
+              )
+            ]
+
+        ),
+      ),
+    );
+  }
+
+  TextField textField(TypeTextField type, String label) {
+    return TextField(
+      decoration: InputDecoration(labelText: label),
+      onChanged: (String string) {
+        switch (type) {
+          case TypeTextField.nom:
+            nom = string;
+            break;
+          case TypeTextField.prix:
+            prix = string;
+            break;
+          case TypeTextField.magasin:
+            magasin = string;
+            break;
+        }
+      },
+    );
+  }
+
+  void ajouter() {
+    print('Ajouter un article');
+    if (nom != null) {
+      Map<String, dynamic> map = {'nom': nom, 'item': widget.id};
+      if (magasin != null) {
+        map['magasin'] = magasin;
+      }
+      if (prix != null) {
+        map['prix'] = prix;
+      }
+      if (image != null) {
+        map['image'] = image;
+      }
+      Article article = Article();
+      article.fromMap(map); // on crée notre objet à partir d'une map
+      // on envoie notre objet sur la BDD
+      DatabaseClient().upsertArticle(article).then((value) {
+        // dès que le processus renvoie une valeur
+        // on efface toutes les propriétés enregistrées
+        image = null;
+        nom = null;
+        magasin = null;
+        prix = null;
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  // get image with image picker
+  Future getImage(ImageSource source) async {
+    var nouvelleIMage = await ImagePicker.pickImage(source: source);
+    setState(() {
+      image = nouvelleIMage.path;
+    });
+  }
+
+}
+
+enum TypeTextField {nom, prix, magasin}
+```
+* article.dart
+```java
+class Article {
+
+  int id;
+  String nom;
+  int item;
+  var prix;
+  String magasin;
+  String image;
+
+  Article();
+
+  // ↓ on récupère de la BDD
+  void fromMap(Map<String, dynamic> map) {
+    this.id = map['id'];
+    this.nom = map['nom'];
+    this.item = map['item'];
+    this.prix = map['prix'];
+    this.magasin = map['magasin'];
+    this.image = map['image'];
+  }
+
+  // ↓ convertit l'objet Article en map pour l'envoyer en BDD
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'nom': this.nom,
+      'item': this.item,
+      'magasin': this.magasin,
+      'prix': this.prix,
+      'image': this.image
+    };
+
+    // si l'article a déjà été persisté dans la BDD
+    if (id != null) {
+      map['id'] = this.id;
+    }
+    return map;
+  }
+}
+```
+* item.dart
+```java
+class Item {
+
+  int id;
+  String nom;
+
+  Item();
+
+  // ↓ on récupère de la BDD
+  void fromMap(Map<String, dynamic> map) {
+    this.id = map['id'];
+    this.nom = map['nom'];
+  }
+
+  // ↓ convertit l'objet Item en map pour l'envoyer en BDD
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'nom': this.nom
+    };
+    // si on a un id
+    if (id != null) {
+      map['id'] = this.id;
+    }
+    return map;
+  }
+
+}
+```
+* databaseClient.dart
+```java
+// classe de la BDD
+import 'dart:async';
+import 'dart:io';
+import 'package:je_veux/model/item.dart';
+import 'package:sqflite/sqflite.dart'; // SQLITE
+import 'package:path/path.dart'; // récupérer nos chemins
+import 'package:path_provider/path_provider.dart';
+import 'article.dart';
+
+class DatabaseClient {
+
+  Database _database;
+
+  // Getter de _database
+  Future<Database> get database async {
+    if (_database != null) {
+      return _database;
+    } else {
+      print("LA BDD n'a pas été crée");
+      // ↓ Création de la BDD
+      _database = await create();
+      return _database;
+    }
+  }
+
+  // création de la BDD
+  Future create() async {
+    // ↓ chemin du dossier de mes documents
+    Directory directory = await getApplicationDocumentsDirectory();
+    // ↓ création d'un chemin pour la BDD
+    String database_directory = join(directory.path, 'database.db');
+    // ↓ opening a database
+    var bdd = await openDatabase(database_directory, version: 1, onCreate: _onCreate);
+    return bdd;
+  }
+
+  // création de la table item et article pour la BDD
+  Future _onCreate(Database db, int version) async {
+    // création table item
+    await db.execute('''
+    CREATE TABLE item (
+    id INTEGER PRIMARY KEY, 
+    nom TEXT NOT NULL )
+    '''
+    );
+
+    // création table article
+    await db.execute('''
+     CREATE TABLE article (
+     id INTEGER PRIMARY KEY,
+     nom TEXT NOT NULL,
+     item INTEGER,
+     prix TEXT,
+     magasin TEXT,
+     image TEXT )
+     '''
+    );
+  }
+
+  /* ECRITURE DES DONNEES */
+
+  // INSERT INTO
+  Future<Item> ajoutItem(Item item) async {
+    // ↓ appelle le getter de _database
+    Database maDatabase = await database;
+    // INSERT INTO TABLE item
+    // insert renvoie un Future<int>
+    item.id = await maDatabase.insert('item', item.toMap());
+    return item;
+  }
+
+  // UPDATE
+  Future<int> updateItem(Item item) async {
+    Database maDatabase = await database;
+    return maDatabase.update('item', item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+  }
+
+  // UPDATE OR INSERT
+  Future<Item> upsertItem(Item item) async {
+    Database maDatabase = await database;
+    if (item.id == null) {
+      item.id = await maDatabase.insert('item', item.toMap());
+    } else {
+      await maDatabase.update('item', item.toMap(), where: 'id = ?', whereArgs: [item.id]);
+    }
+    return item;
+  }
+
+  Future<Article> upsertArticle(Article article) async {
+    Database maDatabase = await database;
+    // si l'article n'a pas d'id, il n'a jamais été persisté en BDD
+    (article.id == null)
+        // INSERT INTO renvoie un id
+        // toMap pour le transformer en map pour l'envoyer en BDD
+        ? article.id = await maDatabase.insert('article', article.toMap())
+        // sinon, UPDATE
+        : await maDatabase.update('article', article.toMap(), where: 'id = ?', whereArgs: [article.id]);
+    return article;
+  }
+
+  // DELETE
+  Future<int> delete(int id, String table) async {
+    Database maDatabase = await database;
+    // ↓ supprime l'ensemble des articles liés à une item
+    await maDatabase.delete('article', where: 'item = ?', whereArgs: [id]);
+    // ↓ puis supprime l'item (DELETE ON CASCADE sans contrainte ON DELETE CASCADE)
+    return await maDatabase.delete(table, where: 'id = ?', whereArgs: [id]);
+  }
+
+
+/* LECTURE DES DONNEES */
+
+  // SELECT *
+  Future<List<Item>> allItem() async {
+    Database maDatabase = await database;
+    // ↓ QUERY
+    List<Map<String, dynamic>> resultat = await maDatabase.rawQuery('SELECT * FROM item');
+    List<Item> items =[];
+    resultat.forEach((map) {
+      Item item = new Item();
+      // ↓ enregistre l'objet grace aux infos de la BDD
+      item.fromMap(map);
+      items.add(item);
+    });
+    return items;
+  }
+
+  // SELECT * WHERE ITEM = int
+  Future<List<Article>> allArticles(int item) async {
+    // appel BDD
+    Database maDatabase = await database;
+    // récupération des éléments de la query
+    List<Map<String, dynamic>> resultat = await maDatabase.query(
+        'article',
+        where: 'item = ?',
+        whereArgs: [item]
+    );
+    // création d'un liste d'articles
+    List<Article> articles = [];
+    // remplissage de la liste d'articles
+    resultat.forEach((map) {
+      Article article = Article();
+      article.fromMap(map);
+      articles.add(article);
+    });
+    return articles;
+  }
+
 }
 ```

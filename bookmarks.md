@@ -94,6 +94,7 @@
    * that the website has proper SEO with Seoptimer (https://www.seoptimer.com/)
 * Un terminal pour Windows : https://www.docstring.fr/blog/un-terminal-pour-windows/
 * WAVE Web Accessibility Evaluation Tool : https://wave.webaim.org/
+* Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
 
 
 ## :pushpin: WEB DOCS
@@ -650,6 +651,9 @@
 * A generator for beautiful SVG shape dividers : https://www.shapedivider.app/
 * Sorted Colors groups named CSS colors in a way that shows related colors together : https://enes.in/sorted-colors/
 * A huge library of paintings, drawings, and illustrations with no license restrictions : https://artvee.com/
+* Gradient Generator : https://codepen.io/j-w-v/full/pogEaON
+* Top 12 Photoshop Alternatives : https://www.noupe.com/design/photoshop-alternatives.html
+* https://www.webdesignerdepot.com/2020/06/10-tools-i-cant-design-without/
 
 ### UX/UI
 
@@ -723,6 +727,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Nouvelle Techno : https://www.youtube.com/channel/UCVPd3h_V_hGjMZ8jNMt939Q/videos
 * Développeur Libre : https://www.youtube.com/channel/UCjDg7LaaMzmuhj6I1jTzb1Q/videos
 * Potion de vie : https://www.youtube.com/user/Potiondevie/videos
+* Collection of free software development tutorials : https://www.tutorialist.io/
 
 
 ## :alembic: TESTS

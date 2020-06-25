@@ -2,6 +2,8 @@
 
 ## RESSOURCES
 
+**Dart**
+
 * Dart doc : https://dart.dev/guides
 * Dart Cheatsheet : https://dart.dev/guides/language/language-tour  https://dart.dev/codelabs/dart-cheatsheet
 * A Tour of the Dart Libraries : https://dart.dev/guides/libraries/library-tour
@@ -15,6 +17,9 @@
 * Dart/Python : https://www.reddit.com/r/dartlang/comments/gs4hlu/dart_is_now_7_on_the_most_loved_and_now_moved/fs3954s/
 * Fluttering Dart : https://medium.com/tag/fluttering-dart/archive
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
+
+**JSON**
+* Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
 
 
 ## SOMMAIRE
@@ -303,6 +308,7 @@ var iMeantToDoThis = 0 / 0;
 assert(iMeantToDoThis.isNaN);
 ```
 ### LISTS
+* Top 10 Array utility methods you should know : https://codeburst.io/top-10-array-utility-methods-you-should-know-dart-feb2648ee3a2
 * https://dart.dev/guides/language/language-tour#lists
 * Details and examples of using collection if and for : https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 * Generics : https://dart.dev/guides/language/language-tour#generics
