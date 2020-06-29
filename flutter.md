@@ -231,6 +231,13 @@ Padding padding() {
 }
 ```
 * Toujours spécifier la ```^version``` de ses dépendances (ne pas les laisser vides)
+* ```const``` ou ```final``` ? ```const``` n'a accès à aucune valeur durant l'éxécution de l'application, contrairement à ```final```, dont la valeur peut être assigné à n'importe quel moment
+```java
+const dateNow = DateTime.now // impossible, l'assignation se fait après la compilation du code
+// (qui lance ensuite l'éxécution du code)
+const = "valeur connue avant l'éxécution du code";
+final = "valeur qui n'est assignée qu'une fois, mais n'importe quand"
+```
 ### ASTUCES
 * infinity (100%)
 ```java
@@ -314,6 +321,10 @@ factory Logger(String name) {
   return _cache.putIfAbsent(
       name, () => Logger._internal(name));
 }
+```
+* Rendre un paramètre obligatoire avec @required
+```java
+myWidget(@required this.property)
 ```
 ### STRUCTURE
 * Structure :
@@ -709,8 +720,9 @@ class _Home extends State<Home> {
         padding: EdgeInsets.only(top: 15.0, bottom: 5.0), // padding-top = 15
         decoration: BoxDecoration( // ajouter des bordures, un box-shadow, ect.
           color: Colors.blue, // remplace color du container
+          borderRadius: BorderRadius.circular(20.0), // bords arrondis
           border: Border.all(
-            color: Colors.white,
+            color: Colors.white, // si pas de decoration, renseigner simplement la propriété seule (comme height)
             width: 2.0,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -2659,6 +2671,9 @@ Visibility(
   ),
 ),
 ```
+### EXPANDED
+* Permettre à son enfant de prendre toute la place disponible
+* https://api.flutter.dev/flutter/widgets/Expanded-class.html
 
 ## THEMES
 * https://flutter.dev/docs/cookbook/design/themes

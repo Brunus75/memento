@@ -13,6 +13,7 @@
 * Gérez vos codes source avec Git : https://openclassrooms.com/fr/courses/1233741-gerez-vos-codes-source-avec-git
 * Git & GitHub : Le Cours Pour Les Débutants : https://www.youtube.com/watch?v=4o9qzbssfII
 * LES BASES DE GIT (tuto débutant) : https://www.youtube.com/watch?v=gp_k0UVOYMw&feature=youtu.be
+* https://www.jesuisundev.com/comprendre-git-en-7-minutes/
 
 
 ## SOMMAIRE
