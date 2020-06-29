@@ -144,8 +144,6 @@
 * How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
 * Développeur d'application - PHP / Symfony : https://github.com/emicheldev/awesome-Openclassroom-D-veloppeur-d-application---PHP-Symfony/tree/master
 
-## :flying_saucer: ANDROID
-
 
 ## :warning: VALIDATEURS
 
@@ -302,6 +300,13 @@
 * https://github.com/ikatyang/emoji-cheat-sheet
 * Markmap : créez des graphes mindmap avec du Markdown : https://markmap.js.org/repl/
 
+## :flying_saucer: ANDROID
+
+## :cowboy_hat_face: DEVOPS
+
+* Pour découvrir de nouvelles technologies comme : Docker, Kubernetes, Jenkins, Linux, etc : https://www.katacoda.com/
+* Intro to Docker for Web Developers : https://livecodestream.dev/post/2020-06-25-intro-to-docker-for-web-developers
+
 
 ## :hammer_and_wrench: BACK-END
 
@@ -323,6 +328,8 @@
 * https://www.grafikart.fr/search?q=MVC
 * A curated list of amazingly awesome PHP libraries, resources and shiny things : https://github.com/ziadoz/awesome-php
 * Composer, autoloader, namespaces: La gestion des dépendances en PHP : https://medium.com/@remi.michel38/composer-autoloader-namespaces-la-gestion-des-d%C3%A9pendances-en-php-50dfd4652c0
+* How to Create, Write, Read, and Delete Files in PHP : https://code.tutsplus.com/tutorials/create-write-read-and-delete-files-in-php--cms-34950
+* The perfect starting point to analyze the code quality of your PHP projects : https://phpinsights.com
 
 
 ### SYMFONY
@@ -654,6 +661,8 @@
 * Gradient Generator : https://codepen.io/j-w-v/full/pogEaON
 * Top 12 Photoshop Alternatives : https://www.noupe.com/design/photoshop-alternatives.html
 * https://www.webdesignerdepot.com/2020/06/10-tools-i-cant-design-without/
+* How to Enhance Your Website Layouts With SVG Shapes : https://webdesign.tutsplus.com/tutorials/website-layouts-with-svg-shapes--cms-35259
+* 100 Free Fonts for Commercial and Personal Use : https://www.hongkiat.com/blog/free-fonts-for-commercial-personal-use
 
 ### UX/UI
 
@@ -681,6 +690,7 @@
 * CSS gg : plus de 500 icônes CSS personnalisables et compatibles retina - La Ferme du Web
 * 10 examples of custom 404 pages ranked from best to worst : https://uxdesign.cc/10-examples-of-custom-404-pages-ranked-from-best-to-worst-9c74825c18c9
 * A huge database of vector icons and illustrations : https://www.flaticon.com/
+* Writing design in a French style : https://uxdesign.cc/writing-design-in-a-french-style-36cff5f69f21
 
 
 ## :joystick: API

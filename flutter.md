@@ -12,6 +12,7 @@
 * Liste des icônes : https://material.io/resources/icons/?style=baseline
 * Icônes : https://www.fluttericon.com/
 * Material Palette (créer une palette, voir les nuances des couleurs et chercher une icone) : https://www.materialpalette.com/
+* The Flutter Cookbook : https://flutter.dev/docs/cookbook
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
 * Widget catalog : https://flutter.dev/docs/development/ui/widgets
 * Top Flutter packages : https://pub.dev/flutter/packages
@@ -31,6 +32,7 @@
 **DOCS**
 * Tomek's Flutter Layout Cheat Sheet : https://medium.com/flutter-community/flutter-layout-cheat-sheet-5363348d037e
 * Flutter-Course-Resources : https://github.com/londonappbrewery/Flutter-Course-Resources
+* Débat Map vs. Switch : https://github.com/londonappbrewery/destini-challenge-completed/commit/69ed867992fc05f13a4fbef452173a956312993d
 * Comment J’apprends Flutter ? : https://medium.com/@q.cornu/comment-japprends-flutter-412add79848c
 list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo  
 * Roadmap des élements à connaître : https://www.ambient-it.net/wp-content/uploads/pdf/Annexe-1-Fiche-descriptive-formation-flutter-dart.pdf
@@ -74,6 +76,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
+   * [WIDGETS LAYOUT](#widgets-layout)
+* [THEMES](#themes)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
@@ -406,6 +410,7 @@ flutter doctor
 * cliquer sur l'élément + Ctrl + Q = quick documentation
 * Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper$
 * Ctrl + clic sur la classe pour voir son fichier
+* Renommer une variable dans tout le projet > Clic-droit > Refactor > Rename
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -2580,6 +2585,149 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+```
+
+## WIDGETS LAYOUT
+
+### STACK
+* Permet de superposer des containers
+* https://api.flutter.dev/flutter/widgets/Stack-class.html
+* Peut-être utilisé avec le widget Positioned : https://api.flutter.dev/flutter/widgets/Positioned-class.html
+```java
+class StackDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        // The containers in the background
+        Column(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * .65,
+              color: Colors.blue,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * .35,
+              color: Colors.white,
+            )
+          ],
+        ),
+        // The card widget with top padding, 
+        // incase if you wanted bottom padding to work, 
+        // set the `alignment` of container to Alignment.bottomCenter
+        Container(
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * .58,
+              right: 20.0,
+              left: 20.0),
+          child: Container(
+            height: 200.0,
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              color: Colors.white,
+              elevation: 4.0,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+```
+### VISIBILTY
+* Display = none/block;
+```java
+Visibility(
+  visible: storyBrain.buttonShouldBeVisible(), // true or false
+  child: FlatButton(
+    onPressed: () {
+      //Choice 2 made by user.
+      //TODO: Step 19 - Call the nextStory() method from storyBrain and pass the number 2 as the choice made by the user.
+      setState(() {
+        storyBrain.nextStory(2);
+      });
+    },
+    color: Colors.blue,
+    child: Text(
+      //TODO: Step 14 - Use the storyBrain to get the text for choice 1.
+      storyBrain.getChoice2(),
+      style: TextStyle(
+        fontSize: 20.0,
+      ),
+    ),
+  ),
+),
+```
+
+## THEMES
+* https://flutter.dev/docs/cookbook/design/themes
+* https://api.flutter.dev/flutter/material/ThemeData-class.html
+* https://stackoverflow.com/questions/22239803/how-does-hexadecimal-color-work
+```java
+// système décimal (base 10)
+// on multiple par 10^n le chiffre suivant en allant de droite à gauche
+// n commence à 0
+13 = 1 * 10 + 3; // 13 = 1 * 10^1 + 3 * 10^0
+113 = 1 * 10 * 10 + 1 * 10 + 3; // 113 = 1* 10^2 + 1 * 10^1 + 3 * 10^0
+
+// système hexadécimal (base 16)
+// on multiple par 16^n le chiffre suivant en allant de droite à gauche
+// n commence à 0
+// 0 1 2 3 4 5 6 7 8 9 A(10) B(11) C(12) D(13) E(14) F(15)
+4C = 4 * 16 + 12 = 76; // 4 * 16^1 + 12 * 16^0
+FF = 15 * 16 + 15 = 255;
+CC9 = (12 * 16 * 16) + (12 * 16) + 9;
+```
+```java
+MaterialApp(
+  title: title,
+  theme: ThemeData(
+    // ↓ Define the default brightness and colors.
+    brightness: Brightness.dark,
+    // ↓ couleur personnalisée = {#}0A0E21 => {0xFF}0A0E21
+    primaryColor: Color(0xFF0A0E21),
+    // ↓ FloatingButton
+    accentColor: Colors.cyan[600],
+    // ↓ body background
+    scaffoldBackgroundColor: Color(0xFF0A0E21),
+    // ↓ button color
+    buttonColor: Colors.teal,
+    // ↓ Define the default font family.
+    fontFamily: 'Georgia',
+    // ↓ appBar theme :
+    appBarTheme: AppBarTheme(
+      color: Colors.red,
+      iconTheme: IconThemeData(color: Colors.white, size: 16.0),
+    )
+
+    // Define the default TextTheme. Use this to specify the default
+    // text styling for headlines, titles, bodies of text, and more.
+    textTheme: TextTheme(
+      button: TextStyle(color: Colors.white),
+      // ↓ default text style of body
+      body1: TextStyle(color: Colors.white),
+      headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    ),
+  ),
+  // hériter d'un theme dark et le modifier :
+  theme: ThemeData.dark().copyWith(
+    primaryColor: Color(0xFF0A0E21),
+    scaffoldBackgroundColor: Color(0xFF0A0E21),
+  ),
+);
+
+
+// changer le thème d'un widget
+floatingActionButton: Theme(
+  data: ThemeData.light(),
+  data: ThemeData(accentColor: Colors.purple),
+  child: FloatingActionButton( // 1) sera bleu clair 2) mauve
+    child: Icon(Icons.add),
+  )
+)
 ```
 
 

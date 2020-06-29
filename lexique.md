@@ -145,4 +145,20 @@ https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
 * :robot: **Bytecode** : code intermédiaire entre le code source et les instructions machines, écrit en code binaire (011000111), qui ne peut être interprété que par une machine virtuelle
 * :key: **JSON** : format d'échanges de données, qui est une représentation en texte d'un objet JavaScript (ressemble à une Map, avec une association clé:valeur) et qui peut être interprété par tous les langages de programmation
 * :bricks: **DTO** (data transfer object) : objet de transfert de données = objet simple (aucune logique dans son code), léger (pas de méthodes, hormis mutateurs et accesseurs) et dont le rôle se limite SEULEMENT à contenir des données
-* Logiciel **agnostique** : 
+* Logiciel **agnostique** :
+* :capital_abcd: **Système hexadécimal** :
+```java
+// système décimal (base 10)
+// on multiple par 10^n le chiffre suivant en allant de droite à gauche
+// n commence à 0
+13 = 1 * 10 + 3; // 13 = 1 * 10^1 + 3 * 10^0
+113 = 1 * 10 * 10 + 1 * 10 + 3; // 113 = 1* 10^2 + 1 * 10^1 + 3 * 10^0
+
+// système hexadécimal (base 16)
+// on multiple par 16^n le chiffre suivant en allant de droite à gauche
+// n commence à 0
+// 0 1 2 3 4 5 6 7 8 9 A(10) B(11) C(12) D(13) E(14) F(15)
+4C = 4 * 16 + 12 = 76; // 4 * 16^1 + 12 * 16^0
+FF = 15 * 16 + 15 = 255;
+CC9 = (12 * 16 * 16) + (12 * 16) + 9;
+```

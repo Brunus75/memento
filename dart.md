@@ -1128,7 +1128,7 @@ class Voiture {
     this.annees = annees;
   }
   
-  // Dart ajoute du sucre syntaxique pour déclarer un constructeur:
+  // (!) Dart ajoute du sucre syntaxique pour déclarer un constructeur:
   Voiture(this.marque, this.annees);
 
   // paramètres nommés
@@ -1136,6 +1136,10 @@ class Voiture {
     this.marque = marque; // this = l'instance
     this.annees = annees;
   }
+
+  // (!) nouvelle méthode pour les paramètres nommés:
+  Voiture({this.marque, this.annees});
+
   // voiture = Voiture(marque: 'Whatever', annees: 2000);
 
   // Named constructor
