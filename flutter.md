@@ -2300,6 +2300,7 @@ class _MyHomePageState extends State<MyHomePage> {
 #### INKWELL
 * Un container qui répond au toucher
 * https://api.flutter.dev/flutter/material/InkWell-class.html
+* https://stackoverflow.com/questions/56725308/flutter-inkwell-vs-gesturedetector-what-is-the-difference
 ```java
 class _MyHomePageState extends State<MyHomePage> {
 

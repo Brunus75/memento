@@ -184,6 +184,8 @@
 
 * Windows 10 May 2020 Update est disponible et apporte WSL2 par défaut avec un véritable noyau Linux : https://windows.developpez.com/actu/304457/Windows-10-May-2020-Update-est-disponible-et-apporte-WSL2-par-defaut-avec-un-veritable-noyau-Linux-ainsi-que-la-possibilite-de-renommer-des-bureaux-virtuels/
 * How to Use Windows Subsystem for Linux 2 and Windows Terminal : https://www.sitepoint.com/wsl2-windows-terminal/
+* Pour récupérer des fichiers supprimés, Microsoft lance Windows File Recovery : https://www.blogdumoderateur.com/microsoft-windows-file-recovery
+* https://www.blogdumoderateur.com/windows-10-nouveau-menu-demarrer-fonction-alt-tab-amelioree
 
 
 ## :fox_face: MOZILLA
@@ -301,6 +303,8 @@
 * Markmap : créez des graphes mindmap avec du Markdown : https://markmap.js.org/repl/
 
 ## :flying_saucer: ANDROID
+
+* https://www.journaldugeek.com/2020/06/25/pourquoi-machine-learning-smartphone-pas-cloud
 
 ## :cowboy_hat_face: DEVOPS
 
@@ -568,6 +572,8 @@
 * An Introduction to JavaScript Generators – What You Need to Know : https://blog.alexdevero.com/javascript-generators
 * How to Implement Smooth Scrolling With Vanilla JavaScript : https://webdesign.tutsplus.com/tutorials/smooth-scrolling-vanilla-javascript--cms-35165
 * A plugin for scroll-based animations with minimal code : https://greensock.com/scrolltrigger
+* A JavaScript library for scrolling through whole pages vertically or horizontally : https://github.com/elansx/Wholepage-Slider
+* A cool cheat sheet for everything you can do with CSS Grid : https://yoksel.github.io/grid-cheatsheet/
 
 
 ### JQUERY

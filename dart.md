@@ -551,6 +551,9 @@ var isPublic = false;
 var visibility = isPublic ? 'public' : 'private';
 print(visibility); // private
 
+int myAge = 12;
+bool canBuyAlcohol = myAge > 21 ? true : false;
+
 // opération ternaire sur un null potentiel
 // expr1 ?? expr2
 // If expr1 is non-null, returns its value; otherwise, evaluates and returns the value of expr2
