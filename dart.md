@@ -211,6 +211,7 @@ replaceAll() // Replaces all substrings that match the specified pattern with a 
 split() // Splits the string at matches of the specified delimiter and returns a list of substrings.
 substring() // Returns the substring of this string that extends from startIndex, inclusive, to endIndex, exclusive.
 toString() // Returns a string representation of this object.
+toDouble() // Returns a double representation of this object.
 codeUnitAt() // Returns the 16-bit UTF-16 code unit at the given index.
 
 // contains method
@@ -233,6 +234,7 @@ string.contains(new RegExp(r'[A-Z]'), 1); // false
 int entier = 33;
 double decimal = 33.3; // nombre à virgule
 var sansType = 24;
+doubleToInt = decimal.round();
 
 // Dart 2.1, integer literals are automatically converted to doubles when necessary:
 double z = 1; // Equivalent to double z = 1.0.
@@ -417,12 +419,21 @@ var chapters = [
 ### MAPS
 * https://dart.dev/guides/language/language-tour#maps
 * Équivalent des dictionnaires
+* liste **désordonnée**
 * Dictionnaire de **clés** et **valeurs**
 * spread operator proposal : https://github.com/dart-lang/language/blob/master/accepted/2.3/spread-collections/feature-specification.md
 * control flow collections proposal : https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Maps : https://dart.dev/guides/libraries/library-tour#maps
 ```java
+// construction
+Map<KeyType, ValueType> mapName {
+  key1: value1,
+  key2: value2,
+}
+// appel
+mapName[key1]; // = value1
+
 var maMap = {
   // clé: valeur,
   "Pierre": 21,
@@ -432,6 +443,10 @@ var maMap = {
 // Dart déduit qu'il s'agit de Map<String, int> maMap
 
 print(maMap.length); // 3
+print(maMap.keys); // (Pierre, Paul, Jacques)
+print(maMap.values); // (21, 23, 183)
+print(maMap["Pierre"]); // 21
+print(maMap["Jeremy"]); // null
 
 // initaliser un map
 var gifts = Map();

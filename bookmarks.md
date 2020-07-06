@@ -527,6 +527,8 @@
 * 24+ CSS Text Effects : https://csshint.com/css-text-effects
 * A collection of customizable, ready-to-use Tailwind CSS blocks : https://mertjf.github.io/tailblocks/
 * 24 Bootstrap Menus : https://freefrontend.com/bootstrap-menus
+* La toute première version (version alpha) de Bootstrap 5 : https://bootstrap-top-design.com/version-alpha-bootstrap-5/
+
 
 
 ### JAVASCRIPT
