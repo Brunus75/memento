@@ -95,6 +95,7 @@
 * Un terminal pour Windows : https://www.docstring.fr/blog/un-terminal-pour-windows/
 * WAVE Web Accessibility Evaluation Tool : https://wave.webaim.org/
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
+* DeLorean Ipsum Text Generator : https://satoristudio.net/delorean-ipsum/
 
 
 ## :pushpin: WEB DOCS
@@ -415,7 +416,7 @@
 * 30 Life-saving Tools for Front-end Developers : https://www.sitepoint.com/life-saving-tools-for-front-end-developers/
 * A collection of tools for developers who have little to no artistic talent : https://nodesign.dev
 * MDN Web Docs Front-end developer learning pathway : https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer
-
+* Sign-in form best practices : https://web.dev/sign-in-form-best-practices/
 
 ### SANDBOX
 

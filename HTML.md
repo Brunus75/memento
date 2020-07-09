@@ -24,6 +24,26 @@
 <img src="image.jpg" loading="lazy" alt="..." />
 ```
 
+## Afficher le mot de passe enregistré directement dans l'input de formulaire
+* https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/password#Allowing_autocomplete
+```
+current-password
+    Allow the browser or password manager to enter the current password for the site. 
+	This provides more information than on does, since it lets the browser or password manager
+	automatically enter currently-known password for the site in the field, but not to suggest a new one.
+new-password
+    Allow the browser or password manager to automatically enter a new password for the site; this is
+	used on "change your password" and "new user" forms, on the field asking the user for a new
+	password. 
+	The new password may be generated in a variety of ways, depending on the password manager in use. 
+	It may simply fill in a new suggested password, or it might show the user an interface for creating one.
+```
+```html
+<label for="userPassword">Password:</label>
+<input id="userPassword" type="password" autocomplete="current-password">
+```
+
+
 ## L'élément ```<picture>```
 * L'élément HTML ```<picture>``` est un conteneur utilisé afin de définir zéro ou plusieurs éléments ```<source>``` destinés à un élément ```<img>```
 * Le navigateur choisira la source la plus pertinente selon la disposition de la page

@@ -421,6 +421,7 @@ flutter doctor
 * *Connecter le téléphone avec le cable usb*
 * *Accepter les pop-up*
 * *Lancer l'appli depuis Android Studio*
+* Run/Debug your apps on a Physical Device Wirelessly > https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14485822#questions/11579700
 
 ## ANDROID STUDIO
 * Fonctionnalités : https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14481906#questions
@@ -5951,4 +5952,30 @@ class RoundIconButton extends StatelessWidget {
     );
   }
 }
+```
+
+## BOOTCAMP CLIMA API
+* Application de météo récupérant les données d'une API
+* Une page formulaire, une page résultat
+* Structure :
+```py
+Clima-Flutter-Completed/
+  fonts/
+    SpartanMB-Black.otf
+  images/
+    city_background.jpg
+    location_background.jpg
+  lib/
+    screens/
+      city_screen.dart
+      loading_screen.dart
+      location_screen.dart
+    services/
+      location.dart
+      networking.dart
+      weather.dart
+    utilities/
+      constants.dart
+  main.dart
+pubspec.yaml
 ```
