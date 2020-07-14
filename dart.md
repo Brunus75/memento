@@ -98,6 +98,7 @@
 * [TYPEDEFS](#typedefs)
 * [METADATA](#metadata)
 * [COMMENTS](#comments)
+* [FONCTIONS CHEATSHEET](#fonctions-cheatsheet)
 
 
 ## DART
@@ -124,6 +125,11 @@ handles and not raw pointers for this very reason.
 
 ## BONNES PRATIQUES
 * Préférer un typage défini (```String, int, bool, ect```) à ```var``` ou ```dynamic```, sauf pour une utilisation spécifique (pour des raisons de sécurité et d'erreurs)
+* String en single quotes (convention Dart), sauf si apostrophes dans le String
+```java
+String exemple = 'Je suis un string';
+String exempleWithApostrophe = "Je m'appelle Jean D'York";
+```
 
 ## VARIABLES ET TYPES
 
@@ -569,8 +575,9 @@ print(visibility); // private
 int myAge = 12;
 bool canBuyAlcohol = myAge > 21 ? true : false;
 
+// null aware operator
 // opération ternaire sur un null potentiel
-// expr1 ?? expr2
+// variableMaybeNull ?? fallbackValueIfVariableIsNull
 // If expr1 is non-null, returns its value; otherwise, evaluates and returns the value of expr2
 String playerName(String name) => name ?? 'Guest';
 // renvoie 'Guest' si name est null
@@ -1670,12 +1677,46 @@ void main() {
 ```java
 // Here’s an example of throwing, or raising, an exception:
 throw FormatException('Expected at least 1 section');
+
+// exemple
+void somethingThatExpectsLessThan10(int n) {
+  if (n > 10) {
+    throw 'n is greater than 10 !';
+  }
+}
+  
+try {
+  somethingThatExpectsLessThan10(12);
+}
+catch (e) {
+  print(e); // n is greater than 10 !
+}
 ```
 ### CATCH
 * To handle code that can throw more than one type of exception, you can specify multiple catch clauses
 * The first catch clause that matches the thrown object’s type handles the exception
 * If the catch clause does not specify a type, that clause can handle any type of thrown object
 ```java
+String myString = 'abc';
+double myStringAsADouble;
+
+try {
+  // la partie qui peut échouer
+  myStringAsADouble = double.parse(myString);
+}
+catch (e) {
+  // récupère l'exception
+  print(e); // FormatException: Invalid double abc
+  // myStringAsADouble = 30;  // choix par défaut
+  // si l'on n'utilise par le null operator plus tard
+}
+finally {
+  // dans tous les cas
+  // utilise le null aware operator
+  print(myStringAsADouble ?? 30); // 30
+}
+
+
 try {
   breedMoreLlamas();
 } on OutOfLlamasException {
@@ -2028,14 +2069,112 @@ numberBetweenOneAndSix = Random().nextInt(6) + 1;
    * Use async and await.
    * Use the Future API, as described in the library tour : https://dart.dev/guides/libraries/library-tour#future
 ```java
+// ---------- bases ----------
+
 // some code that uses await to wait for the result of an asynchronous function:
 await lookUpVersion(); // return Future object
+// la fonction lookUpVersion doit donc obligatoirement renvoyer une Future
+// car elle a été appelée avec un await
 
-// To use await, code must be in an async function — a function marked as async:
+// To use await, code must be in an async function — a function marked as async,
+// and START with a Future
 Future checkVersion() async {
   var version = await lookUpVersion();
   // Do something with version
 }
+
+// ---------- ◘ exemple avec Dart (extrait BootCamp) ----------
+import 'dart:io';
+
+void main() {
+  performTasks();
+}
+
+void performTasks() async {
+  task1();
+  // ↑ méthode synchrone qui sera exécutée instantanément
+  String task2Result = await task2();
+  // ↑ la variable task2Result attendra la complétion de task2()
+  // pour avoir une valeur
+  // et passer à la ligne suivante
+  // task2 = pour l'instant Instance of 'Future<String>'
+  // elle deviendra un String une fois task2() complétée
+  task3(task2Result);
+  // grâce au temps d'attente, task3 peut recevoir une variable non nulle
+}
+
+void task1() {
+  String result = 'task 1 data';
+  print('Task 1 complete');
+}
+
+// est récupérée par un await sous forme de String, 
+// demande de renvoyer une Future<String>
+Future<String> task2() async {
+  Duration threeSeconds = Duration(seconds: 3);
+
+  String result;
+
+  // le await permet de renvoyer un 'result' non null
+  await Future.delayed(threeSeconds, () {
+    result = 'task 2 data';
+    print('Task 2 complete');
+  });
+
+  return result;
+}
+
+void task3(String task2Data) {
+  String result = 'task 3 data';
+  print('Task 3 complete with $task2Data');
+}
+
+// console :
+// Task 1 complete
+// 3 secondes s'écoulent...
+// Task 2 complete
+// Task 3 complete with task 2 data (en même temps que Task2)
+
+
+// ---------- ◘ exemple concret Flutter (extrait BootCamp) ----------
+
+void initState() {
+  getLocationData(); // lance une méthode asynchrone, qui se complètera
+  // quand elle voudra
+}
+
+// est appelée par la méthode ci-dessus
+void getLocationData() async {
+  // méthode asynchrone (suffixe async et préfixe await dans son body)
+  // n'est pas appelée par un await, n'a donc pas besoin de renvoyer une Future
+  var weatherData = await WeatherModel().getLocationWeather();
+  // await permet d'attendre pour exécuter ce qui suit
+  // par exemple, faire un print(weatherData)
+  // si Future<dynamic> weatherData est utilisé
+  // alors print(weatherData) = instance of Future<dynamic>
+  // ...
+}
+
+// est récupérée par l'await du dessus, qui demande donc une Future
+Future<dynamic> getLocationWeather() async {
+    Location location = Location();
+    await location.getCurrentLocation(); // attend une Future
+}
+
+// est récupérée par l'await du dessus, qui demande donc une Future
+Future<void> getCurrentLocation() async {
+  try {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    // await permet d'attendre pour ensuite assigner les différentes variables
+    latitude = position.latitude;
+    longitude = position.longitude;
+  } catch (e) {
+    print(e);
+  }
+}
+
+// ---------- exemples doc ----------
 
 // Use try, catch, and finally to handle errors and cleanup in code that uses await:
 try {
@@ -2318,3 +2457,18 @@ class Llama {
 * To parse Dart code and generate HTML documentation, you can use the SDK’s documentation generation tool : https://github.com/dart-lang/dartdoc#dartdoc
 * For an example of generated documentation, see the Dart API documentation : https://api.dart.dev/stable
 * For advice on how to structure your comments, see Guidelines for Dart Doc Comments : https://dart.dev/guides/language/effective-dart/documentation
+
+
+## FONCTIONS CHEATSHEET
+
+* CAPITALIZE (ex. lundi 08 février => Lundi 08 Février)
+```java
+String capitalize(String string) {
+  if (string == null || string.isEmpty) return string;
+
+  return string
+      .split(' ')
+      .map((word) => word[0].toUpperCase() + word.substring(1))
+      .join(' ');
+}
+```

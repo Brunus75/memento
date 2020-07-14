@@ -181,6 +181,10 @@
 
 ## SPECIFICITES PYTHON
 
+* Trouver la liste des mots-clés :
+```py
+help("keywords") 
+```
 * Avec Python3, input renvoie systematiquement une "chaine de caractères"
 * Le point-virgule n'est JAMAIS utilisé en Python'
 * None # équivalent de Null
@@ -663,6 +667,12 @@ elif nombre_essai < nombre_mystere:
     print(f"Le nombre mystère est supérieur à {nombre_essai}")
 else:
     print(f"Le nombre mystère est inférieur à {nombre_essai}")
+
+# Use shorter if statements
+# Instead of writing:
+if myvar == 9 or myvar == 1 or myvar == 7
+# you can do the following:
+if myvar in [9, 1, 7]
 ```
 
 ## MODULES ET FONCTIONS

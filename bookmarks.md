@@ -96,6 +96,10 @@
 * WAVE Web Accessibility Evaluation Tool : https://wave.webaim.org/
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
 * DeLorean Ipsum Text Generator : https://satoristudio.net/delorean-ipsum/
+* Headlime is an app that generates loads of converting headlines for your to choose : https://headlime.io/
+* How to Save Your Brainpower and Code More Efficiently : https://www.freecodecamp.org/news/how-to-save-your-brainpower-and-code-more-efficiently/
+* Responsive Navigation Generator : https://wweb.dev/resources/navigation-generator
+* The Best Tools for Checking Your Website’s Speed : https://joetechreviews.com/the-best-tools-for-checking-your-websites-speed
 
 
 ## :pushpin: WEB DOCS
@@ -179,6 +183,7 @@
 * 2020 Developer Survey by Stack Overflow : https://insights.stackoverflow.com/survey/2020#overview
 * Comprendre WebAssembly en 5 minutes : https://www.jesuisundev.com/comprendre-webassembly-en-5-minutes/
 * 8 habitudes de développeur(euse)s qui font progresser : https://www.jesuisundev.com/8-habitudes-de-developpeurs/
+* HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
 
 
 ## :keyboard: WINDOWS
@@ -623,7 +628,7 @@
 * The 20 Best B2B Landing Page Examples of 2020 : https://unbounce.com/landing-page-examples/best-b2b-landing-page-examples
 * 203+ Web Design Resources You’d Actually Want to Use (& Bookmark) : https://the-webdesigner.co/web-design-development-resources
 * UI Inspiration: 22 Mobile Design Concepts with Interface Illustrations : https://icons8.com/articles/mobile-design-with-interface-illustrations
-
+* 24 examples of creative illustration use in mobile design : https://dribbble.com/stories/2020/07/10/illustration-in-mobile-design
 
 ### DESIGN
 
@@ -672,6 +677,7 @@
 * https://www.webdesignerdepot.com/2020/06/10-tools-i-cant-design-without/
 * How to Enhance Your Website Layouts With SVG Shapes : https://webdesign.tutsplus.com/tutorials/website-layouts-with-svg-shapes--cms-35259
 * 100 Free Fonts for Commercial and Personal Use : https://www.hongkiat.com/blog/free-fonts-for-commercial-personal-use
+* Générateur de formes rondes : https://squircley.app/
 
 ### UX/UI
 
@@ -835,3 +841,8 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Spacing in CSS : https://ishadeed.com/article/spacing-in-css/
 * Structure HTML et rendu CSS des balises : bloc et en-ligne : https://www.alsacreations.com/tuto/lire/530-La-structure-des-balises-bloc-et-en-ligne.html
 * https://ahrefs.com/blog/alt-text/
+* The beginner’s advanced guide to building an app : https://uxdesign.cc/break-it-down-or-the-making-of-an-app-part-i-b2f260c2dffb
+* Sick of Using Javascript for the Web? Use Browser Python Instead : https://medium.com/swlh/sick-of-javascript-just-use-browser-python-4b9679efe08b
+* Is WebP really better than JPEG? : https://siipo.la/blog/is-webp-really-better-than-jpeg
+* How To Secure And Protect A Website [We Asked 38 Experts] : https://secureblitz.com/how-to-secure-and-protect-a-website
+* 25 Most Common Web Developer Interview Questions And Answers [2020] : https://blog.codegiant.io/25-web-developer-interview-questions-and-answers-3030b21ae016

@@ -107,7 +107,7 @@ demande adresse utilisateur => récupération par le DNS récursif (FAI, OpenDNS
 
 * :framed_picture: **Framework** : application qui a déjà une architecture, des fichiers et des fonctions prêtes à l’emploi et conçue pour les développeurs et pour faciliter le développement d’un projet web
 
-* :joystick: **API** : interface permet de communiquer avec un service distant depuis notre appli
+* :joystick: **API** : interface qui permet de communiquer avec un service distant depuis notre appli
 
 * :dart: **Méthode AGILE** : priorité au client avec qui on a une communication régulière et qui valide ou ajuste toutes les opérations, étapes par étapes, objectifs à court terme pour accepter les changements et imprévus, flexibilité
 

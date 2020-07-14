@@ -23,6 +23,7 @@
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 * ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
+* https://stackoverflow.com/questions/43854647/flutter-how-does-it-work-behind-the-scenes
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -65,6 +66,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [CONSEILS](#conseils)
    * [ASTUCES](#astuces)
    * [STRUCTURE](#structure)
+   * [COMMANDES](#commandes)
+   * [LIFECYCLE](#lifecycle)
 * [INSTALLATION](#installation)
 * [LANCER FLUTTER SUR LE MOBILE](#flutter-sur-mobile)
 * [ANDROID STUDIO](#android-studio)   
@@ -78,6 +81,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
    * [WIDGETS LAYOUT](#widgets-layout)
 * [THEMES](#themes)
+* [API](#api)
+* [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
@@ -85,6 +90,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (5) : Drawer, SharedPreferences, JSON et API](#coda-meteo)
 * [EX D'APPLI (6) : SQFLITE](#coda-sqflite)
 * [EX D'APPLI (7) : Factorisation, constantes, création de Widgets](#bootcamp-bmi-calculator)
+* [EX D'APPLI (8) : Future, async, await, API, Navigator](#bootcamp-clima-api)
 
 
 ## FLUTTER
@@ -164,6 +170,7 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 * context = localisation du widget dans l'architecture de l'application. Permet à Flutter de savoir où l'on est et où l'on veut aller
 * slivers = parties d'une zone scrollable
 ### CONSEILS
+* La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
 ```java
 MaterialApp(
@@ -182,9 +189,10 @@ fontSize: 20.0, // variable Flutter
 // exceptions :
 maxLines: 2,
 ```
-* String en single quotes (convention Dart)
+* String en single quotes (convention Dart), sauf si apostrophes dans le String
 ```java
 String exemple = 'Je suis un string';
+String exempleWithApostrophe = "Je m'appelle Jean D'York";
 ```
 * Toujours préférer le pourcentage aux proportions précises + utiliser MediaQuery pour donner une taille aux widgets
 ```java
@@ -259,6 +267,11 @@ final = "valeur qui n'est assignée qu'une fois, mais n'importe quand"
 * Page qui dépassera le viewport = ListView
 * Page qui ne dépassera pas le viewport mais qui aura besoin d'être extensible (ex. ouverture du clavier) = SingleChildScrollView
 * Créer un nouveau widget personnalisé => il vaut mieux le créer from scratch que d'hériter un widget
+* Les constantes sont en camelCase, commencent par un k, et sont regroupées dans un fichier commun (ex. constants.dart)
+```java
+const kOneConstant = TextStyle(...);
+const kAnotherConstant = SizedBox(...);
+```
 ### ASTUCES
 * infinity (100%)
 ```java
@@ -347,6 +360,45 @@ factory Logger(String name) {
 ```java
 myWidget(@required this.property)
 ```
+* Lier un widget à un callback   
+   * Exemple : afficher dans le header de l'appli des informations qui attendent la réponse d'une API
+```java
+// ici la variable numberTour est liée au retour d'une API
+// le processus permet d'effectuer un setState dans un builder
+
+// si retour non vide de l'API
+if (snapshot.hasData) {
+
+  WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+    // alors le state de l'appli est changé
+    // et tous les widgets qui contiennent la variable numberTour
+    // seront changés en conséquence
+   numberTour = snapshot.data.length;
+  }));
+
+}
+```
+* Récupérer les propriétés du Stateful Widget dans le State avec le mot-clé ```widget```
+```java
+class LocationScreen extends StatefulWidget {
+  LocationScreen({this.locationWeather});
+
+  // ↓ accessible dans le State avec widget.locationWeather
+  final locationWeather;
+
+  @override
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    // opération possible grâce à widget
+    updateUI(widget.locationWeather);
+  }
+```
 ### STRUCTURE
 * Structure :
 ```py
@@ -365,6 +417,28 @@ flutter packages get // the package gets re-installed fresh
 flutter clean // clear Build Cache
 
 package défecteux = flutter packages + flutter clean
+```
+### LIFECYCLE
+* StateLess Widget
+```java
+Widget build(BuildContext contex) {
+  // called when the stateless widget gets built 
+  // (every time the stateless widget changes)
+}
+```
+* StateFul Widget
+```java
+void InitState() {
+  // called when the stateful widget is created and inserted into the tree
+}
+
+Widget build(BuildContext contex) {
+  // called when the inner widgets gets changed (color, text, ect.)
+}
+
+void deactivate() {
+  // called when the stateful widget gets destroyed
+}
 ```
 
 
@@ -454,6 +528,14 @@ dependencies:
   image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
   url_launcher: '>=5.4.0 <6.0.0' # range versions
   plugin: # dernière version stable
+```
+* Formater une date avec intl
+```java
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+final df = DateFormat('EEEE d MMMM', 'fr');
+String formattedDate = df.format(dateToFormat);
 ```
 
 
@@ -2771,6 +2853,9 @@ floatingActionButton: Theme(
 )
 ```
 
+## API
+* Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
+* HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
 
 ## PERSONNALISATION
 
@@ -5972,10 +6057,533 @@ Clima-Flutter-Completed/
       location_screen.dart
     services/
       location.dart
-      networking.dart
+      networking.dart # appel externe (API)
       weather.dart
     utilities/
       constants.dart
   main.dart
 pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: clima
+description: A new Flutter application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  geolocator: ^3.0.1
+  http: ^0.12.0+2
+  flutter_spinkit: ^3.1.0 # for the spinner
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - images/
+
+  fonts:
+  - family: Spartan MB
+    fonts:
+    - asset: fonts/SpartanMB-Black.otf
+      weight: 900
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:clima/screens/loading_screen.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: LoadingScreen(),
+    );
+  }
+}
+```
+* scratch.dart
+```java
+// fichier qui teste du code asynchrone
+import 'dart:io';
+
+void main() {
+  performTasks();
+}
+
+void performTasks() async {
+  task1();
+  // ↑ méthode synchrone qui sera exécutée instantanément
+  String task2Result = await task2();
+  // ↑ la variable task2Result attendra la complétion de task2()
+  // pour avoir une valeur
+  // et passer à la ligne suivante
+  // task2 = pour l'instant Instance of 'Future<String>'
+  // elle deviendra un String une fois task2() complétée
+  task3(task2Result);
+  // grâce au temps d'attente, task3 peut recevoir une variable non nulle
+}
+
+void task1() {
+  String result = 'task 1 data';
+  print('Task 1 complete');
+}
+
+Future<String> task2() async {
+  Duration threeSeconds = Duration(seconds: 3);
+
+  String result;
+
+  await Future.delayed(threeSeconds, () {
+    result = 'task 2 data';
+    print('Task 2 complete');
+  });
+
+  return result;
+}
+
+void task3(String task2Data) {
+  String result = 'task 3 data';
+  print('Task 3 complete with $task2Data');
+}
+
+// console :
+// Task 1 complete
+// 3 secondes s'écoulent...
+// Task 2 complete
+// Task 3 complete with task 2 data (en même temps que Task2)
+```
+* utilities/constants.dart
+```java
+import 'package:flutter/material.dart';
+
+const kTempTextStyle = TextStyle(
+  fontFamily: 'Spartan MB',
+  fontSize: 100.0,
+);
+
+const kMessageTextStyle = TextStyle(
+  fontFamily: 'Spartan MB',
+  fontSize: 60.0,
+);
+
+const kButtonTextStyle = TextStyle(
+  fontSize: 30.0,
+  fontFamily: 'Spartan MB',
+);
+
+const kConditionTextStyle = TextStyle(
+  fontSize: 100.0,
+);
+
+// InputDecoration of TextField
+const kTextFieldInputDecoration = InputDecoration(
+  filled: true,
+  fillColor: Colors.white,
+  icon: Icon(
+    Icons.location_city,
+    color: Colors.white,
+  ),
+  hintText: 'Enter City Name',
+  hintStyle: TextStyle(
+    color: Colors.grey,
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(
+      Radius.circular(10.0),
+    ),
+    borderSide: BorderSide.none,
+  ),
+);
+```
+* screens/loading_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:clima/services/weather.dart';
+
+class LoadingScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _LoadingScreenState();
+  }
+}
+
+class _LoadingScreenState extends State<LoadingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getLocationData();
+  }
+
+  // méthode asynchrone (suffixe async et préfixe await dans son body)
+  void getLocationData() async {
+    var weatherData = await WeatherModel().getLocationWeather();
+    // await permet d'attendre pour exécuter ce qui suit
+    // par exemple, faire un print(weatherData)
+    // si Future<dynamic> weatherData est utilisé
+    // alors print(weatherData) = instance of Future<dynamic>
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen(
+        locationWeather: weatherData,
+      );
+    }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        // ↓ spinner for the waiting
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100.0,
+        ),
+      ),
+    );
+  }
+}
+```
+* screens/location_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:clima/utilities/constants.dart';
+import 'package:clima/services/weather.dart';
+import 'city_screen.dart';
+
+class LocationScreen extends StatefulWidget {
+  LocationScreen({this.locationWeather});
+  // ↓ accessible dans le State avec widget.locationWeather
+  final locationWeather;
+
+  @override
+  _LocationScreenState createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weather = WeatherModel();
+  int temperature;
+  String weatherIcon;
+  String cityName;
+  String weatherMessage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    updateUI(widget.locationWeather);
+  }
+
+  void updateUI(dynamic weatherData) {
+    setState(() {
+      // ↓ évite à l'application de crasher
+      if (weatherData == null) {
+        temperature = 0;
+        weatherIcon = 'Error';
+        weatherMessage = 'Unable to get weather data';
+        cityName = '';
+        return; // permet de sortir de la fonction
+      }
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      var condition = weatherData['weather'][0]['id'];
+      weatherIcon = weather.getWeatherIcon(condition);
+      weatherMessage = weather.getMessage(temperature);
+      cityName = weatherData['name'];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/location_background.jpg'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.8), BlendMode.dstATop),
+          ),
+        ),
+        constraints: BoxConstraints.expand(),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    // ↓ MAJ de la localisation
+                    onPressed: () async {
+                      var weatherData = await weather.getLocationWeather();
+                      updateUI(weatherData);
+                    },
+                    child: Icon(
+                      Icons.near_me,
+                      size: 50.0,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      // ↓ récupère la data de la page cityScreen
+                      // quand elle revient en arrière (Navigator.pop)
+                      var typedName = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CityScreen();
+                          },
+                        ),
+                      );
+                      // si retour non vide
+                      // on recherche le weather data by city name
+                      if (typedName != null) {
+                        var weatherData =
+                            await weather.getCityWeather(typedName);
+                        updateUI(weatherData);
+                      }
+                    },
+                    child: Icon(
+                      Icons.location_city,
+                      size: 50.0,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      '$temperature°',
+                      style: kTempTextStyle,
+                    ),
+                    Text(
+                      weatherIcon,
+                      style: kConditionTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 15.0),
+                child: Text(
+                  '$weatherMessage in $cityName',
+                  textAlign: TextAlign.right,
+                  style: kMessageTextStyle,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+* screens/city_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:clima/utilities/constants.dart';
+
+class CityScreen extends StatefulWidget {
+  @override
+  _CityScreenState createState() => _CityScreenState();
+}
+
+class _CityScreenState extends State<CityScreen> {
+  String cityName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/city_background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        constraints: BoxConstraints.expand(),
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.topLeft,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 50.0,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: TextField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  decoration: kTextFieldInputDecoration,
+                  onChanged: (value) {
+                    cityName = value;
+                  },
+                ),
+              ),
+              FlatButton(
+                onPressed: () {
+                  // transmet la data dans la page précédente
+                  Navigator.pop(context, cityName);
+                },
+                child: Text(
+                  'Get Weather',
+                  style: kButtonTextStyle,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+* services/location.dart
+```java
+import 'package:geolocator/geolocator.dart';
+
+class Location {
+  double latitude;
+  double longitude;
+
+  Future<void> getCurrentLocation() async {
+    try {
+      Position position = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+      // plus la localisation est précise (ex. LocationAccuracy.high)
+      // plus elle demande des ressources
+      // await permet ensuite d'assigner les différentes variables
+      latitude = position.latitude;
+      longitude = position.longitude;
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+```
+* services/networking.dart
+```java
+import 'package:http/http.dart' as http;
+// on utilise l'alias http pour mieux
+// expliciter d'où vient la méthode get
+// et les éléments liés au package http
+import 'dart:convert';
+
+class NetworkHelper {
+  NetworkHelper(this.url);
+
+  final String url;
+
+  Future getData() async {
+    // http.get est plus explicte que get
+    http.Response response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      String data = response.body;
+      // ↓ grâce au package convert
+      // jsonDecode(data)['coord']['lon']
+      // pour avoir la longitude
+      // jsonDecode(data)['weather'][0]['description']
+      // pour avoir la description du temps, qui est encapsulé dans une liste
+      // 'weather': [{'description' : XXX, ...}]
+      return jsonDecode(data);
+    } else {
+      print(response.statusCode);
+    }
+  }
+}
+```
+* services/weather.dart
+```java
+import 'package:clima/services/location.dart';
+import 'package:clima/services/networking.dart';
+
+//TODO: use your own key !
+const apiKey = 'e72ca729af228beabd5d20e3b7749713';
+const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+
+class WeatherModel {
+  Future<dynamic> getCityWeather(String cityName) async {
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
+  // Future car le retour dépend de plusieurs await
+  // dynamic = le type de weatherData
+  Future<dynamic> getLocationWeather() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherMapURL?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
+  String getWeatherIcon(int condition) {
+    if (condition < 300) {
+      return '🌩';
+    } else if (condition < 400) {
+      return '🌧';
+    } else if (condition < 600) {
+      return '☔️';
+    } else if (condition < 700) {
+      return '☃️';
+    } else if (condition < 800) {
+      return '🌫';
+    } else if (condition == 800) {
+      return '☀️';
+    } else if (condition <= 804) {
+      return '☁️';
+    } else {
+      return '🤷‍';
+    }
+  }
+
+  String getMessage(int temp) {
+    if (temp > 25) {
+      return 'It\'s 🍦 time';
+    } else if (temp > 20) {
+      return 'Time for shorts and 👕';
+    } else if (temp < 10) {
+      return 'You\'ll need 🧣 and 🧤';
+    } else {
+      return 'Bring a 🧥 just in case';
+    }
+  }
+}
 ```
