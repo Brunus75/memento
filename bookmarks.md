@@ -184,6 +184,7 @@
 * Comprendre WebAssembly en 5 minutes : https://www.jesuisundev.com/comprendre-webassembly-en-5-minutes/
 * 8 habitudes de développeur(euse)s qui font progresser : https://www.jesuisundev.com/8-habitudes-de-developpeurs/
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
+* Developer Handbook 2020 : https://github.com/apptension/developer-handbook
 
 
 ## :keyboard: WINDOWS
@@ -706,6 +707,7 @@
 * 10 examples of custom 404 pages ranked from best to worst : https://uxdesign.cc/10-examples-of-custom-404-pages-ranked-from-best-to-worst-9c74825c18c9
 * A huge database of vector icons and illustrations : https://www.flaticon.com/
 * Writing design in a French style : https://uxdesign.cc/writing-design-in-a-french-style-36cff5f69f21
+* A list of 558 fully customizable free SVG icons : https://tablericons.com/
 
 
 ## :joystick: API

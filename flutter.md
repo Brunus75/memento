@@ -2856,6 +2856,74 @@ floatingActionButton: Theme(
 ## API
 * Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
+### DROPDOWN
+* https://stackoverflow.com/questions/55571328/how-to-implement-a-drop-down-list-in-flutter
+```java
+//This is the state of your class
+/// Is a good practice initialize the selection value.
+/// I'am doing this after dataFetch is completed.
+String _selectedLocation;
+
+/// we make the future object part of the state to avoid data fetching
+/// from web every time that build method is called·
+Future<List<ProductCategory>> _future;
+/// and now we store the category list as cache in widget state
+List<String> _categoryList;
+
+initState(){
+  // in initState we trigger the network call for load the dropdown menu options.
+  // this is part of trying to avoid recall data fetching from network every time
+  // that we need rebuild the widget.
+  _future = DataFetch().fetchCategoryList(
+      AppNavigation.getAPIUrl() + "productCategory/getAllProductCategories",
+      ProductCategory);
+}
+
+Widget _dropDownMenu() {
+  // if we haven't load the options from network yet... we await the future
+  // completes to create dropdown menu.
+  if (_categoryList == null) {
+    return FutureBuilder<List<ProductCategory>>(
+        future: _future,
+        builder: (context, snapshot) {
+          if (snapshot.hasError)
+            print(snapshot.error);
+
+          else if (snapshot.hasData) {
+            for (int i = 0; i < snapshot.data.length; i++)
+              _categoryList.add(snapshot.data[i].categoryName);
+
+            // I put this line just to grant that the initial option of
+            //dropdown menu has some valid value. You can erase if not needed.
+            _selectedLocation = snapshot.data[0].categoryName);
+            return _createDropDownMenu();
+          }
+          else return CircularProgressIndicator();
+        },);
+  }
+  // other way if we already load the options data we just create the dropdown menu
+  // we just populate the dropdown menu options with _categoryList values.
+  return _createDropDownMenu();
+}
+
+Widget _createDropDownMenu(){
+  return DropdownButton<String>(
+    hint: Text('Please choose'), // Not necessary for Option 1
+    value: _selectedLocation,
+    onChanged: (newValue) {
+      setState(() {
+        _selectedLocation = newValue;
+      });
+    },
+    items: _categoryList.map((data) {
+      return DropdownMenuItem<String>(
+          child: Text(data),
+          value: data,
+      );
+    }).toList(),
+  );
+}
+```
 
 ## PERSONNALISATION
 

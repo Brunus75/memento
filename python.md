@@ -127,6 +127,7 @@
 * ~ How To Send Mail With Python : https://www.youtube.com/watch?v=tsutigPVnaY&feature=youtu.be
 * ~ Python vs JavaScript for Pythonistas : https://realpython.com/python-vs-javascript/
 * ~ Creating a Discord Bot in Python : https://realpython.com/courses/discord-bot-python
+* ~ A beginner’s guide to robot programming with Python : https://thenextweb.com/syndication/2020/07/11/a-beginners-guide-to-robot-programming-with-python/
 * https://calmcode.io/
 * https://www.docstring.fr/blog/le-formatage-des-chaines-de-caracteres-avec-python/   
 
