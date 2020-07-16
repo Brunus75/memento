@@ -75,13 +75,36 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [PACKAGES](#packages)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
-   * [WIDGETS DE BASE (1)](#widgets-de-base)
-   * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)
+   * [WIDGETS DE BASE (1)](#widgets-de-base)   
+      * [MATERIAL APP](#material-app)
+      * [SCAFFOLD](#scaffold)
+      * [APPBAR](#appbar)
+      * [CONTAINER](#container)
+      * [CENTER](#center)
+      * [CARD](#card)
+      * [IMAGE.NETWORK](#image.network)
+      * [IMAGE.ASSETS](#image.assets)
+      * [TEXT](#text)
+      * [COLUMN](#column)
+      * [ROW](#row)
+      * [ICON](#icon)
+      * [ICON BUTTON](#icon-button)
+      * [FLOATING ACTION BUTTON](#floating-action-button)
+      * [FLAT BUTTON](#flat-button)
+      * [RAISED BUTTON](#raised-button)
+   * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)   
+      * [AJOUT D'UN BODY EXTERNE](#ajout-d-un-body-externe)
+      * [SNACKBAR](#snackbar)
+      * [ALERTDIALOG](#alertdialog)
+      * [SIMPLEDIALOG](#simpledialog)
+      * [NAVIGUER VERS UN SECOND SCAFFOLD](#naviguer-vers-un-second-scaffold)
+      * [WILLPOPSCOPE](#willpopscope)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
    * [WIDGETS LAYOUT](#widgets-layout)
 * [THEMES](#themes)
-* [API](#api)
+* [API](#api)   
+   * [FUTURE DROPDOWN](#future-dropdown)
 * [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
@@ -1738,7 +1761,101 @@ class _BodyState extends State<Body> {
     ));
   }
 ```
+#### WILLPOPSCOPE
+```java
+// ↓ empêche l'utilisateur de revenir en arrière
+return WillPopScope(
+        // ↓ expulse l'utilisateur de l'application s'il revient en arrière
+        onWillPop: () => SystemNavigator.pop(),
+        child: Scaffold( //...)
+      )
+```
+
 ### WIDGETS INTERACTIFS
+
+#### FORM
+* https://flutter.dev/docs/cookbook/forms/validation
+* https://flutter.dev/docs/cookbook/forms/text-field-changes
+```java
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final appTitle = 'Form Validation Demo';
+
+    return MaterialApp(
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(appTitle),
+        ),
+        body: MyCustomForm(),
+      ),
+    );
+  }
+}
+
+// Create a Form widget.
+class MyCustomForm extends StatefulWidget {
+  @override
+  MyCustomFormState createState() {
+    return MyCustomFormState();
+  }
+}
+
+// Create a corresponding State class.
+// This class holds data related to the form.
+class MyCustomFormState extends State<MyCustomForm> {
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a GlobalKey<FormState>,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    // Build a Form widget using the _formKey created above.
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            onChanged: (value) => _formKey.currentState.validate(), 
+            // valide le formulaire à la volée
+            // utilise pour supprimer le message d'erreur en continuant la saisie
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: RaisedButton(
+              onPressed: () {
+                // Validate returns true if the form is valid, or false
+                // otherwise.
+                if (_formKey.currentState.validate()) {
+                  // If the form is valid, display a Snackbar.
+                  Scaffold.of(context)
+                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                }
+              },
+              child: Text('Submit'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
 
 #### TEXTFIELD
 ```java
@@ -2172,6 +2289,75 @@ dependencies:
   flutter_localizations: # ++
     sdk: flutter
 ```
+#### DropdownButtonFormField (DropdownButton with validation)
+* https://stackoverflow.com/questions/52926335/how-validate-dropdown-in-flutter
+```java
+import 'package:flutter/material.dart';
+
+class FormValidationWithDropdown extends StatefulWidget {
+  @override
+  _FormValidationWithDropdownState createState() =>
+      _FormValidationWithDropdownState();
+}
+
+class _FormValidationWithDropdownState extends State<FormValidationWithDropdown> {
+  final _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
+  String selectedSalutation;
+  String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Form(
+        key: _formKey,
+        autovalidate: _autovalidate,
+        child: Column(
+          children: <Widget>[
+            DropdownButtonFormField<String>(
+              value: selectedSalutation,
+              hint: Text(
+                'Salutation',
+              ),
+              onChanged: (salutation) =>
+                  setState(() => selectedSalutation = salutation),
+              validator: (value) => value == null ? 'field required' : null,
+              items:
+                  ['MR.', 'MS.'].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            TextFormField(
+              decoration: InputDecoration(hintText: 'Name'),
+              validator: (value) => value.isEmpty ? 'Name is required' : null,
+              onSaved: (value) => name = value,
+            ),
+            FlatButton(
+              child: Text('PROCEED'),
+              color: Colors.green,
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  //form is valid, proceed further
+                  _formKey.currentState.save();//save once fields are valid, onSaved method invoked for every form fields
+
+                } else {
+                  setState(() {
+                    _autovalidate = true; //enable realtime validation
+                  });
+                }
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
 ### WIDGETS SCROLLABLES
 
 #### SINGLECHILDSCROLLVIEW
@@ -2856,7 +3042,7 @@ floatingActionButton: Theme(
 ## API
 * Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
-### DROPDOWN
+### FUTURE DROPDOWN
 * https://stackoverflow.com/questions/55571328/how-to-implement-a-drop-down-list-in-flutter
 ```java
 //This is the state of your class
@@ -2898,6 +3084,7 @@ Widget _dropDownMenu() {
             _selectedLocation = snapshot.data[0].categoryName);
             return _createDropDownMenu();
           }
+          // ↓ ce qu'affiche l'appli le temps du chargement (obligatoire)
           else return CircularProgressIndicator();
         },);
   }
