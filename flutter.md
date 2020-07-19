@@ -42,6 +42,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Codabee Flutter: le forum d'entraide : https://www.facebook.com/groups/225660591356238
 * Dart Async Library : https://api.flutter.dev/flutter/dart-async/dart-async-library.html
 * https://www.didierboelens.com/fr/
+* CHEATSHEET TRANSPARENCY HEXADECIMAL : https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -98,11 +99,33 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [ALERTDIALOG](#alertdialog)
       * [SIMPLEDIALOG](#simpledialog)
       * [NAVIGUER VERS UN SECOND SCAFFOLD](#naviguer-vers-un-second-scaffold)
+      * [PASSER DES ARGS AVEC PUSHNAMED](#passer-des-args-avec-pushnamed)
       * [WILLPOPSCOPE](#willpopscope)
-   * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)
-   * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)
-   * [WIDGETS LAYOUT](#widgets-layout)
-* [THEMES](#themes)
+   * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)   
+      * [FORM](#form)
+      * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
+      * [TEXTFIELD](#TEXTFIELD)
+      * [CHECKBOX](#CHECKBOX)
+      * [RADIO](#RADIO)
+      * [SWITCH](#SWITCH)
+      * [SLIDER](#SLIDER)
+      * [DATE TIME PICKERS](#DATE-TIME-PICKERS)
+      * [DROPDOWNBUTTONFORMFIELD](#DROPDOWNBUTTONFORMFIELD)
+   * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
+      * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
+      * [LISTVIEW ET LISTTILE](#LISTVIEW-ET-LISTTILE)
+      * [DISMISSIBLE](#DISMISSIBLE)
+      * [CUSTOMTILE](#CUSTOMTILE)
+      * [INKWELL](#INKWELL)
+      * [VERIFIER ORIENTATION DEVICE](#VERIFIER-ORIENTATION-DEVICE)
+      * [CHOISIR ORIENTATION DEVICE](#CHOISIR-ORIENTATION-DEVICE)
+      * [GRIDVIEW](#GRIDVIEW)
+      * [LISTE OU GRILLE SELON ORIENTATION](#LISTE-OU-GRILLE-SELON-ORIENTATION)
+   * [WIDGETS LAYOUT](#widgets-layout)   
+      * [STACK](#STACK)
+      * [VISIBILTY](#VISIBILTY)
+      * [EXPANDED](#EXPANDED)
+* [THEMES, COLORS](#themes)
 * [API](#api)   
    * [FUTURE DROPDOWN](#future-dropdown)
 * [PERSONNALISATION](#personnalisation)
@@ -422,6 +445,15 @@ class _LocationScreenState extends State<LocationScreen> {
     updateUI(widget.locationWeather);
   }
 ```
+* Donner une taille à un bouton
+```java
+SizedBox(
+	width: MediaQuery.of(context).size.width * 0.6,
+	child: RaisedButton(...)
+)
+```
+
+
 ### STRUCTURE
 * Structure :
 ```py
@@ -848,6 +880,8 @@ class _Home extends State<Home> {
         decoration: BoxDecoration( // ajouter des bordures, un box-shadow, ect.
           color: Colors.blue, // remplace color du container
           borderRadius: BorderRadius.circular(20.0), // bords arrondis
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)), // bords arrondis personnalisés
           border: Border.all(
             color: Colors.white, // si pas de decoration, renseigner simplement la propriété seule (comme height)
             width: 2.0,
@@ -1761,6 +1795,14 @@ class _BodyState extends State<Body> {
     ));
   }
 ```
+### PASSER DES ARGS AVEC PUSHNAMED
+```java
+Navigator.pushNamed(
+	context,
+	"/urlDestination",
+	arguments: Object(arg1: value1, arg2: value2),
+);
+```
 #### WILLPOPSCOPE
 ```java
 // ↓ empêche l'utilisateur de revenir en arrière
@@ -1855,6 +1897,29 @@ class MyCustomFormState extends State<MyCustomForm> {
     );
   }
 }
+```
+
+### VALIDATION FORMULAIRE A LA VOLEE
+```java
+class _XState extends State<X> {
+  final _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
+
+Form(
+  key: _formKey,
+  autovalidate: _autovalidate,
+	onPressed: submitForm,
+)
+
+void submitForm() {
+    if (_formKey.currentState.validate()) {
+      // validation
+    } else {
+      // valide le formulaire à la volée
+      // et permet d'enlever les messages d'erreur
+      setState(() => _autovalidate = true);
+    }
+  }
 ```
 
 #### TEXTFIELD
@@ -2289,7 +2354,8 @@ dependencies:
   flutter_localizations: # ++
     sdk: flutter
 ```
-#### DropdownButtonFormField (DropdownButton with validation)
+#### DROPDOWNBUTTONFORMFIELD
+* DropdownButton with validation
 * https://stackoverflow.com/questions/52926335/how-validate-dropdown-in-flutter
 ```java
 import 'package:flutter/material.dart';
@@ -2356,6 +2422,28 @@ class _FormValidationWithDropdownState extends State<FormValidationWithDropdown>
     );
   }
 }
+
+// exemple générique
+// ↓ encapsulé dans un widget Form, avec sa key
+// + vérification de la validté du bouton avec formKey.currentState.validate
+DropdownButtonFormField(
+  // ↓ enlève le underline
+  decoration: InputDecoration.collapsed(),
+  hint: Text('Placeholder'),
+  value: _valueUser,
+  items: maListe.map((data) {
+      return DropdownMenuItem(
+        child: Text(data),
+        value: data,
+      );
+    }).toList(),
+  onChanged: (value) {
+      setState(() {
+        _valueUser = value;
+      });
+    },
+  validator: (value) => value == null ? 'Message d\'erreur' : null,
+);
 ```
 
 ### WIDGETS SCROLLABLES
@@ -2893,9 +2981,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 ```
 
-## WIDGETS LAYOUT
+### WIDGETS LAYOUT
 
-### STACK
+#### STACK
 * Permet de superposer des containers
 * https://api.flutter.dev/flutter/widgets/Stack-class.html
 * Peut-être utilisé avec le widget Positioned : https://api.flutter.dev/flutter/widgets/Positioned-class.html
@@ -2941,7 +3029,7 @@ class StackDemo extends StatelessWidget {
   }
 }
 ```
-### VISIBILTY
+#### VISIBILTY
 * Display = none/block;
 ```java
 Visibility(
@@ -2965,7 +3053,7 @@ Visibility(
   ),
 ),
 ```
-### EXPANDED
+#### EXPANDED
 * Permettre à son enfant de prendre toute la place disponible
 * https://api.flutter.dev/flutter/widgets/Expanded-class.html
 
@@ -3037,6 +3125,14 @@ floatingActionButton: Theme(
     child: Icon(Icons.add),
   )
 )
+```
+### CHEATSHEET TRANSPARENCY HEXADECIMAL
+* https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+```java
+// Black
+Color(0xFF000000)
+// Black 20%
+Color(0x33000000)
 ```
 
 ## API
@@ -4685,7 +4781,7 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      // ↓ notre drawer, menu coulissant
+      // ↓ notre drawer à gauche (voir endDrawer pour la droite), menu coulissant
       drawer: Drawer(
         child: Container(
           child: ListView.builder(
@@ -4738,6 +4834,7 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.blue,
         ),
       ),
+      endDrawer: // drawer à droite
       body: (tempsActuel == null)
           ? Center(
         child: Text((villeChoisie == null)? widget.villeDeLutilisateur: villeChoisie),

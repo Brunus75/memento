@@ -638,3 +638,20 @@ IPv6Address('2001:af3::')
 >>> myfunc.__name__
 'myfunc'
 ```
+
+## Class inheritance and the issubclass() built-in
+```py
+# You can check for class
+# inheritance relationships 
+# with the "issubclass()" built-in:
+
+>>> class BaseClass: pass
+>>> class SubClass(BaseClass): pass
+
+>>> issubclass(SubClass, BaseClass)
+True
+>>> issubclass(SubClass, object)
+True
+>>> issubclass(BaseClass, SubClass)
+False
+```
