@@ -123,6 +123,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [LISTE OU GRILLE SELON ORIENTATION](#LISTE-OU-GRILLE-SELON-ORIENTATION)
    * [WIDGETS LAYOUT](#widgets-layout)   
       * [STACK](#STACK)
+      * [POSITIONED](#POSITIONED)
+      * [BOTTOMNAVIGATIONBAR](#BOTTOMNAVIGATIONBAR)
       * [VISIBILTY](#VISIBILTY)
       * [EXPANDED](#EXPANDED)
 * [THEMES, COLORS](#themes)
@@ -1809,6 +1811,10 @@ Navigator.pushNamed(
 return WillPopScope(
         // ↓ expulse l'utilisateur de l'application s'il revient en arrière
         onWillPop: () => SystemNavigator.pop(),
+        appBar: AppBar(
+          // ↓ enlève l'icone
+          automaticallyImplyLeading: false,
+        ),
         child: Scaffold( //...)
       )
 ```
@@ -3029,6 +3035,77 @@ class StackDemo extends StatelessWidget {
   }
 }
 ```
+#### POSITIONED
+* Permet de placer l'enfant dans le Stack
+```java
+// placer le widget 2 comme footer du Stack
+Stack (
+	Widget1(),
+  // ↓ widget positionné dans le Stack
+  Positioned(
+    left: 0,
+    right: 0,
+    // permet la position en bas
+    bottom: 0,
+    child: Widget2(),
+  ),
+)
+```
+#### BOTTOMNAVIGATIONBAR
+* Equivalent du footer
+* Footer au bords arrondis : https://stackoverflow.com/questions/56577265/how-to-set-border-radius-to-bottom-app-bar-in-a-flutter-app
+```java
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Some Text'),
+      ),
+      body: Stack(
+        children: <Widget>[
+          bodyContent,
+          // ↓ permet sa place en bas de l'écran
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: bottomNavigationBar,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get bodyContent {
+    return Container(color: Colors.red);
+  }
+
+  // alternative un Container() personnalisé
+  Widget get bottomNavigationBar {
+    // ↓ permet les bords arrondis
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topRight: Radius.circular(40),
+        topLeft: Radius.circular(40),
+      ),
+      child: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('1')),
+          BottomNavigationBarItem(icon: Icon(Icons.usb), title: Text('2')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_ind), title: Text('3')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.multiline_chart), title: Text('4')),
+        ],
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+      ),
+    );
+  }
+}
+```
 #### VISIBILTY
 * Display = none/block;
 ```java
@@ -3056,6 +3133,18 @@ Visibility(
 #### EXPANDED
 * Permettre à son enfant de prendre toute la place disponible
 * https://api.flutter.dev/flutter/widgets/Expanded-class.html
+* doit forcément se trouver dans un Widget Row, Column ou Flex (pour pouvoir déterminer l'axe)
+* peut importe le type des enfants
+```java
+Row(
+	// prendra l'espace disponible de la Row
+	Expanded(
+		Container(...)
+	),
+	Column(...)
+)
+```
+### 
 
 ## THEMES
 * https://flutter.dev/docs/cookbook/design/themes
