@@ -2472,3 +2472,9 @@ String capitalize(String string) {
       .join(' ');
 }
 ```
+* TRUNCATE[...]
+```java
+String truncateString(String text) {
+  return text.length < 30 ? text : '${text.substring(0, 30)}[...]';
+}
+```

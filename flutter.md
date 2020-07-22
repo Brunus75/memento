@@ -101,6 +101,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [NAVIGUER VERS UN SECOND SCAFFOLD](#naviguer-vers-un-second-scaffold)
       * [PASSER DES ARGS AVEC PUSHNAMED](#passer-des-args-avec-pushnamed)
       * [WILLPOPSCOPE](#willpopscope)
+      * [ALERTDIALOG IN WILLPOPSCOPE](#ALERTDIALOG-IN-WILLPOPSCOPE)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)   
       * [FORM](#form)
       * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
@@ -130,6 +131,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [THEMES, COLORS](#themes)
 * [API](#api)   
    * [FUTURE DROPDOWN](#future-dropdown)
+   * [AFFICHER UNE DONNEE API VIA UNE ROUTE](#AFFICHER-UNE-DONNEE-API-VIA-UNE-ROUTE)
+   * [MAP BUILDER FUTURE](#MAP-BUILDER-FUTURE)
 * [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
@@ -1818,6 +1821,39 @@ return WillPopScope(
         child: Scaffold( //...)
       )
 ```
+#### ALERTDIALOG IN WILLPOPSCOPE
+```java
+return WillPopScope(
+      onWillPop: callAlert,
+      child: Scaffold(...)
+);
+
+Future<bool> callAlert() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Vous êtes sur le point de quitter l'application"),
+        content: Text("Que souhaitez-vous faire ?"),
+        actions: <Widget>[
+          FlatButton(
+              // l'utilisateur reste sur la page
+              onPressed: () => Navigator.pop(context),
+              child: Text('Rester sur la page')),
+          FlatButton(
+              // l'utilisateur revient sur la page d'accueil
+              onPressed: () => Navigator.pushNamed(context, "/home",),
+              child: Text("Revenir sur la page d'accueil")),
+          FlatButton(
+              // l'utilisateur est expulsé de l'application
+              onPressed: () => SystemNavigator.pop(),
+              child: Text("Quitter l'application")),
+        ],
+      );
+    }) ?? false; // important car onWillPop demande un booléen (ici false par défaut)
+  }
+```
 
 ### WIDGETS INTERACTIFS
 
@@ -3293,6 +3329,138 @@ Widget _createDropDownMenu(){
           value: data,
       );
     }).toList(),
+  );
+}
+```
+### AFFICHER UNE DONNEE API VIA UNE ROUTE
+```java
+import 'package:http/http.dart' as http;
+import 'package:mon_appli/src/data/article.dart';
+
+class ApiArticle {
+
+  Future<Article> fetchAuthor({int authorId}) async {
+    final response = await http.get(apiUrl);
+
+    if (response.statusCode == 200) {
+      return Author.fromJson(json.decode(response.body));
+    } else {
+      throw Exception("Erreur lors du chargement de l'auteur");
+    }
+  }
+
+}
+```
+```java
+// récupération de l'objet envoyé via Navigator.push
+final Article article = ModalRoute.of(context).settings.arguments;
+// appel API grâce à l'objet récupéré
+futureAuthor = ApiArticle().fetchAuthor(id: article.authorId)
+
+FutureBuilder<Author>(
+  future: futureAuthor,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return Text('Auteur : ${snapshot.data.prenom} ${snapshot.data.nom}');
+    } else if (snapshot.hasError) {
+      return Text("${snapshot.error}");
+    } // message by default
+    return Text('Auteur introuvable');
+  },
+)
+```
+### MAP BUILDER FUTURE
+```java
+import 'package:http/http.dart' as http;
+import 'package:my_app/src/data/author.dart';
+
+class ApiAuthor {
+
+  Future<List<Author>> fetchAuthorsByGenre({String genre}) async {
+
+    final response = await http.get(urlApiAuthorsByGenre);
+
+    if (response.statusCode == 200) {
+      return compute(parseAuthor, response.body);
+    } else {
+      throw Exception('Erreur lors du chargement des auteurs');
+    }
+  }
+
+  List<Author> parseAuthor(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<Author>((json) => Author.fromJson(json)).toList();
+  }
+
+}
+```
+```java
+  String _selectedAuthorName;
+  String _selectedAuthorId;
+
+  Map<String, String> _authorList;
+
+  @override
+  void initState() {
+    // appel à l'API de l'ensemble des auteurs de SCIFI
+    _futureListAuthors = ApiAuthor().fetchAuthorsByGenre(genre: 'SF');
+    super.initState();
+  }
+
+// ↓ création d'une map (id, name) d'auteurs
+Widget authorDropDownMenu() {
+  if (_authorList == null) {
+    _authorList = HashMap<String, String>();
+    return FutureBuilder<List<Author>>(
+      future: _futureListAuthors,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          print(snapshot.error);
+        } else if (snapshot.hasData) {
+          for (int i = 0; i < snapshot.data.length; i++) {
+            if (snapshot.data[i].name != null) {
+              _authorList.putIfAbsent(snapshot.data[i].id.toString(),
+                  () => snapshot.data[i].name);
+            }
+          }
+          return authorDropDownButton();
+          // ↓ on affiche du texte vide le temps du chargement des données
+        } else
+          return DropdownMenuItem(child: Text('Chargement des auteurs...'));
+      },
+    );
+  } // si les données sont déjà chargées, on les affiche
+  return authorDropDownButton();
+}
+
+// ↓ création des items du DropDownButton
+// le choix de l'auteur s'accompagne du choix de son id
+Widget authorDropDownButton() {
+  return DropdownButtonFormField(
+    decoration: InputDecoration.collapsed(),
+    hint: Text('Choisissez votre auteur'),
+    value: _selectedAuthorName,
+    items: _authorList
+        .map((id, name) {
+          return MapEntry(
+              id,
+              DropdownMenuItem<String>(
+                child: Text(name),
+                value: name,
+              ));
+        })
+        .values
+        .toList(),
+    onChanged: (value) {
+      setState(() {
+        _selectedAuthorName = value;
+        _selectedAuthorId = _authorList.keys.firstWhere(
+            (k) => _authorList[k] == _selectedAuthorName,
+            orElse: () => null);
+      });
+    },
+    validator: (value) =>
+        value == null ? 'Veuillez renseigner un auteur' : null,
   );
 }
 ```

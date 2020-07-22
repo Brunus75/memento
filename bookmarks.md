@@ -515,6 +515,7 @@
 * CSS :is() and :where() are coming to browsers : https://webplatform.news/issues/2020-06-04
 * 32+ CSS Animation Examples : https://csshint.com/css-animation
 * 28+ CSS Image Effects : https://csshint.com/css-image-effects
+* CSS Effects Snippets : https://emilkowalski.github.io/css-effects-snippets/
 
 ### BOOTSTRAP
 
@@ -679,6 +680,7 @@
 * How to Enhance Your Website Layouts With SVG Shapes : https://webdesign.tutsplus.com/tutorials/website-layouts-with-svg-shapes--cms-35259
 * 100 Free Fonts for Commercial and Personal Use : https://www.hongkiat.com/blog/free-fonts-for-commercial-personal-use
 * Générateur de formes rondes : https://squircley.app/
+* A visual generator to build organic-looking shapes with the help of the CSS3 border-radius property : https://9elements.github.io/fancy-border-radius/
 
 ### UX/UI
 
@@ -810,6 +812,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.pixeden.com/psd-web-elements/modern-psd-responsive-showcase
 * https://www.pixeden.com/psd-web-elements/psd-screen-web-showcase
 * Mirror Resume | spovv.com : http://spovv.com/mirror-resume
+* https://zehfernandes.github.io/screeener/
 
 
 ## :heavy_heart_exclamation: SITES WEB
