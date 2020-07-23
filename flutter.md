@@ -457,6 +457,44 @@ SizedBox(
 	child: RaisedButton(...)
 )
 ```
+* IF dans un Widget
+```java
+Stack(
+  alignment: Alignment.center,
+  children: <Widget>[
+    WidgetOne(),
+    if (condition)
+    WidgetTwo(),
+  ]
+),
+```
+* Cercle
+```java
+Container(
+  width: 24.0,
+  height: 24.0,
+  decoration: BoxDecoration(
+      color: Colors.grey,
+      shape: BoxShape.circle)
+),
+```
+* Container de background
+```java
+Stack(
+  children: <Widget>[
+  // container d'arrière plan, décoratif
+  // part du bas pour remplir l'écran
+  Positioned(
+    left: 0,
+    right: 0,
+    bottom: 0,
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.6,
+      color: kConfigBackgroundColor,
+    ),
+  ),
+)
+```
 
 
 ### STRUCTURE
@@ -1025,6 +1063,7 @@ class _Home extends State<Home> {
 }
 ```
 #### TEXT
+* Text wrap : https://stackoverflow.com/questions/51930754/flutter-wrapping-text
 ```java
 class _Home extends State<Home> { 
   @override
@@ -1050,6 +1089,13 @@ class _Home extends State<Home> {
         child: Text(
           "Aprentissage de Flutter", // le container s'adapte à la taille de son enfant
         ),
+        // ↓ text wrap
+        // wrap en fade
+        Expanded(
+          child: Text('Texte très loooooooong', overflow: TextOverflow.fade, softWrap: false,),
+        ),
+        // wrap[...]
+        Text("This is a long text", overflow: TextOverflow.ellipsis,),
       ),
     );
   }
@@ -2547,6 +2593,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: ListView.builder(
+          // ↓ rend le Listview scrollable
+          scrollDirection: Axis.vertical, // optionnel
+          shrinkWrap: true, // permet de scroller
+          physics: ScrollPhysics(), // permet de scroller hors du viewport
+
           itemCount: activites.length, // nombre d'éléments dans la liste
           // ↓ créateur de la liste (boucle)
           itemBuilder: (context, index) {
@@ -3034,6 +3085,8 @@ class StackDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      // ↓ aligne les widgets au centre du Stack
+      alignment: Alignment.center,
       children: <Widget>[
         // The containers in the background
         Column(
@@ -3070,6 +3123,23 @@ class StackDemo extends StatelessWidget {
     );
   }
 }
+```
+```java
+// CONTAINER DE BACKGROUND
+Stack(
+  children: <Widget>[
+  // container d'arrière plan, décoratif
+  // part du bas pour remplir l'écran
+  Positioned(
+    left: 0,
+    right: 0,
+    bottom: 0,
+    child: Container(
+      height: MediaQuery.of(context).size.height * 0.6,
+      color: kConfigBackgroundColor,
+    ),
+  ),
+)
 ```
 #### POSITIONED
 * Permet de placer l'enfant dans le Stack

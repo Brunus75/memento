@@ -100,6 +100,7 @@
 * How to Save Your Brainpower and Code More Efficiently : https://www.freecodecamp.org/news/how-to-save-your-brainpower-and-code-more-efficiently/
 * Responsive Navigation Generator : https://wweb.dev/resources/navigation-generator
 * The Best Tools for Checking Your Website’s Speed : https://joetechreviews.com/the-best-tools-for-checking-your-websites-speed
+* Kraken to compress image file sizes without compromising the quality : https://www.webfx.com/blog/web-design/website-best-practices-checklist
 
 
 ## :pushpin: WEB DOCS
@@ -185,6 +186,7 @@
 * 8 habitudes de développeur(euse)s qui font progresser : https://www.jesuisundev.com/8-habitudes-de-developpeurs/
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
 * Developer Handbook 2020 : https://github.com/apptension/developer-handbook
+* 5 applications pour faciliter ta vie de développeur : https://www.youtube.com/watch?v=2Ik--PTmj7k&
 
 
 ## :keyboard: WINDOWS
@@ -423,6 +425,7 @@
 * A collection of tools for developers who have little to no artistic talent : https://nodesign.dev
 * MDN Web Docs Front-end developer learning pathway : https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer
 * Sign-in form best practices : https://web.dev/sign-in-form-best-practices/
+* Website Best Practices Checklist: 9 Web Design Best Practices : https://www.webfx.com/blog/web-design/website-best-practices-checklist
 
 ### SANDBOX
 
@@ -851,3 +854,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Is WebP really better than JPEG? : https://siipo.la/blog/is-webp-really-better-than-jpeg
 * How To Secure And Protect A Website [We Asked 38 Experts] : https://secureblitz.com/how-to-secure-and-protect-a-website
 * 25 Most Common Web Developer Interview Questions And Answers [2020] : https://blog.codegiant.io/25-web-developer-interview-questions-and-answers-3030b21ae016
+* Modern CSS grid solutions to common layout problems : https://vycke.dev/blog/css-layout-patterns
+* Hosting and Security: Are You Leaving Your Doors Open Without Knowing it? : https://www.noupe.com/technology/hosting-and-security.html

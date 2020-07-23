@@ -129,7 +129,8 @@
 * ~ Creating a Discord Bot in Python : https://realpython.com/courses/discord-bot-python
 * ~ A beginner’s guide to robot programming with Python : https://thenextweb.com/syndication/2020/07/11/a-beginners-guide-to-robot-programming-with-python/
 * https://calmcode.io/
-* https://www.docstring.fr/blog/le-formatage-des-chaines-de-caracteres-avec-python/   
+* https://www.docstring.fr/blog/le-formatage-des-chaines-de-caracteres-avec-python/
+*  Top 8 Free Resources to Learn Python  : https://dev.to/dev0928/top-8-free-resources-to-learn-python-2a1p   
 
 
 ## INSTALLATION

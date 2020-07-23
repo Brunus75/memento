@@ -15,6 +15,13 @@
 <!-- empêchera un utilisateur d'entrer autre chose que des chiffres, et limitera leur nombre à 3 chiffres -->
 ```
 
+## Revenir en arrière
+* HTML5 provides for a relatively straightforward solution: the HTML5 History API : http://diveintohtml5.info/history.html 
+* More specifically, the history.pushState() function allows a site to invoke a URL change
+without a page reload, meaning the site can align the browser “Back” button behavior
+to match user expectations.
+(The reverse is also possible: to change the URL without invoking an entry in the user’s history.)
+
 ## <a name="lazy-loading"></a> HTML lazy loading for images (Firefox)
 
 * Lazy loading is a common strategy to improve performance by identifying resources as non-blocking (non-critical) and loading them only when needed, rather than loading them all immediately.
