@@ -930,6 +930,10 @@ class _Home extends State<Home> {
             width: 2.0,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          // une ombre (elevation) au container
+          boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.3), spreadRadius: 5, blurRadius: 7, offset: Offset(3.0, 3.0))
+            ],
         ),
         child:
           // élément contenu dans le container

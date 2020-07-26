@@ -130,7 +130,10 @@
 * ~ A beginner’s guide to robot programming with Python : https://thenextweb.com/syndication/2020/07/11/a-beginners-guide-to-robot-programming-with-python/
 * https://calmcode.io/
 * https://www.docstring.fr/blog/le-formatage-des-chaines-de-caracteres-avec-python/
-*  Top 8 Free Resources to Learn Python  : https://dev.to/dev0928/top-8-free-resources-to-learn-python-2a1p   
+*  Top 8 Free Resources to Learn Python  : https://dev.to/dev0928/top-8-free-resources-to-learn-python-2a1p
+* ~ Python Packages: Five Real Python Favorites : https://realpython.com/python-packages/
+*  30 Days of Python 👨‍💻 - Day 30 - Free Python Resources : https://dev.to/arindamdawn/30-days-of-python-day-30-free-python-resources-2mam
+* The 22 Most-Used Python Packages in the World : https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e   
 
 
 ## INSTALLATION
@@ -6320,6 +6323,7 @@ for day in full_calendar(2020):
 * Pandas = introduit un objet très pratique appelé le Dataframe. 
 Ce dernier s'apparente beaucoup à ce qu'il est possible de faire dans des 
 logiciels de type tableur: des tableaux avec plein de nombres dedans !
+* Poetry = Python dependency management and packaging made easy.
 
 
 ## <a name="python-html"></a> PYTHON & HTML

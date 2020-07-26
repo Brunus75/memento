@@ -90,8 +90,10 @@
    * [IMPORT A PART](#import-a-part)
    * [PRIVACY](#privacy)
    * [LAZY LOADING](#lazy-loading)
+   * [DART CORE LIBRARY](#DART-CORE-LIBRARY)   
+      * [DATETIME](#DATETIME)
    * [CREATE LIBRARY](#create-library)
-   * [SOME LIBRAIRIES](#some-library)   
+   * [SOME LIBRARIES](#some-libraries)   
       * [MATH LIBRARY](#math-library)
 * [GENERATORS](#generators)
 * [CALLABLE CLASS](#callable-class)
@@ -214,7 +216,15 @@ var s = r'In a raw string, not even \n gets special treatment.';
 trim() // Returns the string without any leading and trailing whitespace.
 compareTo() // Compares this object to another.
 replaceAll() // Replaces all substrings that match the specified pattern with a given value.
+
 split() // Splits the string at matches of the specified delimiter and returns a list of substrings.
+String text = "2019-04-01 07:00:00,2019-04-01 07:15:00";
+print(text.split(",")[0].split(" ")[1]);
+// [2019-04-01 07:00:00, 2019-04-01 07:15:00]
+// 2019-04-01 07:00:00
+// [2019-04-01, 07:00:00]
+// 07:00:00
+
 substring() // Returns the substring of this string that extends from startIndex, inclusive, to endIndex, exclusive.
 toString() // Returns a string representation of this object.
 toDouble() // Returns a double representation of this object.
@@ -2038,9 +2048,45 @@ Future greet() async {
 // You can invoke loadLibrary() multiple times on a library without problems. 
 // The library is loaded only once.
 ```
+### DART CORE LIBRARY
+#### DATETIME
+* https://api.dart.dev/stable/2.8.4/dart-core/DateTime-class.html
+* https://pub.dev/documentation/intl/latest/intl/DateFormat-class.html
+```java
+String text = "2019-04-01 07:00:00,2019-04-01 07:15:00";
+
+// DART FORMAT TEXT
+import 'package:intl/intl.dart';
+
+DateTime startDate = DateTime.parse(text.split(",")[0]); // 2019-04-01 07:00:00
+final myFormat = DateFormat("HH:mm", 'fr');
+String _formattedDate = myFormat.format(startDate);
+print('$_formattedDate'); // 07:00
+
+// DIFFERENCE BETWEEN DATES
+String taskRange = "2019-04-01 07:15:00,2019-04-01 07:45:00";
+String taskRange = "2019-04-01 09:30:00,2019-04-01 10:35:00";
+
+DateTime lower = DateTime.parse(taskRange.split(",")[0]); // 2019-04-01 07:15:00
+DateTime upper = DateTime.parse(taskRange.split(",")[1]); // 2019-04-01 07:45:00
+
+Duration taskDuration = upper.difference(lower); // différence entre les 2 dates
+
+// si la différence (et donc la durée) > 1 heure, alors on opte pour l'affichage XhXX
+String taskHours = taskDuration.inHours > 0
+    ? '${taskDuration.inHours.remainder(60).toString()}h'
+    : '';
+// sinon, pour l'affichage XXmin
+String taskMinutes = taskDuration.inHours > 0
+    ? '${taskDuration.inMinutes.remainder(60).toString().padLeft(2, '0')}'
+    : '${taskDuration.inMinutes.toString().padLeft(2, '0')}min'; // si moins de 2 caractères, on rajoute un zéro à gauche (5 devient 05)
+print('${taskHours}$taskMinutes');
+// 30min pour le premier exemple
+// 1h05 pour le second
+```
 ### CREATE LIBRARY
 * Create Library Packages : https://dart.dev/guides/libraries/create-library-packages
-### SOME LIBRAIRIES
+### SOME LIBRARIES
 #### MATH LIBRARY
 * https://api.dart.dev/stable/2.8.4/dart-math/dart-math-library.html
 ```java

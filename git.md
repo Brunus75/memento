@@ -14,11 +14,13 @@
 * Git & GitHub : Le Cours Pour Les Débutants : https://www.youtube.com/watch?v=4o9qzbssfII
 * LES BASES DE GIT (tuto débutant) : https://www.youtube.com/watch?v=gp_k0UVOYMw&feature=youtu.be
 * https://www.jesuisundev.com/comprendre-git-en-7-minutes/
+* https://git-scm.com/book/en/v2/Git-Branching-Rebasing
 
 
 ## SOMMAIRE
 
 * [Bonnes pratiques](#bonnes-pratiques)
+* [GLOSSAIRE](#glossaire)
 * [CHEATSHEET](#cheatsheet)
 * [Les commandes de base de la console](#commandes-base)
 * [TELECHARGER GIT](#telecharger-git)
@@ -46,6 +48,12 @@
 
 * Créer son repository + son readme sur Github puis cloner le projet sur son disque dur et ajouter progressivement ses fichiers
 
+## GLOSSAIRE
+
+* HEAD = référence (pointeur) de la branche courante, le parent du prochain commit
+* Origin = le dépôt distant, là où a été crée le repo (ex. GitHub)
+* Remote = le dépôt local (machine de l'utilisateur)
+
 ## CHEATSHEET
 
 * https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet/
@@ -54,10 +62,108 @@
 * Bases : https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
 * Bases : https://github.com/godcrampy/cheat-sheets/blob/master/git/git-cheatsheet.pdf
 * Les commandes GIT que vous devez absolument connaître ! : https://www.hostinger.fr/tutoriels/commandes-git/
-* https://dev.to/zinox9/git-github-cheatsheet-22ok
+* Cheatsheet complet : https://dev.to/zinox9/git-github-cheatsheet-22ok
 * https://www.keycdn.com/blog/git-cheat-sheet
 * https://scotch.io/bar-talk/git-cheat-sheet
 * https://education.github.com/git-cheat-sheet-education.pdf
+* Git cherry-pick : https://www.atlassian.com/fr/git/tutorials/cherry-pick
+
+```shell
+# CONSEILS
+* commit avant pull ou modif sur branche principale
+* commit avant de passer sur une autre branche
+* It is specified in the git docs that rebase should not be used in public repos (collaboration) as it can cause major errors and conflicts, it can be used in private repos (https://dev.to/zinox9/git-github-cheatsheet-22ok)
+
+# CONFIG
+git config --global user.name "[nom]" # le nom associé aux commit
+git config --global user.email "[adresse email]" # le mail associé aux commit
+git config --global color.ui auto # enables helpful colorization of command line output
+
+# CLONE
+git clone [url]
+
+# INFOS
+git help
+git commit --help # ouvre la doc
+git status # status des fichiers suivis
+git log # historique de l'activité + ID des commits
+git show # afficher des informations sur tout fichier git
+
+# RECUPERER LES CHANGEMENTS DU DEPOT
+git fetch [nom-de-depot] # récupère tout l’historique du dépôt nommé
+# ex. git fetch origin
+git pull # récupère en local les modifications du dépôt (origin)
+
+# AJOUT DE FICHIER A LA PILE DE STAGING
+git add . # ajoute tous les fichiers modifiés à la pile du staging
+git add fichier.dart # ajoute SEULEMENT le fichier.dart à la pile
+git add . :!path/to/file1 :!path/to/file2 :!path/to/folder1/*
+# ajoute tous les fichiers sauf ceux précédés de :! (file1, file1, tous les fichiers dans folder1/)
+git add --all -- ':!path/to/file1' ':!path/to/file2' ':!path/to/folder1/*' # version linux
+git rm --cached fichier.dart # supprimer un fichier de la pile de staging
+# pour le remettre dans la pile : git add fichier.dart
+
+# STASH
+git stash # enregistrer les changements qui ne doivent pas être commit immédiatement
+git stash -p # stasher uniquement un ou plusieurs fichiers modifiées
+git stash -u # stasher également les fichiers non suivis
+git stash pop # réappliquer les changements stashés au préalable
+git stash show # résumé d'un stash
+git stash clear # supprimer tous les stash de l'historique
+
+# COMMIT
+git commit -m "mon message de commit" # commit
+git push # pousser le commit sur la branche d'origin
+git push -f # push en force
+
+# ANNULATION
+git revert [commit] # supprime les changements du dernier commit
+# en créant un nouveau commit de suppression qui annule les derniers changements
+git reset [commit] # annule tous les commits après [commit], en conservant les modifications localement
+git reset --hard [commit] # supprime tout l’historique et les modifications effectuées après le commit spécifié
+git reset --hard HEAD # réinitialiser l’index et le répertoire de travail à l’état du dernier commit
+
+# MERGE
+git rebase develop # git rebase = se mettre au même niveau que la branche principale 
+# en créant une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
+git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
+git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
+git cherry-pick [commitSha] # sélectionne un commit d'une branche 
+# et l'applique au début de notre branche actuelle
+
+# BRANCHE
+git checkout [nom-de-branche] # bascule sur la branche spécifiée
+git checkout -b new-branch # créer une branche new-branch et se placer dessus
+git branch -d [nom-de-branche] # supprime la branche spécifiée après une merge
+git branch -D [nom-de-branche] # supprime la branche spécifiée
+
+# CONFLITS
+git diff # énumérer les conflits actuels
+git diff --base [nom-fichier] # pour visualiser les conflits d’un fichier
+git diff [source_branche] [target_branch] # voir les changements entre 2 branches
+# + afficher les conflits entre les branches à fusionner avant de les fusionner
+
+# TAG
+git tag [mon_tag] [commitSha] # git tag v1.0.0 1b2e1d63ff
+
+# LANCER L'INTERFACE GRAPHIQUE
+gitk
+
+## CREER NOUVELLE BRANCHE
+git checkout develop # se placer sur la branche principale
+git pull # récupérer les derniers changements de la branche principale
+git checkout -b nouvelle-branche # créer une branche nouvelle-branche et se placer dessus + fetch + pull
+git push --set-upstream origin nouvelle-branche # créer la branche sur la version distante 
+# et assure le lien entre les 2 versions
+
+## GIT PULL + REBASE DE LA BRANCHE PRINCIPALE (retard sur la branche principale)
+git add + git commit + git push du travail en cours
+git checkout develop # se placer sur la branche principale
+git pull # récupérer les changements de la branche principale
+git checkout ma_branche # se placer sur la branche feature
+git rebase develop # se mettre au même niveau que la branche ppale en créant une seule ligne d'historique
+git push -f # push en force
+```
 
 ## <a name="commandes-base"></a> Les commandes de base de la console
 ```shell

@@ -330,6 +330,7 @@
 * PHP: Référence des fonctions - Manual : http://fr.php.net/manual/fr/funcref.php
 * Packagist : https://packagist.org/
 * Composer: everything I should have known - The Startup - Medium : https://medium.com/swlh/composer-everything-i-should-have-known-794225cde691
+* Le guide du débutant Composer : https://www.kaherecode.com/tutorial/le-guide-du-debutant-composer
 * PHP: foreach - Manual : https://www.php.net/manual/fr/control-structures.foreach.php
 * PHP: Qu'est ce qu'une référence ? - Manual : https://www.php.net/manual/fr/language.references.whatare.php
 * Doublure de test — PHPUnit latest Manual : https://phpunit.readthedocs.io/fr/latest/test-doubles.html#prophecy
