@@ -2,6 +2,7 @@
 
 ## SOMMAIRE
 
+* [GLOSSAIRE](#glossaire)
 * [INTELLIJ IDEA](#intellij-idea)
 * [BASES](#bases)
 * [VARIABLES](#variables)
@@ -14,7 +15,22 @@
 * [ORGANISER ET GERER L'ACCES AUX CLASSES](#classes-organisation)
 * [SCENARIOS ALTERNATIFS](#scenarios-alternatifs)
 * [JAVA DANS LE WEB](#java-dans-le-web)
+* [LIBRAIRIES](#librairies)
 
+## GLOSSAIRE
+
+* Package = conteneur de classes et interfaces, traduit par un namespace qui affiche la hierarchie des fichiers, reprenant le chemin des répertoires
+```java
+package com.mycompany.nom_projet
+// com/
+//  mycompany/
+//      nom_projet/ 
+```
+* Module = ensemble de classe(s) regroupée(s) selon un thème précis et travaillant de manière indépendante (pas de hiérarchie ni de dépendances)
+```java
+import org.apache.commons.lang3.StringUtils;
+    // ↑ nom du projet  // ↑ module // ↑ classe utilisée
+```
 
 ## INTELLIJ IDEA
 
@@ -2501,7 +2517,7 @@ public class HelloWorld {
 // ex. planètes
 
 // import java.util.HashSet;
-/// import java.util.Set;
+// import java.util.Set;
 
 public class Galaxie {
 
@@ -3538,4 +3554,163 @@ public class HelloWorld extends Applet {
 
 // En savoir plus
 https://www.geeksforgeeks.org/java-applet-basics/
+```
+
+## LIBRAIRIES
+
+* librairie java = fichier au format .jar = java archive (zip), qui contient des fichiers compilés (.class)
+* parcourir un fichier .jar = ajouter .zip à la fin du fichier
+* site de référence pour les librairies java : https://mvnrepository.com/
+* Apache = organisation à but non lucratif qui créé des projets (de référence) java = valeur sûre pour importer un projet
+* https://www.apache.org/index.html#projects-list
+
+### ECLIPSE
+
+* Bonne pratique = un workplace / projet
+* Problème à la compilation = supprimer module-info et relancer
+* Lancer un projet Maven => File > New > Other > Maven Project
+* Ajouter l'index de recherche de projets => Windows > Preferences > Maven > Download repository index on startup
+* Ajouter une dépendance => clic-droit sur projet > Maven > Add Dependency
+
+### INTELLIJ
+
+* Create New Projet > Maven > Next
+```java
+{
+    GroupId: "com.mycompany.premiertest",
+    ArtifactId: "module1",
+    Version: 1,
+}
+```
+* Enable Auto-Import
+* Indexer le repository Maven pour rechercher des dépendances => Shift (Maj) x 2, puis "Maven" > Maven Settings > Repositories > ligne https > Update
+* Ajouter une dépendance > se placer dans le fichier pom.xml puis Alt+Insert (Code > Generate > Dependency)
+* pom.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycompany.premiertest</groupId> <!-- nom du projet -->
+    <artifactId>module1</artifactId> <!-- id du projet -->
+    <version>1</version> <!-- version du projet -->
+
+    <!-- les dépendances s'ajoutent ci-dessous -->
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+* Problem de type "IntelliJ: Error:java: error: release version 5 not supported" :   
+   1. Open Intelij preferences
+   2. Search for "compiler (or something like "compi"
+   3. scroll down to Maven -->java compiler. In the right panel, will be a list of modules and their associated java compile version "target bytecode version."
+   4. Select a version > 1.5. You may need to upgrade your jdk if one is not available.   
+   5. https://stackoverflow.com/questions/59601077/intellij-errorjava-error-release-version-5-not-supported
+
+
+### MAVEN
+
+* Projet Apache (valeur sûre)
+* Gestionnaire de dépendances
+* Emplacement des librairies : C/User/user/.m2/repository/
+* Trouver l'identifiant d'un projet => taper le nom sur mvn repository => onglet Maven
+```shell
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+<dependency>
+    <groupId>org.apache.commons</groupId> # nom du projet (com.mycompany.nameProject)
+    <artifactId>commons-lang3</artifactId> # identifiant du projet (à saisir dans les recherches, par ex.) = correspond au nom du module
+    <version>3.0</version> # version du module
+</dependency>
+```
+* pom.xml = Project Object Model
+
+### RENDRE UN LIVRABLE EXECUTABLE
+* MANIFEST.MF, ajouter
+```shell
+Main-Class: com.mycompany.nom_projet.nom_module.ClassePrincipale
+Class-Path: commons.lang3-3.7.jar # dépendances
+```
+* Le faire automatiquement avec un plugin Maven : https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin
+* pom.xml
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.mycompany.premiertest</groupId>
+    <artifactId>module1</artifactId>
+    <version>1</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
+    </dependencies>
+
+    <!-- permet d'éviter l'erreur de version sur IntelliJ -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- ↑ ajoute au ClassPath toutes les classes qui ont permis
+                            de compiler le projet -->
+                            <mainClass>com.mycompany.premiertest.module1.PremierTest</mainClass>
+                            <!-- ↑ indique la classe à exécuter quand on éxecute le jar par lui-même -->
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+### GENERER UN GRAPH
+* Idée = créer un visuel qui résume les différentes dépendances du projet
+* pom.xml => Graph
+* Voir les dépendances sur IntelliJ : https://stackoverflow.com/questions/32447650/how-to-view-maven-dependency-hierarchy-in-intellij
+
+### GERER LES CONFLITS DE VERSION
+* pom.xml
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.7</version>
+        <exclusions>
+            <!-- ↓ éviter les conflits de version
+                la version du projet sera imposée -->
+            <exclusion>
+                <groupId>groupId</groupId>
+                <artifactId>artifactId dont la version est ignorée</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+</dependencies>
 ```

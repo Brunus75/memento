@@ -102,6 +102,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [PASSER DES ARGS AVEC PUSHNAMED](#passer-des-args-avec-pushnamed)
       * [WILLPOPSCOPE](#willpopscope)
       * [ALERTDIALOG IN WILLPOPSCOPE](#ALERTDIALOG-IN-WILLPOPSCOPE)
+      * [DRAWER](#drawer)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)   
       * [FORM](#form)
       * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
@@ -142,6 +143,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (6) : SQFLITE](#coda-sqflite)
 * [EX D'APPLI (7) : Factorisation, constantes, création de Widgets](#bootcamp-bmi-calculator)
 * [EX D'APPLI (8) : Future, async, await, API, Navigator](#bootcamp-clima-api)
+* [EX D'APPLI (9) : API, DropdownButton, Cupertino Widgets, Maps, Platform](#bootcamp-bitcoin-api)
+
 
 
 ## FLUTTER
@@ -495,6 +498,12 @@ Stack(
   ),
 )
 ```
+* Quelle est la plateforme de l'appli (Android ou IOS)
+```java
+import 'dart:io' show Platform;
+
+Platform.isIOS ? iOSWidget() : androidWidget();
+```
 
 
 ### STRUCTURE
@@ -626,6 +635,13 @@ dependencies:
   image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
   url_launcher: '>=5.4.0 <6.0.0' # range versions
   plugin: # dernière version stable
+```
+* Imports
+```java
+import 'package:intl/intl.dart'; // ALL
+import 'package:http/http.dart' as http; // ALIAS for the package => http.get(apiUrl)
+import 'dart:io' show Platform; // ONLY
+import 'dart:io' hide Platform; // ALL, EXCEPT
 ```
 * Formater une date avec intl
 ```java
@@ -1903,6 +1919,70 @@ Future<bool> callAlert() async {
       );
     }) ?? false; // important car onWillPop demande un booléen (ici false par défaut)
   }
+```
+#### DRAWER
+* https://flutter.dev/docs/cookbook/design/drawer
+```java
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      centerTitle: true,
+      title: Text(widget.title),
+    ),
+    // ↓ notre drawer à gauche (voir endDrawer pour la droite), menu coulissant
+    drawer: Drawer(
+      child: Container(
+        child: ListView.builder(
+            itemCount: villes.length + 2, // car ajout d'un header + ville actuelle
+            // qui seront compris dans la liste
+            itemBuilder: (context, i) {
+              if (i == 0) { // 1er élément de la liste => header du Drawer
+                return DrawerHeader(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      texteAvecStyle("Mes Villes", fontSize: 22.0),
+                      RaisedButton(
+                          color: Colors.white,
+                          elevation: 8.0,
+                          child: texteAvecStyle("Ajouter une ville", color: Colors.blue),
+                          onPressed: ajoutVille
+                      )
+                    ],
+                  ),
+                );
+              } else if (i == 1) { // => 2ème élèment de la liste => ville actuelle
+                return ListTile(
+                  title: texteAvecStyle(widget.villeDeLutilisateur),
+                  onTap: () {
+                    setState(() {
+                      villeChoisie = null;
+                      appelApi();
+                      Navigator.pop(context);
+                    });
+                  },
+                );
+              } else { // autres éléments de la liste = les villes repertoriées
+                String ville = villes[i - 2];
+                return ListTile(
+                  title: texteAvecStyle(ville),
+                  trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.white,),
+                      onPressed: (() => supprimer(ville))),
+                  onTap: () {
+                    setState(() {
+                      villeChoisie = ville;
+                      appelApi();
+                      Navigator.pop(context);
+                    });
+                  },
+                );
+              }
+            }),
+        color: Colors.blue,
+      ),
+    ),
+    endDrawer: // drawer à droite
 ```
 
 ### WIDGETS INTERACTIFS
@@ -7267,6 +7347,300 @@ class WeatherModel {
     } else {
       return 'Bring a 🧥 just in case';
     }
+  }
+}
+```
+ ## BOOTCAMP BITCOIN API
+* Application de convertisseur de cyberdevise en devise (ex. bitcoin en euros) récupérant les données d'une API
+* Une page formulaire, une page de calcul
+* Structure :
+```py
+bitcoin-flutter-final/
+  lib/
+    coin_data.dart
+    main.dart
+    price_screen.dart
+pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: bitcoin_ticker
+description: A new Flutter application.
+version: 1.0.0+1
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  http: ^0.12.0+2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'price_screen.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(
+          primaryColor: Colors.lightBlue,
+          scaffoldBackgroundColor: Colors.white),
+      home: PriceScreen(),
+    );
+  }
+}
+```
+* price_screen.dart
+```java
+import 'package:flutter/material.dart';
+// ↓ cupertino package
+import 'package:flutter/cupertino.dart';
+import 'coin_data.dart';
+// ↓ pour récupérer les paramètres (OS) de l'appli
+// seulement la classe Platform
+import 'dart:io' show Platform;
+
+class PriceScreen extends StatefulWidget {
+  @override
+  _PriceScreenState createState() => _PriceScreenState();
+}
+
+class _PriceScreenState extends State<PriceScreen> {
+  // Update the default currency to AUD, the first item in the currencyList.
+  String selectedCurrency = 'AUD';
+
+  DropdownButton<String> androidDropdown() {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    for (String currency in currenciesList) {
+      var newItem = DropdownMenuItem(
+        child: Text(currency),
+        value: currency,
+      );
+      dropdownItems.add(newItem);
+    }
+
+    return DropdownButton<String>(
+      value: selectedCurrency,
+      items: dropdownItems,
+      onChanged: (value) {
+        setState(() {
+          selectedCurrency = value;
+          // Call getData() when the picker/dropdown changes.
+          getData();
+        });
+      },
+    );
+  }
+
+  CupertinoPicker iOSPicker() {
+    List<Text> pickerItems = [];
+    for (String currency in currenciesList) {
+      pickerItems.add(Text(currency));
+    }
+
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32.0,
+      onSelectedItemChanged: (selectedIndex) {
+        setState(() {
+          // Save the selected currency to the property selectedCurrency
+          selectedCurrency = currenciesList[selectedIndex];
+          // Call getData() when the picker/dropdown changes.
+          getData();
+        });
+      },
+      children: pickerItems,
+    );
+  }
+
+  // value had to be updated into a Map to store the values of all three cryptocurrencies
+  Map<String, String> coinValues = {};
+  // Figure out a way of displaying a '?' on screen while we're waiting for the price data to come back.
+  // First we have to create a variable to keep track of when we're waiting on the request to complete.
+  bool isWaiting = false;
+
+  // Create an async method here await the coin data from coin_data.dart
+  void getData() async {
+    isWaiting = true;
+    try {
+      var data = await CoinData().getCoinData(selectedCurrency);
+      isWaiting = false;
+      // We can't await in a setState(). So you have to separate it out into two steps.
+      setState(() {
+        coinValues = data;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Call getData() when the screen loads up.
+    // We can't call CoinData().getCoinData() directly here because
+    // we can't make initState() async.
+    getData();
+  }
+
+  // use a Column Widget to contain the three CryptoCards
+  Column makeCards() {
+    List<CryptoCard> cryptoCards = [];
+    for (String crypto in cryptoList) {
+      cryptoCards.add(
+        CryptoCard(
+          cryptoCurrency: crypto,
+          selectedCurrency: selectedCurrency,
+          // ternary operator to check if we are waiting and if so,
+          // we'll display a '?' otherwise we'll show the actual price data.
+          value: isWaiting ? '?' : coinValues[crypto],
+        ),
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: cryptoCards,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('🤑 Coin Ticker'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          makeCards(),
+          Container(
+            height: 150.0,
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(bottom: 30.0),
+            color: Colors.lightBlue,
+            // ↓ check platform
+            child: Platform.isIOS ? iOSPicker() : androidDropdown(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Refactor this Padding Widget into a separate Stateless Widget called CryptoCard,
+// so we can create 3 of them, one for each cryptocurrency.
+class CryptoCard extends StatelessWidget {
+  const CryptoCard({
+    this.value,
+    this.selectedCurrency,
+    this.cryptoCurrency,
+  });
+
+  final String value;
+  final String selectedCurrency;
+  final String cryptoCurrency;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(18.0, 18.0, 18.0, 0),
+      child: Card(
+        color: Colors.lightBlueAccent,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+          child: Text(
+            // Update the currency name depending on the selectedCurrency.
+            '1 $cryptoCurrency = $value $selectedCurrency',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+* coin_data.dart
+```java
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+const List<String> currenciesList = [
+  'AUD',
+  'BRL',
+  'CAD',
+  'CNY',
+  'EUR',
+  'GBP',
+  'HKD',
+  'IDR',
+  'ILS',
+  'INR',
+  'JPY',
+  'MXN',
+  'NOK',
+  'NZD',
+  'PLN',
+  'RON',
+  'RUB',
+  'SEK',
+  'SGD',
+  'USD',
+  'ZAR'
+];
+// contains a List of Strings that represent 3 cryptocurrency symbols.
+// BTC - Bitcoin, ETH - Ethereum and LTC - Litecoin
+const List<String> cryptoList = ['BTC', 'ETH', 'LTC'];
+// url API
+const coinAPIURL = 'https://rest.coinapi.io/v1/exchangerate';
+const apiKey = 'YOUR-API-KEY-HERE';
+
+class CoinData {
+  // Create the Asynchronous method getCoinData() that returns a Future (the price data).
+  Future getCoinData(String selectedCurrency) async {
+    // Return a Map of the results instead of a single value.
+    Map<String, String> cryptoPrices = {};
+    // Use a for loop here to loop through the cryptoList and request the data for each of them in turn.
+    for (String crypto in cryptoList) {
+      // Update the URL to use the crypto symbol from the cryptoList
+      String requestURL =
+          '$coinAPIURL/$crypto/$selectedCurrency?apikey=$apiKey';
+      http.Response response = await http.get(requestURL);
+      if (response.statusCode == 200) {
+        // Use the 'dart:convert' package to decode the JSON data that comes back from coinapi.io
+        var decodedData = jsonDecode(response.body);
+        double price = decodedData['rate'];
+        // Create a new key value pair, with the key being the crypto symbol
+        // and the value being the lastPrice of that crypto currency.
+        cryptoPrices[crypto] = price.toStringAsFixed(0); // supprime les décimales (5.25 => 5)
+      } else {
+        // Handle any errors that occur during the request.
+        print(response.statusCode);
+        // Optional: throw an error if our request fails.
+        throw 'Problem with the get request';
+      }
+    }
+    return cryptoPrices;
   }
 }
 ```
