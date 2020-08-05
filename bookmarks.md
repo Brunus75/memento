@@ -101,6 +101,7 @@
 * Responsive Navigation Generator : https://wweb.dev/resources/navigation-generator
 * The Best Tools for Checking Your Website’s Speed : https://joetechreviews.com/the-best-tools-for-checking-your-websites-speed
 * Kraken to compress image file sizes without compromising the quality : https://www.webfx.com/blog/web-design/website-best-practices-checklist
+* A cool app to simultaneously watch tutorials and code : https://www.devlecture.com/
 
 
 ## :pushpin: WEB DOCS
@@ -187,6 +188,11 @@
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
 * Developer Handbook 2020 : https://github.com/apptension/developer-handbook
 * 5 applications pour faciliter ta vie de développeur : https://www.youtube.com/watch?v=2Ik--PTmj7k&
+* Comprendre les algorithmes de tri en 7 minutes : https://www.jesuisundev.com/comprendre-les-algorithmes-de-tri-en-7-minutes/
+* Comprendre les structures de données linéaires en 10 minutes : https://www.jesuisundev.com/comprendre-les-structures-de-donnees-lineaires-en-10-minutes/
+* Comprendre les structures de données non linéaires en 5 minutes : https://www.jesuisundev.com/comprendre-les-structures-de-donnees-non-lineaires-en-5-minutes/
+* 10 Tips Before You Buy a Domain Name : https://mediatemple.net/blog/web-development-tech/10-tips-before-you-buy-a-domain-name
+* https://www.reddit.com/r/learnprogramming/wiki/faq#wiki_how_can_i_get.2Fstay_motivated_to_learn_programming.3F
 
 
 ## :keyboard: WINDOWS
@@ -290,6 +296,7 @@
 * https://github.com/features/security
 * GitKraken Cheat Sheet : https://www.gitkraken.com/resources/gitkraken-cheat-sheet
 * GitKraken GitHub: White paper, video and training resources : https://www.gitkraken.com/resources/github
+* https://www.gitkraken.com/downloads/gitkraken-git-gui-cheat-sheet.pdf
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -448,7 +455,19 @@
 * https://www.typewolf.com/top-10-serif-fonts
 * https://fr.tuto.com/blog/2020/06/31-fonts-gratuites-fraichement-creees-mai-2020.htm?mc_cid=ed65afff92&mc_eid=c8463de306
 * How to font pair effectively: tricks and tools : https://www.melted.design/tricks-tools-font-pair-effectively
-* Fluent Icons includes 965 icons in a Microsoft-esque style : https://icons8.com/l/fluent/
+* Google Fonts by Tags : https://goofonts.com/
+* 1362 Free Sans-serif Fonts · 1001 Fonts : https://www.1001fonts.com/sans-serif-fonts.html
+* Basique > Sans serif | dafont.com : https://www.dafont.com/fr/theme.php?cat=501&page=70
+* Find Free Fonts » Font Squirrel : https://www.fontsquirrel.com/fonts/list/find_fonts?filter%5Bclassifications%5D%5B0%5D=sans+serif&filter%5Btags%5D%5B0%5D=rounded
+* 30 Must Have Hot New Fonts for 2019 | Inspirationfeed : http://inspirationfeed.com/30-must-have-hot-new-fonts
+* FontSpark : un générateur gratuit pour découvrir des polices d'écriture - BDM : https://www.blogdumoderateur.com/fontspark-generateur-polices-decriture
+* 10+ Free Serif Fonts To Use in Your Work | Inspirationfeed : http://inspirationfeed.com/free-serif-fonts
+* 30 Sexy Resume Templates Guaranteed to Get You Hired in 2019 | Inspirationfeed : http://inspirationfeed.com/30-sexy-resume-templates-guaranteed-to-get-you-hired
+* 20 Futuristic Fonts to Make Your Designs Memorable in 2019 | Inspirationfeed : http://inspirationfeed.com/20-futuristic-fonts
+* Darcy Baldwin Fonts - Accueil : https://www.facebook.com/DarcyBaldwinFonts/
+* FontPairings : un outil gratuit pour tester et visualiser les bonnes combinaisons de polices - BDM : https://www.blogdumoderateur.com/fontpairings-outil-gratuit-tester-visualiser-combinaisons-polices
+* Optimisez le poids de vos Google Fonts en déclarant les lettres à utiliser - La Ferme du Web :
+https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-declarant-les-lettres-a-utiliser
 
 
 ### HTML
@@ -471,6 +490,7 @@
 * CSS SEPARATOR GENERATOR : https://wweb.dev/resources/css-separator-generator
 * 30 CSS Best Practices for Beginners : https://code.tutsplus.com/tutorials/30-css-best-practices-for-beginners--net-6741
 * Google HTML/CSS Style Guide : https://google.github.io/styleguide/htmlcssguide.html#ID_and_Class_Naming
+* Things I Wish I’d Known About CSS : https://cssfordesigners.com/articles/things-i-wish-id-known-about-css
 * Overflow In CSS : https://ishadeed.com/article/overflow-css/
 * Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
 * How to Center in CSS : http://howtocenterincss.com/#contentType=text&horizontal=center&vertical=middle&browser.IE=none
@@ -714,6 +734,8 @@
 * A huge database of vector icons and illustrations : https://www.flaticon.com/
 * Writing design in a French style : https://uxdesign.cc/writing-design-in-a-french-style-36cff5f69f21
 * A list of 558 fully customizable free SVG icons : https://tablericons.com/
+* https://teenyicons.com/
+* Fluent Icons includes 965 icons in a Microsoft-esque style : https://icons8.com/l/fluent/
 
 
 ## :joystick: API
@@ -737,6 +759,39 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 ```
 * Hacked: What to Do When Your WordPress Website Has Been Compromised : https://speckyboy.com/wordpress-compromised
 * 20 Tips to Secure Your WordPress Website : https://joetechreviews.com/20-tips-to-secure-your-wordpress-website
+---
+* Comment créer un thème enfant Wordpress en 5 minutes? (2017) - YouTube : https://www.youtube.com/watch?v=iWZdCnxKdaw
+* Thème ENFANT WordPress, comment le créer tout simplement ! : https://wpformation.com/theme-enfant-wordpress/
+---
+* How to Display Recent Posts in WordPress – Latest Post with Image Plugin Tutorial 2017 - YouTube : https://www.youtube.com/watch?v=9yYaOmaWhvg
+* Des SHORTCODES très utiles pour votre WordPress : https://wpformation.com/shortcodes-utiles-wordpress/
+* Comment créer une page personnalisée dans WordPress ? C'est facile ! : https://wpformation.com/page-personnalisee-theme-wordpress/
+* CATÉGORIES sous WordPress : Mode d'emploi pour bien les utiliser ! : https://wpformation.com/categories-wordpress/
+* Installez WordPress chez 1and1 facilement en 2014 ! : https://wp-infinity.com/tutoriels/installer-wordpress/1and1-hebergement-mutualise/
+* Google Site Kit : un plugin WordPress pour retrouver les données Analytics, Search Console et autres - BDM : https://www.blogdumoderateur.com/google-site-kit-wordpress
+* Microsoft lance Clarity, un outil d'A/B testing et d’analyse des sessions utilisateur - BDM : https://www.blogdumoderateur.com/microsoft-clarity-outil-a-b-testing
+* Créez un site moderne et professionnel avec WordPress 5 - OpenClassrooms : https://openclassrooms.com/fr/courses/5489551-creez-un-site-moderne-et-professionnel-avec-wordpress-5
+* Gutenberg : le tutoriel pour maîtriser le nouvel éditeur de WordPress : https://wpformation.com/gutenberg-wordpress-mode-emploi/
+* Google Lighthouse : une nouvelle fonctionnalité pour des audits plus précis sur les CMS - BDM : https://www.blogdumoderateur.com/google-lighthouse-nouvelle-fonctionnalite-cms
+* WordPressify – A build system designed to automate your WordPress development workflow. : https://www.wordpressify.co
+* How do I add a simple jQuery script to WordPress? - Stack Overflow : https://stackoverflow.com/questions/11159860/how-do-i-add-a-simple-jquery-script-to-wordpress
+* WordPress Shortcodes: A Complete Guide — Smashing Magazine : https://www.smashingmagazine.com/2012/05/wordpress-shortcodes-complete-guide/
+* Child Theme and update of parent theme | WordPress.org : https://wordpress.org/support/topic/child-theme-and-update-of-parent-theme/
+* DWJ Projet 2 ( Wordpress ) : https://openclassrooms.facebook.com/groups/250834438685559/permalink/597623957339937/
+* Adminimize – Extension WordPress | WordPress.org : https://fr.wordpress.org/plugins/adminimize/
+* How to create a blank line in Gutenberg editor? | WordPress.org : https://wordpress.org/support/topic/how-to-create-a-blank-line-in-gutenberg-editor/
+---
+* Comment mettre à jour un thème wordpress - Procédure et conseils : https://www.autartica.be/comment-mettre-a-jour-un-theme-wordpress/
+* WordPress : Mettre à jour la version PHP - IONOS Assistance : https://www.ionos.fr/assistance/sites-web-et-boutiques/configurer-wordpress-via-11-ionos/wordpress-mettre-a-jour-la-version-php/
+* Afficher ou changer la version de PHP - IONOS Assistance : https://www.ionos.fr/assistance/hebergement/gerer-la-version-php-dans-le-espace-client/afficher-ou-changer-la-version-de-php/
+* Comment METTRE A JOUR WordPress sans risque ! : https://wpformation.com/mettre-a-jour-wordpress
+* 5 conseils pour bien mettre à jour son site Wordpress : https://www.codeur.com/blog/conseils-mise-a-jour-wordpress/
+* 5 solutions simples pour créer un site de staging : https://www.codeur.com/blog/dupliquer-site-staging/
+* Comment mettre à jour un thème WordPress - Votre guide sûr et approfondi : https://kinsta.com/fr/blog/mettre-a-jour-theme-wordpress/
+* thème enfant et mise à jour de thème : comment faire ? - WPFR : https://wpfr.net/support/sujet/theme-enfant-et-mise-a-jour-de-theme-comment-faire/
+* Geekflare WP Security Scanner - Powered by WPScan : https://gf.dev/wordpress-security-scanner
+* WPAudit – WordPress Website Audit Checklist : https://wpaudit.site/
+* 5 Most Common WordPress Attacks in 2020 - SecureBlitz Cybersecurity : https://secureblitz.com/common-wordpress-attacks
 
 
 ## :no_entry: SECURITY
@@ -844,6 +899,10 @@ portent un intérêt.
 D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
 ```
 
+## :eye_speech_bubble: NOCODE
+
+* The only complete list of all Nocode tools : https://welovenocode.com/nocodelist
+
 ## :bookmark: TO READ
 * Grid for layout, Flexbox for components : https://ishadeed.com/article/grid-layout-flexbox-components/
 * A First Look at `aspect-ratio` : https://css-tricks.com/a-first-look-at-aspect-ratio
@@ -857,3 +916,7 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * 25 Most Common Web Developer Interview Questions And Answers [2020] : https://blog.codegiant.io/25-web-developer-interview-questions-and-answers-3030b21ae016
 * Modern CSS grid solutions to common layout problems : https://vycke.dev/blog/css-layout-patterns
 * Hosting and Security: Are You Leaving Your Doors Open Without Knowing it? : https://www.noupe.com/technology/hosting-and-security.html
+* 5 hacks pour un site rapide comme l'éclair https://www.youtube.com/watch?v=xJW9Up9eJgU&t
+* Guide pour optimiser vos contenus et atteindre le haut de la première page Google https://fr.semrush.com/blog/optimiser-contenu-premiere-page-google/
+* Front-end Job Interview Questions : https://github.com/h5bp/Front-end-Developer-Interview-Questions
+* Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/

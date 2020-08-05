@@ -126,6 +126,7 @@ git reset --hard HEAD # réinitialiser l’index et le répertoire de travail à
 # MERGE
 git rebase develop # git rebase = se mettre au même niveau que la branche principale 
 # en créant une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
+# git rebase [base]
 git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
 git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
 git cherry-pick [commitSha] # sélectionne un commit d'une branche 

@@ -143,9 +143,13 @@ et B propagera la requête au composant ou sous-composant approprié
 https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
 ```
 * :robot: **Bytecode** : code intermédiaire entre le code source et les instructions machines, écrit en code binaire (011000111), qui ne peut être interprété que par une machine virtuelle
+
 * :key: **JSON** : format d'échanges de données, qui est une représentation en texte d'un objet JavaScript (ressemble à une Map, avec une association clé:valeur) et qui peut être interprété par tous les langages de programmation
+
 * :bricks: **DTO** (data transfer object) : objet de transfert de données = objet simple (aucune logique dans son code), léger (pas de méthodes, hormis mutateurs et accesseurs) et dont le rôle se limite SEULEMENT à contenir des données
+
 * Logiciel **agnostique** :
+
 * :capital_abcd: **Système hexadécimal** :
 ```java
 // système décimal (base 10)
@@ -162,3 +166,8 @@ https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
 FF = 15 * 16 + 15 = 255;
 CC9 = (12 * 16 * 16) + (12 * 16) + 9;
 ```
+* :ramen: **Encoding** et **Serialization** = transformer une structure de données en un String (ex. Map en JSON)
+
+* :jigsaw: **Decoding** et **Deserialization** = transformer un String en une structure de données (ex. JSON en Map)
+
+* :family_man_woman_girl_boy: **Dépendance transitive** = lorsqu'il y a 2 niveaux (voire plus) de dépendance (ex. un module dépend d'une librairie, qui dépend elle-même d'une librairie)
