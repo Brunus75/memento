@@ -7,7 +7,12 @@
 * https://www.webfx.com/blog/web-design/interactive-git-tutorials/
 * https://git-school.github.io/visualizing-git/
 * https://gitup.co/
-* Comprendre Git (1/18) : Qu'est ce que git ? : https://www.youtube.com/watch?v=rP3T0Ee6pLU&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP
+---
+* Comprendre Git (1/18) : Qu'est ce que git ? (Grafikart) : https://www.youtube.com/watch?v=rP3T0Ee6pLU&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP
+* Comprendre Git (11/18) : Créer clé SSH, Fork & Pull request : https://www.youtube.com/watch?v=D5QGiIM1j20&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP&index=11
+* Comprendre Git (13/18) : Nommer ses commits : https://www.youtube.com/watch?v=AlHohDBBAMY&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP&index=16
+* Comprendre Git (12/18) : Git Flow : https://www.youtube.com/watch?v=ZQAQ4HcskAY&list=PLjwdMgw5TTLXuY5i7RW0QqGdW0NZntqiP&index=14
+---
 * Débuter avec Git et Github : https://www.youtube.com/watch?v=V6Zo68uQPqE
 * Débuter avec Git et Github en 30 min : https://www.youtube.com/watch?v=hPfgekYUKgk&feature=youtu.be
 * Gérez vos codes source avec Git : https://openclassrooms.com/fr/courses/1233741-gerez-vos-codes-source-avec-git
@@ -15,6 +20,9 @@
 * LES BASES DE GIT (tuto débutant) : https://www.youtube.com/watch?v=gp_k0UVOYMw&feature=youtu.be
 * https://www.jesuisundev.com/comprendre-git-en-7-minutes/
 * https://git-scm.com/book/en/v2/Git-Branching-Rebasing
+* Chapter 4. Undoing and Editing Commits : https://www.oreilly.com/library/view/git-pocket-guide/9781449327507/ch04.html
+* https://git-scm.com/downloads/guis
+* GitHub Desktop Quick Intro For Windows : https://www.youtube.com/watch?v=77W2JSL7-r8
 
 
 ## SOMMAIRE
@@ -47,17 +55,19 @@
 ## Bonnes pratiques
 
 * Créer son repository + son readme sur Github puis cloner le projet sur son disque dur et ajouter progressivement ses fichiers
+* Commit message = impératif + minuscule + pas de point
 
 ## GLOSSAIRE
 
 * HEAD = référence (pointeur) de la branche courante, le parent du prochain commit
 * Origin = le dépôt distant, là où a été crée le repo (ex. GitHub)
 * Remote = le dépôt local (machine de l'utilisateur)
+* Fork = miroir d'un projet
 
 ## CHEATSHEET
 
 * https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet/
-
+---
 * Bases : https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf
 * Bases : https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
 * Bases : https://github.com/godcrampy/cheat-sheets/blob/master/git/git-cheatsheet.pdf
@@ -67,6 +77,9 @@
 * https://scotch.io/bar-talk/git-cheat-sheet
 * https://education.github.com/git-cheat-sheet-education.pdf
 * Git cherry-pick : https://www.atlassian.com/fr/git/tutorials/cherry-pick
+---
+* Vim cheatsheet : https://devhints.io/vim
+* Git Flow cheatsheet : https://danielkummer.github.io/git-flow-cheatsheet/
 
 ```shell
 # CONSEILS
@@ -74,10 +87,29 @@
 * commit avant de passer sur une autre branche
 * It is specified in the git docs that rebase should not be used in public repos (collaboration) as it can cause major errors and conflicts, it can be used in private repos (https://dev.to/zinox9/git-github-cheatsheet-22ok)
 
+# NAVIGATION
+mkdir nouveauDossier # créer un dossier
+cd nouveauDossier/ # entrer dans le repertoire
+ls # lister les fichiers
+touch fichierCréé
+
+# VIM
+i # passer en mode insertion
+:w # sauvegarder
+:q # quitter
+:wq # sauvegarder et quitter
+
 # CONFIG
 git config --global user.name "[nom]" # le nom associé aux commit
 git config --global user.email "[adresse email]" # le mail associé aux commit
 git config --global color.ui auto # enables helpful colorization of command line output
+git config --list # tous les paramètres de config
+
+# INITIALISATION SUR LE DEPOT LOCAL
+git init
+
+# AJOUT D'UN DEPOT DISTANT
+git remote add origin [url du dépôt distant]
 
 # CLONE
 git clone [url]
@@ -87,47 +119,76 @@ git help
 git commit --help # ouvre la doc
 git status # status des fichiers suivis
 git log # historique de l'activité + ID des commits
+git log --oneline
+git log -n 2 # deux lignes d'historique seulement
+git log -p readme.md # historique de readme.md
 git show # afficher des informations sur tout fichier git
+git diff # énumère les changements depuis le dernier commit
 
 # RECUPERER LES CHANGEMENTS DU DEPOT
-git fetch [nom-de-depot] # récupère tout l’historique du dépôt nommé
+git fetch [nom-de-depot] # récupère tout l’historique/métadonnées du dépôt nommé
 # ex. git fetch origin
 git pull # récupère en local les modifications du dépôt (origin)
+git pull origin brancheARecuperer # commande générique ex. git pull origin master
+git pull --rebase origin brancheARecuperer # git pull + rebase (une ligne d'historique, sans commits de merge)
 
 # AJOUT DE FICHIER A LA PILE DE STAGING
-git add . # ajoute tous les fichiers modifiés à la pile du staging
+git add . # ajoute tous les fichiers modifiés à la pile du staging (sauf les fichiers supprimés)
+git add *.html # ajoute tous les fichiers html
+git add --all # ajoute tous les fichiers modifiés à la pile du staging
 git add fichier.dart # ajoute SEULEMENT le fichier.dart à la pile
 git add . :!path/to/file1 :!path/to/file2 :!path/to/folder1/*
 # ajoute tous les fichiers sauf ceux précédés de :! (file1, file1, tous les fichiers dans folder1/)
 git add --all -- ':!path/to/file1' ':!path/to/file2' ':!path/to/folder1/*' # version linux
 git rm --cached fichier.dart # supprimer un fichier de la pile de staging
 # pour le remettre dans la pile : git add fichier.dart
+git reset HEAD fichier.dart # supprimer un fichier de la pile de staging
 
 # STASH
 git stash # enregistrer les changements qui ne doivent pas être commit immédiatement
-git stash -p # stasher uniquement un ou plusieurs fichiers modifiées
+git stash save nomDuStash # enregistre de façon nominative
+git stash list # liste les stash
+git stash -p # stasher uniquement un ou plusieurs fichiers modifiés
 git stash -u # stasher également les fichiers non suivis
-git stash pop # réappliquer les changements stashés au préalable
-git stash show # résumé d'un stash
+git stash apply # réappliquer les changements stashés (stash toujours présent dans la liste)
+git stash drop # supprime le dernier stash de la liste
+git stash pop # réappliquer les changements stashés et supprime le stash (apply + drop)
+git stash pop stash{1} # réappliquer les changements d'un stash en particulier (apply + drop)
+git stash show # résumé d'un stash ex. git stash show stash@{1}, git stash show stash@{1} -p pour + d'infos
+git stash drop # supprime le dernier stash de la liste
 git stash clear # supprimer tous les stash de l'historique
+git stash branch brancheCrééeAPartirDunStash
 
 # COMMIT
 git commit -m "mon message de commit" # commit
+git commit -a -m "mon message de commit" # stage all files + commit
+git commit --amend # envoie les nouvelles modification sur le commit précédent
+# workflow = git add ., git commit --amend
 git push # pousser le commit sur la branche d'origin
 git push -f # push en force
+git push origin brancheADeposerSurDepotDistant
 
 # ANNULATION
-git revert [commit] # supprime les changements du dernier commit
+git revert [commitSha] # supprime les changements du commit sélectionné
 # en créant un nouveau commit de suppression qui annule les derniers changements
-git reset [commit] # annule tous les commits après [commit], en conservant les modifications localement
-git reset --hard [commit] # supprime tout l’historique et les modifications effectuées après le commit spécifié
+git reset [commitSha] # annule tous les commits après [commitSha], en conservant les modifications localement
+git reset --hard [commitSha] # supprime tout l’historique et les modifications effectuées après le commit spécifié
 git reset --hard HEAD # réinitialiser l’index et le répertoire de travail à l’état du dernier commit
+git reset HEAD^ --soft # revient un cran en arrière, avec les changements en staging
+git reset HEAD^^ --mixed # revient deux crans en arrière, avec les changements absents du staging
+git reset HEAD^^^ --hard # revient trois crans en arrière, et supprime tout ce qui a été fait par la suite
+git checkout [commitSha] # revient à l'état du projet à ce moment, sans pouvoir le modifier
+git checkout [commitSha] index.html # revient à l'état du fichier à ce moment, et pouvoir le modifier
+# le fichier est directement placé en staging
 
 # MERGE
 git rebase develop # git rebase = se mettre au même niveau que la branche principale 
 # en créant une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
-# git rebase [base]
+# git rebase [base] (OK pour les branches privées/locales (ex. feature), 
+# à éviter pour les branches publiques/publiées (ex. master, develop))
+# ex. sur branche feature = git rebase develop
 git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
+# ex. sur branche master = git merge feature5, puis git branch -d feature5
 git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
 git cherry-pick [commitSha] # sélectionne un commit d'une branche 
 # et l'applique au début de notre branche actuelle
@@ -137,9 +198,10 @@ git checkout [nom-de-branche] # bascule sur la branche spécifiée
 git checkout -b new-branch # créer une branche new-branch et se placer dessus
 git branch -d [nom-de-branche] # supprime la branche spécifiée après une merge
 git branch -D [nom-de-branche] # supprime la branche spécifiée
+git branch # liste les branches, git branch -a pour les branches aussi distantes
 
 # CONFLITS
-git diff # énumérer les conflits actuels
+git diff # énumérer les changements ou conflits depuis le dernier commit
 git diff --base [nom-fichier] # pour visualiser les conflits d’un fichier
 git diff [source_branche] [target_branch] # voir les changements entre 2 branches
 # + afficher les conflits entre les branches à fusionner avant de les fusionner

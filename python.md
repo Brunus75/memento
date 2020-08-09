@@ -93,6 +93,7 @@
 * 5 ressources pour débuter en Python ! : https://medium.com/@camille.clarret/5-ressources-pour-d%C3%A9buter-en-python-ec524289ea86
 * Fastest Way to Flatten a List in Python : https://chrisconlan.com/fastest-way-to-flatten-a-list-in-python/
 * Comprendre Python en 5 minutes : https://www.jesuisundev.com/comprendre-python-en-5-minutes/
+* 10 Awesome Pythonic One-Liners Explained : https://dev.to/devmount/10-awesome-pythonic-one-liners-explained-3doc
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -133,7 +134,8 @@
 *  Top 8 Free Resources to Learn Python  : https://dev.to/dev0928/top-8-free-resources-to-learn-python-2a1p
 * ~ Python Packages: Five Real Python Favorites : https://realpython.com/python-packages/
 *  30 Days of Python 👨‍💻 - Day 30 - Free Python Resources : https://dev.to/arindamdawn/30-days-of-python-day-30-free-python-resources-2mam
-* The 22 Most-Used Python Packages in the World : https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e   
+* The 22 Most-Used Python Packages in the World : https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e
+* ~  Build RESTful APIs using Python / Flask : https://dev.to/dev0928/build-restful-apis-using-python-flask-56c7   
 
 
 ## INSTALLATION
@@ -452,6 +454,10 @@ a, b = 5, 8 # a = 5, b = 8
 a, b = b, a # inverse les valeurs des variables
 # affectation multiple
 a = b = c = 5
+# Multiple variable assignment
+a, b, *c = [1,2,3,4,5]
+# print(a,b,c) >> 1 2 [3, 4, 5]
+
 # récupérer l'input de l'utilisateur
 nombre = input("Entrez un nombre : ")
 print(nombre)
@@ -843,6 +849,11 @@ liste = ["Java", "Python", "C++"]
 liste.remove("Python")
 liste.append("Python")
 
+# List mapping
+l = list(map(int, ['1', '2', '3']))
+# print(l) >> [1, 2, 3]
+# you can use Pythons map() function to cast every list element to another type
+
 # les slices : récupérer certains éléments d'une liste
 # récupère des tranches d'une liste
 # tableau[début:fin:pas]
@@ -868,6 +879,10 @@ print(liste[1:-2:2]) # part du 2°, s'arrête 2 éléments avant la fin
 # ['Utilisateur2', 'Utilisateur4']
 print(liste[::-1]) # inverse l'ordre des éléments
 # ['Utilisateur6', 'Utilisateur5', ect.]
+# checker un palindrome
+# phrase = 'deleveled'
+isPalindrome = phrase == phrase[::-1]
+# print(isPalindrome) >> true
 
 # ex.
 liste = ["Maxime", "Martine", "Christopher", "Carlos", "Michael", "Eric"]
@@ -1065,6 +1080,10 @@ a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 print(a.symmetric_difference(b)) # {1, 2, 5, 6}
 print(a ^ b) # {1, 2, 5, 6}
+
+# set + list comprehension
+squares = { x**2 for x in range(6) if x < 4 }
+# print(squares) >> {0, 1, 4, 9}
 ```
 
 ## <a name="methodes-utiles"></a> METHODES ET FONCTIONS UTILES
@@ -1686,6 +1705,11 @@ while option != "5":
 
 with open(chemin_liste, "w") as f:
     json.dump(liste_courses, f, indent=4)
+
+
+# Read file into array of lines
+c = [line.strip() for line in open('file.txt')]
+# print(c) >> ['test1', 'test2', 'test3', 'test4']
 ```
 
 ## LES DICTIONNAIRES 
@@ -4878,6 +4902,10 @@ xs = range(10)
 ys = range(10)
 pairs = [(x, y) for x in xs
                 for y in ys]
+
+# modifier une liste de string
+l = [('Hi '​ + x) ​for​ x ​in​ [​'Alice'​, ​'Bob'​, ​'Pete'​]]
+# print(l) >> ['Hi Alice', 'Hi Bob', 'Hi Pete']
 ```
 
 ### LES ITERATEURS
@@ -5325,6 +5353,13 @@ app = QtGui.QApplication([])
 bouton = InterfaceBasique()
 bouton.show()
 sys.exit(app.exec_())
+
+# autre exemple d'unpacking
+# Multiple variable assignment
+a, b, *c = [1,2,3,4,5]
+# print(a,b,c) >> 1 2 [3, 4, 5]
+# The * will do packing the remaining values again, which results in a sublist for c
+
 
 # - définition et syntaxe
 
@@ -6211,6 +6246,20 @@ print(recuperer_extension("C:/mon_programme/test.py"))
 0.85 seconds
 
 # https://kodare.net/2020/05/19/python-is-slow-does-not-have-to-be.html
+```
+
+### Sum over every second element of a list
+```py
+# a = [1,2,3,4,5,6]
+s = sum(a[1::2])
+# print(s) >> 12
+```
+
+### Delete multiple elements 
+```py
+# a = [1,2,3,4,5]
+del a[::2]
+# print(a) >> [2, 4]
 ```
 
 
