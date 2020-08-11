@@ -256,6 +256,7 @@
 * Lazy-loading natif : Chrome et Firefox vont faciliter l'optimisation du chargement des images - BDM : https://www.blogdumoderateur.com/lazy-loading-chrome-firefox-natif
 * Infographie : 8 conseils pour un article parfait en SEO : https://www.abondance.com/20200605-42941-infographie-8-conseils-pour-un-article-parfait-en-seo.html
 * Comment choisir les mots clés pour son référencement naturel ? : https://www.ideveloppement.fr/expertises/agence-seo-bordeaux/choisir-les-mots-cles-pour-son-referencement.html
+* 23 SEO Tips All Web Designers Should Know in 2020 : https://the-webdesigner.co/seo-for-web-designers/
 
 
 ## :bulb: ORGANISATION
@@ -297,6 +298,7 @@
 * GitKraken Cheat Sheet : https://www.gitkraken.com/resources/gitkraken-cheat-sheet
 * GitKraken GitHub: White paper, video and training resources : https://www.gitkraken.com/resources/github
 * https://www.gitkraken.com/downloads/gitkraken-git-gui-cheat-sheet.pdf
+* Git, le système distribué de gestion de versions, vient de passer à la version 2.28 : https://alm.developpez.com/actu/307586/Git-le-systeme-distribue-de-gestion-de-versions-vient-de-passer-a-la-version-2-28-et-remplace-le-nom-master-par-init-defaultBranch-lors-de-la-creation-d-une-premiere-branche-dans-un-referentiel/
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -434,6 +436,7 @@
 * MDN Web Docs Front-end developer learning pathway : https://developer.mozilla.org/en-US/docs/Learn/Front-end_web_developer
 * Sign-in form best practices : https://web.dev/sign-in-form-best-practices/
 * Website Best Practices Checklist: 9 Web Design Best Practices : https://www.webfx.com/blog/web-design/website-best-practices-checklist
+* http://inspirationfeed.com/increase-time-on-site
 
 ### SANDBOX
 
@@ -468,6 +471,7 @@
 * FontPairings : un outil gratuit pour tester et visualiser les bonnes combinaisons de polices - BDM : https://www.blogdumoderateur.com/fontpairings-outil-gratuit-tester-visualiser-combinaisons-polices
 * Optimisez le poids de vos Google Fonts en déclarant les lettres à utiliser - La Ferme du Web :
 https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-declarant-les-lettres-a-utiliser
+*  17 Open Source Fonts You’ll Actually Love : https://www.webdesignerdepot.com/2020/08/17-open-source-fonts-youll-actually-love
 
 
 ### HTML
@@ -540,6 +544,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 32+ CSS Animation Examples : https://csshint.com/css-animation
 * 28+ CSS Image Effects : https://csshint.com/css-image-effects
 * CSS Effects Snippets : https://emilkowalski.github.io/css-effects-snippets/
+* 15 CSS text shadow effects : https://csshint.com/15-css-text-shadow-effects
 
 ### BOOTSTRAP
 
@@ -736,6 +741,8 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A list of 558 fully customizable free SVG icons : https://tablericons.com/
 * https://teenyicons.com/
 * Fluent Icons includes 965 icons in a Microsoft-esque style : https://icons8.com/l/fluent/
+* Don’t be afraid of friction in UX : https://uxdesign.cc/dont-be-afraid-of-friction-in-ux-26e9bf527994
+* The Ultimate Guide to UX Tools : https://adamfard.com/blog/ux-tools
 
 
 ## :joystick: API
@@ -785,6 +792,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * WordPress : Mettre à jour la version PHP - IONOS Assistance : https://www.ionos.fr/assistance/sites-web-et-boutiques/configurer-wordpress-via-11-ionos/wordpress-mettre-a-jour-la-version-php/
 * Afficher ou changer la version de PHP - IONOS Assistance : https://www.ionos.fr/assistance/hebergement/gerer-la-version-php-dans-le-espace-client/afficher-ou-changer-la-version-de-php/
 * Comment METTRE A JOUR WordPress sans risque ! : https://wpformation.com/mettre-a-jour-wordpress
+* Comment faire une mise à jour WordPress sans tout casser : https://www.blogdumoderateur.com/wordpress-faire-mise-a-jour/
 * 5 conseils pour bien mettre à jour son site Wordpress : https://www.codeur.com/blog/conseils-mise-a-jour-wordpress/
 * 5 solutions simples pour créer un site de staging : https://www.codeur.com/blog/dupliquer-site-staging/
 * Comment mettre à jour un thème WordPress - Votre guide sûr et approfondi : https://kinsta.com/fr/blog/mettre-a-jour-theme-wordpress/
@@ -884,6 +892,65 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://waster.fr/
 * http://www.migulko.cz/
 * https://www.rainforestfoods.com/experience/#!/slide-intro
+* https://webulle.com/
+* https://www.reaccess.fr/agence.html
+* https://www.ekosme.com/
+* https://www.yellow-agence-internet.com
+* https://www.ukoo.fr/
+* https://www.a3com.lu/
+* https://www.prestashop.com/fr
+* https://pierre-wagner.fr/
+* https://www.idea-fr.com/
+* http://www.sitewebfacile.fr/
+* http://www.vistalid.fr/Nous_Contacter
+* https://www.dand-web.com/#presentation
+https://minds-up.fr/contacts-agence-communication-site-internet/
+* https://spationaute.io/
+* http://www.wsb-agency.com/
+* https://agencethrive.fr/#realisations
+* https://www.macreationdesiteinternet.com/
+* http://www.studio-cogito.fr/#
+* https://www.adveris.fr/
+* https://www.compagnie-hyperactive.com/
+* https://www.subdelirium.com/
+* http://www.yabawt.com/
+* https://www.mediacrossing.fr/
+* http://www.saintlouisconseil.fr/
+* https://www.reve-de-design.fr/
+* https://www.agence-awam.fr/
+* https://www.vanksen.com/fr/agence-digitale/bordeaux
+* https://www.a3com.lu/
+* https://www.mozilla.org/fr/firefox/developer/
+* https://docs.mapbox.com/
+* https://www.inoxia.com/
+* https://www.agencepango.com/
+* http://www.byg-communication.com/
+* https://www.kanoma.fr/nous-rejoindre/
+* https://yaal.fr
+* https://fr.surveymonkey.com/survey-thanks/?sm=gyLlgCi3KCiQ57EfBznST_2FIYRQQ4drQ322QvulPut_2BaRNbNyc70QqGQF9vL0hoDk07Dj6nE_2FfY_2BgTIT7IZC_2FKA_3D_3D
+* http://www.mouradatg.fr/
+* https://wpmarmite.com/
+* https://medium.muz.li/ui-interactions-of-the-week-155-16704157e0dc
+* https://colorlib.com/preview/#ithost
+* https://webaud.it
+* https://www.blogduwebdesign.com/les-ressources-web-du-lundi-203
+* https://www.freepik.com/free-psd/modern-landing-page-mockup_4048758.htm
+* https://www.jetbrains.com/lp/devecosystem-2019/
+* https://www.bluecoders.com/fr
+* https://www.bluecoders.com/fr/public/jobs/the,tribe-developpeur-phpsymfony-php-symfony-docker-5c4ee84df23063001cb2e0c0
+* https://www.smile.eu/fr/groupe/nos-implantations/bordeaux
+* https://www.dotsafe.fr/
+* https://enacom-agency.webflow.io/
+* https://www.jetbrains.com/phpstorm/
+* https://www.agenceinoui.com/
+* https://inouiagency.com/
+* https://www.dta-ingenierie.fr/
+* https://www.lipsafari.com/offres-emploi/d-33-gironde?page=3
+* https://twitter.com/nealagarwal
+* https://www.bikebear.com.my/
+* https://www.novasanco.fr/
+* https://menway.com/
+* https://www.wiilog.fr/
 
 
 ## :monocle_face: TENDANCES
@@ -920,3 +987,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Guide pour optimiser vos contenus et atteindre le haut de la première page Google https://fr.semrush.com/blog/optimiser-contenu-premiere-page-google/
 * Front-end Job Interview Questions : https://github.com/h5bp/Front-end-Developer-Interview-Questions
 * Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/
+* Image Techniques On The Web : https://ishadeed.com/article/image-techniques/
+* Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9

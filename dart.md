@@ -1594,6 +1594,7 @@ print('42'.parseInt()); // Use an extension method.
 ```
 ### MIXINS
 * But = ajouter des fonctionnalités à une classe
+* Utile quand plusieurs classes partagent des propriétés et capacités communes
 * A class that contains methods for use by other classes
 * Unlike the interface and inheritance approach, a mixin doesn’t have to be the parent class of those other classes
 * A way of reusing a class’s code in multiple class hierarchies
@@ -1637,23 +1638,65 @@ mixin Musical {
 mixin MusicalPerformer on Musician {
   // ···
 }
+
+// autre exemple
+void main() {
+  Duck.move();
+  Duck.swim();
+  Duck.fly();
+}
+
+class Animal {
+  void move() {
+    print('changed position');
+  }
+}
+
+mixin CanSwim {
+  void swim() {
+    print('Changing position by swimming');
+  }
+}
+
+mixin CanFly {
+  void fly() {
+    print('Changing position by flying');
+  }
+}
+
+class Duck extends Animal with CanSwim, CanFly {}
+
+class Airplane with CanFly {}
 ```
 ### CLASS VARIABLES AND METHODS
 * Mot-clé "static"
 * Variables et méthodes attachées à la classe
 * Elle ne peuvent être appelées que sur leur classe
+* Pas besoin de créer un Objet() pour les appeler (meilleurs performances)
+* ex. Square.numberOfSides
 ```java
 // ◘ Static variables
 
 // Static variables (class variables) are useful for class-wide state and constants:
 class Queue {
   static const initialCapacity = 16;
+  // les constantes doivent être obligatoirement statiques dans une classe
+  // comme ça la propriété, qui sera la même pour tous les objets Queue() (const + valeur déjà indiquée)
+  // deviendra aussi une propriété de classe (plus besoin de créer un objet pour y accéder)
   // ···
 }
 
 void main() {
   assert(Queue.initialCapacity == 16);
 }
+
+// ex. Flutter
+class Colors {
+  static const Color black45 = Color(0x73000000);
+}
+
+var myColor = Colors.black45;
+
 
 // ◘ Static methods
 // Static methods (class methods) do not operate on an instance, 
@@ -2264,6 +2307,8 @@ Future<String> lookUpVersion() async => '1.0.0';
 // all synchronous code before the first await keyword executes immediately
 ```
 ### STREAMS
+* Stream = liste d'éléments promis que l'on reçoit progressivement (contrairement au Futures que l'on reçoit d'un bloc)
+* En souscrivant à une Stream, on reçoit au fil de l'eau les éléments attendus (ex. du Chat qui se met à jour à chaque message)
 * When you need to get values from a Stream, you have two options:   
    * Use async and an asynchronous for loop (await for).
    * Use the Stream API, as described in the library tour : https://dart.dev/guides/libraries/library-tour#stream

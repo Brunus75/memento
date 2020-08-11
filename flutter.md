@@ -129,11 +129,15 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [BOTTOMNAVIGATIONBAR](#BOTTOMNAVIGATIONBAR)
       * [VISIBILTY](#VISIBILTY)
       * [EXPANDED](#EXPANDED)
+      * [FLEXIBLE](#flexible)
+  * [WIDGETS ANIMATION](#widgets-animation)   
+     * [HERO](#hero)
 * [THEMES, COLORS](#themes)
 * [API](#api)   
    * [FUTURE DROPDOWN](#future-dropdown)
    * [AFFICHER UNE DONNEE API VIA UNE ROUTE](#AFFICHER-UNE-DONNEE-API-VIA-UNE-ROUTE)
    * [MAP BUILDER FUTURE](#MAP-BUILDER-FUTURE)
+   * [STREAM BUILDER](#stream-builder)
 * [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
@@ -144,6 +148,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (7) : Factorisation, constantes, création de Widgets](#bootcamp-bmi-calculator)
 * [EX D'APPLI (8) : Future, async, await, API, Navigator](#bootcamp-clima-api)
 * [EX D'APPLI (9) : API, DropdownButton, Cupertino Widgets, Maps, Platform](#bootcamp-bitcoin-api)
+* [EX D'APPLI (10) : Animations, Firebase, Stream](#bootcamp-flash-chat)
 
 
 
@@ -326,6 +331,35 @@ final = "valeur qui n'est assignée qu'une fois, mais n'importe quand"
 const kOneConstant = TextStyle(...);
 const kAnotherConstant = SizedBox(...);
 ```
+* Les routes devraient être une propriété statique de la page, pour éviter les erreurs d'étourderie
+```java
+class LoginScreen extends StatefulWidget {
+  static const String id = 'login_screen';
+}
+
+// main.dart
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      initialRoute: WelcomeScreen.id,
+      // routes nominatives moins sujette à l'erreur
+      routes: {
+        // static const String id = 'welcome_screen';
+        // grâce à static, pas besoin de créer un objet WelcomeScreen()
+        WelcomeScreen.id: (context) => WelcomeScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+      },
+    );
+  }
+
+// autre page
+RoundedButton(
+  title: 'Log In',
+  colour: Colors.lightBlueAccent,
+  onPressed: () {
+    Navigator.pushNamed(context, LoginScreen.id); // static property
+  },
+)
+```
 ### ASTUCES
 * infinity (100%)
 ```java
@@ -503,6 +537,37 @@ Stack(
 import 'dart:io' show Platform;
 
 Platform.isIOS ? iOSWidget() : androidWidget();
+```
+* Personnaliser un InputDecoration
+```java
+const kTextFieldDecoration = InputDecoration(
+  // ↓ valeur de base
+  hintText: 'Enter a value',
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+);
+
+
+TextField(
+  keyboardType: TextInputType.emailAddress,
+  textAlign: TextAlign.center,
+  onChanged: (value) {
+    email = value;
+  },
+  decoration:
+      // ↓ inputDecoration personnalisée
+      kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+),
 ```
 
 
@@ -2114,7 +2179,10 @@ class _MyHomePageState extends State<MyHomePage> {
             TextField(
               // ↓ apparence du clavier
               // .number pour juste des nombres
+              // .emailAddress pour les mails
               keyboardType: TextInputType.text,
+              obscureText: true, // textfield secret ••••
+              textAlign: TextAlign.center,
               onChanged: (String value) {
                 setState(() {
                   // ↓ changement à la volée
@@ -2681,6 +2749,8 @@ class _MyHomePageState extends State<MyHomePage> {
           scrollDirection: Axis.vertical, // optionnel
           shrinkWrap: true, // permet de scroller
           physics: ScrollPhysics(), // permet de scroller hors du viewport
+
+          reverse: true, // affichage de la liste focalisé sur la fin de liste
 
           itemCount: activites.length, // nombre d'éléments dans la liste
           // ↓ créateur de la liste (boucle)
@@ -3334,7 +3404,60 @@ Row(
 	Column(...)
 )
 ```
-### 
+#### FLEXIBLE
+* Permettre à son enfant d'avoir de la place et de s'adapter s'il manque de place
+* Sorte de max-width, max-height
+```java
+children: <Widget>[
+  // ↓ si 200px n'est pas disponible, alors le widget s'adapte
+  Flexible(
+    child: Hero(
+      tag: 'logo',
+      child: Container(
+        height: 200.0,
+        child: Image.asset('images/logo.png'),
+      ),
+    ),
+  ),
+  // ...
+```
+
+### WIDGETS ANIMATION
+
+#### HERO
+* Hero Animations : https://flutter.dev/docs/development/ui/animations/hero-animations
+```java
+// Hero 1 (page d'accueil)
+Hero(
+  // tag permet l'association avec le 2ème Hero
+  tag: 'logo',
+  child: Container(
+    child: Image.asset('images/logo.png'),
+    height: 60.0,
+  ),
+),
+
+// le lien entre les 2
+RoundedButton(
+  title: 'Register',
+  colour: Colors.blueAccent,
+  onPressed: () {
+    // pushNamed + id property
+    Navigator.pushNamed(context, RegistrationScreen.id);
+  },
+)
+
+// Hero 2 (page d'enregistrement) (l'image est grossie de façon fluide)
+Flexible(
+  child: Hero(
+    tag: 'logo',
+    child: Container(
+      height: 200.0,
+      child: Image.asset('images/logo.png'),
+    ),
+  ),
+),                
+```
 
 ## THEMES
 * https://flutter.dev/docs/cookbook/design/themes
@@ -3618,6 +3741,14 @@ Widget authorDropDownButton() {
   );
 }
 ```
+### STREAM BUILDER
+
+* Stream = liste d'éléments promis, qui arriveront les uns après les autres, dans un temps indéfini
+* En souscrivant à une Stream, on reçoit les éléments au fil de l'eau, et la liste aggrandie se met à jour régulièrement et automatiquement
+* StreamBuilder Class Documentation : https://docs.flutter.io/flutter/widgets/StreamBuilder-class.html
+* The async snapshot represents the most recent interaction with the Stream
+* AsyncSnapshot Class Documentation : https://docs.flutter.io/flutter/widgets/AsyncSnapshot-class.html
+
 
 ## PERSONNALISATION
 
@@ -7350,7 +7481,8 @@ class WeatherModel {
   }
 }
 ```
- ## BOOTCAMP BITCOIN API
+
+## BOOTCAMP BITCOIN API
 * Application de convertisseur de cyberdevise en devise (ex. bitcoin en euros) récupérant les données d'une API
 * Une page formulaire, une page de calcul
 * Structure :
@@ -7641,6 +7773,734 @@ class CoinData {
       }
     }
     return cryptoPrices;
+  }
+}
+```
+
+## BOOTCAMP FLASH CHAT
+* Application de Chat avec Firebase
+* Hero Animations : https://flutter.dev/docs/development/ui/animations/hero-animations
+```java
+// Hero 1
+Hero(
+  // tag permet l'association avec le 2ème Hero
+  tag: 'logo',
+  child: Container(
+    child: Image.asset('images/logo.png'),
+    height: 60.0,
+  ),
+),
+
+// le lien entre les 2
+RoundedButton(
+  title: 'Register',
+  colour: Colors.blueAccent,
+  onPressed: () {
+    // pushNamed + id property
+    Navigator.pushNamed(context, RegistrationScreen.id);
+  },
+)
+
+// Hero 2
+Flexible(
+  child: Hero(
+    tag: 'logo',
+    child: Container(
+      height: 200.0,
+      child: Image.asset('images/logo.png'),
+    ),
+  ),
+),                
+```
+* Curves Class Documentation : https://api.flutter.dev/flutter/animation/Curves-class.html
+* CurvedAnimation Class Documentation : https://docs.flutter.io/flutter/animation/CurvedAnimation-class.html
+* Tween Animation Class : https://docs.flutter.io/flutter/animation/Tween-class.html
+* https://pub.dev/flutter/packages?q=animate
+* Showing a Spinner: The Modal Progress HUD : https://pub.dev/packages/modal_progress_hud
+* Firebase Documentation : https://firebase.google.com/docs/
+* Structure :
+```py
+Flash-Chat-Flutter-Complete/
+  lib/
+    components/
+      rounded_button.dart
+    screens/
+      chat_screen.dart
+      login_screen.dart
+      registration_screen.dart
+      welcome_screen.dart
+    constants.dart
+    main.dart
+  pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: flash_chat
+description: A new Flutter application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.0.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  animated_text_kit: ^1.3.0 # text animation
+  firebase_core: ^0.3.4 # obligatoire pour toute application firebase
+  firebase_auth: ^0.8.4+4
+  cloud_firestore: ^0.9.13+1
+  modal_progress_hud: ^0.1.3 # loading spinner
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - images/
+```
+* constants.dart
+```java
+import 'package:flutter/material.dart';
+
+const kSendButtonTextStyle = TextStyle(
+  color: Colors.lightBlueAccent,
+  fontWeight: FontWeight.bold,
+  fontSize: 18.0,
+);
+
+const kMessageTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  hintText: 'Type your message here...',
+  border: InputBorder.none,
+);
+
+const kMessageContainerDecoration = BoxDecoration(
+  border: Border(
+    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
+  ),
+);
+
+const kTextFieldDecoration = InputDecoration(
+  // ↓ valeur de base
+  hintText: 'Enter a value',
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+  ),
+);
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:flash_chat/screens/welcome_screen.dart';
+import 'package:flash_chat/screens/login_screen.dart';
+import 'package:flash_chat/screens/registration_screen.dart';
+import 'package:flash_chat/screens/chat_screen.dart';
+
+void main() => runApp(FlashChat());
+
+class FlashChat extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      initialRoute: WelcomeScreen.id,
+      // routes nominatives moins sujette à l'erreur
+      routes: {
+        // static const String id = 'welcome_screen';
+        // grâce à static, pas besoin de créer un objet WelcomeScreen()
+        WelcomeScreen.id: (context) => WelcomeScreen(),
+        LoginScreen.id: (context) => LoginScreen(),
+        RegistrationScreen.id: (context) => RegistrationScreen(),
+        ChatScreen.id: (context) => ChatScreen(),
+      },
+    );
+  }
+}
+```
+* screens/welcome_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'login_screen.dart';
+import 'registration_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flash_chat/components/rounded_button.dart';
+
+class WelcomeScreen extends StatefulWidget {
+  static const String id = 'welcome_screen';
+
+  @override
+  _WelcomeScreenState createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  // ↑ add ability to act like a ticker for a single animation
+  // TickerProviderStateMixin for multiple animations
+  // un mixin (ou plusieurs) ajoute une capacité à la classe
+  AnimationController controller;
+  Animation animation;
+
+  @override
+  void initState() {
+    super.initState();
+    // ↓ manager de l'application
+    controller =
+        AnimationController(
+            // durée de l'animation
+            duration: Duration(seconds: 1),
+            // ticker (minuteur) = this object
+            vsync: this,
+            // upperBound: 100, + Text('${controller.value.toInt()}%') pour créer un compte à rebours
+        );
+    // controller.value va débuter à 0 (lowerBound) et finir à 1 (upperBound)
+
+    // animation = CurvedAnimation(parent: controller, curve: Curves.decelerate);
+    // spécificité = lowerBound doit être à 0, upperBound à 1
+    // pour utiliser la valeur de l'animation, utiliser animation.value
+    // ex. Container(height: animation.value * 100, )
+    // le container va grandir selon le choix de la courbe
+
+    // widget avec une couleur de fin et une couleur de début
+    // Tween = widget avec une valeur de début et une valeur de fin
+    // et un processus qui relie les deux valeurs de façon fluide
+    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
+        .animate(controller);
+
+    // créer une boucle
+    animation.addStatusListener((status) {
+      // dismissed for reverse animation ↓
+      if (status == AnimationStatus.completed) {
+        controller.reverse(from: 1.0); // revient en arrière
+      } else if (status == AnimationStatus.dismissed) {
+        controller.forward(); // repart en avant
+      }
+    });
+
+    controller.forward(); // de value = 0 (lowerBound) à value = 1 (upperBound)
+    // (reverse(from: 1.0) pour aller de 1 à 0)
+
+    // ↓ called every time the value changes
+    controller.addListener(() {
+      setState(() {}); // change the widget where the value is stored
+      // (backgroundColor of Scaffold begin 'blueGrey' and finish 'white'
+    });
+  }
+
+  // détruit notre animation
+  // lors de la destruction de notre page
+  // important pour la performance de l'appli
+  @override
+  void dispose() {
+    controller.dispose(); // détruit notre manager
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: animation.value, // change with the changes of animation value
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                // Hero animation
+                Hero(
+                  // tag permet l'association avec le 2ème Hero
+                  tag: 'logo',
+                  child: Container(
+                    child: Image.asset('images/logo.png'),
+                    height: 60.0,
+                  ),
+                ),
+                // ↓ text animati_ (one by one character of the list called 'text')
+                TypewriterAnimatedTextKit(
+                  text: ['Flash Chat'],
+                  textStyle: TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 48.0,
+            ),
+            RoundedButton(
+              title: 'Log In',
+              colour: Colors.lightBlueAccent,
+              onPressed: () {
+                // pushNamed + id property
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+            ),
+            RoundedButton(
+              title: 'Register',
+              colour: Colors.blueAccent,
+              onPressed: () {
+                // pushNamed + id property
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+* screens/registration_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:flash_chat/components/rounded_button.dart';
+import 'package:flash_chat/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'chat_screen.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart'; // loading spinner
+
+class RegistrationScreen extends StatefulWidget {
+  static const String id = 'registration_screen';
+  @override
+  _RegistrationScreenState createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _auth = FirebaseAuth.instance; // authentication of Firebase
+  bool showSpinner = false;
+  String email;
+  String password;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: ModalProgressHUD( // loading spinner for the all page
+        inAsyncCall: showSpinner, // loading spinner = false for starting
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              // ↓ si 200px n'est pas disponible, alors le widget s'adapte
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                // ↓ keyboard spécial mail
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  email = value;
+                },
+                decoration:
+                    // inputDecoration personnalisée
+                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                obscureText: true, // textfield secret ••••
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your password'),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              RoundedButton(
+                title: 'Register',
+                colour: Colors.blueAccent,
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true; // activate the loading spinner
+                  });
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: email, password: password);
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+
+                    setState(() {
+                      showSpinner = false; // deactivate the loading spinner
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+* screens/login_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:flash_chat/components/rounded_button.dart';
+import 'package:flash_chat/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'chat_screen.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+class LoginScreen extends StatefulWidget {
+  static const String id = 'login_screen';
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool showSpinner = false;
+  final _auth = FirebaseAuth.instance;
+  String email;
+  String password;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  email = value;
+                },
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your password'),
+              ),
+              SizedBox(
+                height: 24.0,
+              ),
+              RoundedButton(
+                title: 'Log In',
+                colour: Colors.lightBlueAccent,
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    if (user != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+
+                    setState(() {
+                      showSpinner = false;
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+* screens/chat_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:flash_chat/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+// déplacés ici pour que toutes les classes y aient accès
+final _firestore = Firestore.instance; // instance pour envoyer les messages sur le cloud
+FirebaseUser loggedInUser; // instance pour récupérer l'utilisateur courant
+
+class ChatScreen extends StatefulWidget {
+  static const String id = 'chat_screen';
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  // controller of a text field
+  final messageTextController = TextEditingController();
+  final _auth = FirebaseAuth.instance;
+
+  String messageText;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getCurrentUser();
+  }
+
+  void getCurrentUser() async {
+    try {
+      final user = await _auth.currentUser();
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: null,
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                _auth.signOut();
+                Navigator.pop(context);
+              }),
+        ],
+        title: Text('⚡️Chat'),
+        backgroundColor: Colors.lightBlueAccent,
+      ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            MessagesStream(),
+            Container(
+              decoration: kMessageContainerDecoration,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: messageTextController, // 1. add controller
+                      onChanged: (value) {
+                        messageText = value;
+                      },
+                      decoration: kMessageTextFieldDecoration,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      messageTextController.clear(); // 2. use controller to clear TextField
+                      _firestore.collection('messages').add({
+                        'text': messageText,
+                        'sender': loggedInUser.email,
+                      });
+                    },
+                    child: Text(
+                      'Send',
+                      style: kSendButtonTextStyle,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MessagesStream extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // StreamBuilder of QuerySnapshot (Firebase class)
+    // because snapshots = Stream<QuerySnapshot>
+    // so a snapshot = QuerySnapshot
+    return StreamBuilder<QuerySnapshot>(
+      // ↓ where's the date coming from ?
+      stream: _firestore.collection('messages').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.lightBlueAccent,
+            ),
+          );
+        }
+        // ↓ l'ensemble des documents du snapshot (tous les messages)
+        // en commençant par les plus récents
+        final messages = snapshot.data.documents.reversed;
+        List<MessageBubble> messageBubbles = [];
+        // messages = liste de map<'text': String, 'sender': String>
+        for (var message in messages) {
+          final messageText = message.data['text'];
+          final messageSender = message.data['sender'];
+
+          final currentUser = loggedInUser.email;
+
+          final messageBubble = MessageBubble(
+            sender: messageSender,
+            text: messageText,
+            isMe: currentUser == messageSender,
+          );
+
+          messageBubbles.add(messageBubble);
+        }
+        return Expanded(
+          child: ListView(
+            reverse: true, // affichage de la liste focalisé sur la fin de liste
+            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            children: messageBubbles,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  MessageBubble({this.sender, this.text, this.isMe});
+
+  final String sender;
+  final String text;
+  final bool isMe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            sender,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black54,
+            ),
+          ),
+          // ↓ widget de base, auquel on peut ajouter de la couleur, elevation, ect.
+          Material(
+            borderRadius: isMe
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0))
+                : BorderRadius.only(
+                    bottomLeft: Radius.circular(30.0),
+                    bottomRight: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),
+            elevation: 5.0,
+            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: isMe ? Colors.white : Colors.black54,
+                  fontSize: 15.0,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+* components/rounded_button.dart
+```java
+import 'package:flutter/material.dart';
+
+class RoundedButton extends StatelessWidget {
+  RoundedButton({this.title, this.colour, @required this.onPressed});
+
+  final Color colour;
+  final String title;
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: Material(
+        elevation: 5.0,
+        color: colour,
+        borderRadius: BorderRadius.circular(30.0),
+        child: MaterialButton(
+          onPressed: onPressed,
+          minWidth: 200.0,
+          height: 42.0,
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 ```
