@@ -193,6 +193,7 @@
 * Comprendre les structures de données non linéaires en 5 minutes : https://www.jesuisundev.com/comprendre-les-structures-de-donnees-non-lineaires-en-5-minutes/
 * 10 Tips Before You Buy a Domain Name : https://mediatemple.net/blog/web-development-tech/10-tips-before-you-buy-a-domain-name
 * https://www.reddit.com/r/learnprogramming/wiki/faq#wiki_how_can_i_get.2Fstay_motivated_to_learn_programming.3F
+* dorking (how to find anything on the Internet) : https://www.alec.fyi/dorking-how-to-find-anything-on-the-internet.html
 
 
 ## :keyboard: WINDOWS
@@ -824,6 +825,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Développeur Libre : https://www.youtube.com/channel/UCjDg7LaaMzmuhj6I1jTzb1Q/videos
 * Potion de vie : https://www.youtube.com/user/Potiondevie/videos
 * Collection of free software development tutorials : https://www.tutorialist.io/
+* A list of 700 Free Online Programming & Computer Science Courses : https://www.freecodecamp.org/news/free-online-programming-cs-courses/
 
 
 ## :alembic: TESTS
@@ -880,6 +882,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.pixeden.com/psd-web-elements/psd-screen-web-showcase
 * Mirror Resume | spovv.com : http://spovv.com/mirror-resume
 * https://zehfernandes.github.io/screeener/
+* Previewed, un outil de création de mockups d'applications mobiles et web : https://www.blogdumoderateur.com/tools/previewed
 
 
 ## :heavy_heart_exclamation: SITES WEB
@@ -989,3 +992,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/
 * Image Techniques On The Web : https://ishadeed.com/article/image-techniques/
 * Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9
+* L'outil en ligne Slazzer permet de supprimer l'arrière-plan d'une photo et de le remplacer par l'arrière-plan de son choix 📷💡 : https://www.blogdumoderateur.com/tools/slazzer

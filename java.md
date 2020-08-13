@@ -31,12 +31,16 @@ package com.mycompany.nom_projet
 import org.apache.commons.lang3.StringUtils;
     // ↑ nom du projet  // ↑ module // ↑ classe utilisée
 ```
+* ```Map``` is an interface (an abstract "thing" that defines how something can be used). And ```HashMap``` is an implementation of that interface (i.e. provides all of the methods specified in the interface).
+
 
 ## INTELLIJ IDEA
 
 * CTRL + / ==> To comment/uncomment a line .
 * CTRL + Shift + / ==> To comment/uncomment block of code. */
 * CTRL + Y ==> To delete a line.
+* Editor = Consolas, 18
+* Software = Microsoft PhagsPa, 16
 
 
 ## BASES

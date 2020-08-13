@@ -17,6 +17,7 @@
 * Dart/Python : https://www.reddit.com/r/dartlang/comments/gs4hlu/dart_is_now_7_on_the_most_loved_and_now_moved/fs3954s/
 * Fluttering Dart : https://medium.com/tag/fluttering-dart/archive
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
+* Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/
 
 **JSON**
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
@@ -437,6 +438,7 @@ var chapters = [
 [for (var x in hor) for (var y in vert) Point(x, y)]
 ```
 ### MAPS
+* Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/
 * https://dart.dev/guides/language/language-tour#maps
 * Équivalent des dictionnaires
 * liste **désordonnée**

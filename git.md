@@ -23,6 +23,8 @@
 * Chapter 4. Undoing and Editing Commits : https://www.oreilly.com/library/view/git-pocket-guide/9781449327507/ch04.html
 * https://git-scm.com/downloads/guis
 * GitHub Desktop Quick Intro For Windows : https://www.youtube.com/watch?v=77W2JSL7-r8
+* https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing
+* https://www.atlassian.com/fr/git/tutorials/advanced-overview
 
 
 ## SOMMAIRE

@@ -94,6 +94,7 @@
 * Fastest Way to Flatten a List in Python : https://chrisconlan.com/fastest-way-to-flatten-a-list-in-python/
 * Comprendre Python en 5 minutes : https://www.jesuisundev.com/comprendre-python-en-5-minutes/
 * 10 Awesome Pythonic One-Liners Explained : https://dev.to/devmount/10-awesome-pythonic-one-liners-explained-3doc
+* Gérer efficacement les dépendances de vos projets Python : https://www.docstring.fr/blog/gerer-efficacement-les-dependances-de-vos-projets/
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
