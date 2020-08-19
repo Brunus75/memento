@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
     // ↑ nom du projet  // ↑ module // ↑ classe utilisée
 ```
 * ```Map``` is an interface (an abstract "thing" that defines how something can be used). And ```HashMap``` is an implementation of that interface (i.e. provides all of the methods specified in the interface).
+* .class = fichier compilé
 
 
 ## INTELLIJ IDEA
@@ -3635,6 +3636,7 @@ https://www.geeksforgeeks.org/java-applet-basics/
 </dependency>
 ```
 * pom.xml = Project Object Model
+* Ajouter une dépendance à un projet Maven > clic-droit sur le Projet > Maven > Add Dependency
 
 ### RENDRE UN LIVRABLE EXECUTABLE
 * MANIFEST.MF, ajouter

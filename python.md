@@ -95,6 +95,7 @@
 * Comprendre Python en 5 minutes : https://www.jesuisundev.com/comprendre-python-en-5-minutes/
 * 10 Awesome Pythonic One-Liners Explained : https://dev.to/devmount/10-awesome-pythonic-one-liners-explained-3doc
 * Gérer efficacement les dépendances de vos projets Python : https://www.docstring.fr/blog/gerer-efficacement-les-dependances-de-vos-projets/
+* VSCode's Python Interactive mode is AMAZING! : https://www.youtube.com/watch?v=lwN4-W1WR84&feature=youtu.be
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -136,7 +137,8 @@
 * ~ Python Packages: Five Real Python Favorites : https://realpython.com/python-packages/
 *  30 Days of Python 👨‍💻 - Day 30 - Free Python Resources : https://dev.to/arindamdawn/30-days-of-python-day-30-free-python-resources-2mam
 * The 22 Most-Used Python Packages in the World : https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e
-* ~  Build RESTful APIs using Python / Flask : https://dev.to/dev0928/build-restful-apis-using-python-flask-56c7   
+* ~  Build RESTful APIs using Python / Flask : https://dev.to/dev0928/build-restful-apis-using-python-flask-56c7
+* ~ Machine Learning Tutorial For Complete Beginners | Learn Machine Learning with Python : https://www.mygreatlearning.com/blog/machine-learning-tutorial-for-complete-beginners 
 
 
 ## INSTALLATION

@@ -194,6 +194,7 @@
 * 10 Tips Before You Buy a Domain Name : https://mediatemple.net/blog/web-development-tech/10-tips-before-you-buy-a-domain-name
 * https://www.reddit.com/r/learnprogramming/wiki/faq#wiki_how_can_i_get.2Fstay_motivated_to_learn_programming.3F
 * dorking (how to find anything on the Internet) : https://www.alec.fyi/dorking-how-to-find-anything-on-the-internet.html
+* https://howhttps.works/
 
 
 ## :keyboard: WINDOWS
@@ -546,6 +547,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 28+ CSS Image Effects : https://csshint.com/css-image-effects
 * CSS Effects Snippets : https://emilkowalski.github.io/css-effects-snippets/
 * 15 CSS text shadow effects : https://csshint.com/15-css-text-shadow-effects
+* 10 CSS Horizontal Menus : https://csshint.com/css-horizontal-menus
 
 ### BOOTSTRAP
 

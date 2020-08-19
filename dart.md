@@ -467,6 +467,8 @@ var maMap = {
 print(maMap.length); // 3
 print(maMap.keys); // (Pierre, Paul, Jacques)
 print(maMap.values); // (21, 23, 183)
+print(maMap.isEmpty); // false
+print(maMap.isNotEmpty); // true
 print(maMap["Pierre"]); // 21
 print(maMap["Jeremy"]); // null
 
@@ -483,9 +485,37 @@ nobleGases[10] = 'neon';
 nobleGases[18] = 'argon';
 print(nobleGases); // {2: helium, 10: neon, 18: argon}
 
+// Dart/Flutter check existence of key/value in Map
+Map map = {1: 'one', 2: 'two'};
+print(map.containsKey(1)); // true
+print(map.containsKey(3)); // false
+print(map.containsValue('two')); // true
+print(map.containsKey('three')); // false
+
 // ajouter un élément (similaire à JS)
 maMap["Georges"] = 1248;
 print(maMap); // {Pierre: 21, Paul: 23, Jacques: 183, Georges: 1248}
+// deuxième façon :
+map.putIfAbsent("Georges", () => 1248);
+// add all key/value pairs of another Map to current Map
+Map map = {1: 'one', 2: 'two'};
+map.addAll({3: 'three', 4: 'four', 5: 'five'});
+print(map); // {1: one, 2: two, 3: three, 4: four, 5: five}
+
+// Map update value by key in Dart/Flutter
+Map map = {1: 'one', 2: 'two'};
+
+map[1] = 'ONE';
+print(map); // {1: ONE, 2: two}
+
+map.update(2, (v) {
+  print('old value before update: ' + v); // old value before update: two
+  return 'TWO';
+});
+print(map); // {1: ONE, 2: TWO}
+
+map.update(3, (v) => 'THREE', ifAbsent: () => 'addedThree');
+print(map); // {1: ONE, 2: TWO, 3: addedThree}
 
 // récupérer un élément (similaire à JS)
 var agePierre = maMap["Pierre"];
@@ -497,9 +527,39 @@ print(agePierre); // 21
 maMap.remove("Pierre"); // remove(clé)
 print(maMap); // {Paul: 23, Jacques: 183, Georges: 1248}
 
+// enlever un élément précis
+Map map = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five'};
+map.removeWhere((k, v) => v.startsWith('f'));
+print(map); // {1: one, 3: three}
+
 // tout supprimer
 maMap.clear();
 print(maMap); // {}
+
+// Combine/merge multiple Maps in Dart/Flutter
+Map map1 = {1: 'one', 2: 'two'};
+Map map2 = {3: 'three'};
+Map map3 = {4: 'four', 5: 'five'};
+
+// addAll() method
+var combinedMap1 = {}..addAll(map1)..addAll(map2)..addAll(map3);
+print(combinedMap1); // {1: one, 2: two, 3: three, 4: four, 5: five}
+
+// from() and addAll() method
+var combinedMap2 = Map.from(map1)..addAll(map2)..addAll(map3);
+print(combinedMap2); // {1: one, 2: two, 3: three, 4: four, 5: five} 
+
+// spread operator
+var combinedMap3 = {...map1, ...map2, ...map3};
+print(combinedMap3); // {1: one, 2: two, 3: three, 4: four, 5: five}
+
+Map map1 = {1: 'one', 2: 'two'};
+Map map2 = null; // If we combine these Maps using the methods above, the program will throw Exception
+Map map3 = {4: 'four', 5: 'five'};
+// To deal with it, we use null-aware spread operator ...?. 
+// The operator check null Map automatically with only one more ? symbol:
+var combinedMap = {...?map1, ...?map2, ...?map3};
+print(combinedMap); // {1: one, 2: two, 4: four, 5: five}
 
 // As of Dart 2.3, maps support spread operators (... and ...?) and collection if and for, 
 // just like lists do
@@ -513,6 +573,55 @@ Map<String, WidgetBuilder>.fromIterable(
   for (var demo in allGalleryDemos)
     if (demo.exists) '${demo.routeName}': demo.buildRoute,
 };
+
+// Iterate over Map in Dart/Flutter
+Map map = {1: 'one', 2: 'two', 3: 'three'};
+
+map.forEach((k, v) {
+  print('{ key: $k, value: $v }');
+  // { key: 1, value: one }
+  // { key: 2, value: two }
+  // { key: 3, value: three }
+});
+
+map.entries.forEach((e) {
+  print('{ key: ${e.key}, value: ${e.value} }');
+  // { key: 1, value: one }
+  // { key: 2, value: two }
+  // { key: 3, value: three }
+});
+
+// We can iterate over keys or values using Map property and forEach() method.
+map.keys.forEach((k) => print(k)); // 1, 2, 3
+map.values.forEach((v) => print(v)); // one, two, three
+
+// Dart/Flutter Map get key by value
+Map map = {1: 'one', 2: 'two', 3: 'three'};
+
+var key = map.keys.firstWhere((k) => map[k] == 'two', orElse: () => null);
+print(key); // 2
+
+// Sort a Map in Dart/Flutter
+Map map = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five'};
+
+var sortedMap = Map.fromEntries(
+    map.entries.toList()
+    ..sort((e1, e2) => e1.value.compareTo(e2.value)));
+    
+print(sortedMap); // {5: five, 4: four, 1: one, 3: three, 2: two}
+
+// Map.map() method to transform a Map in Dart/Flutter
+// We can use map() method to get a new Map with all entries are transformed.
+// For example, the code below change keys and uppercase values of all entries.
+Map map = {1: 'one', 2: 'two', 3: 'three'};
+
+var transformedMap = map.map((k, v) {
+  return MapEntry('($k)', v.toUpperCase());
+});
+
+print(transformedMap); // {(1): ONE, (2): TWO, (3): THREE}
+
+
 ```
 ### SETS
 * https://dart.dev/guides/language/language-tour#sets

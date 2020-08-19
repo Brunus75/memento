@@ -148,8 +148,6 @@ https://fr.wikipedia.org/wiki/Loi_de_D%C3%A9m%C3%A9ter
 
 * :bricks: **DTO** (data transfer object) : objet de transfert de données = objet simple (aucune logique dans son code), léger (pas de méthodes, hormis mutateurs et accesseurs) et dont le rôle se limite SEULEMENT à contenir des données
 
-* Logiciel **agnostique** :
-
 * :capital_abcd: **Système hexadécimal** :
 ```java
 // système décimal (base 10)
@@ -171,3 +169,8 @@ CC9 = (12 * 16 * 16) + (12 * 16) + 9;
 * :jigsaw: **Decoding** et **Deserialization** = transformer un String en une structure de données (ex. JSON en Map)
 
 * :family_man_woman_girl_boy: **Dépendance transitive** = lorsqu'il y a 2 niveaux (voire plus) de dépendance (ex. un module dépend d'une librairie, qui dépend elle-même d'une librairie)
+
+* Garbage collector : 
+* frontoffice
+* backoffice
+* Logiciel **agnostique** :
