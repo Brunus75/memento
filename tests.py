@@ -1,5 +1,6 @@
 ## FACTORIELLE
 
+from re import search
 def fact(number):
     if number == 0:
         return 1
@@ -623,4 +624,116 @@ def unique_in_order(iterable):
             prev = el
     return result
 
-            
+
+# REGEX PASSWORD VALIDATION
+# Un mot de passe qui doit valider des contraintes
+# At least six characters long
+# contains a lowercase letter
+# contains an uppercase letter
+# contains a number
+
+Test.describe("Basic tests")
+Test.assert_equals(bool(search(regex, 'fjd3IR9')), True)
+Test.assert_equals(bool(search(regex, 'ghdfj32')), False)
+Test.assert_equals(bool(search(regex, 'DSJKHD23')), False)
+Test.assert_equals(bool(search(regex, 'dsF43')), False)
+Test.assert_equals(bool(search(regex, '4fdg5Fj3')), True)
+Test.assert_equals(bool(search(regex, 'DHSJdhjsU')), False)
+Test.assert_equals(bool(search(regex, 'fjd3IR9.;')), False)
+Test.assert_equals(bool(search(regex, 'fjd3  IR9')), False)
+Test.assert_equals(bool(search(regex, 'djI38D55')), True)
+Test.assert_equals(bool(search(regex, 'a2.d412')), False)
+Test.assert_equals(bool(search(regex, 'JHD5FJ53')), False)
+Test.assert_equals(bool(search(regex, '!fdjn345')), False)
+Test.assert_equals(bool(search(regex, 'jfkdfj3j')), False)
+Test.assert_equals(bool(search(regex, '123')), False)
+Test.assert_equals(bool(search(regex, 'abc')), False)
+Test.assert_equals(bool(search(regex, '123abcABC')), True)
+Test.assert_equals(bool(search(regex, 'ABC123abc')), True)
+Test.assert_equals(bool(search(regex, 'Password123')), True)
+
+# my answer :
+regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+
+# réponse détaillée :
+regex = (
+    '^'            # start line
+    '(?=.*\d)'     # must contain one digit from 0-9
+    '(?=.*[a-z])'  # must contain one lowercase characters
+    '(?=.*[A-Z])'  # must contain one uppercase characters
+    '[a-zA-Z\d]'   # permitted characters (alphanumeric only)
+    '{6,}'         # length at least 6 chars
+    '$'            # end line
+)
+
+
+# AJOUTER + 1 A UN ARRAY DE NOMBRES
+# Given an array of integers of any length, 
+# return an array that has 1 added to the value represented by the array.
+# the array can't be empty
+# only non-negative, single digit integers are allowed
+# Return nil(or your language's equivalent) for invalid inputs.
+# For example the array [2, 3, 9] equals 239, adding one would return the array [2, 4, 0].
+# [4, 3, 2, 5] would return [4, 3, 2, 6]
+
+Test.assert_equals(up_array([2, 3, 9]), [2, 4, 0])
+Test.assert_equals(up_array([4, 3, 2, 5]), [4, 3, 2, 6])
+Test.assert_equals(up_array([1, -9]), None)
+
+
+def up_array(arr):
+    # eliminate all negative and non single digits
+    # and place in list of string to avoid considerate 0 as false
+    arr_filter = [None if len(str(n)) > 1 else str(n) for n in arr]
+    # if list not empty and list contains only strings (without a None in it)
+    if arr and all(arr_filter):
+        # transform list of string in a number and add 1
+        new_number = int("".join(n for n in arr_filter)) + 1
+        # return list of digits based on the new number
+        return [int(number) for number in str(new_number)]
+    else:
+        return None
+
+# solutions populaires
+def up_array(arr):
+    if not arr or min(arr) < 0 or max(arr) > 9:
+        return None
+    else:
+        return [int(y) for y in str(int("".join([str(x) for x in arr])) + 1)]
+
+
+def up_array(arr):
+    return None if arr == [] or any([x not in range(10) for x in arr]) else [int(c) for c in str(int("".join([str(x) for x in arr]))+1)]
+
+# Primorial Of a Number
+# prime numbers = 2, 3, 5, 7, 11, 13, ect.
+# ne peuvent que se diviser par 1 et eux-mêmes
+# Un nombre n de premiers donnés, multiplier les n premiers nombres premiers entre eux
+# numPrimorial (3) ==> return (30)
+# Since the passed number is (3) ,Then the primorial should obtained by multiplying 2 * 3 * 5 = 30
+# numPrimorial (6) ==> return (30030)
+# Since the passed number is (6) ,Then the primorial should obtained by multiplying 2 * 3 * 5 * 7 * 11 * 13 = 30030
+
+Test.describe("Basic tests")
+Test.assert_equals(num_primorial(3),30)
+Test.assert_equals(num_primorial(4),210)
+Test.assert_equals(num_primorial(5),2310)
+Test.assert_equals(num_primorial(8),9699690)
+Test.assert_equals(num_primorial(9),223092870)
+
+def num_primorial(n):
+    primes = 0 # number of prime numbers
+    number = 1 # the number to guess if it's a prime number
+    result = 1 # final result
+    while primes < n:
+        number += 1
+        if is_prime(number):
+            result *= number
+            primes += 1
+    return result
+        
+def is_prime(n):
+    for i in range(2, n): # on commence à 2 car TOUS les chiffres se multiplient par 1
+        if (n % i) == 0:
+            return False
+    return True

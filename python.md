@@ -138,7 +138,8 @@
 *  30 Days of Python 👨‍💻 - Day 30 - Free Python Resources : https://dev.to/arindamdawn/30-days-of-python-day-30-free-python-resources-2mam
 * The 22 Most-Used Python Packages in the World : https://medium.com/better-programming/the-22-most-used-python-packages-in-the-world-7020a904b2e
 * ~  Build RESTful APIs using Python / Flask : https://dev.to/dev0928/build-restful-apis-using-python-flask-56c7
-* ~ Machine Learning Tutorial For Complete Beginners | Learn Machine Learning with Python : https://www.mygreatlearning.com/blog/machine-learning-tutorial-for-complete-beginners 
+* ~ Machine Learning Tutorial For Complete Beginners | Learn Machine Learning with Python : https://www.mygreatlearning.com/blog/machine-learning-tutorial-for-complete-beginners
+* ~ A Practical Introduction to Web Scraping in Python : https://realpython.com/python-web-scraping-practical-introduction/
 
 
 ## INSTALLATION
@@ -5433,9 +5434,10 @@ Ressource > https://pythex.org/
 # exemple : nombre de téléphone français valide ?
 ^[0]{1}[1-7]{1}(-[0-9]{2}){4}$
 06-12-23-12-23
-# 2 choses à savoir : 
+# 3 choses à savoir : 
 # 1) quoi chercher
 # 2) combien de fois
+# 3) quelles sont les contraintes
 
 # 1) trouver un caractère :
 # .				Le point correspond à tous les caractères possibles (incluant symboles)
@@ -5459,6 +5461,13 @@ Ressource > https://pythex.org/
 # {,3}  	de 0 à 3 fois
 # {3,6} 	de 3 à 6 fois
 # ()        dans une séquence
+
+# 3) contient un caractère :
+# POSITIVE LOOKAHEAD (?=.*[a-z])
+# après "?=", va chercher la correspondance dans le mot, sans prendre la correspondance dans le regex
+# ici, va chercher un mot avec tous les caractères, 
+# qui contiennent au moins une fois [a-z] une lettre minuscule
+# équivalent à la contrainte "contient TOUS les caractères, AVEC AU MOINS une lettre minuscule"
 
 # - la fonction match
 
@@ -5628,6 +5637,27 @@ for mail in adresses_mail:
     # .+ = n'importe quel caractère, illimité
     # + = de 1 à l'infini
     print("L'adresse {} est {}".format(mail, 'valide' if adresse_valide else 'invalide'))
+
+# ex. REGEX PASSWORD VALIDATION
+# Un mot de passe qui doit valider des contraintes
+# At least six characters long
+# contains a lowercase letter
+# contains an uppercase letter
+# contains a number
+
+# my answer :
+regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$"
+
+# réponse détaillée :
+regex = (
+    '^'            # start line
+    '(?=.*\d)'     # must contain one digit from 0-9
+    '(?=.*[a-z])'  # must contain one lowercase characters
+    '(?=.*[A-Z])'  # must contain one uppercase characters
+    '[a-zA-Z\d]'   # permitted characters (alphanumeric only)
+    '{6,}'         # length at least 6 chars
+    '$'            # end line
+)
 
 # ex. récupérer l'extension d'un fichier
 import re
@@ -6263,6 +6293,60 @@ s = sum(a[1::2])
 # a = [1,2,3,4,5]
 del a[::2]
 # print(a) >> [2, 4]
+```
+
+### Checking if number is prime or not
+* https://stackoverflow.com/questions/567222/simple-prime-number-generator-in-python
+```py
+# simple version
+def is_prime(n):
+    for i in range(2, n): # on commence à 2 car TOUS les chiffres se multiplient par 1
+        if (n % i) == 0:
+            return False
+    return True
+
+# taking input from user
+number = int(input("Enter any number: "))
+
+# prime number is always greater than 1
+if number > 1:
+    for i in range(2, number):
+        if (number % i) == 0:
+            print(number, "is not a prime number")
+            break
+    else:
+        print(number, "is a prime number")
+
+# if the entered number is less than or equal to 1
+# then it is not prime number
+else:
+    print(number, "is not a prime number")
+
+# with range
+def is_prime(num):
+    """Returns True if the number is prime
+    else False."""
+    if num == 0 or num == 1:
+        return False
+    for x in range(2, num):
+        if num % x == 0:
+            return False
+    else:
+        return True
+
+>> filter(is_prime, range(1, 20))
+  [2, 3, 5, 7, 11, 13, 17, 19]
+
+## or:
+import re
+
+def isprime(n):
+    return re.compile(r'^1?$|^(11+)\1+$').match('1' * n) is None
+
+print [x for x in range(100) if isprime(x)]
+
+###########Output#############
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
 ```
 
 

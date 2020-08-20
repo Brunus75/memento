@@ -195,6 +195,7 @@
 * https://www.reddit.com/r/learnprogramming/wiki/faq#wiki_how_can_i_get.2Fstay_motivated_to_learn_programming.3F
 * dorking (how to find anything on the Internet) : https://www.alec.fyi/dorking-how-to-find-anything-on-the-internet.html
 * https://howhttps.works/
+* One Task At A Time: The Key To Achieving Deep, Focused Work : https://dribbble.com/stories/2020/08/03/one-task-at-a-time
 
 
 ## :keyboard: WINDOWS
@@ -803,6 +804,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Geekflare WP Security Scanner - Powered by WPScan : https://gf.dev/wordpress-security-scanner
 * WPAudit – WordPress Website Audit Checklist : https://wpaudit.site/
 * 5 Most Common WordPress Attacks in 2020 - SecureBlitz Cybersecurity : https://secureblitz.com/common-wordpress-attacks
+* WordPress 5.5 : comment résoudre les erreurs JavaScript de la dernière mise à jour : https://www.blogdumoderateur.com/wordpress-5-5-comment-resoudre-erreurs-javascript
 
 
 ## :no_entry: SECURITY
@@ -995,3 +997,28 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Image Techniques On The Web : https://ishadeed.com/article/image-techniques/
 * Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9
 * L'outil en ligne Slazzer permet de supprimer l'arrière-plan d'une photo et de le remplacer par l'arrière-plan de son choix 📷💡 : https://www.blogdumoderateur.com/tools/slazzer
+---
+* https://stephaniewalter.design/blog/enhancing-user-experience-with-css-animations
+* https://dribbble.com/stories/2020/08/17/choosing-typography-for-web-design
+* https://maze.design/blog/ux-design-principles
+* https://howhttps.works/the-handshake/
+* https://adamfard.com/blog/grow-your-app
+* https://sourcery.ai/blog/explaining-refactorings-3/
+* https://uxplanet.org/how-to-simplify-your-design-69d97fde11b9
+* https://www.jesuisundev.com/apprendre-efficacement-tant-developpeur/
+* https://www.jesuisundev.com/comprendre-http3-en-5-minutes/
+* https://www.jesuisundev.com/comprendre-intelligence-artificielle-en-10-minutes/
+* https://www.jesuisundev.com/page/2/
+* https://www.jesuisundev.com/es2020-les-nouveautes-dans-ton-javascript/
+* https://www.jesuisundev.com/gagne-du-temps-avec-visual-studio-code/
+* https://www.jesuisundev.com/
+* https://fr.wikipedia.org/wiki/IPv4
+* https://fr.wikipedia.org/wiki/IPv6
+* https://web.dev/content-visibility
+* https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
+* https://dev.to/python_engineer/11-tips-and-tricks-to-write-better-python-code-5fck
+* https://the-webdesigner.co/seo-for-web-designers/
+* https://towardsdatascience.com/designing-a-python-interface-for-machine-learning-engineering-ae308adc4412
+* https://lawsofux.com/
+* https://www.jesuisundev.com/comprendre-les-algorithmes-de-parcours-en-8-minutes/
+* https://www.noupe.com/design/improve-your-logo-design.html
