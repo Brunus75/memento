@@ -158,6 +158,7 @@ Dossier ◄--- contenir ---- * Fichier
 + tuto_ModelisationUML : https://github.com/iblasquez/tuto_ModelisationUML/blob/master/Modelio/Modelio_Classes.md
 + https://github.com/iblasquez/tuto_ModelisationUML/tree/master/Modelio
 + https://www.uml-diagrams.org/association.html
++  Delphine Longuet : https://www.youtube.com/channel/UCrEm-Sqv-vGvOrid9jdhRnQ/videos
 
 
 ## MODELIO

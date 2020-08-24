@@ -15,6 +15,9 @@
 <!-- empêchera un utilisateur d'entrer autre chose que des chiffres, et limitera leur nombre à 3 chiffres -->
 ```
 
+## Best way to lazy load images for maximum performance 
+* https://dev.to/prototyp/best-way-to-lazy-load-images-for-maximum-performance-27o1?ref=webdesignernews.com
+
 ## Revenir en arrière
 * HTML5 provides for a relatively straightforward solution: the HTML5 History API : http://diveintohtml5.info/history.html 
 * More specifically, the history.pushState() function allows a site to invoke a URL change

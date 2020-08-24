@@ -18,6 +18,7 @@
 * Top Flutter packages : https://pub.dev/flutter/packages
 * https://www.reddit.com/r/FlutterDev/
 * https://github.com/flutter/flutter
+* https://medium.com/flutter
 * Catalogue d’applications Flutter développées par la communauté : https://github.com/flutter/samples/blob/master/INDEX.md
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
@@ -43,6 +44,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Dart Async Library : https://api.flutter.dev/flutter/dart-async/dart-async-library.html
 * https://www.didierboelens.com/fr/
 * CHEATSHEET TRANSPARENCY HEXADECIMAL : https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+* Compiled List of Flutter Newsletters : https://medium.com/@bleyldev/compiled-list-of-flutter-newsletters-ee040a0b136f
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -51,6 +53,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * https://www.canva.com/fr_fr/
 * https://icons8.com/
 * https://fr.vecteezy.com/
+
+**TOOLS**
+* RGB to HEX > https://www.google.com/search?client=firefox-b-d&q=rgb+to+hex
 
 **AWESOME PROJECTS**
 * https://github.com/2d-inc/HistoryOfEverything
@@ -149,6 +154,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (8) : Future, async, await, API, Navigator](#bootcamp-clima-api)
 * [EX D'APPLI (9) : API, DropdownButton, Cupertino Widgets, Maps, Platform](#bootcamp-bitcoin-api)
 * [EX D'APPLI (10) : Animations, Firebase, Stream](#bootcamp-flash-chat)
+* [EX D'APPLI (10) : State Management, BottomSheet, Callbacks](#bootcamp-todoey)
 
 
 
@@ -182,6 +188,9 @@ Scaffold (structure)
 * The majority of widgets in Flutter are simply combinations of other simpler widgets. For example, the Container.padding property causes the container to build a Padding widget and the Container.decoration property causes the container to build a DecoratedBox widget.
 
 ### GLOSSAIRE
+* State = ensemble des valeurs de toutes les variables qui créent l'interface de l'appli
+* Local State = les valeurs restreintes à un widget
+* Global State = les valeurs ouvertes à toute l'application (les valeurs des variables sont utilisées dans toute l'appli)
 * Container = grosso modo une ```<div></div>```
 * SizedBox = container qui ne changera pas de taille, quelle que soit la taille de son enfant (équivaut à box-sizing : border-box)
 ```java
@@ -193,6 +202,7 @@ SizedBox(
 )
 ```
 * Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application => **statique**
+* Si le Stateless Widget doit changer (son code est modifié), il est détruit puis remplacé par un autre
 ```java
 class MyApp extends StatelessWidget {
   @override 
@@ -205,6 +215,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 * Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application => **dynamique**
+* Si le Stateful Widget doit changer (son code est modifié), son State change, mais le Widget ne change pas
 ```java
 class MyHomePage extends StatefulWidget { // création d'un Stateful Widget
 
@@ -514,6 +525,17 @@ Container(
       color: Colors.grey,
       shape: BoxShape.circle)
 ),
+
+// or
+CircleAvatar(
+  child: Icon(
+    Icons.list,
+    size: 30.0,
+    color: Colors.lightBlueAccent,
+  ),
+  backgroundColor: Colors.white,
+  radius: 30.0,
+),
 ```
 * Container de background
 ```java
@@ -568,6 +590,12 @@ TextField(
       // ↓ inputDecoration personnalisée
       kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
 ),
+```
+* Afficher le contenu dans la partie visible de l'écran
+```java
+SafeArea(
+  // contenu ici
+)
 ```
 
 
@@ -686,10 +714,12 @@ flutter doctor
 * CTRL + Y ==> To delete a line
 * stless => Stateless Widget
 * stful => Stateful Widget
+* FAB => FloatingActionButton
 * cliquer sur l'élément + Ctrl + Q = quick documentation
 * Envelopper un widget par un Center(), Column(), Row(), ect. => cliquer sur le widget => ouvrir le panneau droite Flutter Outline, cliquer sur l'un des boutons en haut du panneau OU depuis le même panneau, clic-droit sur l'élément à envelopper$
 * Ctrl + clic sur la classe pour voir son fichier
 * Renommer une variable dans tout le projet > Clic-droit > Refactor > Rename
+* Ouvrir le debug paint => Flutter inspector => Debug paint
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -2182,7 +2212,9 @@ class _MyHomePageState extends State<MyHomePage> {
               // .emailAddress pour les mails
               keyboardType: TextInputType.text,
               obscureText: true, // textfield secret ••••
-              textAlign: TextAlign.center,
+              autofocus: true, // l'utilisateur est automatiquement dirigé dans le TextField
+              // ce qui ouvre instantanément le clavier
+              textAlign: TextAlign.center, // texte et curseur au milieu
               onChanged: (String value) {
                 setState(() {
                   // ↓ changement à la volée
@@ -7216,7 +7248,7 @@ class _LocationScreenState extends State<LocationScreen> {
           ),
         ),
         constraints: BoxConstraints.expand(),
-        child: SafeArea(
+        child: SafeArea( // Afficher le contenu dans la partie visible de l'écran
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -7317,7 +7349,7 @@ class _CityScreenState extends State<CityScreen> {
           ),
         ),
         constraints: BoxConstraints.expand(),
-        child: SafeArea(
+        child: SafeArea( // Afficher le contenu dans la partie visible de l'écran
           child: Column(
             children: <Widget>[
               Align(
@@ -8325,7 +8357,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('⚡️Chat'),
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: SafeArea(
+      body: SafeArea( // Afficher le contenu dans la partie visible de l'écran
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -8503,4 +8535,93 @@ class RoundedButton extends StatelessWidget {
     );
   }
 }
+```
+
+## BOOTCAMP TODOEY
+* Application de TODO
+* Flutter BottomSheet Class : https://api.flutter.dev/flutter/material/BottomSheet-class.html
+* Positioning the BottomSheet above the Keyboard :
+```java
+// By default, the BottomSheet will take up half the screen:
+onPressed: () {
+  showModalBottomSheet(
+    context: context,
+    builder: (context) => AddTaskScreen(),
+  );
+}
+
+// For certain screen sizes, this may mean the Add button is obscured. 
+// Setting the isScrolledControlled property to true you can make the modal take up the full screen:
+onPressed: () {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) => AddTaskScreen(),
+  );
+}
+
+// To have the AddTaskScreen sit just above the keyboard, you can wrap it inside 
+// SingleChildScrollView, which determines the padding at the bottom using a MediaQuery
+onPressed: () {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) => SingleChildScrollView(
+      child:Container(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        // ajoute un padding bottom qui fait la taille du keyboard
+        // et permet de se placer par-dessus
+        // When a mobile device's keyboard is visible viewInsets.bottom corresponds 
+        // to the top of the keyboard
+        child: AddTaskScreen(),
+      )
+    )
+  );
+}
+```
+* Structure :
+```py
+Flash-Chat-Flutter-Complete/
+  lib/
+    components/
+      rounded_button.dart
+    screens/
+      chat_screen.dart
+      login_screen.dart
+      registration_screen.dart
+      welcome_screen.dart
+    constants.dart
+    main.dart
+  pubspec.yaml
+```
+* pubspec.yaml
+```yaml
+name: flash_chat
+description: A new Flutter application.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.0.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  animated_text_kit: ^1.3.0 # text animation
+  firebase_core: ^0.3.4 # obligatoire pour toute application firebase
+  firebase_auth: ^0.8.4+4
+  cloud_firestore: ^0.9.13+1
+  modal_progress_hud: ^0.1.3 # loading spinner
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - images/
 ```

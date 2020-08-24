@@ -60,6 +60,7 @@ C:\Program Files\AdoptOpenJDK\jdk-11.0.5.10-hotspot\bin # ++
 ```
 * Ouvrir l'application sur Firefox = Window > Web Browser > Firefox
 * Clic-droit sur le projet > Properties > Resource > Other > UTF-8
+* Changer de version JAVA pour le projet > Clic-droit projet > Properties > vérifier JAVA compiler
 
 ## ECLIPSE RACCOURCIS
 
@@ -778,4 +779,308 @@ PrintWriter out = response.getWriter();
 	et new-file/home.html -->
   </welcome-file-list>
 </web-app>
+```
+
+### Transmission de paramètres
+
+* Url d'exemple : http://localhost:8080/backoffice/hello?nombre1=22&nombre2=13
+* HelloServlet.java
+```java
+package com.mediastore.onlinestore.backoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class HelloServlet
+ */
+@WebServlet(name="HelloServlet", urlPatterns={"/hello"})
+public class HelloServlet extends HttpServlet {
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		response.setContentType("text/html");
+
+		PrintWriter out = response.getWriter();
+
+		String nombre1 = request.getParameter("nombre1");
+		String nombre2 = request.getParameter("nombre2");
+
+		int somme = Integer.parseInt(nombre1) + Integer.parseUnsignedInt(nombre2);
+		
+		out.print("<HTML><BODY>La somme des deux nombres fournis en paramètres est : "+somme+"</BODY></HTML>");
+	}
+
+}
+```
+
+* Exemple avec notre application
+* Structure
+```py
+/core # notre module core, nos classes métier JAVA (notre data)
+    src/main/java # nos classes métier
+        com.directmedia.onlinestore.core # package du projet (racine du projet)
+            Startup.java
+        com.directmedia.onlinestore.core.entity # package des modèles
+            Artist.java
+            Catalogue.java
+            Work.java # ajout du paramètre id ++
+    src/main/resources/
+    src/test/java/
+    src/test/resources/
+    JRE System Library/ # classes JAVA
+    src/
+    target/
+pom.xml # maven
+backoffice/ # module réservé aux admins
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.backoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres
+				HomeServlet.java # notre servlet d'accueil ici
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+	pom.xml
+frontoffice/
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.frontoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres, modifié pour devenir des liens
+				HomeServlet.java # notre servlet d'accueil ici
+				WorkDetailsServlet.java # servlet de détails d'une oeuvre
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+	pom.xml
+```
+* Work.java
+```java
+package com.directmedia.onlinestore.core.entity;
+
+public class Work {
+
+	private long id; // ++
+	private String title;
+	private String genre;
+	private int release;
+	private String summary;
+	// dans le meme package = j'y ai acces
+	private Artist mainArtist;
+
+	public Work() {
+	}
+
+	public Work(String title) {
+		this.title = title;
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public int getRelease() {
+		return release;
+	}
+
+	public void setRelease(int release) {
+		this.release = release;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public Artist getMainArtist() {
+		return mainArtist;
+	}
+
+	public void setMainArtist(Artist mainArtist) {
+		this.mainArtist = mainArtist;
+	}
+
+}
+```
+* WorkDetailsServlet.java
+```java
+package com.mediastore.onlinestore.frontoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.directmedia.onlinestore.core.entity.Catalogue;
+import com.directmedia.onlinestore.core.entity.Work;
+
+/**
+ * Servlet implementation class WorkDetailsServlet
+ */
+public class WorkDetailsServlet extends HttpServlet {
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String id = request.getParameter("id");
+		
+		// But : trouver l'objet Work par son id
+		// et affiche toutes ses informations
+		
+		// JAVA 8 Stream
+		// Work work = Catalogue.listOfWorks.stream().filter(w -> w.getId() == Long.parseLong(id)).findFirst().get();
+		
+		// JAVA 7
+		Work work = null;
+		for (Work element : Catalogue.listOfWorks) {
+			if (element.getId() == Long.parseLong(id)) {
+				work = element;
+				break;
+			}
+		}
+		
+		PrintWriter out = response.getWriter();
+		out.print("<HTML><BODY><h1>Descriptif de l'oeuvre</h1>");
+		out.print("<p>Titre : "+work.getTitle()+"</p>");
+		out.print("<p>Année de parution : "+work.getRelease()+"</p>");
+		out.print("<p>Genre : "+work.getGenre()+"</p>");
+		out.print("<p>Artiste : "+work.getMainArtist().getName()+"</p>");
+		out.print("<p>Résumé : "+work.getSummary()+"</p>");
+		out.print("</BODY></HTML>");
+	}
+
+}
+```
+* CatalogueServlet.java
+```java
+package com.mediastore.onlinestore.frontoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.directmedia.onlinestore.core.entity.Artist;
+import com.directmedia.onlinestore.core.entity.Catalogue;
+import com.directmedia.onlinestore.core.entity.Work;
+
+/**
+ * Servlet implementation class CatalogueServlet
+ */
+@WebServlet(name="CatalogueServlet", urlPatterns={"/catalogue"})
+public class CatalogueServlet extends HttpServlet {
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		PrintWriter out = response.getWriter();
+		
+		if (Catalogue.listOfWorks.isEmpty()) {
+			
+			Artist tomCruise = new Artist("Tom Cruise");
+			Artist michaelJackson = new Artist("Michael Jackson");
+			Artist louisDeFunes = new Artist("Louis De Funès");
+
+			Work minorityReport = new Work("Minority Report");
+			Work bad = new Work("Bad");
+			Work leGendarmeDeSaintTropez = new Work("Le Gendarme de Saint-Tropez");
+
+			minorityReport.setMainArtist(tomCruise);
+			bad.setMainArtist(michaelJackson);
+			leGendarmeDeSaintTropez.setMainArtist(louisDeFunes);
+
+			minorityReport.setRelease(2002);
+			bad.setRelease(1987);
+			leGendarmeDeSaintTropez.setRelease(1964);
+
+			minorityReport.setSummary("Film de Science-Fiction");
+			bad.setSummary("Album de musique");
+			leGendarmeDeSaintTropez.setSummary("Comédie française");
+
+			minorityReport.setGenre("Science Fiction");
+			bad.setGenre("Pop");
+			leGendarmeDeSaintTropez.setGenre("Comédie");
+			
+			minorityReport.setId(1); // ++
+			bad.setId(2); // ++
+			leGendarmeDeSaintTropez.setId(3); // ++
+
+			Catalogue.listOfWorks.add(leGendarmeDeSaintTropez);
+			Catalogue.listOfWorks.add(bad);
+			Catalogue.listOfWorks.add(minorityReport);
+		}
+		
+		
+		out.print("<HTML><BODY><h1>Oeuvres du catalogue</h1>");
+		
+		for (Work work : Catalogue.listOfWorks) {
+			out.println("<a href=\"work-details?id="+work.getId()+"\">"+work.getTitle() + " (" + work.getRelease() + ")</a> <br/>");
+			//	Le Gendarme de Saint-Tropez (1964)
+			// Bad (1987)
+			// Minority Report (2002)
+		}
+		
+		out.print("</BODY></HTML>");
+	}
+
+}
 ```

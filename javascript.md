@@ -26,7 +26,9 @@
 * https://hacks.mozilla.org/2020/04/firefox-75-ambitions-for-april/
 * https://medium.com/@remi.michel38/javascript-a-la-d%C3%A9couverte-des2020-44a0affcc9ec
 * ~ Python vs JavaScript for Pythonistas : https://realpython.com/python-vs-javascript/
-* JavaScript Object Functions Cheat Sheet : https://wweb.dev/resources/js-object-functions-cheatsheet 
+* JavaScript Object Functions Cheat Sheet : https://wweb.dev/resources/js-object-functions-cheatsheet
+* Les 15 meilleures librairies JavaScript à essayer : https://www.codeur.com/blog/meilleures-librairies-javascript/
+* Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
 
 
 ## LEXIQUE

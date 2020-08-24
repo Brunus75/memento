@@ -96,6 +96,7 @@
 * 10 Awesome Pythonic One-Liners Explained : https://dev.to/devmount/10-awesome-pythonic-one-liners-explained-3doc
 * Gérer efficacement les dépendances de vos projets Python : https://www.docstring.fr/blog/gerer-efficacement-les-dependances-de-vos-projets/
 * VSCode's Python Interactive mode is AMAZING! : https://www.youtube.com/watch?v=lwN4-W1WR84&feature=youtu.be
+*  Handling exceptions in Python a cleaner way, using Decorators : https://dev.to/shivambats/handling-exceptions-in-python-a-cleaner-way-using-decorators-2l09
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -1023,6 +1024,25 @@ all([False, False, True, False]) # renvoie False
 # ex.d'utilisation
 all([f.endswith(".jpg") for f in files])
 # vérifie si tous les fichiers se finissent en .jpg
+
+# Check if all elements in a list are equal
+# Pythonic ways of checking if all
+# items in a list are equal:
+>>> lst = ['a', 'a', 'a']
+
+>>> len(set(lst)) == 1
+True
+
+>>> all(x == lst[0] for x in lst)
+True
+
+>>> lst.count(lst[0]) == len(lst)
+True
+
+# I ordered those from "most Pythonic" to "least Pythonic" 
+# and  "least efficient" to "most efficient". 
+# The len(set()) solution is idiomatic,  but constructing 
+# a set is less efficient memory and speed-wise.
 ```
 
 ## LES SETS

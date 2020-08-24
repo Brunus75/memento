@@ -25,6 +25,7 @@
 * https://dev.to/
 * https://news.humancoders.com/
 * https://www.blogduwebdesign.com/
+* https://twitter.com/sulco (JS, HTML, etc.)
 
 
 ## :gun: WEB TOOLS
@@ -191,6 +192,7 @@
 * Comprendre les algorithmes de tri en 7 minutes : https://www.jesuisundev.com/comprendre-les-algorithmes-de-tri-en-7-minutes/
 * Comprendre les structures de données linéaires en 10 minutes : https://www.jesuisundev.com/comprendre-les-structures-de-donnees-lineaires-en-10-minutes/
 * Comprendre les structures de données non linéaires en 5 minutes : https://www.jesuisundev.com/comprendre-les-structures-de-donnees-non-lineaires-en-5-minutes/
+* Comprendre la récursivité en 7 min : https://www.jesuisundev.com/comprendre-la-recursivite-en-7-min/
 * 10 Tips Before You Buy a Domain Name : https://mediatemple.net/blog/web-development-tech/10-tips-before-you-buy-a-domain-name
 * https://www.reddit.com/r/learnprogramming/wiki/faq#wiki_how_can_i_get.2Fstay_motivated_to_learn_programming.3F
 * dorking (how to find anything on the Internet) : https://www.alec.fyi/dorking-how-to-find-anything-on-the-internet.html
@@ -356,6 +358,7 @@
 * Composer, autoloader, namespaces: La gestion des dépendances en PHP : https://medium.com/@remi.michel38/composer-autoloader-namespaces-la-gestion-des-d%C3%A9pendances-en-php-50dfd4652c0
 * How to Create, Write, Read, and Delete Files in PHP : https://code.tutsplus.com/tutorials/create-write-read-and-delete-files-in-php--cms-34950
 * The perfect starting point to analyze the code quality of your PHP projects : https://phpinsights.com
+* ✨ PHP 7.4 apporte de vraies nouveautés ! : https://mailchi.mp/0f562ba336fb/mes-fonctionnalits-prfres-de-php-74
 
 
 ### SYMFONY
@@ -440,6 +443,7 @@
 * Sign-in form best practices : https://web.dev/sign-in-form-best-practices/
 * Website Best Practices Checklist: 9 Web Design Best Practices : https://www.webfx.com/blog/web-design/website-best-practices-checklist
 * http://inspirationfeed.com/increase-time-on-site
+* Best way to lazy load images for maximum performance : https://dev.to/prototyp/best-way-to-lazy-load-images-for-maximum-performance-27o1
 
 ### SANDBOX
 
@@ -958,6 +962,7 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * https://www.novasanco.fr/
 * https://menway.com/
 * https://www.wiilog.fr/
+* https://www.code-couleur.com/signification/anthracite.html
 
 
 ## :monocle_face: TENDANCES
@@ -972,6 +977,10 @@ des systèmes d’entrée/sortie de base (BIOS), des chargeurs d’amorce, des s
 portent un intérêt. 
 D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
 ```
+
+## WORD
+
+* Word : comment aligner verticalement du texte ? : https://www.futura-sciences.com/tech/questions-reponses/editeur-texte-word-aligner-verticalement-texte-12948/
 
 ## :eye_speech_bubble: NOCODE
 
@@ -997,6 +1006,7 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Image Techniques On The Web : https://ishadeed.com/article/image-techniques/
 * Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9
 * L'outil en ligne Slazzer permet de supprimer l'arrière-plan d'une photo et de le remplacer par l'arrière-plan de son choix 📷💡 : https://www.blogdumoderateur.com/tools/slazzer
+* Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
 ---
 * https://stephaniewalter.design/blog/enhancing-user-experience-with-css-animations
 * https://dribbble.com/stories/2020/08/17/choosing-typography-for-web-design
@@ -1022,3 +1032,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://lawsofux.com/
 * https://www.jesuisundev.com/comprendre-les-algorithmes-de-parcours-en-8-minutes/
 * https://www.noupe.com/design/improve-your-logo-design.html
+* https://livecodestream.dev/post/2020-08-21-git-concepts-and-workflow-for-beginners
+* https://fr.wikipedia.org/wiki/Langage_de_programmation_de_haut_niveau

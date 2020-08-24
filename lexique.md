@@ -174,3 +174,5 @@ CC9 = (12 * 16 * 16) + (12 * 16) + 9;
 * frontoffice
 * backoffice
 * Logiciel **agnostique** :
+
+* **Pile d'exécution** : structure de données qui enregistre les informations (adresses de retour, variables locales, paramètres) des fonctions actives dans un programme informatique
