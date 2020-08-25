@@ -10,6 +10,7 @@
 * CSS Design Awards - Publications : https://www.facebook.com/pg/CSSDesignAwards/posts/?ref=page_internal
 * Awwwards - Publications : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * Web Dev / Design : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
+* Web Dev / Design (liste Twitter) : https://twitter.com/i/lists/1005158295177396226
 * https://www.reddit.com/
 * https://www.reddit.com/r/programming/
 * https://www.barbuduweb.com/
@@ -978,7 +979,7 @@ portent un intérêt.
 D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
 ```
 
-## WORD
+## :page_facing_up: WORD
 
 * Word : comment aligner verticalement du texte ? : https://www.futura-sciences.com/tech/questions-reponses/editeur-texte-word-aligner-verticalement-texte-12948/
 

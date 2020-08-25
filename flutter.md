@@ -14,6 +14,7 @@
 * Material Palette (créer une palette, voir les nuances des couleurs et chercher une icone) : https://www.materialpalette.com/
 * The Flutter Cookbook : https://flutter.dev/docs/cookbook
 * Une communauté francophone Flutter : http://fr.flutterdev.net/
+* Communauté Flutter : https://gitter.im/flutter/flutter
 * Widget catalog : https://flutter.dev/docs/development/ui/widgets
 * Top Flutter packages : https://pub.dev/flutter/packages
 * https://www.reddit.com/r/FlutterDev/
@@ -22,9 +23,10 @@
 * Catalogue d’applications Flutter développées par la communauté : https://github.com/flutter/samples/blob/master/INDEX.md
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
+* https://stackoverflow.com/questions/43854647/flutter-how-does-it-work-behind-the-scenes
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 * ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
-* https://stackoverflow.com/questions/43854647/flutter-how-does-it-work-behind-the-scenes
+* ~ Flutter State Management at Google I/O 2019 : https://youtu.be/d_m5csmrf7I
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -154,7 +156,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (8) : Future, async, await, API, Navigator](#bootcamp-clima-api)
 * [EX D'APPLI (9) : API, DropdownButton, Cupertino Widgets, Maps, Platform](#bootcamp-bitcoin-api)
 * [EX D'APPLI (10) : Animations, Firebase, Stream](#bootcamp-flash-chat)
-* [EX D'APPLI (10) : State Management, BottomSheet, Callbacks](#bootcamp-todoey)
+* [EX D'APPLI (10) : State Management, BottomSheet, Callbacks, Provider](#bootcamp-todoey)
 
 
 
@@ -597,6 +599,91 @@ SafeArea(
   // contenu ici
 )
 ```
+* Créer un callback entre deux fichiers
+```java
+// fichier 1, classe appelante
+class TasksScreen extends StatelessWidget {
+
+  List<Task> tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
+  ]
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+          onPressed: () {
+          // déclenche un modal BottomSheet
+            showModalBottomSheet(
+                context: context,
+                builder: (context) => SingleChildScrollView(
+                    child:Container(
+                      child: AddTaskScreen( (newTaskTitle) { // 1) ajout d'un callback
+                      // dans la classe extérieure appelée
+                        setState(() {
+                          tasks.add(Task(name: newTaskTitle)); // 4) récupération des données du fichier 2
+                          // + action sur le fichier 1
+                          // possible car l'objet (et son callback) est construit dans le fichier 1
+                          // il peut donc agir sur le fichier 1
+
+                          // un objet AddTaskScreen est crée, avec une fonction en propriété
+                          // et il est gardé en mémoire dans le fichier 1
+                          // AddTaskScreen() est modélisé dans le fichier 2,
+                          // mais il vit dans le fichier 1
+                          // quand la fonction est appelée, celle-ci s'exécute
+                          // et a accès aux propriétés du fichier 1
+                        })
+                      }),
+                    )
+                )
+            );
+          }
+      ),
+      // body, ect.
+    )
+  }
+}
+
+// fichier 2, classe appelée
+class AddTaskScreen extends StatelessWidget {
+
+  final Function addTaskCallback;
+
+  AddTaskScreen(this.addTaskCallback); // 2) ajout du callback aux propriétés de la classe appelée
+
+  @override
+  Widget build(BuildContext context) {
+
+    String newTaskTitle; // saisie de l'utilisateur, à récupérer dans le fichier 1
+
+    return Container(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Text('Add Task'),
+            TextField(
+              // saisie de l'utilisateur
+              onChanged: (newText) {
+                newTaskTitle = newText;
+              },
+            ),
+            FlatButton(
+              child: Text('Add'),
+              onPressed: () {
+                addTaskCallback(newTaskTitle) // 3) ajout du callback à une action
+                // + ajout du paramètre à récupérer dans le fichier 1
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
 
 
 ### STRUCTURE
@@ -720,6 +807,7 @@ flutter doctor
 * Ctrl + clic sur la classe pour voir son fichier
 * Renommer une variable dans tout le projet > Clic-droit > Refactor > Rename
 * Ouvrir le debug paint => Flutter inspector => Debug paint
+* If you do not remember how to call an action, press Ctrl+Maj+A and start typing the action name
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -8540,6 +8628,21 @@ class RoundedButton extends StatelessWidget {
 ## BOOTCAMP TODOEY
 * Application de TODO
 * Flutter BottomSheet Class : https://api.flutter.dev/flutter/material/BottomSheet-class.html
+* The Provider Package : https://pub.dev/packages/provider
+* Provider package =  recommandation de l'équipe de Google pour gérer le State d'une application
+* Avec Provider, certains widgets peuvent s'abonner à un State, ce qui évite que l'information traverse TOUS les widgets s'intercalant entre le widget qui a besoin de l'information et la source d'information
+* Provider permet une circulation limitée de l'information, ce qui fait que moins de Widgets sont modifiés en conséquence, et la performance de l'application se trouve grandement améliorée
+* Le Provider doit être placé le plus haut possible dans le widget tree pour que les descendants qui ont besoin de l'information y aient accès
+* 
+```
+      ◘ -- State
+      ↓→ ◘ level 1, qui appelle level 2
+        ↓→ ◘ level 2, qui appelle level 3 
+          ↓→ ◘ level 3 -- widget qui s'abonne au State
+```
+Ex. un level 3 s'abonne à un State (haut de la pyramide) > le State change > level 3 est notifié > il est modifié/reconstruit, sans que level 1 et level 2 ne subissent également une reconstruction
+* The InheritedWidget Class : https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html
+* InheritedWidget : widget qui permet de faire passer des données dans les différents niveaux du tree sans modifier les widgets intermédiaires
 * Positioning the BottomSheet above the Keyboard :
 ```java
 // By default, the BottomSheet will take up half the screen:
@@ -8581,47 +8684,404 @@ onPressed: () {
 ```
 * Structure :
 ```py
-Flash-Chat-Flutter-Complete/
+todoey-flutter/
   lib/
-    components/
-      rounded_button.dart
+    models/
+      task.dart
+      task_data.dart
     screens/
-      chat_screen.dart
-      login_screen.dart
-      registration_screen.dart
-      welcome_screen.dart
-    constants.dart
+      add_task_screen.dart
+      tasks_screen.dart
+    widgets/
+      task_tile.dart
+      tasks_list.dart
     main.dart
   pubspec.yaml
 ```
 * pubspec.yaml
 ```yaml
-name: flash_chat
+name: todoey_flutter
 description: A new Flutter application.
 
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  animated_text_kit: ^1.3.0 # text animation
-  firebase_core: ^0.3.4 # obligatoire pour toute application firebase
-  firebase_auth: ^0.8.4+4
-  cloud_firestore: ^0.9.13+1
-  modal_progress_hud: ^0.1.3 # loading spinner
+  provider: ^3.0.0+1 # ++
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-flutter:
-  uses-material-design: true
 
-  assets:
-  - images/
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+```
+* main.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:todoey_flutter/screens/tasks_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // ↓ permet de s'abonner à des données
+    // qui, lorsqu'elles sont modifiées,
+    // vont créer une notification
+    return ChangeNotifierProvider(
+      // ici placé tout en haut du widget tree,
+      // tous les widgets descendants y ont accès
+      builder: (context) => TaskData(),
+      // ↑ TaskData est la donnée à écouter
+      // elle est à présent écoutable dans toute l'application
+      // le widget qui écoute TaskData sera informé de ses changements
+      child: MaterialApp(
+        home: TasksScreen(),
+      ),
+    );
+  }
+}
+```
+* screens/tasks_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:todoey_flutter/widgets/tasks_list.dart';
+import 'package:todoey_flutter/screens/add_task_screen.dart';
+import 'package:provider/provider.dart'; // importe Provider
+import 'package:todoey_flutter/models/task_data.dart';
+
+class TasksScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlueAccent,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.lightBlueAccent,
+        child: Icon(Icons.add),
+          onPressed: () {
+          // déclenche un modal BottomSheet
+            showModalBottomSheet(
+                context: context,
+                // ↓ make the modal take up the full screen
+                isScrollControlled: true,
+                // display a SingleChildScrollView
+                // to have the AddTaskScreen sit just above the keyboard
+                builder: (context) => SingleChildScrollView(
+                    child:Container(
+                      // which determines the padding at the bottom using a MediaQuery
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                      // ajoute un padding bottom qui fait la taille du keyboard
+                      // et permet de se placer par-dessus
+                      // When a mobile device's keyboard is visible viewInsets.bottom corresponds to the top of the keyboard
+                      child: AddTaskScreen(),
+                    )
+                )
+            );
+          }
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+                top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                CircleAvatar(
+                  child: Icon(
+                    Icons.list,
+                    size: 30.0, // aggrandir le cercle
+                    color: Colors.lightBlueAccent,
+                  ),
+                  backgroundColor: Colors.white,
+                  radius: 30.0,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  'Todoey',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  // ↓ écoute le provider (et son getter taskCount)
+                  // pour se mettre à jour à chaque changement de la classe TaskData
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.0),
+                  topRight: Radius.circular(20.0),
+                ),
+              ),
+              child: TasksList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+* screens/add_task_screen.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:todoey_flutter/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
+
+class AddTaskScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    String newTaskTitle;
+
+    return Container(
+      // rend un background gris
+      color: Color(0xff757575),
+      // pour pouvoir donner une bordure ronde au container placé au-dessus
+      child: Container(
+        padding: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              'Add Task',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30.0,
+                color: Colors.lightBlueAccent,
+              ),
+            ),
+            TextField(
+              autofocus: true,
+              // l'utilisateur est automatiquement dirigé dans le TextField
+              // ce qui ouvre instantanément le clavier
+              textAlign: TextAlign.center, // curseur au milieu
+              onChanged: (newText) {
+                newTaskTitle = newText;
+              },
+            ),
+            FlatButton(
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              color: Colors.lightBlueAccent,
+              onPressed: () {
+                // ↓ utilise le Provider et sa méthode qui avertit les écouteurs
+                // des changements dans la classe du Provider
+                Provider.of<TaskData>(context).addTask(newTaskTitle);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+* widgets/tasks_list.dart
+```java
+import 'package:flutter/material.dart';
+import 'package:todoey_flutter/widgets/task_tile.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
+
+class TasksList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // enroule les widgets qui ont besoin d'écouter et agir avec le provider
+    // par un widget Consumer (qui provient de provider.dart)
+    // qui évite de répéter du code lourd
+    // du genre Provider.of<TaskData>(context).tasks[index].name
+    return Consumer<TaskData>( // spécifie les données à écouter
+      builder: (context, taskData, child) {
+        // taskData = Provider.of<TaskData>(context)
+        // quand taskData met à jour son State,
+        // ListView.builder est appelé de nouveau
+        return ListView.builder(
+          itemBuilder: (context, index) {
+            final task = taskData.tasks[index];
+            return TaskTile(
+              taskTitle: task.name, // + léger
+              isChecked: task.isDone,
+              checkboxCallback: (checkboxState) {
+                // ↑ callback de l'objet TaskTile
+                // ↓ accède à la méthode de la classe de notre Provider
+                taskData.updateTask(task);
+                // isChecked = !isChecked
+              },
+              longPressCallback: () {
+                // ↓ accède à la méthode de la classe de notre Provider
+                taskData.deleteTask(task);
+              },
+            );
+          },
+          itemCount: taskData.taskCount, // _tasks.length
+        );
+      },
+    );
+  }
+}
+```
+* widgets/task_tile.dart
+```java
+import 'package:flutter/material.dart';
+
+class TaskTile extends StatelessWidget {
+  // StatelessWidget = si le tile est amené à changer,
+  // l'objet TaskTile sera détruit et remplacé par un autre objet TaskTile
+  final bool isChecked;
+  // ↑ global state = variable présente dans les widget Text() et Checkbox()
+  final String taskTitle;
+  final Function checkboxCallback;
+  // ↑ présent ici car le Stateless empêche l'utilisation du setState()
+  // utilisé en amont dans tasks_list.dart
+  // TaskTile(
+  //   checkboxCallback: (checkboxState) {
+  //     taskData.updateTask(task);
+  //  },
+  final Function longPressCallback;
+  // si une de ses propriétés change,
+  // l'objet TaskTile est détruit
+  // puis remplacé de nouveau grâce à la fonction build
+
+  TaskTile(
+      {this.isChecked,
+      this.taskTitle,
+      this.checkboxCallback,
+      this.longPressCallback});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onLongPress: longPressCallback,
+      title: Text(
+        taskTitle,
+        style: TextStyle(
+            // ↓ barré si checked
+            decoration: isChecked ? TextDecoration.lineThrough : null),
+      ),
+      trailing: Checkbox(
+        activeColor: Colors.lightBlueAccent,
+        value: isChecked,
+        onChanged: checkboxCallback,
+      ),
+    );
+  }
+}
+```
+* models/task.dart
+```java
+class Task {
+  final String name;
+  bool isDone;
+
+  Task({this.name, this.isDone = false});
+
+  void toggleDone() {
+    isDone = !isDone;
+  }
+}
+```
+* models/task_data.dart
+```java
+import 'package:flutter/foundation.dart'; // utiliser ChangeNotifier
+// (!) material.dart inclut foundation.dart
+import 'package:todoey_flutter/models/task.dart';
+import 'dart:collection';
+
+// classe à part pour pouvoir être récupérée
+// partout dans l'application
+// notamment dans AddTaskScreen() et TasksList()
+class TaskData extends ChangeNotifier {
+  // ChangeNotifier permet à la classe de pouvoir être écoutée
+  // partout dans l'application
+
+  // _tasks est privée pour forcer le dev à utiliser les méthodes publiques
+  // ex. addTask, plutôt que d'utiliser directement tasks.add(value)
+  // la contrainte est là pour ne pas oublier la ligne notifyListeners()
+  // minimise les erreurs
+  List<Task> _tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
+  ];
+
+  // ↓ retourne une copie en read-only de la liste
+  // pour une nouvelle fois éviter toute action sur la liste de base
+  // et utiliser les méthodes publiques à la place
+  UnmodifiableListView<Task> get tasks {
+    return UnmodifiableListView(_tasks);
+  }
+
+  int get taskCount {
+    return _tasks.length;
+  }
+
+  void addTask(String newTaskTitle) {
+    final task = Task(name: newTaskTitle);
+    _tasks.add(task);
+    notifyListeners(); // envoie une notif' aux widgets qui écoute la classe
+    // ils sont alors reconstruits
+  }
+
+  void updateTask(Task task) {
+    task.toggleDone();
+    notifyListeners(); // envoie une notif' aux widgets qui écoute la classe
+    // ils sont alors reconstruits
+  }
+
+  void deleteTask(Task task) {
+    _tasks.remove(task);
+    notifyListeners(); // envoie une notif' aux widgets qui écoute la classe
+    // ils sont alors reconstruits
+  }
+}
 ```
