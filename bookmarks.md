@@ -199,6 +199,7 @@
 * dorking (how to find anything on the Internet) : https://www.alec.fyi/dorking-how-to-find-anything-on-the-internet.html
 * https://howhttps.works/
 * One Task At A Time: The Key To Achieving Deep, Focused Work : https://dribbble.com/stories/2020/08/03/one-task-at-a-time
+* Why developers are falling in love with functional programming : https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
 
 
 ## :keyboard: WINDOWS
@@ -669,6 +670,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 203+ Web Design Resources You’d Actually Want to Use (& Bookmark) : https://the-webdesigner.co/web-design-development-resources
 * UI Inspiration: 22 Mobile Design Concepts with Interface Illustrations : https://icons8.com/articles/mobile-design-with-interface-illustrations
 * 24 examples of creative illustration use in mobile design : https://dribbble.com/stories/2020/07/10/illustration-in-mobile-design
+* A website for animation resources and inspiration from around the web. : https://theanimatedweb.com/
 
 ### DESIGN
 
@@ -752,6 +754,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Fluent Icons includes 965 icons in a Microsoft-esque style : https://icons8.com/l/fluent/
 * Don’t be afraid of friction in UX : https://uxdesign.cc/dont-be-afraid-of-friction-in-ux-26e9bf527994
 * The Ultimate Guide to UX Tools : https://adamfard.com/blog/ux-tools
+* heroicons : https://heroicons.com/
 
 
 ## :joystick: API
@@ -972,6 +975,7 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * TypeScript
 * WebAssembly
 * Rust
+* Julia
 ```
 Rust de Mozilla Research est le type de langage de programmation auquel ceux qui écrivent du code pour
 des systèmes d’entrée/sortie de base (BIOS), des chargeurs d’amorce, des systèmes d’exploitation, etc.
@@ -1007,7 +1011,8 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Image Techniques On The Web : https://ishadeed.com/article/image-techniques/
 * Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9
 * L'outil en ligne Slazzer permet de supprimer l'arrière-plan d'une photo et de le remplacer par l'arrière-plan de son choix 📷💡 : https://www.blogdumoderateur.com/tools/slazzer
-* Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
+* Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript
+* Never Run ‘python’ In Your Downloads Folder : https://glyph.twistedmatrix.com/2020/08/never-run-python-in-your-downloads-folder.html 
 ---
 * https://stephaniewalter.design/blog/enhancing-user-experience-with-css-animations
 * https://dribbble.com/stories/2020/08/17/choosing-typography-for-web-design
@@ -1026,7 +1031,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://fr.wikipedia.org/wiki/IPv4
 * https://fr.wikipedia.org/wiki/IPv6
 * https://web.dev/content-visibility
-* https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
 * https://dev.to/python_engineer/11-tips-and-tricks-to-write-better-python-code-5fck
 * https://the-webdesigner.co/seo-for-web-designers/
 * https://towardsdatascience.com/designing-a-python-interface-for-machine-learning-engineering-ae308adc4412
@@ -1035,3 +1039,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://www.noupe.com/design/improve-your-logo-design.html
 * https://livecodestream.dev/post/2020-08-21-git-concepts-and-workflow-for-beginners
 * https://fr.wikipedia.org/wiki/Langage_de_programmation_de_haut_niveau
+* https://www.nngroup.com/articles/persona-scope/

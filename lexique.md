@@ -170,9 +170,22 @@ CC9 = (12 * 16 * 16) + (12 * 16) + 9;
 
 * :family_man_woman_girl_boy: **Dépendance transitive** = lorsqu'il y a 2 niveaux (voire plus) de dépendance (ex. un module dépend d'une librairie, qui dépend elle-même d'une librairie)
 
-* Garbage collector : 
-* frontoffice
-* backoffice
-* Logiciel **agnostique** :
+* :heavy_check_mark: **front-office** : interface publique dédiée aux utilisateurs
 
-* **Pile d'exécution** : structure de données qui enregistre les informations (adresses de retour, variables locales, paramètres) des fonctions actives dans un programme informatique
+* :x: **back-office** : interface privée dédiée aux administrateurs du site
+
+* :books: **Pile d'exécution** : structure de données qui enregistre les informations (adresses de retour, variables locales, paramètres) des fonctions actives dans un programme informatique
+
+* :open_umbrella: **Programmation fonctionnelle** : la logique du code et les variables sont placées dans des fonctions pures (cad que leur input (paramètres) et leur output (valeur de retour) sont explicitement renseignées)
+
+* :rainbow: Logiciel **agnostique** : qui peut s’adapter aux composants avec lesquels il interagit ; qui est indépendant du langage, qui n'a pas besoin de connaître les langages informatiques
+```
+Un protocole agnostique !
+
+Comme le hub de Mercure est une application à part entière, on peut l'appeler depuis une application
+PHP, mais aussi depuis une app Java, Node, Ruby ou Python, peu importe, il suffit de lui envoyer une
+requête HTTP pour lui passer des infos !
+```
+https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-linguistique-et-pourquoi-est-il-appele-ainsi/l958401352/
+
+* :ambulance: **Garbage collector** (ramasse-miettes) : sous-système informatique qui libère la mémoire inutilisée

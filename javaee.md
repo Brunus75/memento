@@ -31,10 +31,13 @@ du code Java capable de servir du contenu dynamique
 * Servlet = petit programme serveur
 * .war = web archive = application web JAVA zippée
 * JAVA EE = Entreprise Edition, pour créer des applications web et des applications d'entreprise = surcouche de JAVA SE (Standard Edition) avec des librairies pour exécuter des requêtes web, pour ajouter un serveur applicatif, accès Base de données, web services, messagerie, ect.
-* ```xml
+* 
+```xml
 <scope>provided</scope> <!-- librairie seulement nécessaire pour la compilation, fournie par le serveur lors de l'execution -->
-<packaging>jar, war</packaging> <!-- définit le format du livrable>
+<packaging>jar, war</packaging> <!-- définit le format du livrable -->
 ```
+* REST = Representational State Transfer
+* Architecture REST impose des méthodes à des actions spécifiques (ex. ajout d'un objet via un formulaire doit employer la méthode POST)
 
 ## COMPATIBILITE
 
@@ -332,7 +335,7 @@ frontoffice/
 	target/ # classes compilées
 	src/ # nos fichiers
 		main/
-			webapp/
+			webapp/ # nos fichiers web (html, css, js, jsp, ect.)
 				WEB-INF/
 				index.jsp
 	pom.xml
@@ -1084,3 +1087,434 @@ public class CatalogueServlet extends HttpServlet {
 
 }
 ```
+
+### Formulaire GET
+
+* Exemple avec notre application
+* Objectif = ajouter une oeuvre au catalogue
+* Structure
+```py
+/core # notre module core, nos classes métier JAVA (notre data)
+    src/main/java # nos classes métier
+        com.directmedia.onlinestore.core # package du projet (racine du projet)
+            Startup.java
+        com.directmedia.onlinestore.core.entity # package des modèles
+            Artist.java
+            Catalogue.java
+            Work.java # ajout du paramètre lastId pour l'incrémenter automatiquement ++
+    src/main/resources/
+    src/test/java/
+    src/test/resources/
+    JRE System Library/ # classes JAVA
+    src/
+    target/
+pom.xml # maven
+backoffice/ # module réservé aux admins
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.backoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres
+				HomeServlet.java # notre servlet d'accueil ici ~~
+				AddWorkServlet.java # servlet d'ajout d'oeuvre
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/ # dossier de nos fichiers web
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+				add-work-form.html # ++
+	pom.xml
+frontoffice/
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.frontoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres, modifié pour devenir des liens
+				HomeServlet.java # notre servlet d'accueil ici
+				WorkDetailsServlet.java # servlet de détails d'une oeuvre
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+	pom.xml
+```
+* Work.java
+```java
+package com.directmedia.onlinestore.core.entity;
+
+public class Work {
+	
+	private static int lastId; // ++
+
+	private long id;
+	private String title;
+	private String genre;
+	private int release;
+	private String summary;
+	// dans le meme package = j'y ai acces
+	private Artist mainArtist;
+
+	public Work() {
+		this.id = lastId++; // incrémente l'id automatiquement
+	}
+
+	public Work(String title) {
+		this(); // appel au constructeur par defaut
+		this.title = title;
+	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public int getRelease() {
+		return release;
+	}
+
+	public void setRelease(int release) {
+		this.release = release;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public Artist getMainArtist() {
+		return mainArtist;
+	}
+
+	public void setMainArtist(Artist mainArtist) {
+		this.mainArtist = mainArtist;
+	}
+
+}
+```
+* HomeServlet.java (back)
+```java
+package com.mediastore.onlinestore.backoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class HomeServlet
+ */
+@WebServlet(name="HomeServlet", urlPatterns={"/home"})
+public class HomeServlet extends HttpServlet {
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		out.print("<HTML><BODY><h1>OnlineStore, gestion de la boutique</h1>");
+		out.print("<a href=\"add-work-form.html\">Ajouter une oeuvre</a><br />");
+		out.print("<a href=\"catalogue\">Accès au catalogue des oeuvres</a><br />");
+		out.print("</BODY></HTML>");
+	}
+
+}
+```
+* add-work-form.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajouter une oeuvre au catalogue</title>
+</head>
+<body>
+	<form action="add-work"><!-- par defaut, method="GET" -->
+		<label>Titre :<input type="text" name="title" /></label><br>
+		<label>Année de sortie :<input type="text" name="release" /></label><br>
+		<label>Genre :<input type="text" name="genre" /></label><br>
+		<label>Résumé :<input type="text" name="summary" /></label><br>
+		<label>Artiste principal :<input type="text" name="artist" /></label><br>
+		<input type="submit" value="Ajouter" />
+	</form>
+</body>
+</html>
+```
+* AddWorkServlet.java (accessible à add-work)
+```java
+package com.mediastore.onlinestore.backoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.directmedia.onlinestore.core.entity.Artist;
+import com.directmedia.onlinestore.core.entity.Catalogue;
+import com.directmedia.onlinestore.core.entity.Work;
+
+/**
+ * Servlet implementation class AddWorkServlet
+ */
+public class AddWorkServlet extends HttpServlet {
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// les paramètres sont récupérés en GET
+		Work newWork = new Work(request.getParameter("title"));
+		newWork.setGenre(request.getParameter("genre"));
+		newWork.setRelease(Integer.parseInt(request.getParameter("release")));
+		newWork.setSummary(request.getParameter("summary"));
+		newWork.setMainArtist(new Artist(request.getParameter("artist")));
+		
+		Catalogue.listOfWorks.add(newWork);
+		
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		out.print("<html><body><h1>Le film a été ajouté !<h1>");
+		out.print("<a href=\"home\">Retourner à la page d'accueil</a></body></html>");
+	}
+}
+```
+
+### Formulaire POST
+
+* Exemple avec notre application
+* Objectif = ajouter un formulaire d'identification
+* Structure
+```py
+/core # notre module core, nos classes métier JAVA (notre data)
+    src/main/java # nos classes métier
+        com.directmedia.onlinestore.core # package du projet (racine du projet)
+            Startup.java
+        com.directmedia.onlinestore.core.entity # package des modèles
+            Artist.java
+            Catalogue.java
+            Work.java # ajout du paramètre lastId pour l'incrémenter automatiquement ++
+    src/main/resources/
+    src/test/java/
+    src/test/resources/
+    JRE System Library/ # classes JAVA
+    src/
+    target/
+pom.xml # maven
+backoffice/ # module réservé aux admins
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.backoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres
+				HomeServlet.java # notre servlet d'accueil ici ~~
+				AddWorkServlet.java # servlet d'ajout d'oeuvre
+				AuthenticationServlet.java # servlet d'authentification ++
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/ # dossier de nos fichiers web
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+				add-work-form.html
+				login.html # ++
+	pom.xml
+frontoffice/
+	Deployment descriptor/
+	Java Resources/ 
+		src/main/java
+			com.mediastore.onlinestore.frontoffice.controller
+				CatalogueServlet.java # servlet qui affiche les oeuvres, modifié pour devenir des liens
+				HomeServlet.java # notre servlet d'accueil ici
+				WorkDetailsServlet.java # servlet de détails d'une oeuvre
+		src/test/java
+		Libraries
+	Deployed Resources/
+	target/ 
+	src/ 
+		main/
+			webapp/
+				WEB-INF/
+					web.xml # tous les paramètres de nos Servlet (routes, mappings, etc.)
+				index.jsp
+	pom.xml
+```
+* login.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Se connecter</title>
+</head>
+<body>
+	<form action="login" method="POST">
+		<label>Login : <input type="text" name="login" /></label><br />
+		<label>Mot de passe : <input type="password" name="password" /></label><br />
+		<input type="submit" value="Login" />
+	</form>
+</body>
+</html>
+```
+* AuthenticationServlet.java
+```java
+package com.mediastore.onlinestore.backoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class AuthenticationServlet
+ */
+public class AuthenticationServlet extends HttpServlet {
+
+	// cette fois-ci, on utilise la methode doPost
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		// on récupère la valeur des 2 champs
+		String login = request.getParameter("login");
+		String password = request.getParameter("password");
+
+		PrintWriter out = response.getWriter();
+		out.print("<html><body>");
+
+		// on vérifie les identifiants
+		if ((login.equals("michel") && password.equals("123456"))
+				|| (login.equals("caroline") && password.equals("abcdef"))) {
+			out.print("<a href=\"home\">Accès à la page d'accueil</a>");
+		} else {
+			out.print(
+					"<p>Login ou mot de passe erroné !</p><a href=\"login.html\">Revenir à la page d'identification</a>");
+		}
+
+		out.print("</body></html>");
+	}
+}
+```
+
+### Respect de l'architecture REST
+
+* REST = Representational State Transfer
+* Architecture REST impose des méthodes à des actions spécifiques (ex. ajout d'un objet via un formulaire doit employer la méthode POST)
+* add-work-form.html (ajout de la méthode POST)
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ajouter une oeuvre au catalogue</title>
+</head>
+<body>
+	<form action="add-work" method="POST">
+		<label>Titre :<input type="text" name="title" /></label><br>
+		<label>Année de sortie :<input type="text" name="release" /></label><br>
+		<label>Genre :<input type="text" name="genre" /></label><br>
+		<label>Résumé :<input type="text" name="summary" /></label><br>
+		<label>Artiste principal :<input type="text" name="artist" /></label><br>
+		<input type="submit" value="Ajouter" />
+	</form>
+</body>
+</html>
+```
+* AddWorkServlet (ajout de la méthode doPost)
+```java
+package com.mediastore.onlinestore.backoffice.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.directmedia.onlinestore.core.entity.Artist;
+import com.directmedia.onlinestore.core.entity.Catalogue;
+import com.directmedia.onlinestore.core.entity.Work;
+
+/**
+ * Servlet implementation class AddWorkServlet
+ */
+public class AddWorkServlet extends HttpServlet {
+	
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		Work newWork = new Work(request.getParameter("title"));
+		newWork.setGenre(request.getParameter("genre"));
+		newWork.setRelease(Integer.parseInt(request.getParameter("release")));
+		newWork.setSummary(request.getParameter("summary"));
+		newWork.setMainArtist(new Artist(request.getParameter("artist")));
+		
+		Catalogue.listOfWorks.add(newWork);
+		
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		out.print("<html><body><h1>Le film a été ajouté !<h1>");
+		out.print("<a href=\"home\">Retourner à la page d'accueil</a></body></html>");
+	}
+
+}
+```
+
+### Thread Safety
+
+* Le conteneur de servlets n'instancie qu'UNE SEULE FOIS chaque classe de Servlet
+* Toutes les requêtes transitent vers les méthodes d'UN SEUL ET MÊME OBJET
+* Les propriétés de classe sont donc à éviter, car elles ne sont pas personnalisées, mais générales
+* Tout ce qui est à effectuer dans une Servlet doit donc s'effectuer dans les METHODES (scope local) de la Servlet, pour éviter toute confusion/mélange de variables

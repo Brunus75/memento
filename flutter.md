@@ -205,6 +205,8 @@ SizedBox(
 ```
 * Stateless Widgets = widget qui ne changera pas d'état => widget descriptif et non interactif (les variables, fonctions, valeurs, evenements compris dans la classe du widget ne changeront pas) => le widget ne sera jamais rechargé durant l'utilisation de l'application => **statique**
 * Si le Stateless Widget doit changer (son code est modifié), il est détruit puis remplacé par un autre
+* Avantage = peu couteux en mémoire
+* Inconvénient = pas dynamique
 ```java
 class MyApp extends StatelessWidget {
   @override 
@@ -218,6 +220,8 @@ class MyApp extends StatelessWidget {
 ```
 * Stateful Widgets = widget qui possède un état (capacité à se modifier selon les évènements de l'application) et qui sera rechargé ou non durant l'application => **dynamique**
 * Si le Stateful Widget doit changer (son code est modifié), son State change, mais le Widget ne change pas
+* Avantage = dynamique
+* Incovénient = plus lourd qu'un StateLess à construire, car il utilise de la mémoire (son State) et plusieurs fonctionnalités
 ```java
 class MyHomePage extends StatefulWidget { // création d'un Stateful Widget
 
