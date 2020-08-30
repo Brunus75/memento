@@ -75,6 +75,7 @@
 * Les fonctions de Python : https://docs.python.org/3/library/functions.html
 * Real Python: Python 3 Cheat Sheet : https://static.realpython.com/python-cheat-sheet.pdf
 * Top 10 Python Tools To Make a Developer’s Life Easier : https://www.activestate.com/blog/top-10-python-tools-to-make-your-life-easier
+* Python libraries to make your code readable, reliable and maintainable : https://dev.to/likid_geimfari/python-libraries-to-make-your-code-readable-reliable-and-maintainable-3p9l
 * https://www.udemy.com/course/formation-complete-python/
 * https://www.udemy.com/course/cours-python-avance/
 * https://realpython.com/pointers-in-python/
@@ -141,6 +142,7 @@
 * ~  Build RESTful APIs using Python / Flask : https://dev.to/dev0928/build-restful-apis-using-python-flask-56c7
 * ~ Machine Learning Tutorial For Complete Beginners | Learn Machine Learning with Python : https://www.mygreatlearning.com/blog/machine-learning-tutorial-for-complete-beginners
 * ~ A Practical Introduction to Web Scraping in Python : https://realpython.com/python-web-scraping-practical-introduction/
+* ~ 15+ Free Python Projects for Beginners with full tutorial walkthroughs : https://www.codewithrepl.it/python-projects-for-beginners.html
 
 
 ## INSTALLATION

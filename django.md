@@ -10,6 +10,7 @@
 * https://openclassrooms.com/fr/courses/4425076-decouvrez-le-framework-django
 * https://www.agileleaf.com/blog/a-better-way-to-manage-settings-py-in-your-django-projects/
 * https://hostadvice.com/how-to/how-to-create-a-virtual-environment-for-your-django-projects-using-virtualenv/
+* Ultimate Django Reference (commands, deployment, rest api) : https://dev.to/alexmercedcoder/ultimate-django-reference-commands-deployment-rest-api-ihe
 * ~ F et Django : https://docs.djangoproject.com/fr/3.0/ref/models/expressions/
 * ~ HttpRequest : https://docs.djangoproject.com/fr/3.0/ref/request-response/#httprequest-objects
 * ~ HttpResponse : https://docs.djangoproject.com/fr/3.0/ref/request-response/#django.http.HttpResponse   
@@ -28,7 +29,9 @@
 * ~ How To Fix A Bug - Building SaaS #56 : https://www.mattlayman.com/building-saas/how-to-fix-a-bug/
 * ~ Store Data With Models : https://www.mattlayman.com/understand-django/store-data-with-models/
 * ~ Django Testing Toolbox : https://www.mattlayman.com/blog/2020/django-testing-toolbox/
-* ~ Using Postgres JSONB Fields in Django : https://pganalyze.com/blog/postgres-jsonb-django-python   
+* ~ Administer All The Things : https://www.mattlayman.com/understand-django/administer-all-the-things/
+* ~ Using Postgres JSONB Fields in Django : https://pganalyze.com/blog/postgres-jsonb-django-python
+* ~ Demystifying Django’s Magic : https://www.smashingmagazine.com/2020/08/demystifying-djangos-magic
 
 
 ## SOMMAIRE

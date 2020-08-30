@@ -8,6 +8,9 @@
 * Codeur Mag — Le blog de Codeur.com : https://www.codeur.com/blog/
 * Développement – Korben : https://korben.info/category/infos/developpement
 * CSS Design Awards - Publications : https://www.facebook.com/pg/CSSDesignAwards/posts/?ref=page_internal
+* Smashing Magazine - Accueil : https://www.facebook.com/smashmag/
+* CSS-Tricks - Accueil : https://www.facebook.com/CSSTricks/
+* Blog du Webdesign - Publications : https://www.facebook.com/BlogDuWebdesign/
 * Awwwards - Publications : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * Web Dev / Design : https://www.facebook.com/pg/awwwards/posts/?ref=page_internal
 * Web Dev / Design (liste Twitter) : https://twitter.com/i/lists/1005158295177396226
@@ -19,7 +22,6 @@
 * https://www.webdesignernews.com/
 * https://www.webdesignerdepot.com
 * https://wweb.dev
-* https://medium.muz.li/
 * https://www.rooki.design/
 * https://www.jesuisundev.com/
 * https://www.jesuisundev.com/recueil-de-blogs-de-developpeurseuses/
@@ -27,6 +29,9 @@
 * https://news.humancoders.com/
 * https://www.blogduwebdesign.com/
 * https://twitter.com/sulco (JS, HTML, etc.)
+* Behance :: Le meilleur de Behance : https://www.behance.net/
+* Muzli - Design Inspiration : https://medium.muz.li/
+* Dribbble - Discover the World’s Top Designers & Creative Professionals : https://dribbble.com/
 
 
 ## :gun: WEB TOOLS
@@ -200,6 +205,7 @@
 * https://howhttps.works/
 * One Task At A Time: The Key To Achieving Deep, Focused Work : https://dribbble.com/stories/2020/08/03/one-task-at-a-time
 * Why developers are falling in love with functional programming : https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
+* When DRY Doesn't Work, Go WET : https://dev.to/nickbulljs/when-dry-doesn-t-work-go-wet-4536
 
 
 ## :keyboard: WINDOWS
@@ -313,6 +319,7 @@
 * https://visualstudio.developpez.com/
 * Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
 * https://github.com/godcrampy/cheat-sheets/blob/master/vscode/vscode-cheatsheet.pdf
+* Liste de thèmes utilisés par les utilisateurs de VSCode : https://dev.to/madza/what-does-your-vs-code-setup-look-like-2a6o
 
 
 ## :memo: MARKDOWN
@@ -623,6 +630,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A plugin for scroll-based animations with minimal code : https://greensock.com/scrolltrigger
 * A JavaScript library for scrolling through whole pages vertically or horizontally : https://github.com/elansx/Wholepage-Slider
 * A cool cheat sheet for everything you can do with CSS Grid : https://yoksel.github.io/grid-cheatsheet/
+* 10+ JavaScript Form Validation Code Examples : https://csshint.com/javascript-form-validation
 
 
 ### JQUERY
@@ -755,7 +763,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Don’t be afraid of friction in UX : https://uxdesign.cc/dont-be-afraid-of-friction-in-ux-26e9bf527994
 * The Ultimate Guide to UX Tools : https://adamfard.com/blog/ux-tools
 * heroicons : https://heroicons.com/
-
+* Bootstrap Icons v1.0.0 : https://blog.getbootstrap.com/2020/08/28/bootstrap-icons-stable
 
 ## :joystick: API
 
@@ -1040,3 +1048,24 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://livecodestream.dev/post/2020-08-21-git-concepts-and-workflow-for-beginners
 * https://fr.wikipedia.org/wiki/Langage_de_programmation_de_haut_niveau
 * https://www.nngroup.com/articles/persona-scope/
+* https://dev.to/nickbulljs/world-s-easiest-guide-to-git-reset-47mi
+* https://dev.to/emmabostian/101-tips-for-being-a-great-programmer-human-36nl
+* https://dev.to/g_abud/advanced-git-reference-1o9j
+* https://dev.to/scottydocs/how-to-write-a-kickass-readme-5af9
+* https://dev.to/samborick/i-read-21-articles-about-how-to-become-a-senior-developer-so-you-don-t-have-to-4dap
+* https://dev.to/pagely/seo-cheat-sheet-for-devs-5h1g
+* https://dev.to/kedark/free-illustrations-resources-for-the-web-make-your-next-project-cooler-525c
+* https://dev.to/chrissiemhrk/git-commit-message-5e21
+* https://dev.to/wceolin/mistakes-i-made-in-code-reviews-and-what-i-do-now-kk6
+* https://dev.to/madza/21-awesome-dev-portfolios-for-your-inspiration-85n
+* https://dev.to/afonsopacifer/how-you-can-stay-motivated-to-work-on-personal-projects-565a
+* https://dev.to/scroung720/learning-how-to-learn-diffused-mode-focused-mode-1-433b
+* https://dev.to/niharrs/6-awesome-ways-to-present-your-code-3jj2
+* https://dev.to/theme_selection/vs-codes-every-developers-should-use-in-2020-2fa3
+* https://dev.to/tretuna/visual-code-extensions-not-just-the-top-10-4gnk
+* https://dev.to/benwinding/10-tiny-helper-scripts-for-devs-knb
+* https://dev.to/kenbellows/stop-using-so-many-divs-an-intro-to-semantic-html-3i9i
+* https://dev.to/maxpou/git-cheat-sheet-advanced-3a17
+* https://dev.to/unseenwizzard/learn-git-concepts-not-commands-4gjc
+* https://dev.to/seattledataguy/the-interview-study-guide-for-software-engineers-764
+* https://dev.to/emmabostian/regex-cheat-sheet-2j2a
