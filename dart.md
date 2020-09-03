@@ -447,6 +447,7 @@ var chapters = [
 * control flow collections proposal : https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Maps : https://dart.dev/guides/libraries/library-tour#maps
+* putIfAbsent method => peupler une map > https://api.dart.dev/stable/2.9.2/dart-core/Map/putIfAbsent.html
 ```java
 // construction
 Map<KeyType, ValueType> mapName {
@@ -501,6 +502,16 @@ map.putIfAbsent("Georges", () => 1248);
 Map map = {1: 'one', 2: 'two'};
 map.addAll({3: 'three', 4: 'four', 5: 'five'});
 print(map); // {1: one, 2: two, 3: three, 4: four, 5: five}
+
+// ajouter plusieurs élements avec une boucle
+Map<String, int> scores = {'Bob': 36};
+for (var key in ['Bob', 'Rohan', 'Sophena']) {
+  scores.putIfAbsent(key, () => key.length); // si la clé n'est pas présente,
+  // ajoute clé + valeur (ici key.length)
+}
+scores['Bob'];      // 36
+scores['Rohan'];    //  5
+scores['Sophena'];  //  7
 
 // Map update value by key in Dart/Flutter
 Map map = {1: 'one', 2: 'two'};

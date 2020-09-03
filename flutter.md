@@ -27,6 +27,7 @@
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 * ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
 * ~ Flutter State Management at Google I/O 2019 : https://youtu.be/d_m5csmrf7I
+* ~ Why Is My Future/Async Called Multiple Times? https://flutterigniter.com/future-async-called-multiple-times/
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -80,6 +81,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [LANCER FLUTTER SUR LE MOBILE](#flutter-sur-mobile)
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
+   * [ERREURS](#erreurs)
 * [PACKAGES](#packages)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
@@ -119,6 +121,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [SWITCH](#SWITCH)
       * [SLIDER](#SLIDER)
       * [DATE TIME PICKERS](#DATE-TIME-PICKERS)
+      * [DROPDOWNBUTTON](#DROPDOWNBUTTON)
       * [DROPDOWNBUTTONFORMFIELD](#DROPDOWNBUTTONFORMFIELD)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
       * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
@@ -141,6 +144,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
      * [HERO](#hero)
 * [THEMES, COLORS](#themes)
 * [API](#api)   
+   * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)   
+   * [FORM ET FUTURE BUILDER](#FORM-ET-FUTURE-BUILDER)   
+   * [FORM FUTURE BUILDER avec condition](#FORM-FUTURE-BUILDER-avec-condition)   
    * [FUTURE DROPDOWN](#future-dropdown)
    * [AFFICHER UNE DONNEE API VIA UNE ROUTE](#AFFICHER-UNE-DONNEE-API-VIA-UNE-ROUTE)
    * [MAP BUILDER FUTURE](#MAP-BUILDER-FUTURE)
@@ -688,6 +694,14 @@ class AddTaskScreen extends StatelessWidget {
   }
 }
 ```
+* Vérifier le type d'une variable avec ```is```
+```java
+labelText: label is String ? label : null,
+icon: icon is IconData ? Icon(
+  icon,
+  color: Colors.grey[600],
+) : null,
+```
 
 
 ### STRUCTURE
@@ -794,6 +808,7 @@ flutter doctor
 * Problème de Black Screen au démarrage du Nexus 6 > Wipe Data > Lancer Nexus 6
 * Enlever le bandeau Debug => Flutter Inspector => More action => Hide Debug Mode Banner
 * Problème de rotation => effectuer la rotation => appuyer sur le bouton rotation qui s'affiche quelques secondes sur le bas du téléphone OU activer la rotation sur le téléphone (comme un vrai téléphone)
+
 ### RACCOURCIS
 * Alt+Insérer (Code => Generate) in the editor => generate the getter and setter methods for any fields of your class
 * Clic-droit => Reformat
@@ -812,6 +827,12 @@ flutter doctor
 * Renommer une variable dans tout le projet > Clic-droit > Refactor > Rename
 * Ouvrir le debug paint => Flutter inspector => Debug paint
 * If you do not remember how to call an action, press Ctrl+Maj+A and start typing the action name
+
+### ERREURS
+* error: Future isn't a type android studio flutter > https://github.com/flutter/flutter/issues/24279
+```
+Android Studio File>Invalidate Caches / Restart
+```
 
 ## PACKAGES
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
@@ -2055,11 +2076,24 @@ class _BodyState extends State<Body> {
 ```
 ### PASSER DES ARGS AVEC PUSHNAMED
 ```java
+// un seul argument
 Navigator.pushNamed(
 	context,
 	"/urlDestination",
 	arguments: Object(arg1: value1, arg2: value2),
 );
+// exemple
+// fichier expediteur
+Navigator.pushNamed(context, urlPageDestinataire, arguments: objet)
+// fichier receveur
+mon_objet = ModalRoute.of(context).settings.arguments;
+
+// avec plusieurs arguments
+// fichier expediteur
+Navigator.pushNamed(context, urlPageDestinataire, arguments: {'article': article});
+// fichier receveur
+final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+mon_article = arguments['article'];
 ```
 #### WILLPOPSCOPE
 ```java
@@ -2718,6 +2752,22 @@ dependencies:
   flutter_localizations: # ++
     sdk: flutter
 ```
+### DROPDOWNBUTTON
+* Dropdown overflow : https://stackoverflow.com/a/61896777
+```java
+// éviter le overflow d'un dropdownbutton
+DropdownButton(
+  isExpanded: true, // Step 1
+  items: [
+      DropdownMenuItem(
+          child: Text("Long text that overflow the size.. wrapped or ellipsized", 
+          overflow: TextOverflow.ellipsis),  // Step 2
+      ),
+  ],
+  onChanged: (val) { }
+)
+```
+
 #### DROPDOWNBUTTONFORMFIELD
 * DropdownButton with validation
 * https://stackoverflow.com/questions/52926335/how-validate-dropdown-in-flutter
@@ -3662,8 +3712,97 @@ Color(0x33000000)
 ```
 
 ## API
+
 * Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
+
+### Deserialize a list of objects from json
+* https://stackoverflow.com/a/58132148
+```java
+class ApiArticle {
+
+  Future<List<Article>> fetchArticles() async {
+    // appel API
+    final response = await http.get(urlApi);
+    // si appel concluant
+    if (response.statusCode == 200) {
+      var responseBody = response.body;
+      var listMapArticle = json.decode(responseBody) as List; // [{"auteur": "untel", "titre": "truc"}, {"auteur": "machin", "titre": "trucmuche"}]
+      List<Article> listObjectArticle = listMapArticle.map((e) => Article.fromJson(e)).toList(); // toList because Dart's map returns a kind of Iterable
+      return listObjectArticle; // [instance of Article, instance of Article, ect.]
+    } else {
+      throw Exception('Erreur lors du chargement des articles');
+    }
+  }
+}
+```
+
+### FORM ET FUTURE BUILDER
+* peupler un formulaire avec des données récupérées en API
+* https://stackoverflow.com/questions/59353637/flutter-populate-form-with-async-data
+* https://flutter.dev/docs/cookbook/networking/update-data
+```java
+FutureBuilder<Article>(
+  future: futureArticle,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return Form( 
+              Widget(
+                author: snapshot.data.author, 
+                date: snapshot.data.date, 
+                ect.
+              )
+            );
+    }
+  }
+),
+```
+
+# FORM FUTURE BUILDER avec condition
+* https://stackoverflow.com/questions/56122522/how-to-render-data-from-request-inside-a-futurebuilder
+```java
+bool isCool; // propriété de classe
+
+FutureBuilder<Article>(
+  future: futureTask,
+  builder: (context, snapshot) {
+    if (snapshot.hasData) {
+
+      // si c'est le premier appel API (isCool = null) et que la condition est réunie
+      if (isCool == null && snapshot.data.mood == 'COOL')
+        {
+          isCool = true;
+        }
+
+      return Form( 
+        key: key,
+        child: Column(
+          children: <Widget>[
+            WidgetSimple(
+              onChanged: (value) {
+                setState(() {
+                  if (value == 'COOL') {
+                    isCool = true;
+                  } else {
+                    isCool = false;
+                  }
+                });
+              }
+            ),
+            // si isCool = true alors on affiche WidgetCool
+            // condition remplie soit lors du premier appel API
+            // soit par le setState() de WidgetSimple()
+            // if possible car dans un array <Widget>[]
+            if (isCool) 
+            WidgetCool()
+          ] // <Widget>[]
+        ) // Column
+      ) // Form
+    }
+  }
+) // FutureBuilder<Article>
+```
+
 ### FUTURE DROPDOWN
 * https://stackoverflow.com/questions/55571328/how-to-implement-a-drop-down-list-in-flutter
 ```java

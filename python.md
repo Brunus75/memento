@@ -2060,6 +2060,7 @@ print(nombres) # [10, 20, 30, 40]
 ```
 
 ## LES MODULES
+* Importer des modules Python (de la bonne façon) : https://www.youtube.com/watch?v=Hrv5KjLPYpc
 ```py
 # fichier sur le disque qui contient du code Python
 import random # import de module, méthode à privilégier

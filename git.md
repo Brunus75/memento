@@ -204,6 +204,7 @@ git branch # liste les branches, git branch -a pour les branches aussi distantes
 
 # CONFLITS
 git diff # énumérer les changements ou conflits depuis le dernier commit
+git diff nom_du_fichier # voir les changements du fichier depuis le dernier commit
 git diff --base [nom-fichier] # pour visualiser les conflits d’un fichier
 git diff [source_branche] [target_branch] # voir les changements entre 2 branches
 # + afficher les conflits entre les branches à fusionner avant de les fusionner

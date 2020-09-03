@@ -206,6 +206,7 @@
 * One Task At A Time: The Key To Achieving Deep, Focused Work : https://dribbble.com/stories/2020/08/03/one-task-at-a-time
 * Why developers are falling in love with functional programming : https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
 * When DRY Doesn't Work, Go WET : https://dev.to/nickbulljs/when-dry-doesn-t-work-go-wet-4536
+* TDD, BDD, ATDD : de quoi on parle ? : https://mailchi.mp/83bc915d8951/mes-fonctionnalits-prfres-de-php-6534446
 
 
 ## :keyboard: WINDOWS
@@ -368,6 +369,7 @@
 * How to Create, Write, Read, and Delete Files in PHP : https://code.tutsplus.com/tutorials/create-write-read-and-delete-files-in-php--cms-34950
 * The perfect starting point to analyze the code quality of your PHP projects : https://phpinsights.com
 * ✨ PHP 7.4 apporte de vraies nouveautés ! : https://mailchi.mp/0f562ba336fb/mes-fonctionnalits-prfres-de-php-74
+* La notion de callables en PHP : https://mailchi.mp/048d5dd43005/mes-fonctionnalits-prfres-de-php-6534334
 
 
 ### SYMFONY
@@ -877,6 +879,8 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 ## :e-mail: MAILING
 
 * Guide to Email Deliverability: Best Practices and Tools to Avoid Spam Folders : https://designmodo.com/email-deliverability/
+* Sender Score : comment surveiller la réputation de vos emails ? https://www.codeur.com/blog/surveiller-reputation-email-sender-score
+* Spam words : la liste des mots français interdits dans vos emailing : https://www.codeur.com/blog/spam-words-liste-francais-mots-interdits-emailing/
 
 
 ## :beginner: HEBERGEURS
@@ -1069,3 +1073,11 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/unseenwizzard/learn-git-concepts-not-commands-4gjc
 * https://dev.to/seattledataguy/the-interview-study-guide-for-software-engineers-764
 * https://dev.to/emmabostian/regex-cheat-sheet-2j2a
+* https://github.com/Droogans/unmaintainable-code/blob/master/README.md
+* https://devblogs.microsoft.com/typescript/announcing-typescript-4-0
+* https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6
+* https://towardsdatascience.com/writing-more-idiomatic-and-pythonic-code-c22e900eaf83
+* https://testdriven.io/blog/python-dependency-injection/
+* https://realpython.com/python-data-structures/
+* https://www.codeur.com/blog/design-inclusif-bonnes-pratiques
+* https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
