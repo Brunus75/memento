@@ -32,6 +32,14 @@
 * Behance :: Le meilleur de Behance : https://www.behance.net/
 * Muzli - Design Inspiration : https://medium.muz.li/
 * Dribbble - Discover the World’s Top Designers & Creative Professionals : https://dribbble.com/
+---
+* FLUTTER
+* https://twitter.com/flutterwk
+* https://twitter.com/fluttertap
+* https://twitter.com/FlutterTip
+* https://twitter.com/flutterize
+* https://medium.com/@durannumit
+* https://twitter.com/biz84
 
 
 ## :gun: WEB TOOLS
@@ -215,6 +223,7 @@
 * How to Use Windows Subsystem for Linux 2 and Windows Terminal : https://www.sitepoint.com/wsl2-windows-terminal/
 * Pour récupérer des fichiers supprimés, Microsoft lance Windows File Recovery : https://www.blogdumoderateur.com/microsoft-windows-file-recovery
 * https://www.blogdumoderateur.com/windows-10-nouveau-menu-demarrer-fonction-alt-tab-amelioree
+* Microsoft publie Windows Terminal Preview 1.3 avec un sélecteur d'onglets avancé https://windows.developpez.com/actu/308318/Microsoft-publie-Windows-Terminal-Preview-1-3-avec-un-selecteur-d-onglets-avance-une-nouvelle-palette-de-commandes-et-bien-plus-encore/
 
 
 ## :fox_face: MOZILLA
@@ -766,6 +775,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * The Ultimate Guide to UX Tools : https://adamfard.com/blog/ux-tools
 * heroicons : https://heroicons.com/
 * Bootstrap Icons v1.0.0 : https://blog.getbootstrap.com/2020/08/28/bootstrap-icons-stable
+* Shape est une bibliothèque contenant plus de 25000 icônes et illustrations que vous pouvez personnaliser https://www.blogdumoderateur.com/tools/shape
 
 ## :joystick: API
 
@@ -823,6 +833,8 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * WPAudit – WordPress Website Audit Checklist : https://wpaudit.site/
 * 5 Most Common WordPress Attacks in 2020 - SecureBlitz Cybersecurity : https://secureblitz.com/common-wordpress-attacks
 * WordPress 5.5 : comment résoudre les erreurs JavaScript de la dernière mise à jour : https://www.blogdumoderateur.com/wordpress-5-5-comment-resoudre-erreurs-javascript
+* Comment sécuriser votre site WordPress facilement ? Le tuto pour les nuls : https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
+* ~  A step-by-step guide to CREATE YOUR OWN WordPress theme! : https://en.rockcontent.com/blog/develop-wordpress-theme
 
 
 ## :no_entry: SECURITY
@@ -1024,7 +1036,8 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Créez une JVM modulaire avec Java 9 : https://openclassrooms.com/fr/courses/26832-apprenez-a-programmer-en-java/5013781-creez-une-jvm-modulaire-avec-java-9
 * L'outil en ligne Slazzer permet de supprimer l'arrière-plan d'une photo et de le remplacer par l'arrière-plan de son choix 📷💡 : https://www.blogdumoderateur.com/tools/slazzer
 * Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript
-* Never Run ‘python’ In Your Downloads Folder : https://glyph.twistedmatrix.com/2020/08/never-run-python-in-your-downloads-folder.html 
+* Never Run ‘python’ In Your Downloads Folder : https://glyph.twistedmatrix.com/2020/08/never-run-python-in-your-downloads-folder.html
+* Machine Learning from Scratch – free online textbook https://dafriedman97.github.io/mlbook/content/introduction.html
 ---
 * https://stephaniewalter.design/blog/enhancing-user-experience-with-css-animations
 * https://dribbble.com/stories/2020/08/17/choosing-typography-for-web-design
@@ -1081,3 +1094,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://realpython.com/python-data-structures/
 * https://www.codeur.com/blog/design-inclusif-bonnes-pratiques
 * https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
+* https://restfulapi.net/rest-put-vs-post/

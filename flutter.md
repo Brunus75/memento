@@ -24,10 +24,21 @@
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * What is unit of measurement in flutter : https://stackoverflow.com/questions/50596099/what-is-unit-of-measurement-in-flutter
 * https://stackoverflow.com/questions/43854647/flutter-how-does-it-work-behind-the-scenes
+* Flutter 1.20 — What’s New In Flutter : https://medium.com/flutterdevs/flutter-1-20-whats-new-in-flutter-840d269f173e
+* Announcing Flutter 1.20 : https://medium.com/flutter/announcing-flutter-1-20-2aaf68c89c75
+
+**TO READ**
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 * ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
 * ~ Flutter State Management at Google I/O 2019 : https://youtu.be/d_m5csmrf7I
 * ~ Why Is My Future/Async Called Multiple Times? https://flutterigniter.com/future-async-called-multiple-times/
+* ~ https://medium.com/saugo360/flutter-my-futurebuilder-keeps-firing-6e774830bc2
+* New tools for Flutter developers, built in Flutter : https://medium.com/flutter/new-tools-for-flutter-developers-built-in-flutter-a122cb4eec86
+* Dart DevTools : https://www.youtube.com/watch?v=nq43mP7hjAE&feature=youtu.be
+
+**TO UNDERSTAND**
+* FutureBuilder performance issue
+* When to use private variable
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -48,6 +59,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * https://www.didierboelens.com/fr/
 * CHEATSHEET TRANSPARENCY HEXADECIMAL : https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
 * Compiled List of Flutter Newsletters : https://medium.com/@bleyldev/compiled-list-of-flutter-newsletters-ee040a0b136f
+* Flutter’s Stateful Widget cheat sheet : https://itnext.io/flutters-stateful-widget-cheat-sheet-2188f1dc3d07
+* Flutter Hooks, say goodbye to StatefulWidget and reduce boilerplate code : https://medium.com/flutter-community/flutter-hooks-say-goodbye-to-statefulwidget-and-reduce-boilerplate-code-8573d4720f9a
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -150,6 +163,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [FUTURE DROPDOWN](#future-dropdown)
    * [AFFICHER UNE DONNEE API VIA UNE ROUTE](#AFFICHER-UNE-DONNEE-API-VIA-UNE-ROUTE)
    * [MAP BUILDER FUTURE](#MAP-BUILDER-FUTURE)
+   * [REQUETE PUT AVEC BODY](#REQUETE-PUT-AVEC-BODY)
    * [STREAM BUILDER](#stream-builder)
 * [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
@@ -251,6 +265,7 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 * Scaffold = template (équivalent du head + body en html)
 * context = localisation du widget dans l'architecture de l'application. Permet à Flutter de savoir où l'on est et où l'on veut aller
 * slivers = parties d'une zone scrollable
+* Hooks = objet qui gère le cycle de vie d'un Widget et qui permet le partage de code entre Widgets, évitant toute duplication
 ### CONSEILS
 * La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
@@ -4002,6 +4017,33 @@ Widget authorDropDownButton() {
     validator: (value) =>
         value == null ? 'Veuillez renseigner un auteur' : null,
   );
+}
+```
+### REQUETE PUT AVEC BODY
+```java
+import 'package:http/http.dart' as http;
+
+class Api {
+
+  //static pour éviter de créer un nouvel objet Api()
+  static Future updateTask({int articleId, String articleTitle, int articleLines}) async {
+
+    Map<String, String> headers = {"Content-type": "application/json; charset=UTF-8"};
+
+  // comme convenu dans les headers, on envoie du json, d'où le jsonEncode
+    var body = jsonEncode({
+      "articleTitle": articleTitle,
+	    "articleLines": articleLines,
+    });
+
+    http.Response response = await http.put(url/articleId, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return Future.error("Erreur lors de l'appel API : ${response.body}", StackTrace.fromString(response.body));
+    }
+  }
 }
 ```
 ### STREAM BUILDER

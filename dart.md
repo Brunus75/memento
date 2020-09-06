@@ -35,6 +35,7 @@
    * [LISTS](#lists)
    * [MAPS](#maps)
    * [SETS](#sets)
+   * [NULL SAFETY](#null-safety)
 * [LES CONDITIONS](#les-conditions)   
    * [IF ELSE TERNAIRE](#if-else-ternaire)
    * [SWITCH](#switch)
@@ -677,6 +678,169 @@ assert(ingredients.contains('titanium'));
 assert(ingredients.containsAll(['titanium', 'xenon']));
 
 // As of Dart 2.3, sets support spread operators (... and ...?) and collection ifs and fors, just like lists do
+```
+### NULL SAFETY
+* Dart 2.9
+* The main language change is that all types are now non-nullable by default
+* Non-nullable variables must always be initialized with non-null values
+* You can declare nullable variables anywhere in your code with the ? syntax
+* Sound null safety : https://dart.dev/null-safety
+* Dart Null Safety: The Ultimate Guide to Non-Nullable Types : https://codewithandrea.com/videos/2020-06-29-dart-null-safety-ultimate-guide-non-nullable-types/
+```java
+// Maintenant :
+void main() {
+  int age; // non-nullable
+  age = null; // A value of type `Null` can't be assigned to a variable of type 'int'
+}
+
+// Declaring Nullable Variables
+String? name;  // initialized to null by default
+int? age = 36;  // initialized to non-null
+age = null; // can be re-assigned to null
+
+// nullable function argument
+void openSocket(int? port) {
+  // port can be null
+}
+
+// nullable return type
+String? lastName(String fullName) {
+  final components = fullName.split(' ');
+  return components.length > 1 ? components.last : null;
+}
+
+// using generics
+T? firstNonNull<T>(List<T?> items) {
+  // returns first non null element in list if any
+  return items.firstWhere((item) => item != null);
+}
+
+// return a non-null value
+int absoluteValue(int? value) {
+  if (value == null) {
+    return 0;
+  }
+  // if we reach this point, value is non-null
+  return value.abs();
+}
+
+// The assertion operator
+// We can use the assertion operator ! to assign a nullable expression to a non-nullable variable:
+int? maybeValue = 42;
+int value = maybeValue!; // valid, value is non-nullable
+// Note that applying the assertion operator to a null value will throw a runtime exception:
+String? name;
+print(name!); // NoSuchMethodError: '<Unexpected Null Value>'
+print(null!); // NoSuchMethodError: '<Unexpected Null Value>'
+
+// Non-nullable named and positional arguments
+// With Null Safety, non-nullable named arguments must always be required or have a default value
+void printAbs({int value}) {  // 'value' can't have a value of null because of its type, and no non-null default value is provided
+  print(value.abs());
+}
+
+class Host {
+  Host({this.hostName}); // 'hostName' can't have a value of null because of its type, and no non-null default value is provided
+  final String hostName;
+}
+
+// We can fix the code above with the new required modifier, 
+// which replaces the old @required annotation:
+void printAbs({required int value}) {
+  print(value.abs());
+}
+
+class Host {
+  Host({required this.hostName});
+  final String hostName;
+}
+
+printAbs(); // The named parameter 'value' is required, but there's no corresponding argument
+printAbs(value: null); // The argument type 'Null' can't be assigned to the parameter type 'int'
+printAbs(value: -5); // ok
+
+final host1 = Host(); // The named parameter 'hostName' is required, but there's no corresponding argument
+final host2 = Host(hostName: null); // The argument type 'Null' can't be assigned to the parameter type 'String'
+final host3 = Host(hostName: "example.com"); // ok
+
+// On the flip side, if we use nullable instance variables we can omit the required modifier 
+// (or the default value):
+class Host {
+  Host({this.hostName});
+  final String? hostName; // nullable, initialized to `null` by default
+}
+// all valid cases
+final host1 = Host(); // hostName is null
+final host2 = Host(hostName: null); // hostName is null
+final host3 = Host(hostName: "example.com"); // hostName is non-null
+
+// Positional parameters are subject to the same rules:
+class Host {
+  Host(this.hostName); // ok
+  final String hostName;
+}
+
+class Host {
+  Host([this.hostName]); // The parameter 'hostName' can't have a value of 'null' because of its type, and no non-null default value is provided
+  final String hostName;
+}
+
+class Host {
+  Host([this.hostName = "www.codewithandrea.com"]); // ok
+  final String hostName;
+}
+
+class Host {
+  Host([this.hostName]); // ok
+  final String? hostName;
+}
+
+// Null-aware cascade operator
+// To deal with Null Safety, the cascade operator now gains a new null-aware variant: ?... 
+// Example:
+Path? path;
+// will not do anything if path is null
+path
+  ?..moveTo(0, 0)
+  ..lineTo(0, 2)
+  ..lineTo(2, 2)
+  ..lineTo(2, 0)
+  ..lineTo(0, 0);
+// The cascade operations above will only be executed if path is not null
+
+// Null-aware subscript operator
+// Up until now, checking if a collection was null before using the subscript operator was verbose:
+int? first(List<int>? items) {
+  return items != null ? items[0] : null; // null check to prevent runtime null errors
+}
+// Dart 2.9 introduces the null aware operator ?[], which makes this a lot easier:
+int? first(List<int>? items) {
+  return items?[0]; 
+}
+
+// The late keyword
+// Use the late keyword to initialize a variable when it is first read, rather than when it's created.
+// By declaring a non-nullable late variable, we promise that it will be non-null at runtime
+// A good example is when initializing variables in initState():
+class ExampleState extends State {
+  late final TextEditingController textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController = TextEditingController();
+  }
+}
+
+// Even better, initState() can be removed altogether:
+class ExampleState extends State {
+  // late - will be initialized when first used (in the build method)
+  late final textEditingController = TextEditingController();
+}
+
+// This is ideal when creating variables whose initializer does some heavy work:
+late final taskResult = doHeavyComputation();
+
 ```
 
 ## LES CONDITIONS

@@ -98,6 +98,7 @@
 * Gérer efficacement les dépendances de vos projets Python : https://www.docstring.fr/blog/gerer-efficacement-les-dependances-de-vos-projets/
 * VSCode's Python Interactive mode is AMAZING! : https://www.youtube.com/watch?v=lwN4-W1WR84&feature=youtu.be
 *  Handling exceptions in Python a cleaner way, using Decorators : https://dev.to/shivambats/handling-exceptions-in-python-a-cleaner-way-using-decorators-2l09
+* 5 Pairs of Magic Methods in Python That You Should Know : https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -143,6 +144,8 @@
 * ~ Machine Learning Tutorial For Complete Beginners | Learn Machine Learning with Python : https://www.mygreatlearning.com/blog/machine-learning-tutorial-for-complete-beginners
 * ~ A Practical Introduction to Web Scraping in Python : https://realpython.com/python-web-scraping-practical-introduction/
 * ~ 15+ Free Python Projects for Beginners with full tutorial walkthroughs : https://www.codewithrepl.it/python-projects-for-beginners.html
+* ~ Machine Learning from Scratch – free online textbook https://dafriedman97.github.io/mlbook/content/introduction.html
+* ~ Common Python Data Structures (Guide) : https://realpython.com/python-data-structures/
 
 
 ## INSTALLATION
