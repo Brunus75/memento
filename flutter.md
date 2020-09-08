@@ -35,6 +35,8 @@
 * ~ https://medium.com/saugo360/flutter-my-futurebuilder-keeps-firing-6e774830bc2
 * New tools for Flutter developers, built in Flutter : https://medium.com/flutter/new-tools-for-flutter-developers-built-in-flutter-a122cb4eec86
 * Dart DevTools : https://www.youtube.com/watch?v=nq43mP7hjAE&feature=youtu.be
+* https://medium.com/@DavidMPotter/list-comprehensions-in-dart-a57d3a06b703
+* https://medium.com/flutter-community/useful-list-methods-in-dart-6e173cac803d
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
@@ -739,6 +741,7 @@ flutter clean // clear Build Cache
 package défecteux = flutter packages + flutter clean
 ```
 ### LIFECYCLE
+* https://stackoverflow.com/questions/56395081/unhandled-exception-inheritfromwidgetofexacttype-localizationsscope-or-inheri
 * StateLess Widget
 ```java
 Widget build(BuildContext contex) {
@@ -748,14 +751,27 @@ Widget build(BuildContext contex) {
 ```
 * StateFul Widget
 ```java
+// 1)
 void InitState() {
+  super.initState();
   // called when the stateful widget is created and inserted into the tree
 }
 
+// 2)
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  // called when a dependency of this State object changes (ex. : Theme.of, ModalRoute.of, ect.)
+  // ex. : argument = ModalRoute.of(context).settings.arguments;
+  // car à ce moment, ModalRoute a en effet changé
+  // bon endroit pour faire des opérations sur les widgets globals de l'appli, comme ModalRoute
+}
+
+// 3)
 Widget build(BuildContext contex) {
   // called when the inner widgets gets changed (color, text, ect.)
 }
 
+// 4)
 void deactivate() {
   // called when the stateful widget gets destroyed
 }
@@ -2786,6 +2802,7 @@ DropdownButton(
 #### DROPDOWNBUTTONFORMFIELD
 * DropdownButton with validation
 * https://stackoverflow.com/questions/52926335/how-validate-dropdown-in-flutter
+* Bouton désactivité avec placeholder : https://stackoverflow.com/a/61659089
 ```java
 import 'package:flutter/material.dart';
 
@@ -2814,6 +2831,8 @@ class _FormValidationWithDropdownState extends State<FormValidationWithDropdown>
               hint: Text(
                 'Salutation',
               ),
+              disabledHint: Text(defaultValue), // activé si onChanged = null
+              // peut être utilisé pour afficher du texte si le button est désactivé
               onChanged: (salutation) =>
                   setState(() => selectedSalutation = salutation),
               validator: (value) => value == null ? 'field required' : null,

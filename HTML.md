@@ -1,5 +1,9 @@
 # MEMENTO HTML
 
+## RESSOURCES
+
+* A Complete HTML5 Canvas Cheat Sheet – PDF Free Download : http://www.coding-dude.com/wp/html5/mastering-html5-canvas-with-this-free-cheat-sheet
+
 ## CONTRAINTES 
 
 * https://developer.mozilla.org/fr/docs/Web/Guide/HTML/HTML5/Constraint_validation

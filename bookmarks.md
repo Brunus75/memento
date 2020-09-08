@@ -215,6 +215,8 @@
 * Why developers are falling in love with functional programming : https://towardsdatascience.com/why-developers-are-falling-in-love-with-functional-programming-13514df4048e
 * When DRY Doesn't Work, Go WET : https://dev.to/nickbulljs/when-dry-doesn-t-work-go-wet-4536
 * TDD, BDD, ATDD : de quoi on parle ? : https://mailchi.mp/83bc915d8951/mes-fonctionnalits-prfres-de-php-6534446
+* How to manage stress as a developer : https://thenextweb.com/growth-quarters/2020/09/05/how-to-manage-stress-as-a-developer-syndication/ + https://www.holybooks.com/wp-content/uploads/Buddha-in-Blue-Jean.pdf
+* L’entretien technique est une compétence à part entière : https://www.jesuisundev.com/entretien-technique
 
 
 ## :keyboard: WINDOWS
@@ -991,6 +993,8 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * https://menway.com/
 * https://www.wiilog.fr/
 * https://www.code-couleur.com/signification/anthracite.html
+* https://aainterior.com.ua/
+* http://mudvex.com/
 
 
 ## :monocle_face: TENDANCES

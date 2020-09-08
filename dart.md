@@ -431,6 +431,12 @@ var chapters = [
   ...backMatter,
 };
 
+// SIMPLE LIST COMPREHENSION
+// renvoyer un nombre d'articles selon leur catégorie
+if (typeArticle == 'CULTURE') {
+  listArticles = [for (Article article in listArticles) if (article.category == 'FILM' || article.category == 'SERIE' || article.category == 'LIVRE') article];
+}
+
 // Using for and if in an empty collection literal gives you a syntax not too far 
 // from the special "list comprehension" syntax supported by some other languages like Python:
 [for (var i = 1; i <= 5; i++) if (i.isOdd) i * i] // [1, 9, 25].
@@ -486,6 +492,23 @@ nobleGases[2] = 'helium';
 nobleGases[10] = 'neon';
 nobleGases[18] = 'argon';
 print(nobleGases); // {2: helium, 10: neon, 18: argon}
+
+// plus précis
+Map map = Map();
+Map map = Map<int, String>();
+
+// encore plus précis
+import 'dart:collection';
+
+HashMap hashMap = HashMap<int, String>(); // unordered
+LinkedHashMap linkedHashMap = LinkedHashMap<int, String>(); // predictable iteration order by the insertion order, DEFAULT choice
+SplayTreeMap treeMap = SplayTreeMap<int, String>(); // iterates the keys in sorted order
+
+// par défaut
+Map map = Map<int, String>();
+if (map is LinkedHashMap) {
+  print("This is a LinkedHashMap."); // Result: This is a LinkedHashMap.
+}
 
 // Dart/Flutter check existence of key/value in Map
 Map map = {1: 'one', 2: 'two'};
