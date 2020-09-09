@@ -117,6 +117,8 @@
 * The Best Tools for Checking Your Website’s Speed : https://joetechreviews.com/the-best-tools-for-checking-your-websites-speed
 * Kraken to compress image file sizes without compromising the quality : https://www.webfx.com/blog/web-design/website-best-practices-checklist
 * A cool app to simultaneously watch tutorials and code : https://www.devlecture.com/
+* Every shortcut for designers in one place : https://shortcuts.design/
+* A nice collection of open-source browser tools : https://omatsuri.app/
 
 
 ## :pushpin: WEB DOCS
@@ -282,6 +284,7 @@
 * Infographie : 8 conseils pour un article parfait en SEO : https://www.abondance.com/20200605-42941-infographie-8-conseils-pour-un-article-parfait-en-seo.html
 * Comment choisir les mots clés pour son référencement naturel ? : https://www.ideveloppement.fr/expertises/agence-seo-bordeaux/choisir-les-mots-cles-pour-son-referencement.html
 * 23 SEO Tips All Web Designers Should Know in 2020 : https://the-webdesigner.co/seo-for-web-designers/
+* A website to edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter, and more : https://metatags.io/
 
 
 ## :bulb: ORGANISATION
@@ -332,6 +335,7 @@
 * Fabulous – L’extension Visual Studio Code pour vous soulager sur l’édition de CSS : https://korben.info/fabulous-lextension-visual-studio-code-pour-vous-soulager-sur-ledition-de-css.html
 * https://github.com/godcrampy/cheat-sheets/blob/master/vscode/vscode-cheatsheet.pdf
 * Liste de thèmes utilisés par les utilisateurs de VSCode : https://dev.to/madza/what-does-your-vs-code-setup-look-like-2a6o
+* Visual Studio Code shortcuts : https://shortcuts.design/toolspage-visualstudiocode.html
 
 
 ## :memo: MARKDOWN
@@ -575,6 +579,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * CSS Effects Snippets : https://emilkowalski.github.io/css-effects-snippets/
 * 15 CSS text shadow effects : https://csshint.com/15-css-text-shadow-effects
 * 10 CSS Horizontal Menus : https://csshint.com/css-horizontal-menus
+* A web app to search the syntax and all possible values for any valid CSS property : https://cssvalues.com/
 
 ### BOOTSTRAP
 
@@ -742,6 +747,8 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 100 Free Fonts for Commercial and Personal Use : https://www.hongkiat.com/blog/free-fonts-for-commercial-personal-use
 * Générateur de formes rondes : https://squircley.app/
 * A visual generator to build organic-looking shapes with the help of the CSS3 border-radius property : https://9elements.github.io/fancy-border-radius/
+* An AI palette generator trained with the Tailwindcss colors : https://tailwind.ink/
+* Design inclusif : 3 bonnes pratiques à respecter : https://www.codeur.com/blog/design-inclusif-bonnes-pratiques
 
 ### UX/UI
 
@@ -921,7 +928,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Mirror Resume | spovv.com : http://spovv.com/mirror-resume
 * https://zehfernandes.github.io/screeener/
 * Previewed, un outil de création de mockups d'applications mobiles et web : https://www.blogdumoderateur.com/tools/previewed
-
+* A website to generate mockup previews on various devices : https://previewed.app/
 
 ## :heavy_heart_exclamation: SITES WEB
 
@@ -1099,3 +1106,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://www.codeur.com/blog/design-inclusif-bonnes-pratiques
 * https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
 * https://restfulapi.net/rest-put-vs-post/
+* https://www.reddit.com/r/learnmachinelearning/comments/ink5g2/due_to_covid19_coursera_has_made_free_some_of/

@@ -124,6 +124,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [SIMPLEDIALOG](#simpledialog)
       * [NAVIGUER VERS UN SECOND SCAFFOLD](#naviguer-vers-un-second-scaffold)
       * [PASSER DES ARGS AVEC PUSHNAMED](#passer-des-args-avec-pushnamed)
+      * [AUTRES POSSIBLITÉS DE NAVIGATOR](#navigators)
       * [WILLPOPSCOPE](#willpopscope)
       * [ALERTDIALOG IN WILLPOPSCOPE](#ALERTDIALOG-IN-WILLPOPSCOPE)
       * [DRAWER](#drawer)
@@ -2126,6 +2127,29 @@ Navigator.pushNamed(context, urlPageDestinataire, arguments: {'article': article
 final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 mon_article = arguments['article'];
 ```
+#### NAVIGATORS
+* Force Flutter navigator to reload state when popping > https://stackoverflow.com/questions/49804891/force-flutter-navigator-to-reload-state-when-popping
+* se dirigers vers une route et supprimer la route appelante du stack
+```java
+Navigator.popAndPushNamed(context, UrlSecondePage, arguments: objetArgument);
+```
+* se diriger vers une route et supprimer un certain nombre de routes derrière elle
+* https://stackoverflow.com/a/52689158
+```java
+  _navPaymentSuccessful(){
+    Navigator.pushAndRemoveUntil(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => PaymentSuccessful()
+      ), 
+     ModalRoute.withName("/Home")
+    );
+  }
+
+// avec arguments
+Navigator.pushNamedAndRemoveUntil(context, urlSecondePage ModalRoute.withName(urlDernierePageDansLeStack), arguments: objetArgument);
+```
+* remove all routes : https://stackoverflow.com/questions/45889341/flutter-remove-all-routes
 #### WILLPOPSCOPE
 ```java
 // ↓ empêche l'utilisateur de revenir en arrière

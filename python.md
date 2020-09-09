@@ -85,6 +85,7 @@
 * https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask/4526533-testez-le-parcours-utilisateur-avec-les-tests-fonctionnels 
 * https://github.com/trending/python
 * New Features in Python 3.9 You Should Know About : https://medium.com/@martin.heinz/new-features-in-python-3-9-you-should-know-about-14f3c647c2b4
+* Les nouveautés de Python 3.9 : https://www.docstring.fr/blog/les-nouveautes-de-python-39/
 * Python DateTime, TimeDelta, Strftime(Format) with Examples : https://www.guru99.com/date-time-and-datetime-classes-in-python.html
 * Development Environment in Python : https://www.pythonforbeginners.com/development/development-environment-in-python
 * https://dbader.org/
@@ -99,6 +100,7 @@
 * VSCode's Python Interactive mode is AMAZING! : https://www.youtube.com/watch?v=lwN4-W1WR84&feature=youtu.be
 *  Handling exceptions in Python a cleaner way, using Decorators : https://dev.to/shivambats/handling-exceptions-in-python-a-cleaner-way-using-decorators-2l09
 * 5 Pairs of Magic Methods in Python That You Should Know : https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6
+* One bash command to start the day : https://dev.to/dmahely/one-bash-command-to-start-the-day-2fni
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -146,6 +148,7 @@
 * ~ 15+ Free Python Projects for Beginners with full tutorial walkthroughs : https://www.codewithrepl.it/python-projects-for-beginners.html
 * ~ Machine Learning from Scratch – free online textbook https://dafriedman97.github.io/mlbook/content/introduction.html
 * ~ Common Python Data Structures (Guide) : https://realpython.com/python-data-structures/
+* ~ Discover the role of Python in space exploration : https://docs.microsoft.com/en-us/learn/paths/introduction-python-space-exploration-nasa/
 
 
 ## INSTALLATION
