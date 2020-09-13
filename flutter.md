@@ -80,6 +80,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 
 **JSON**
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
+* Json to Dart Converter : https://javiercbk.github.io/json_to_dart/
 
 
 ## SOMMAIRE
@@ -401,6 +402,14 @@ RoundedButton(
   },
 )
 ```
+* Don't use Column for single child alignment. Use Align instead. : https://stackoverflow.com/a/50252634
+```java
+Align(
+  alignment: Alignment.topCenter,
+  child: GridView(),
+)
+```
+
 ### ASTUCES
 * infinity (100%)
 ```java
@@ -720,10 +729,18 @@ icon: icon is IconData ? Icon(
   color: Colors.grey[600],
 ) : null,
 ```
+* Vertical viewport was given unbounded height for ListView/GridView : https://stackoverflow.com/a/57335217 + https://stackoverflow.com/questions/50252569/vertical-viewport-was-given-unbounded-height
+```java
+ListView(
+  // Says to the `ListView` that it must wrap its
+  // height (if it's vertical) and width (if it's horizontal).
+  shrinkWrap: true,
+),
+```
 
 
 ### STRUCTURE
-* Structure :
+* Structure générique :
 ```py
 project_name/
   images/
@@ -734,6 +751,36 @@ project_name/
   widgets/
 pubspec.yaml
 ```
+* Structure complexe :
+```py
+Clima-Flutter-Completed/
+  fonts/
+    SpartanMB-Black.otf
+  images/
+    city_background.jpg
+    location_background.jpg
+  lib/
+    models/
+      task.dart
+      task_data.dart
+      dtos/
+    screens/
+      city_screen.dart
+      loading_screen.dart
+      location_screen.dart
+    services/
+      location.dart
+      networking.dart # appel externe (API)
+      weather.dart
+    utilities/
+      constants.dart
+    widgets/
+      task_tile.dart
+      tasks_list.dart
+  main.dart
+pubspec.yaml
+```
+
 ### COMMANDES
 ```java
 flutter packages get // the package gets re-installed fresh
@@ -1942,6 +1989,108 @@ class _BodyState extends State<Body> {
       }
     );
   }
+
+// alertDialog customisé
+void callAlert({int quizzId}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        // retourne un objet de type Dialog
+        return AlertDialog(
+          title: Text(
+            "Arrêt du quizz",
+            textScaleFactor: 1.2,
+            textAlign: TextAlign.center,
+          ),
+          // ↓ alertDialog shape
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      "Souhaitez-vous mettre en pause le quizz ?",
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: OutlineButton(
+                      child: Text(
+                        'Non',
+                        textScaleFactor: 1.2,
+                      ),
+                      textColor: Colors.grey[600],
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(30.0))),
+                      padding: EdgeInsets.only(
+                          left: 20.0, top: 5.0, right: 20.0, bottom: 5.0),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    child: FlatButton(
+                      child: Text(
+                        "Oui",
+                        textScaleFactor: 1.2,
+                      ),
+                      color: kButtonColor,
+                      textColor: kButtonTextColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(30.0))),
+                      padding: EdgeInsets.only(
+                          left: 20.0, top: 5.0, right: 20.0, bottom: 5.0),
+                      onPressed: () async {
+                        ApiQuizz().pauseQuizz(quizzId: quizzId).then((value) {
+                          Navigator.pushNamed(
+                            context,
+                            urlHome,
+                            arguments: value,
+                          );
+                        }, onError: (error) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Arrêt du quizz'),
+                                content: Text(error.toString()),
+                                actions: [
+                                  FlatButton(
+                                    child: Text("OK"),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 ```
 #### SIMPLEDIALOG
@@ -2396,6 +2545,9 @@ class _MyHomePageState extends State<MyHomePage> {
               autofocus: true, // l'utilisateur est automatiquement dirigé dans le TextField
               // ce qui ouvre instantanément le clavier
               textAlign: TextAlign.center, // texte et curseur au milieu
+              // expand a textField in Flutter looks like a textarea
+              maxLines: null, // or 20, for limit
+              keyboardType: TextInputType.multiline,
               onChanged: (String value) {
                 setState(() {
                   // ↓ changement à la volée
@@ -2473,6 +2625,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// How to expand a textField in flutter looks like a text Area
+TextField(
+  maxLines: null,
+  keyboardType: TextInputType.multiline,
+)
+
+// scrollable TextField avec padding
+SingleChildScrollView(
+  child: TextField(
+    maxLines: 5, // max lignes affichées (scrolle si + de 5 lignes)
+    keyboardType: TextInputType.multiline,
+    decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(10.0), // padding
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(),
+        hintText:
+            "Vous pouvez ici décrire l'évènement en détails..."),
+  ),
+),
 ```
 #### CHECKBOX
 ```java
@@ -6019,7 +6192,7 @@ class MyFlutterApp {
 * https://medium.com/flutter-community/using-sqlite-in-flutter-187c1a82e8b
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
 * Problème Image Picker = flutter packages get + flutter clean = https://github.com/flutter/flutter/issues/24859
-* * Structure :
+* Structure :
 ```py
 je_veux/
   images/

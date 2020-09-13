@@ -337,6 +337,7 @@ assert(iMeantToDoThis.isNaN);
 * Details and examples of using collection if and for : https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Collections: https://dart.dev/guides/libraries/library-tour#collections
+* https://api.dart.dev/stable/2.9.3/dart-core/List/sort.html
 ```java
 // initialiser une liste
 var maListe = []; // préférable
@@ -380,6 +381,17 @@ var maListe = []; // revient à List<dynamic> maListe = []
 maListe.add("Georges");
 maListe.add(1);
 print(maListe); // [Georges, 1]
+
+// Set to List
+List listVal = setVal.toList(); // Set to List
+// List to Set
+List setVal = listVal.toSet(); // List to Set
+
+// JOIN
+List<String> yourList = ["20", "3005", "2"];
+// To test that the above the above
+yourList.join() == '2030052';     // true
+yourList.join(',') == '20,3005,2'; // true, with "," delimiter
 
 // spread operator (...) [Dart 2.3]
 // use the spread operator (...) to insert all the elements of a list into another list:
@@ -443,6 +455,20 @@ if (typeArticle == 'CULTURE') {
 
 // You can even nest for:
 [for (var x in hor) for (var y in vert) Point(x, y)]
+
+// LIST METHODS
+
+// SORT()
+List<String> numbers = ['two', 'three', 'four'];
+// Sort from shortest to longest.
+numbers.sort((a, b) => a.length.compareTo(b.length));
+print(numbers);  // [two, four, three]
+
+List<int> nums = [13, 2, -11];
+nums.sort();
+print(nums);  // [-11, 2, 13]
+
+numbers.sort((num1, num2) => num1 - num2); // => [1, 2, 3, 4, 5]
 ```
 ### MAPS
 * Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/
@@ -701,6 +727,11 @@ assert(ingredients.contains('titanium'));
 assert(ingredients.containsAll(['titanium', 'xenon']));
 
 // As of Dart 2.3, sets support spread operators (... and ...?) and collection ifs and fors, just like lists do
+
+// Set to List
+List listVal = setVal.toList(); // Set to List
+// List to Set
+List setVal = listVal.toSet(); // List to Set
 ```
 ### NULL SAFETY
 * Dart 2.9
@@ -1114,10 +1145,20 @@ b ??= value;
 a += b =>	a = a + b
 ```
 ### LOGICAL OPERATORS
+* Did you know that there are also single AND and single OR boolean operators in Dart? : https://twitter.com/creativemaybeno/status/1302806922178035712
 ```java
 !expr // inverts the following expression (changes false to true, and vice versa)
 || 	// logical OR
 && 	// logical AND
+|   // logical OR that always evaluate the right-hand expression
+&   // logical AND that always evaluate the right-hand expression
+
+// exemple
+if (true || false) // s'arrête à true (pas besoin de savoir la suite)
+// la condition est déjà remplie
+if (true | false) // s'arrête à false, même si ce n'est pas nécessaire
+if (true || function()) // n'exécute pas la fonction
+if (true | function()) // exécute la fonction
 
 // exemple
 if (!done && (col == 0 || col == 3)) {

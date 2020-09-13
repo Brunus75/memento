@@ -1,5 +1,44 @@
 # RESSOURCES WEB
 
+## SOMMAIRE
+
+* [VEILLE](#books-veille)
+* [TO LEARN](#candle-to-learn)
+* [WEB TOOLS](#gun-WEB-TOOLS)
+* [WEB DOCS](#pushpin-WEB-DOCS)
+* [VALIDATEURS](#warning-VALIDATEURS)
+* [GENERAL](#globe_with_meridians-GENERAL)
+* [WINDOWS](#keyboard-WINDOWS)
+* [MOZILLA](#fox_face-MOZILLA)
+* [SEO](#mag_right-SEO)
+* [ORGANISATION](#-bulb-ORGANISATION)
+* [GIT, GITHUB, GITFLOW](#octocat-GIT-GITHUB-GITFLOW)
+* [VISUAL STUDIO CODE](#nazar_amulet-VISUAL-STUDIO-CODE)
+* [MARKDOWN](#memo-MARKDOWN)
+* [ANDROID](#flying_saucer-ANDROID)
+* [DEVOPS](#cowboy_hat_face-DEVOPS)
+* [SOFTWARE](#floppy_disk-SOFTWARE)
+* [BACK-END](#hammer_and_wrench-BACK-END)
+* [FRONT-END](#white_check_mark-FRONT-END)
+* [WEBDESIGN](#shaved_ice-WEBDESIGN)
+* [API](#joystick-API)
+* [WORDPRESS](#speech_balloon-WORDPRESS)
+* [SECURITY](#no_entry-SECURITY)
+* [BASE DE DONNEES](#card_file_box-BASE-DE-DONNEES)
+* [TUTOS](#tv-TUTOS)
+* [TESTS](#alembic-TESTS)
+* [REGEX](#slot_machine-REGEX)
+* [MAILING](#e-mail-MAILING)
+* [HEBERGEURS](#beginner-HEBERGEURS)
+* [BANQUE D'IMAGES](#framed_picture-BANQUE-D'IMAGES)
+* [MOCKUP](#iphone-computer-desktop_computer-MOCKUP)
+* [SITES WEB](#heavy_heart_exclamation-SITES-WEB)
+* [TENDANCES](#monocle_face-TENDANCES)
+* [WORD](#page_facing_up-WORD)
+* [NOCODE](#eye_speech_bubble-NOCODE)
+* [TO READ](#bookmark-TO-READ)
+
+
 ## :books: VEILLE
 
 * La Ferme du Web - Votre veille technologique quotidienne : https://www.lafermeduweb.net/
@@ -40,6 +79,14 @@
 * https://twitter.com/flutterize
 * https://medium.com/@durannumit
 * https://twitter.com/biz84
+
+
+## :candle: TO LEARN
+
+* UI/UX design
+* data structures and algorithms
+* design patterns and system architecture
+* networking and databases
 
 
 ## :gun: WEB TOOLS
@@ -221,6 +268,7 @@
 * L’entretien technique est une compétence à part entière : https://www.jesuisundev.com/entretien-technique
 
 
+
 ## :keyboard: WINDOWS
 
 * Windows 10 May 2020 Update est disponible et apporte WSL2 par défaut avec un véritable noyau Linux : https://windows.developpez.com/actu/304457/Windows-10-May-2020-Update-est-disponible-et-apporte-WSL2-par-defaut-avec-un-veritable-noyau-Linux-ainsi-que-la-possibilite-de-renommer-des-bureaux-virtuels/
@@ -285,6 +333,7 @@
 * Comment choisir les mots clés pour son référencement naturel ? : https://www.ideveloppement.fr/expertises/agence-seo-bordeaux/choisir-les-mots-cles-pour-son-referencement.html
 * 23 SEO Tips All Web Designers Should Know in 2020 : https://the-webdesigner.co/seo-for-web-designers/
 * A website to edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter, and more : https://metatags.io/
+* Bing Webmaster Tools lance un nouveau Testeur de robots.txt : https://www.arobasenet.com/2020/09/bing-testeur-robots-txt-6339.html
 
 
 ## :bulb: ORGANISATION
@@ -353,11 +402,18 @@
 ## :flying_saucer: ANDROID
 
 * https://www.journaldugeek.com/2020/06/25/pourquoi-machine-learning-smartphone-pas-cloud
+* https://www.codeur.com/blog/design-application-mode-sombre
 
 ## :cowboy_hat_face: DEVOPS
 
 * Pour découvrir de nouvelles technologies comme : Docker, Kubernetes, Jenkins, Linux, etc : https://www.katacoda.com/
 * Intro to Docker for Web Developers : https://livecodestream.dev/post/2020-06-25-intro-to-docker-for-web-developers
+
+
+## :floppy_disk: SOFTWARE
+
+* The SOLID Principles for good software design : https://medium.com/@devDeeJay/the-solid-principles-for-good-software-design-14b4ec6d7607
+* 23 Top Tips to Become a Better Software Engineer : https://codewithandrea.com/videos/2020-06-15-top-tips-software-engineers/
 
 
 ## :hammer_and_wrench: BACK-END
@@ -581,6 +637,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 10 CSS Horizontal Menus : https://csshint.com/css-horizontal-menus
 * A web app to search the syntax and all possible values for any valid CSS property : https://cssvalues.com/
 
+
 ### BOOTSTRAP
 
 * GitHub - twbs/bootstrap: The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile first projects on the web. : https://github.com/twbs/bootstrap
@@ -600,7 +657,6 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A collection of customizable, ready-to-use Tailwind CSS blocks : https://mertjf.github.io/tailblocks/
 * 24 Bootstrap Menus : https://freefrontend.com/bootstrap-menus
 * La toute première version (version alpha) de Bootstrap 5 : https://bootstrap-top-design.com/version-alpha-bootstrap-5/
-
 
 
 ### JAVASCRIPT
@@ -785,6 +841,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * heroicons : https://heroicons.com/
 * Bootstrap Icons v1.0.0 : https://blog.getbootstrap.com/2020/08/28/bootstrap-icons-stable
 * Shape est une bibliothèque contenant plus de 25000 icônes et illustrations que vous pouvez personnaliser https://www.blogdumoderateur.com/tools/shape
+* 30+ Best Web Safe Fonts (HTML) For Your Next Design in 2020 : https://kinsta.com/blog/web-safe-fonts
 
 ## :joystick: API
 
@@ -844,6 +901,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * WordPress 5.5 : comment résoudre les erreurs JavaScript de la dernière mise à jour : https://www.blogdumoderateur.com/wordpress-5-5-comment-resoudre-erreurs-javascript
 * Comment sécuriser votre site WordPress facilement ? Le tuto pour les nuls : https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
 * ~  A step-by-step guide to CREATE YOUR OWN WordPress theme! : https://en.rockcontent.com/blog/develop-wordpress-theme
+* ~ WordPress Security Tips 2020-2021: All You Need to Know : https://www.orphicpixel.com/wordpress-security-tips-2020-2021-all-you-need-to-know
 
 
 ## :no_entry: SECURITY
@@ -869,6 +927,9 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Potion de vie : https://www.youtube.com/user/Potiondevie/videos
 * Collection of free software development tutorials : https://www.tutorialist.io/
 * A list of 700 Free Online Programming & Computer Science Courses : https://www.freecodecamp.org/news/free-online-programming-cs-courses/
+* IT automation with python by Google : https://www.coursera.org/professional-certificates/google-it-automation
+* Introduction to Data science by IBM : https://www.coursera.org/specializations/introduction-data-science
+* Deep learning offered by deeplearning.io : https://www.coursera.org/specializations/deep-learning
 
 
 ## :alembic: TESTS
@@ -1011,12 +1072,15 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * WebAssembly
 * Rust
 * Julia
+* R (data science et maths)
+* Go (open source, Google)
 ```
 Rust de Mozilla Research est le type de langage de programmation auquel ceux qui écrivent du code pour
 des systèmes d’entrée/sortie de base (BIOS), des chargeurs d’amorce, des systèmes d’exploitation, etc.
 portent un intérêt. 
 D’avis d’observateurs avertis, c’est le futur de la programmation système en lieu et place du langage C.
 ```
+* https://www.blogdumoderateur.com/classement-tiobe-septembre-2020
 
 ## :page_facing_up: WORD
 
@@ -1107,3 +1171,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
 * https://restfulapi.net/rest-put-vs-post/
 * https://www.reddit.com/r/learnmachinelearning/comments/ink5g2/due_to_covid19_coursera_has_made_free_some_of/
+* https://www.smashingmagazine.com/2020/09/icons-mobile-apps

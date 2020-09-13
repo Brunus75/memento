@@ -148,7 +148,10 @@
 * ~ 15+ Free Python Projects for Beginners with full tutorial walkthroughs : https://www.codewithrepl.it/python-projects-for-beginners.html
 * ~ Machine Learning from Scratch – free online textbook https://dafriedman97.github.io/mlbook/content/introduction.html
 * ~ Common Python Data Structures (Guide) : https://realpython.com/python-data-structures/
+* ~ Complete Introduction to the 30 Most Essential Data Structures & Algorithms : https://dev.to/iuliagroza/complete-introduction-to-the-30-most-essential-data-structures-algorithms-43kd
 * ~ Discover the role of Python in space exploration : https://docs.microsoft.com/en-us/learn/paths/introduction-python-space-exploration-nasa/
+* ~ fastcore: An Underrated Python Library : https://fastpages.fast.ai/fastcore/
+* ~ How to Publish Your First Python App on Heroku : https://medium.com/@henson.casper/how-to-publish-your-first-python-app-on-heroku-6af91c5bb138
 
 
 ## INSTALLATION

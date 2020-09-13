@@ -7,6 +7,11 @@
 * D:\Programmes\PostgreSQL\12\data pour l'emplacement des données
 * locale: French, France
 
+## RACCOURCIS
+
+* Saisie automatique = Ctrl+espace
+
+
 ## SQL
 
 * Différence DELETE / TRUNCATE
