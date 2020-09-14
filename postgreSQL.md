@@ -48,6 +48,12 @@ DROP and TRUNCATE are DDL commands, whereas DELETE is a DML command. Therefore D
 |                                        |    example_column_id IN (1,2,3)              |
 +----------------------------------------+----------------------------------------------+
 ```
+* L'opérateur <>
+```
+<> is the standard SQL operator meaning "not equal". 
+Many databases, including postgresql, supports != as a synonym for <>. 
+They're exactly the same in postgresql
+```
 
 ## CONSEILS
 

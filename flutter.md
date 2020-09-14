@@ -37,6 +37,8 @@
 * Dart DevTools : https://www.youtube.com/watch?v=nq43mP7hjAE&feature=youtu.be
 * https://medium.com/@DavidMPotter/list-comprehensions-in-dart-a57d3a06b703
 * https://medium.com/flutter-community/useful-list-methods-in-dart-6e173cac803d
+* https://medium.com/flutter-community/detect-flutter-drawer-open-and-close-21a2250b3606
+* https://medium.com/flutter-community/flutter-deep-dive-part-4-renderflex-children-have-non-zero-flex-77734ca0b5c
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
@@ -737,6 +739,13 @@ ListView(
   shrinkWrap: true,
 ),
 ```
+* get name of current route
+```java
+void didChangeDependencies() {
+    super.didChangeDependencies();
+    final callingRoute = ModalRoute.of(context).settings.name;
+}
+```
 
 
 ### STRUCTURE
@@ -779,6 +788,23 @@ Clima-Flutter-Completed/
       tasks_list.dart
   main.dart
 pubspec.yaml
+```
+* Structure complexe 2
+```py
+lib/
+	data/ # models (propriétés + méthodes JSON)
+		dtos/ # models DTO (seulement propriétés + constructeur)
+	pages/ # screens
+	ressources/
+		auth_provider.dart # login
+		authorization.dart # gestion de la session utilisateur
+		config.dart # constantes
+		repository.dart # login de l'utilisateur
+	services/
+		api-article.dart # + autres appels API
+		api-author.dart
+		service-utils.dart
+	widgets/ # composants autonomes et répétés
 ```
 
 ### COMMANDES
@@ -2296,9 +2322,17 @@ Navigator.popAndPushNamed(context, UrlSecondePage, arguments: objetArgument);
   }
 
 // avec arguments
-Navigator.pushNamedAndRemoveUntil(context, urlSecondePage ModalRoute.withName(urlDernierePageDansLeStack), arguments: objetArgument);
+Navigator.pushNamedAndRemoveUntil(context, urlSecondePage, ModalRoute.withName(urlDernierePageDansLeStack), arguments: objetArgument);
 ```
 * remove all routes : https://stackoverflow.com/questions/45889341/flutter-remove-all-routes
+```java
+Navigator.of(context)
+    .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+
+// The secret here is using a RoutePredicate that always returns false (Route<dynamic> route) => false. 
+// In this situation it removes all of the routes except for the new /login route I pushed
+```
+
 #### WILLPOPSCOPE
 ```java
 // ↓ empêche l'utilisateur de revenir en arrière
