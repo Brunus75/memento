@@ -54,6 +54,17 @@ DROP and TRUNCATE are DDL commands, whereas DELETE is a DML command. Therefore D
 Many databases, including postgresql, supports != as a synonym for <>. 
 They're exactly the same in postgresql
 ```
+* Commentaires
+* https://stackoverflow.com/questions/4272251/comment-character-characters-in-postgres-postgresql-psql
+```sql
+SELECT 23 AS test  -- inline comment : This is a standard SQL comment
+
+/* I am a
+ * block comment */
+SELECT 42 AS result
+
+/* multiline comment  * with nesting: /* nested block comment */  */
+```
 
 ## CONSEILS
 
@@ -118,6 +129,24 @@ SELECT * FROM blah WHERE timestampcol >= '2018-06-01' AND timestampcol < '2018-0
 'Use' TEXT 'and avoid' VARCHAR 'or' CHAR 'and especially' VARCHAR(n) 'unless you specifically want to have a hard limit. Read this. Performance wise, TEXT is faster'.
 -- Numbers
 INT 'is a typical choice for integers. There are more choices here if needed for your use case.'
+```
+* Comparing TIMESTAMP
+* https://stackoverflow.com/questions/31433747/postgres-where-clause-compare-timestamp
+```sql
+--Cast the timestamp column to a date, that will remove the time part:
+select *
+from the_table
+where the_timestamp_column::date = date '2015-07-15';
+-- This will return all rows from July, 15th.
+
+/* Note that the above will not use an index on the_timestamp_column. 
+If performance is critical, you need to either create an index on that expression 
+or use a range condition: */
+
+select *
+from the_table
+where the_timestamp_column >= timestamp '2015-07-15 00:00:00'
+  and the_timestamp_column < timestamp '2015-07-16 00:00:00';
 ```
 
 ## UTILISATION & LEXIQUE

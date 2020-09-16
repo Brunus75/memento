@@ -354,6 +354,9 @@ Exemple > https://gist.github.com/evandrix/2030615
 
 ## LEXIQUE
 
+* module : fichier avec l'extension .py qui contient du code python (ex module os, random, json)
+* package : dossier qui contient des modules, qu'on installe grâce à pip
+* librairie : dossier qui contient plusieurs packages
 ### *args et **kwargs
 ```py
 *args = faire passer une variable indéfinie, sans clé, dans une fonction

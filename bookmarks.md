@@ -166,6 +166,7 @@
 * A cool app to simultaneously watch tutorials and code : https://www.devlecture.com/
 * Every shortcut for designers in one place : https://shortcuts.design/
 * A nice collection of open-source browser tools : https://omatsuri.app/
+* A simple website builder with no code needed : https://aspect.app/
 
 
 ## :pushpin: WEB DOCS
@@ -266,6 +267,7 @@
 * TDD, BDD, ATDD : de quoi on parle ? : https://mailchi.mp/83bc915d8951/mes-fonctionnalits-prfres-de-php-6534446
 * How to manage stress as a developer : https://thenextweb.com/growth-quarters/2020/09/05/how-to-manage-stress-as-a-developer-syndication/ + https://www.holybooks.com/wp-content/uploads/Buddha-in-Blue-Jean.pdf
 * L’entretien technique est une compétence à part entière : https://www.jesuisundev.com/entretien-technique
+* Comment apprendre un nouveau langage rapidement : https://www.jesuisundev.com/apprendre-un-nouveau-langage/
 
 
 
@@ -376,6 +378,7 @@
 * GitKraken GitHub: White paper, video and training resources : https://www.gitkraken.com/resources/github
 * https://www.gitkraken.com/downloads/gitkraken-git-gui-cheat-sheet.pdf
 * Git, le système distribué de gestion de versions, vient de passer à la version 2.28 : https://alm.developpez.com/actu/307586/Git-le-systeme-distribue-de-gestion-de-versions-vient-de-passer-a-la-version-2-28-et-remplace-le-nom-master-par-init-defaultBranch-lors-de-la-creation-d-une-premiere-branche-dans-un-referentiel/
+* Like Figma, for code : https://git.live
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -466,6 +469,7 @@
 * symfony-docs/setup.rst at master · symfony/symfony-docs : https://github.com/symfony/symfony-docs/blob/master/setup.rst
 * symfony/demo: Symfony Demo Application : https://github.com/symfony/demo
 * Thomas Boileau - Youtube : https://www.youtube.com/user/SqAE28/videos
+* En route pour Symfony 5 : https://symfony.com/doc/current/the-fast-track/fr/index.html
 
 
 ### PYTHON
@@ -753,6 +757,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * UI Inspiration: 22 Mobile Design Concepts with Interface Illustrations : https://icons8.com/articles/mobile-design-with-interface-illustrations
 * 24 examples of creative illustration use in mobile design : https://dribbble.com/stories/2020/07/10/illustration-in-mobile-design
 * A website for animation resources and inspiration from around the web. : https://theanimatedweb.com/
+* A cool website for finding design inspiration and examples : https://lookup.design/
 
 ### DESIGN
 
@@ -902,6 +907,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Comment sécuriser votre site WordPress facilement ? Le tuto pour les nuls : https://www.codeur.com/tuto/wordpress/securiser-wordpress-debutant
 * ~  A step-by-step guide to CREATE YOUR OWN WordPress theme! : https://en.rockcontent.com/blog/develop-wordpress-theme
 * ~ WordPress Security Tips 2020-2021: All You Need to Know : https://www.orphicpixel.com/wordpress-security-tips-2020-2021-all-you-need-to-know
+* Guide : comment créer un thème WordPress, étape par étape : https://www.blogdumoderateur.com/creer-theme-wordpress
 
 
 ## :no_entry: SECURITY
@@ -1113,6 +1119,8 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript
 * Never Run ‘python’ In Your Downloads Folder : https://glyph.twistedmatrix.com/2020/08/never-run-python-in-your-downloads-folder.html
 * Machine Learning from Scratch – free online textbook https://dafriedman97.github.io/mlbook/content/introduction.html
+* Python 101: An Intro to Working with JSON : https://www.blog.pythonlibrary.org/2020/09/15/python-101-an-intro-to-working-with-json/
+* Beyond Media Queries: Using Newer HTML & CSS Features for Responsive Designs : https://css-tricks.com/beyond-media-queries-using-newer-html-css-features-for-responsive-designs/
 ---
 * https://stephaniewalter.design/blog/enhancing-user-experience-with-css-animations
 * https://dribbble.com/stories/2020/08/17/choosing-typography-for-web-design
@@ -1172,3 +1180,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://restfulapi.net/rest-put-vs-post/
 * https://www.reddit.com/r/learnmachinelearning/comments/ink5g2/due_to_covid19_coursera_has_made_free_some_of/
 * https://www.smashingmagazine.com/2020/09/icons-mobile-apps
+* What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator
