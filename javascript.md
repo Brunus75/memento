@@ -29,7 +29,7 @@
 * JavaScript Object Functions Cheat Sheet : https://wweb.dev/resources/js-object-functions-cheatsheet
 * Les 15 meilleures librairies JavaScript à essayer : https://www.codeur.com/blog/meilleures-librairies-javascript/
 * Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
-
+* What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator/
 
 ## LEXIQUE
 

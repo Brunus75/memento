@@ -3,6 +3,14 @@
 
 ## RESSOURCES
 
+**VEILLE**
+* https://twitter.com/flutterwk
+* https://twitter.com/fluttertap
+* https://twitter.com/FlutterTip
+* https://twitter.com/flutterize
+* https://medium.com/@durannumit
+* https://twitter.com/biz84
+
 **DART & FLUTTER**
 * Doc Dart : https://dart.dev/
 * DartPad : https://dartpad.dev/dart
@@ -39,6 +47,9 @@
 * https://medium.com/flutter-community/useful-list-methods-in-dart-6e173cac803d
 * https://medium.com/flutter-community/detect-flutter-drawer-open-and-close-21a2250b3606
 * https://medium.com/flutter-community/flutter-deep-dive-part-4-renderflex-children-have-non-zero-flex-77734ca0b5c
+* Flutter: State Management using an MVC+S Architecture : https://blog.gskinner.com/archives/2020/09/flutter-state-management-with-mvcs.html
+* Multiple Themes in Flutter | Dark and Light Theme Flutter Stacked : https://www.filledstacks.com/post/multiple-themes-in-flutter-dark-and-light-theme-flutter-stacked/
+* Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
@@ -65,6 +76,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Compiled List of Flutter Newsletters : https://medium.com/@bleyldev/compiled-list-of-flutter-newsletters-ee040a0b136f
 * Flutter’s Stateful Widget cheat sheet : https://itnext.io/flutters-stateful-widget-cheat-sheet-2188f1dc3d07
 * Flutter Hooks, say goodbye to StatefulWidget and reduce boilerplate code : https://medium.com/flutter-community/flutter-hooks-say-goodbye-to-statefulwidget-and-reduce-boilerplate-code-8573d4720f9a
+* Size matters: Reducing Flutter App size best practices : https://medium.com/@suryadevsingh24032000/size-matters-reducing-flutter-app-size-best-practices-ca992207782
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -2303,10 +2315,25 @@ final Map arguments = ModalRoute.of(context).settings.arguments as Map;
 mon_article = arguments['article'];
 ```
 #### NAVIGATORS
+* revenir en arrière (si posible)
+```java
+// page 3
+canPop(); // return true 
+maybePop(); // s'exécute => revient à la page 2
+// page 1
+canPop(); // return false
+maybePop(); // ne s'exécute pas (car pas de page précédente)
+```
 * Force Flutter navigator to reload state when popping > https://stackoverflow.com/questions/49804891/force-flutter-navigator-to-reload-state-when-popping
-* se dirigers vers une route et supprimer la route appelante du stack
+* se diriger vers une route et supprimer la route appelante du stack
 ```java
 Navigator.popAndPushNamed(context, UrlSecondePage, arguments: objetArgument);
+```
+* pushReplacementNamed vs. popAndPushNamed
+```java
+// même objectif : se diriger vers une route et supprimer la route appelante du stack
+Navigator.of(context).pushReplacementNamed('/screen4'); // will execute the enter animation
+Navigator.popAndPushNamed(context, '/screen4'); // will execute the exit animation
 ```
 * se diriger vers une route et supprimer un certain nombre de routes derrière elle
 * https://stackoverflow.com/a/52689158
@@ -2331,6 +2358,10 @@ Navigator.of(context)
 
 // The secret here is using a RoutePredicate that always returns false (Route<dynamic> route) => false. 
 // In this situation it removes all of the routes except for the new /login route I pushed
+```
+* revenir à une route en supprimant les autres routes du stack
+```java
+Navigator.popUntil(context, ModalRoute.withName('/screen2'));
 ```
 
 #### WILLPOPSCOPE
@@ -2741,6 +2772,7 @@ class _MyHomePageState extends State<MyHomePage> {
 * https://api.flutter.dev/flutter/material/Radio-class.html
 * Exemple : ListTile = https://api.flutter.dev/flutter/material/ListTile-class.html
 * ListTile permet de faire des row homogènes avec 3 éléments
+* To change the default color of Radio Button, wrap it inside Theme as it uses unselectedWidgetColor property of ThemeData : https://twitter.com/dhruvashastri12/status/1305498160685625345
 ```java
 class _MyHomePageState extends State<MyHomePage> {
 

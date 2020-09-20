@@ -87,6 +87,7 @@
 * data structures and algorithms
 * design patterns and system architecture
 * networking and databases
+* API REST
 
 
 ## :gun: WEB TOOLS
@@ -167,6 +168,7 @@
 * Every shortcut for designers in one place : https://shortcuts.design/
 * A nice collection of open-source browser tools : https://omatsuri.app/
 * A simple website builder with no code needed : https://aspect.app/
+* Randomly Generated Characters for Your Apps & Games : https://bigheads.io/
 
 
 ## :pushpin: WEB DOCS
@@ -379,6 +381,7 @@
 * https://www.gitkraken.com/downloads/gitkraken-git-gui-cheat-sheet.pdf
 * Git, le système distribué de gestion de versions, vient de passer à la version 2.28 : https://alm.developpez.com/actu/307586/Git-le-systeme-distribue-de-gestion-de-versions-vient-de-passer-a-la-version-2-28-et-remplace-le-nom-master-par-init-defaultBranch-lors-de-la-creation-d-une-premiere-branche-dans-un-referentiel/
 * Like Figma, for code : https://git.live
+* GitHub CLI 1.0 is now available : https://github.blog/2020-09-17-github-cli-1-0-is-now-available/
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -640,6 +643,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 15 CSS text shadow effects : https://csshint.com/15-css-text-shadow-effects
 * 10 CSS Horizontal Menus : https://csshint.com/css-horizontal-menus
 * A web app to search the syntax and all possible values for any valid CSS property : https://cssvalues.com/
+* Custom bullets with CSS ::marker : https://web.dev/css-marker-pseudo-element
 
 
 ### BOOTSTRAP
@@ -741,6 +745,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 
 * https://www.behance.net/search
 * https://dribbble.com/search/
+* https://dribbble.com/tags
 * https://search.muz.li/inspiration/mobile-app-design-inspiration/
 * https://search.muz.li/search/map
 * https://www.creative-portfolios.com/
@@ -936,6 +941,8 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * IT automation with python by Google : https://www.coursera.org/professional-certificates/google-it-automation
 * Introduction to Data science by IBM : https://www.coursera.org/specializations/introduction-data-science
 * Deep learning offered by deeplearning.io : https://www.coursera.org/specializations/deep-learning
+* ThePrimeagen is great for Vim : https://www.youtube.com/c/ThePrimeagen/featured
+*  Traversy Media : https://www.youtube.com/c/TraversyMedia/videos
 
 
 ## :alembic: TESTS

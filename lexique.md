@@ -191,3 +191,7 @@ https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-lin
 * :ambulance: **Garbage collector** (ramasse-miettes) : sous-système informatique qui libère la mémoire inutilisée
 
 * Différence Librairie et Framework : une libraire, c'est du code qu'on appelle (on a le contrôle de l'implémentation), alors qu'avec un framework, c'est le code qui vous appelle (l'implémentation doit suivre des règles imposées)
+
+* Compilation anticipée (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
+
+* Compilation à la volée : compilation lors de l'exécution d'un programme
