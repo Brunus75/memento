@@ -10,6 +10,7 @@
 * https://twitter.com/flutterize
 * https://medium.com/@durannumit
 * https://twitter.com/biz84
+* https://www.reddit.com/r/FlutterDev/top/?t=week
 
 **DART & FLUTTER**
 * Doc Dart : https://dart.dev/
@@ -50,6 +51,8 @@
 * Flutter: State Management using an MVC+S Architecture : https://blog.gskinner.com/archives/2020/09/flutter-state-management-with-mvcs.html
 * Multiple Themes in Flutter | Dark and Light Theme Flutter Stacked : https://www.filledstacks.com/post/multiple-themes-in-flutter-dark-and-light-theme-flutter-stacked/
 * Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
+* https://medium.com/flutterpub/flutter-7-bottom-navigation-with-floating-button-9190648372fd
+* https://codewithandrea.com/articles/2018-09-13-bottom-bar-navigation-with-fab/
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue

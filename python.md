@@ -101,6 +101,7 @@
 *  Handling exceptions in Python a cleaner way, using Decorators : https://dev.to/shivambats/handling-exceptions-in-python-a-cleaner-way-using-decorators-2l09
 * 5 Pairs of Magic Methods in Python That You Should Know : https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6
 * One bash command to start the day : https://dev.to/dmahely/one-bash-command-to-start-the-day-2fni
+* Writing More Idiomatic and Pythonic Code : https://towardsdatascience.com/writing-more-idiomatic-and-pythonic-code-c22e900eaf83
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -152,6 +153,7 @@
 * ~ Discover the role of Python in space exploration : https://docs.microsoft.com/en-us/learn/paths/introduction-python-space-exploration-nasa/
 * ~ fastcore: An Underrated Python Library : https://fastpages.fast.ai/fastcore/
 * ~ How to Publish Your First Python App on Heroku : https://medium.com/@henson.casper/how-to-publish-your-first-python-app-on-heroku-6af91c5bb138
+* When you automate something in python, you'd obviously have to run the script forever. Where can we run the script? : https://www.reddit.com/r/learnpython/comments/ivn7d9/when_you_automate_something_in_python_youd/
 
 
 ## INSTALLATION
@@ -314,6 +316,7 @@ Par exemple:
 if datafile is None:
     print("I'm pythonic")
 ```
+* Le conseil vaut également pour ```is False``` et ```is True```
 * Si vous devez découper une ligne trop longue, faites la césure après l'opérateur, pas avant.
 ```py
 # Oui
@@ -350,6 +353,24 @@ Namespaces are one honking great idea -- let's do more of those!
 """
 ```
 Exemple > https://gist.github.com/evandrix/2030615
+* Utiliser le “Bunch” Idiom quand le constructeur reçoit trop d'arguments
+```py
+class Person:
+    def __init__(self, first_name, last_name, age, height, weight, gender, address, ssn):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+        self.height = height
+        self.weight = weight
+        self.gender = gender
+        self.address = address
+        self.ssn = ssn
+
+# devient
+class Person:
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
+```
 
 
 ## LEXIQUE

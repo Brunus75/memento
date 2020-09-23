@@ -169,6 +169,7 @@
 * A nice collection of open-source browser tools : https://omatsuri.app/
 * A simple website builder with no code needed : https://aspect.app/
 * Randomly Generated Characters for Your Apps & Games : https://bigheads.io/
+* A fast image resizer and compressor, identical to exports of Figma and Sketch apps : https://sizemyimage.com/
 
 
 ## :pushpin: WEB DOCS
@@ -270,7 +271,8 @@
 * How to manage stress as a developer : https://thenextweb.com/growth-quarters/2020/09/05/how-to-manage-stress-as-a-developer-syndication/ + https://www.holybooks.com/wp-content/uploads/Buddha-in-Blue-Jean.pdf
 * L’entretien technique est une compétence à part entière : https://www.jesuisundev.com/entretien-technique
 * Comment apprendre un nouveau langage rapidement : https://www.jesuisundev.com/apprendre-un-nouveau-langage/
-
+* Une seule règle pour devenir un meilleur développeur [YouTube] : https://www.jesuisundev.com/une-seule-regle-pour-devenir-un-meilleur-developpeur/
+* What is the difference between a junior and a senior software developer? 15 things I wish I had known sooner : https://dev.to/codinglanguages/what-is-the-difference-between-a-junior-and-a-senior-software-developer-15-things-i-wish-i-had-known-sooner-4hpl
 
 
 ## :keyboard: WINDOWS
@@ -382,6 +384,7 @@
 * Git, le système distribué de gestion de versions, vient de passer à la version 2.28 : https://alm.developpez.com/actu/307586/Git-le-systeme-distribue-de-gestion-de-versions-vient-de-passer-a-la-version-2-28-et-remplace-le-nom-master-par-init-defaultBranch-lors-de-la-creation-d-une-premiere-branche-dans-un-referentiel/
 * Like Figma, for code : https://git.live
 * GitHub CLI 1.0 is now available : https://github.blog/2020-09-17-github-cli-1-0-is-now-available/
+* https://blog.axosoft.com/gitkraken-git-tips-7
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -852,6 +855,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Bootstrap Icons v1.0.0 : https://blog.getbootstrap.com/2020/08/28/bootstrap-icons-stable
 * Shape est une bibliothèque contenant plus de 25000 icônes et illustrations que vous pouvez personnaliser https://www.blogdumoderateur.com/tools/shape
 * 30+ Best Web Safe Fonts (HTML) For Your Next Design in 2020 : https://kinsta.com/blog/web-safe-fonts
+* A free SVG background generator for your websites, blogs, and app : https://bgjar.com/
 
 ## :joystick: API
 
@@ -1187,4 +1191,20 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://restfulapi.net/rest-put-vs-post/
 * https://www.reddit.com/r/learnmachinelearning/comments/ink5g2/due_to_covid19_coursera_has_made_free_some_of/
 * https://www.smashingmagazine.com/2020/09/icons-mobile-apps
-* What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator
+---
+* https://dev.to/mildrenben/javascript-blogs-to-follow-going-into-2021-29df
+* https://dev.to/kjdowns/basic-regex-2ge3
+* https://dev.to/vtrpldn/write-fewer-media-queries-with-the-clamp-css-function-2cl7
+* https://dev.to/arepp23/28-free-resources-for-web-developers-49a3
+* https://dev.to/theme_selection/best-free-color-palette-generator-ready-to-use-or-generate-your-own-3hoo
+* https://dev.to/bartzalewski/learn-git-good-practices-3jp3
+* https://dev.to/dephraiim/git-commands-introduction-36gh
+* https://dev.to/dephraiim/git-commands-you-probably-didn-t-know-3bcm
+* https://dev.to/alwarg/fun-with-javascript-tricks-jmk
+* https://dev.to/dfolt/how-to-get-better-at-vim-3cn
+* https://dev.to/andrewbaisden/what-i-realised-after-learning-python-typescript-and-kotlin-44nf
+* https://dev.to/progressiveprogrammer/git-commands-for-beginners-pdi
+* https://dev.to/atapas/10-useful-html5-features-you-may-not-be-using-2bk0
+* https://dev.to/tracycss/the-vanilla-javascript-basics-to-know-before-learning-react-js-53aj
+* https://dev.to/rs9110/1-line-css-to-center-object-i5o
+* https://dev.to/theme_selection/best-design-resources-websites-every-developer-should-bookmark-1p5d
