@@ -61,3 +61,21 @@ html {
   font-size: calc(var(--size) * var(--scale) * var(--scale));
 }
 ```
+
+## content-visibilty
+* content-visibility: the new CSS property that boosts your rendering performance : https://web.dev/content-visibility/
+* permet, avec la valeur auto, de considérer des parties d'une page comme des boîtes vides qui se rempliront seulement quand l'utilisateur scrollera dessus :
+```css
+.element {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px; /* permet de préciser la taille de la boîte */
+}
+```
+* permet, avec la valeur hidden, de cacher une ou plusieurs parties de la page sans impacter la performance (au contraire de display:none et visibility:hidden)
+```css
+.element {
+  content-visibility: hidden; /* boîte vide cachée, qui mettra à jour son state seulement quand elle sera affichée */
+  display: none: /* hides the element and destroys its rendering state. This means unhiding the element is as expensive as rendering a new element with the same contents */
+  visibility: hidden: /* hides the element and keeps its rendering state. This doesn't truly remove the element from the document, as it (and it's subtree) still takes up geometric space on the page and can still be clicked on. It also updates the rendering state any time it is needed even when hidden */
+}
+```

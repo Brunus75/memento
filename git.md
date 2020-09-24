@@ -25,7 +25,8 @@
 * GitHub Desktop Quick Intro For Windows : https://www.youtube.com/watch?v=77W2JSL7-r8
 * https://www.atlassian.com/git/tutorials/merging-vs-rebasing#the-golden-rule-of-rebasing
 * https://www.atlassian.com/fr/git/tutorials/advanced-overview
-
+* World's Easiest Guide to Git Reset : https://dev.to/nickbulljs/world-s-easiest-guide-to-git-reset-47mi
+* Git: Cheat Sheet (advanced) : https://dev.to/maxpou/git-cheat-sheet-advanced-3a17
 
 ## SOMMAIRE
 
@@ -165,7 +166,7 @@ git stash branch brancheCrééeAPartirDunStash
 git commit -m "mon message de commit" # commit
 git commit -a -m "mon message de commit" # stage all files + commit
 git commit --amend # envoie les nouvelles modification sur le commit précédent
-# workflow = git add ., git commit --amend
+# workflow = git add ., git commit --amend -m "A better message"
 git push # pousser le commit sur la branche d'origin
 git push -f # push en force
 git push origin brancheADeposerSurDepotDistant

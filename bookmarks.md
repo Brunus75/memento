@@ -769,6 +769,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 
 ### DESIGN
 
+* Design Resources : https://designresourc.es
 * Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 * The 50 + Best FREE resources for learning design & grow your career (so far) : https://medium.muz.li/the-50-best-free-resources-for-learning-design-grow-your-career-so-far-da310fe7aad2
 * 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
@@ -1149,7 +1150,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://www.jesuisundev.com/
 * https://fr.wikipedia.org/wiki/IPv4
 * https://fr.wikipedia.org/wiki/IPv6
-* https://web.dev/content-visibility
 * https://dev.to/python_engineer/11-tips-and-tricks-to-write-better-python-code-5fck
 * https://the-webdesigner.co/seo-for-web-designers/
 * https://towardsdatascience.com/designing-a-python-interface-for-machine-learning-engineering-ae308adc4412
@@ -1159,7 +1159,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://livecodestream.dev/post/2020-08-21-git-concepts-and-workflow-for-beginners
 * https://fr.wikipedia.org/wiki/Langage_de_programmation_de_haut_niveau
 * https://www.nngroup.com/articles/persona-scope/
-* https://dev.to/nickbulljs/world-s-easiest-guide-to-git-reset-47mi
 * https://dev.to/emmabostian/101-tips-for-being-a-great-programmer-human-36nl
 * https://dev.to/g_abud/advanced-git-reference-1o9j
 * https://dev.to/scottydocs/how-to-write-a-kickass-readme-5af9
@@ -1176,7 +1175,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/tretuna/visual-code-extensions-not-just-the-top-10-4gnk
 * https://dev.to/benwinding/10-tiny-helper-scripts-for-devs-knb
 * https://dev.to/kenbellows/stop-using-so-many-divs-an-intro-to-semantic-html-3i9i
-* https://dev.to/maxpou/git-cheat-sheet-advanced-3a17
 * https://dev.to/unseenwizzard/learn-git-concepts-not-commands-4gjc
 * https://dev.to/seattledataguy/the-interview-study-guide-for-software-engineers-764
 * https://dev.to/emmabostian/regex-cheat-sheet-2j2a
