@@ -35,6 +35,7 @@
 * https://stackoverflow.com/questions/43854647/flutter-how-does-it-work-behind-the-scenes
 * Flutter 1.20 — What’s New In Flutter : https://medium.com/flutterdevs/flutter-1-20-whats-new-in-flutter-840d269f173e
 * Announcing Flutter 1.20 : https://medium.com/flutter/announcing-flutter-1-20-2aaf68c89c75
+* Google’s Flutter SDK can now make apps for Windows too : https://9to5google.com/2020/09/23/flutter-sdk-windows-alpha/
 
 **TO READ**
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
@@ -53,10 +54,18 @@
 * Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
 * https://medium.com/flutterpub/flutter-7-bottom-navigation-with-floating-button-9190648372fd
 * https://codewithandrea.com/articles/2018-09-13-bottom-bar-navigation-with-fab/
+* https://www.raywenderlich.com/6373413-state-management-with-provider
+* Windows fun with Dart FFI : https://medium.com/@timsneath/windows-fun-with-dart-ffi-687c4619e78d
+* Announcing Flutter Windows Alpha : https://medium.com/flutter/announcing-flutter-windows-alpha-33982cd0f433
+* https://riverpod.dev/docs/getting_started
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
 * When to use private variable
+
+**ROADMAP**
+* https://github.com/DroidsOnRoids/flutter-roadmap
+* https://github.com/olexale/flutter_roadmap
 
 **TUTOS**
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/
@@ -80,6 +89,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Flutter’s Stateful Widget cheat sheet : https://itnext.io/flutters-stateful-widget-cheat-sheet-2188f1dc3d07
 * Flutter Hooks, say goodbye to StatefulWidget and reduce boilerplate code : https://medium.com/flutter-community/flutter-hooks-say-goodbye-to-statefulwidget-and-reduce-boilerplate-code-8573d4720f9a
 * Size matters: Reducing Flutter App size best practices : https://medium.com/@suryadevsingh24032000/size-matters-reducing-flutter-app-size-best-practices-ca992207782
+* Introduction to Animation in Flutter : https://medium.com/flutterdevs/introduction-to-animation-in-flutter-954dbaadc0eb
+* How to implement autofill in your Flutter app : https://medium.com/swlh/how-to-implement-autofill-in-your-flutter-app-b43bddab1a97
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -157,6 +168,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [DATE TIME PICKERS](#DATE-TIME-PICKERS)
       * [DROPDOWNBUTTON](#DROPDOWNBUTTON)
       * [DROPDOWNBUTTONFORMFIELD](#DROPDOWNBUTTONFORMFIELD)
+      * [URL_LAUNCHER](#url_laucher)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
       * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
       * [LISTVIEW ET LISTTILE](#LISTVIEW-ET-LISTTILE)
@@ -760,6 +772,12 @@ void didChangeDependencies() {
     super.didChangeDependencies();
     final callingRoute = ModalRoute.of(context).settings.name;
 }
+```
+* mélanger des EdgeInsets
+```java
+body: Padding(
+  padding: EdgeInset.all(16.0) + EdgeInsets.only(left: 2.0),
+)
 ```
 
 
@@ -3159,6 +3177,10 @@ DropdownButtonFormField(
   validator: (value) => value == null ? 'Message d\'erreur' : null,
 );
 ```
+#### URL_LAUNCHER
+* Diriger l'utilisateur vers un lien (Youtube), ouvir un message SMS, taper un numéro de téléphone, ect.
+* https://pub.dev/packages/url_launcher
+
 
 ### WIDGETS SCROLLABLES
 

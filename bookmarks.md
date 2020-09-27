@@ -450,6 +450,7 @@
 * The perfect starting point to analyze the code quality of your PHP projects : https://phpinsights.com
 * ✨ PHP 7.4 apporte de vraies nouveautés ! : https://mailchi.mp/0f562ba336fb/mes-fonctionnalits-prfres-de-php-74
 * La notion de callables en PHP : https://mailchi.mp/048d5dd43005/mes-fonctionnalits-prfres-de-php-6534334
+* environnement virtuel en PHP : vagrant > https://scotch.io/tutorials/how-to-create-a-vagrant-base-box-from-an-existing-one
 
 
 ### SYMFONY
@@ -587,6 +588,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 ### CSS
 
 * CodePen - CSS selectors cheatsheet : https://codepen.io/nana8/full/aXQgoj
+* Learn CSS: The Complete Guide : https://code.tutsplus.com/tutorials/the-30-css-selectors-you-must-memorize--net-16048
 * A Complete Guide to CSS Functions : https://css-tricks.com/complete-guide-to-css-functions
 * Selectors Explained : https://hugogiraudel.github.io/selectors-explained/
 * CSS Pseudo-elements : https://www.w3schools.com/css/css_pseudo_elements.asp
@@ -674,6 +676,8 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 
 * A list of commonly used JavaScript one-liners for easy copying : https://1loc.dev
 * Modern JavaScript Cheatsheet : https://www.cyanhall.com/posts/notes/8.javascript-cheatsheet
+* Essential Cheat Sheet: Convert jQuery to JavaScript : https://webdesign.tutsplus.com/articles/essential-cheat-sheet-convert-jquery-to-javascript--cms-35633
+* Converting jQuery to JavaScript : https://github.com/jackocnr/intl-tel-input/wiki/Converting-jQuery-to-JavaScript
 * Error Handling in JavaScript : https://blog.alexdevero.com/error-handling-javascript
 * JavaScript Array Functions CheatSheet : https://wweb.dev/resources/js-array-functions-cheatsheet
 * The Complete Guide to JavaScript Classes : https://dmitripavlutin.com/javascript-classes-complete-guide/
@@ -858,6 +862,10 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 30+ Best Web Safe Fonts (HTML) For Your Next Design in 2020 : https://kinsta.com/blog/web-safe-fonts
 * A free SVG background generator for your websites, blogs, and app : https://bgjar.com/
 
+### CONSEILS
+* SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
+* 3 COULEURS MAXIMUM (primaire, secondaire (complémentaire), échauffadge. ex. > vert, orange, gris)
+
 ## :joystick: API
 
 ### LEAFLET
@@ -918,6 +926,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * ~  A step-by-step guide to CREATE YOUR OWN WordPress theme! : https://en.rockcontent.com/blog/develop-wordpress-theme
 * ~ WordPress Security Tips 2020-2021: All You Need to Know : https://www.orphicpixel.com/wordpress-security-tips-2020-2021-all-you-need-to-know
 * Guide : comment créer un thème WordPress, étape par étape : https://www.blogdumoderateur.com/creer-theme-wordpress
+* WordPress Tips and Tricks for Beginner Theme Developers : https://line25.com/articles/wordpress-tips-and-tricks-for-beginner-theme-developers
 
 
 ## :no_entry: SECURITY
@@ -1206,3 +1215,7 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/tracycss/the-vanilla-javascript-basics-to-know-before-learning-react-js-53aj
 * https://dev.to/rs9110/1-line-css-to-center-object-i5o
 * https://dev.to/theme_selection/best-design-resources-websites-every-developer-should-bookmark-1p5d
+* Python 101: An Intro to Working with JSON : https://www.blog.pythonlibrary.org/2020/09/15/python-101-an-intro-to-working-with-json/
+* How to learn data structures and algorithms. 20 problem-solving techniques you must know : https://dev.to/codinglanguages/how-to-learn-not-memorize-any-algorithm-or-data-structure-analysis-of-20-problem-solving-techniques-you-must-know-d77
+* Principles for Better Design : https://reflexio.debec.eu/principles-for-better-design
+* https://putaindecode.io/articles/garder-ses-depots-git-synchronises-sur-github-gitlab-bitbucket/

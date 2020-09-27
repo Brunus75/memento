@@ -1,4 +1,4 @@
-# MEMOMENTO PHOTOSHOP CS6
+# MEMENTO PHOTOSHOP CS6
 
 * https://css-tricks.com/full-page-screenshots-browsers/ (imprim'écran sur toute la page)
 
@@ -9,3 +9,9 @@
 haute qualité > exporter > format +, un peu plus bas, cocher aligner sur les plans d'impression 
 "+" le plan d'impression
 * Rogner selon un cadre > clic-droit > Créer un masque d'écrêtage
+
+
+# MEMENTO GIMP
+
+## SAVE
+* Enregister en PNG, JPEG, ect. > Exporter

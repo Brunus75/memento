@@ -376,6 +376,14 @@ print(maListe); // [Jacques, Georges, Pierre]
 // vider une liste
 maListe.clear();
 
+// COPIER UNE LISTE
+// In Dart, when you assign a list with another list it actually passes the reference.
+newList = oldList;
+// To pass the value without old reference use .toList()
+newList = oldList.toList();
+// With dart version above 2.3.0, use can use the spread operator 
+newList = [...oldList];
+
 // une liste dynamique (sans restriction de type)
 var maListe = []; // revient à List<dynamic> maListe = []
 maListe.add("Georges");

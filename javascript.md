@@ -15,6 +15,7 @@
 * [PROGRAMMATION ASYNCHRONE](#programmation-asynchrone)
 * [GERER DU CODE ASYNCHRONE](#gerer-asynchrone)
 * [Parallélisez plusieurs requêtes HTTP](#parallele-http)
+* [FETCH API](#fetch-api)
 * [FONCTIONS](#fonctions)
 * [JavaScript Array Functions Cheatsheet](#javascript-array-functions-cheatsheet)
 * [ASTUCES](#astuces)
@@ -30,6 +31,7 @@
 * Les 15 meilleures librairies JavaScript à essayer : https://www.codeur.com/blog/meilleures-librairies-javascript/
 * Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
 * What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator/
+* Private Class Fields and Methods in JavaScript Classes : https://blog.alexdevero.com/javascript-private-class-fields-methods
 
 ## LEXIQUE
 
@@ -738,6 +740,505 @@ requests().then(function(allResults) {
     // We are done here !
 });
 ```
+
+## FETCH API
+
+* Remplace XMLHttpRequest de JS et ajax() de Jquery
+* JS moderne
+* https://blog.alexdevero.com/javascript-fetch-api
+* https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch
+```js
+// Fetch syntax
+fetch(someURL, {})
+
+// or with optional config object
+fetch(someURL, {/* settings go here */})
+
+
+// WITH PROMISE HANDLER FUNCTIONS
+// Use fetch() method with promise handler functions
+fetch(someUrl)
+  .then(response => {
+    // When promise gets resolved
+    // log received data to console
+    console.log(response)
+  })
+  .catch(error => {
+    // If promise gets rejected
+    // log the error to console
+    console.log(error)
+  })
+
+
+// Real-world example
+fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+  // Convert response to JSON format
+  .then(response => response.json())
+  // Log the response JSON
+  .then(jsonData => console.log(jsonData))
+  .catch(error => {
+    // If promise gets rejected
+    // log the error to console
+    console.log(error)
+  })
+
+// Output:
+// {
+//   error: false,
+//   category: 'Programming',
+//   type: 'twopart',
+//   setup: 'Programming is like sex.',
+//   delivery: 'Make one mistake and you end up supporting it for the rest of your life.',
+//   flags: {
+//     nsfw: true,
+//     religious: false,
+//     political: false,
+//     racist: false,
+//     sexist: false
+//   },
+//   id: 8,
+//   lang: 'en'
+// }
+
+// It is a good practice to put the then() function(s) as first and the catch() as second. 
+// If you also use finally(), it is a good practice to put that one as the last
+
+// WITH AWAIT
+// Create async function
+async function makeRequest() {
+  // Use try...catch statement
+  try {
+    // Use await and make fetch request
+    const responseData = await fetch('https://sv443.net/jokeapi/v2/joke/Any')
+    // Convert the response to JSON format
+    const responseJSON = await responseData.json()
+
+    // Log the converted JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeRequest()
+makeRequest()
+// Output:
+// {
+//   error: false,
+//   category: 'Miscellaneous',
+//   type: 'twopart',
+//   setup: "Mom asked me where I'm taking her to go out to eat for mother's day.",
+//   delivery: 'I told her, "We already have food in the house".',
+//   flags: {
+//     nsfw: false,
+//     religious: false,
+//     political: false,
+//     racist: false,
+//     sexist: false
+//   },
+//   id: 89,
+//   lang: 'en'
+// }
+
+// PROCESSING THE RESPONSE
+// So, if you are not sure what type of response you should expect, use text(). 
+// In the worst case, you will get some stringified JSON and you will know that 
+// you should use json() instead. 
+// If you expect other format, use corresponding method: response.formData(), response.blob()
+// or response.arrayBuffer()
+
+// Example no.1:
+// Parsing response as a text
+async function makeRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+
+    // Parsing as Text happens here:
+    // Parse the response as a text
+    const responseText = await responseData.text()
+
+    // Log the text
+    console.log(responseText)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeRequest()
+makeRequest()
+// Output:
+// '{
+//   error: false,
+//   category: 'Programming',
+//   type: 'single',
+//   joke: 'Programming is 10% science, 20% ingenuity, and 70% getting the ingenuity to work with the science.',
+//   flags: {
+//     nsfw: false,
+//     religious: false,
+//     political: false,
+//     racist: false,
+//     sexist: false
+//   },
+//   id: 37,
+//   lang: 'en'
+// }'
+
+
+// Alternative:
+fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+  .then(response => response.text())
+  .then(responseText => console.log(responseText))
+  .catch(err => console.log(err))
+
+
+// Example no.2:
+// Parsing response as a JSON
+async function makeRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+
+    // Parsing as JSON happens here:
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeRequest()
+makeRequest()
+// Output:
+// {
+//   error: false,
+//   category: 'Programming',
+//   type: 'twopart',
+//   setup: 'How do you generate a random string?',
+//   delivery: 'Put a Windows user in front of Vim and tell him to exit.',
+//   flags: {
+//     nsfw: false,
+//     religious: false,
+//     political: false,
+//     racist: false,
+//     sexist: false
+//   },
+//   id: 129,
+//   lang: 'en'
+// }
+
+
+// Alternative:
+fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+  .then(response => response.json())
+  .then(responseJSON => console.log(responseJSON))
+  .catch(err => console.log(err))
+
+
+// PROCESSING ALREADY PROCESSED RESPONSE
+// After you parse the response once it will be locked. Parsing it again will lead to TypeError.
+async function makeRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+
+    // Parse the response as a text
+    const responseText = await responseData.text()
+
+    // This will not work after the first parsing
+    // Try to parse the response again as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the text
+    console.log(responseText)
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeRequest()
+makeRequest()
+// Output:
+// TypeError: Failed to execute 'json' on 'Response': body stream is locked
+
+
+// Making request with fetch
+// The GET request
+// If you use the fetch() method as it is and provide it only with URL, 
+// it will automatically execute GET request.
+// GET request example
+async function makeGetRequest() {
+  // Use try...catch statement
+  try {
+    // Make GET fetch request
+    const responseData = await fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeGetRequest()
+makeGetRequest()
+// Output:
+// {
+//   error: false,
+//   category: 'Programming',
+//   type: 'single',
+//   joke: "Knock knock.
+// Who's there?
+// Recursion.
+// Recursion who?
+// Knock knock.",
+//   flags: {
+//     nsfw: false,
+//     religious: false,
+//     political: false,
+//     racist: false,
+//     sexist: false
+//   },
+//   id: 182,
+//   lang: 'en'
+// }
+
+
+// Alternative with promise handler functions:
+fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+  .then(response => response.json())
+  .then(responseJSON => console.log(responseJSON))
+  .catch(err => console.log(err))
+
+
+// The POST request
+// Some data to send
+const userData = {
+  firstName: 'Tom',
+  lastName: 'Jones',
+  email: 'tom@jones.ai'
+}
+
+// Make POST request
+async function makePostRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('/users/register', {
+      method: 'POST', // Change the request method
+      headers: { // Change the Content-Type
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify(userData) // Add data you want to send
+      // convert a JavaScript object into a string
+    })
+
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makePostRequest()
+makePostRequest()
+
+
+// Alternative with promise handler functions:
+fetch('/users/register', {
+  method: 'POST', // Change the request method
+  headers: { // Change the Content-Type
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(userData) // Add data you want to send
+})
+  .then(response => response.json())
+  .then(responseJSON => console.log(responseJSON))
+  .catch(err => console.log(err))
+
+// The DELETE request
+// Make DELETE request
+async function makeDeleteRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('/users/tom', {
+      method: 'DELETE' // Change the request method
+    })
+
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makeRequest()
+makeDeleteRequest()
+
+
+// Alternative with promise handler functions:
+fetch('/users/tom', {
+  method: 'DELETE', // Change the request method
+})
+  .then(response => response.text())
+  .then(responseText => console.log(responseText))
+  .catch(err => console.log(err))
+
+
+// The PUT request
+// The PUT type of request is most often used to update an existing data or resources
+// Some data to send to update existing records
+const userData = {
+  firstName: 'Jack',
+  lastName: 'O\'Brian',
+  email: 'jack@obrian.co'
+}
+
+// Make Put request
+async function makePutRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('/users/jack', {
+      method: 'PUT', // Change the request method
+      body: JSON.stringify(userData) // Add data you want to send
+    })
+
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makePutRequest()
+makePutRequest()
+
+
+// Alternative with promise handler functions:
+fetch('/users/jack', {
+  method: 'PUT', // Change the request method
+  body: JSON.stringify(userData) // Add data you want to send
+})
+  .then(response => response.json())
+  .then(responseJSON => console.log(responseJSON))
+  .catch(err => console.log(err))
+
+// The PATCH request
+// The PATCH is the last type of request you can make with fetch API we will discuss. 
+// This type of request is very similar to the PUT. 
+// The difference between these two is that PUT is used to update the old version with new version. 
+//Meaning, you update everything. 
+// With PATCH, you update only part of existing data, user email for example.
+
+// Some data to send to update
+// only a part of existing records
+const userData = {
+  email: 'jack@obrian.co'
+}
+
+// Make PATCH request
+async function makePatchRequest() {
+  // Use try...catch statement
+  try {
+    // Make fetch request
+    const responseData = await fetch('/users/jack', {
+      method: 'PATCH', // Change the request method
+      body: JSON.stringify(userData) // Add data you want to send
+    })
+
+    // Parse the response as a JSON
+    const responseJSON = await responseData.json()
+
+    // Log the JSON
+    console.log(responseJSON)
+  }
+  catch (error) {
+    // Log any error
+    console.log(error)
+  }
+}
+
+// Call the makePatchRequest()
+makePatchRequest()
+
+
+// Alternative with promise handler functions:
+fetch('/users/jack', {
+  method: 'PATCH', // Change the request method
+  body: JSON.stringify(userData) // Add data you want to send
+})
+  .then(response => response.json())
+  .then(responseJSON => console.log(responseJSON))
+  .catch(err => console.log(err))
+
+
+// THE RESPONSE OBJECT
+// The Response object contains a number of properties
+// Some of the most useful properties are statusText, status and ok. 
+// The statusText is a a string that contains HTTP status code message. 
+// The status is a number that specifies the status code of the response
+// The ok is a boolean that specifies if status is in the range of codes from 200 to 299
+// The body property contains the data you received
+
+// Make fetch request
+fetch('https://sv443.net/jokeapi/v2/joke/Programming')
+  .then(response => console.log(response)) // Log the Response object
+  .catch(err => console.log(err))
+
+// Output:
+// {
+//   body: (...)
+//   bodyUsed: false
+//   headers: Headers
+//   ok: true
+//   redirected: false
+//   status: 200
+//   statusText: ""
+//   type: "cors"
+//   url: "https://sv443.net/jokeapi/v2/joke/Programming"
+// }
+```
+
+
 
 
 ## FONCTIONS

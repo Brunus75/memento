@@ -1,4 +1,4 @@
-# MEMOMENTO GIT & GITHUB
+# MEMENTO GIT & GITHUB
 
 
 ## RESSOURCES
@@ -193,6 +193,14 @@ git rebase develop # git rebase = se mettre au même niveau que la branche princ
 git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
 # ex. sur branche master = git merge feature5, puis git branch -d feature5
 git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
+git merge --squash # merge en "écrasant" ses commits en un seul
+# ex. On veut merger la branche hotfix-001 dans la branche master en "écrasant" ses commits en un seul.
+# $ git checkout master
+# $ git merge --squash hotfix-001
+# $ git commit
+# Ces commandes vont prendre tous les commits de la branche hotfix-001, 
+# les "écraser" en UN SEUL commit puis les fusionner dans la branche master.
+# Le contenu des commits de hotfix-001 est aggrégé dans le commit effectué sur la branche master
 git cherry-pick [commitSha] # sélectionne un commit d'une branche 
 # et l'applique au début de notre branche actuelle
 
