@@ -385,6 +385,7 @@
 * Like Figma, for code : https://git.live
 * GitHub CLI 1.0 is now available : https://github.blog/2020-09-17-github-cli-1-0-is-now-available/
 * https://blog.axosoft.com/gitkraken-git-tips-7
+* Documenting your projects on GitHub : https://guides.github.com/features/wikis/
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -720,6 +721,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A JavaScript library for scrolling through whole pages vertically or horizontally : https://github.com/elansx/Wholepage-Slider
 * A cool cheat sheet for everything you can do with CSS Grid : https://yoksel.github.io/grid-cheatsheet/
 * 10+ JavaScript Form Validation Code Examples : https://csshint.com/javascript-form-validation
+* Exercices et notes de cours du module débutant de la formation JavaScript de Zéro : https://github.com/javascriptdezero
 
 
 ### JQUERY
@@ -861,6 +863,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Shape est une bibliothèque contenant plus de 25000 icônes et illustrations que vous pouvez personnaliser https://www.blogdumoderateur.com/tools/shape
 * 30+ Best Web Safe Fonts (HTML) For Your Next Design in 2020 : https://kinsta.com/blog/web-safe-fonts
 * A free SVG background generator for your websites, blogs, and app : https://bgjar.com/
+* This is good UX writing : https://uxdesign.cc/this-is-good-ux-writing-10c4b956a6c3
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -1219,3 +1222,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * How to learn data structures and algorithms. 20 problem-solving techniques you must know : https://dev.to/codinglanguages/how-to-learn-not-memorize-any-algorithm-or-data-structure-analysis-of-20-problem-solving-techniques-you-must-know-d77
 * Principles for Better Design : https://reflexio.debec.eu/principles-for-better-design
 * https://putaindecode.io/articles/garder-ses-depots-git-synchronises-sur-github-gitlab-bitbucket/
+* https://thenextweb.com/growth-quarters/2020/09/28/how-to-become-a-ux-designer-no-matter-what-you-studied-at-uni/
+* https://medium.com/tap-to-dismiss/color-within-constraints-d6f777a3b72d

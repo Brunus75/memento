@@ -58,6 +58,7 @@
 * Windows fun with Dart FFI : https://medium.com/@timsneath/windows-fun-with-dart-ffi-687c4619e78d
 * Announcing Flutter Windows Alpha : https://medium.com/flutter/announcing-flutter-windows-alpha-33982cd0f433
 * https://riverpod.dev/docs/getting_started
+* Using two or more different versions of Flutter on single machine : https://medium.com/@sarbagyastha/using-two-or-more-different-versions-of-flutter-in-single-machine-484293c2a7ff
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
@@ -842,10 +843,22 @@ lib/
 
 ### COMMANDES
 ```java
+flutter --version
+
+flutter doctor
+flutter doctor -v // verbose
+
 flutter packages get // the package gets re-installed fresh
 flutter clean // clear Build Cache
 
-package défecteux = flutter packages + flutter clean
+"package défecteux" = flutter packages + flutter clean
+
+flutter upgrade // MAJ de version
+// MAJ sur une version précise
+flutter version // liste les versions
+flutter version v1.9.1+hotfix.3 //remplace la version actuelle par la version v1.9.1+hotfix.3
+// REVENIR A LA VERSION PRECEDENTE (si installée)
+flutter downgrade
 ```
 ### LIFECYCLE
 * https://stackoverflow.com/questions/56395081/unhandled-exception-inheritfromwidgetofexacttype-localizationsscope-or-inheri
@@ -922,8 +935,15 @@ flutter doctor
 * Keymap pour changer les raccourcis clavier
 ### TROUBLESHOOTING
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/17119662#bookmarks
+* Licences Android Studio 
+```
+MAJ la version d'Android Studio
+1. Open your terminal
+2. type flutter doctor --android-licenses
+3. press y to accept every license
+```
 ### NOUVEAU PROJET FLUTTER
-* package name = pour se différencier sur Play Store / Apple Store
+* package name = pour se différencier sur Play Store / Apple Store => com.mycompany.nom_projet (com.yourdomain.appname)
 * Décocher Include Kotlin + Include Swift
 ### RECUPERER UN PROJET FLUTTER
 * New > Project from Version Control (lien GitHub) 

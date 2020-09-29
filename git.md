@@ -90,6 +90,9 @@
 * commit avant de passer sur une autre branche
 * It is specified in the git docs that rebase should not be used in public repos (collaboration) as it can cause major errors and conflicts, it can be used in private repos (https://dev.to/zinox9/git-github-cheatsheet-22ok)
 
+# MISE A JOUR (WINDOWS)
+git update-git-for-windows
+
 # NAVIGATION
 mkdir nouveauDossier # créer un dossier
 cd nouveauDossier/ # entrer dans le repertoire
@@ -107,9 +110,13 @@ git config --global user.name "[nom]" # le nom associé aux commit
 git config --global user.email "[adresse email]" # le mail associé aux commit
 git config --global color.ui auto # enables helpful colorization of command line output
 git config --list # tous les paramètres de config
+git config --global --list # tous les paramètres de config en global
+git config --local --list # tous les paramètres de config en local
 
 # INITIALISATION SUR LE DEPOT LOCAL
 git init
+git init -b develop # initialise le dépôt en créant et en se mettant sur une branche (ici develop)
+# (par défaut la branche s'appelle master) (possible seulement avec la version 2.28 de Git)
 
 # AJOUT D'UN DEPOT DISTANT
 git remote add origin [url du dépôt distant]
@@ -169,6 +176,8 @@ git commit --amend # envoie les nouvelles modification sur le commit précédent
 # workflow = git add ., git commit --amend -m "A better message"
 git push # pousser le commit sur la branche d'origin
 git push -f # push en force
+git push -u origin develop # dépose la branche sur le dépôt distant,
+# en spécifiant le dépôt comme la référence en amont (premier commit)
 git push origin brancheADeposerSurDepotDistant
 
 # ANNULATION

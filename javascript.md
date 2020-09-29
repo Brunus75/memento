@@ -32,6 +32,7 @@
 * Introduction to Maps in JavaScript – All You Need to Know : https://blog.alexdevero.com/maps-in-javascript 
 * What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator/
 * Private Class Fields and Methods in JavaScript Classes : https://blog.alexdevero.com/javascript-private-class-fields-methods
+* Optional Chaining in JavaScript and How It Works : https://blog.alexdevero.com/optional-chaining-javascript
 
 ## LEXIQUE
 
