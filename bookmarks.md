@@ -170,6 +170,7 @@
 * A simple website builder with no code needed : https://aspect.app/
 * Randomly Generated Characters for Your Apps & Games : https://bigheads.io/
 * A fast image resizer and compressor, identical to exports of Figma and Sketch apps : https://sizemyimage.com/
+* Check browser compatibility without leaving your tab : https://checkbrowsers.support/
 
 
 ## :pushpin: WEB DOCS
@@ -650,6 +651,8 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 10 CSS Horizontal Menus : https://csshint.com/css-horizontal-menus
 * A web app to search the syntax and all possible values for any valid CSS property : https://cssvalues.com/
 * Custom bullets with CSS ::marker : https://web.dev/css-marker-pseudo-element
+* Box-Shadow Generator : https://brumm.af/shadows
+* A nice generator for CSS grid layouts : https://grid.layoutit.com/
 
 
 ### BOOTSTRAP
@@ -930,6 +933,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * ~ WordPress Security Tips 2020-2021: All You Need to Know : https://www.orphicpixel.com/wordpress-security-tips-2020-2021-all-you-need-to-know
 * Guide : comment créer un thème WordPress, étape par étape : https://www.blogdumoderateur.com/creer-theme-wordpress
 * WordPress Tips and Tricks for Beginner Theme Developers : https://line25.com/articles/wordpress-tips-and-tricks-for-beginner-theme-developers
+* Comment modifier du code HTML, CSS ou PHP dans WordPress ? : https://www.codeur.com/tuto/wordpress/editer-code-html-css-php-wordpress
 
 
 ## :no_entry: SECURITY

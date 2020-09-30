@@ -190,6 +190,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
   * [WIDGETS ANIMATION](#widgets-animation)   
      * [HERO](#hero)
 * [THEMES, COLORS](#themes)
+* [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [API](#api)   
    * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)   
    * [FORM ET FUTURE BUILDER](#FORM-ET-FUTURE-BUILDER)   
@@ -852,6 +853,9 @@ flutter packages get // the package gets re-installed fresh
 flutter clean // clear Build Cache
 
 "package défecteux" = flutter packages + flutter clean
+"pas d'améliorations" = repair pub cache by running 'flutter pub cache repair'
+"pas mieux" = relancer Android Studio
+"pas mieux" = supprimer le "package"
 
 flutter upgrade // MAJ de version
 // MAJ sur une version précise
@@ -3046,16 +3050,35 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> showCalendar() async {
+    // DateTime today = DateTime.now();
     // ↓ affichage d'un calendrier
     DateTime choice = await showDatePicker(
+        helpText: 'SELECTIONNEZ UNE DATE',
         context: context,
         // ↓ choix de l'année PUIS choix du mois/jour
         initialDatePickerMode: DatePickerMode.year,
         initialDate: DateTime.now(), // date à l'ouverture du calendrier
         firstDate: DateTime(2018), // début du calendrier
+        // firstDate: today.subtract(Duration(days: 60)),
         lastDate: DateTime(2022), // fin du calendrier
+        // lastDate: today.add(Duration(days: 60)),
         locale: const Locale('fr', 'FR'), // nomination fr
-    );
+        // ↓ personnalisation
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+            data: ThemeData.light().copyWith(
+              accentColor: Theme.of(context).primaryColor,
+              colorScheme: ColorScheme.light(
+                  primary: Theme.of(context).primaryColor,
+                  onSurface: Theme.of(context).primaryColor, // couleur des nombres
+                  secondary: Theme.of(context).primaryColor),
+              buttonTheme: ButtonThemeData(
+                textTheme: ButtonTextTheme.accent,
+              ),
+            ),
+            child: child,
+          );
+        });
 
     if (choice != null) {
       setState(() {
@@ -4043,6 +4066,15 @@ floatingActionButton: Theme(
     child: Icon(Icons.add),
   )
 )
+
+// utiliser un paramètre de Theme
+Container(
+  color: Theme.of(context).accentColor,
+  child: Text(
+    'Text with a background color',
+    style: Theme.of(context).textTheme.headline6,
+  ),
+);
 ```
 ### CHEATSHEET TRANSPARENCY HEXADECIMAL
 * https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
@@ -4051,6 +4083,50 @@ floatingActionButton: Theme(
 Color(0xFF000000)
 // Black 20%
 Color(0x33000000)
+```
+
+## INTERNATIONALISATION
+* idée = créer des dates en français
+* https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+1. pubspec.yaml
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.3
+  intl: ^0.16.1 # pour le formattage
+
+  flutter_localizations: # pour l'internationalisation
+    sdk: flutter
+```
+2. main.dart ou app.dart
+```java
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('fr'),
+        const Locale('fr', 'BE'),
+        const Locale('fr', 'CA'),
+      ],
+      locale: const Locale('fr'),
+```
+3. fichier qui utilise la locale
+```java
+DateTime today = DateTime.now();
+final df = DateFormat('EEEE d MMMM', 'fr');
+String newDate = df.format(today);
 ```
 
 ## API

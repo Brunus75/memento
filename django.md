@@ -32,6 +32,7 @@
 * ~ Administer All The Things : https://www.mattlayman.com/understand-django/administer-all-the-things/
 * ~ Using Postgres JSONB Fields in Django : https://pganalyze.com/blog/postgres-jsonb-django-python
 * ~ Demystifying Django’s Magic : https://www.smashingmagazine.com/2020/08/demystifying-djangos-magic
+* ~ Anatomy Of An Application : https://www.mattlayman.com/understand-django/anatomy-of-an-application/
 
 
 ## SOMMAIRE

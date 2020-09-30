@@ -79,3 +79,22 @@ html {
   visibility: hidden: /* hides the element and keeps its rendering state. This doesn't truly remove the element from the document, as it (and it's subtree) still takes up geometric space on the page and can still be clicked on. It also updates the rendering state any time it is needed even when hidden */
 }
 ```
+
+##  Dark Mode with only 1 CSS PROPERTY 
+* https://dev.to/dip15739/dark-mode-with-only-1-css-property-17fl
+```css
+/* The <html> element with an attribute theme whose value is dark-mode */
+html[theme='dark-mode'] {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+html[theme='dark-mode'] img,
+picture,
+video{
+    filter: invert(1) hue-rotate(180deg);
+}
+
+.invert {
+    filter: invert(1) hue-rotate(180deg);
+}
+```

@@ -3,6 +3,8 @@
 
 ## RESSOURCES
 
+* https://learngitbranching.js.org/?locale=fr_FR
+---
 * Cours OC > https://openclassrooms.com/fr/courses/2342361-gerez-votre-code-avec-git-et-github/2433596-installez-git
 * https://www.webfx.com/blog/web-design/interactive-git-tutorials/
 * https://git-school.github.io/visualizing-git/
