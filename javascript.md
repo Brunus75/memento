@@ -7,7 +7,11 @@
 * [LEXIQUE](#lexique)
 * [NOUVEAUTES](#nouveautes)
 * [Installer un module avec NPM](#npm)
-* [ES6](#es6)
+* [ES6 (2015)](#es6)
+* [ES7 (2016)](#es7)
+* [ES8 (2017)](#es8)
+* [ES9 (2018)](#es9)
+* [ES10 (2019)](#es10)
 * [SERVICE WEB](#service-web)
 * [Récupérez des données d'un service web](#get-data-web)
 * [Validez les données saisies par vos utilisateurs](#validate-data-user)
@@ -33,6 +37,16 @@
 * What Javascript Spread Operator is, How It Works and How to Use It : https://blog.alexdevero.com/javascript-spread-operator/
 * Private Class Fields and Methods in JavaScript Classes : https://blog.alexdevero.com/javascript-private-class-fields-methods
 * Optional Chaining in JavaScript and How It Works : https://blog.alexdevero.com/optional-chaining-javascript
+* JavaScript, ES6, ES7, ES10 where are we? : https://medium.com/engineered-publicis-sapient/javascript-es6-es7-es10-where-are-we-8ac044dfd964
+
+### TO READ
+* ES6, ES7 & ES8, TIME to update your JavaScript / ECMAScript! : https://www.udemy.com/course/es6-es7-and-es8-its-time-to-update-your-javascript/?deal_code=EXPLORENOW0920&utm_source=email-Adhoc&utm_campaign=2020-09-26_._cn_UDEMY_BASICS_09_26_2020_._en_XPOLL_._us_AllAlltl_T1_._tg_n_.__._la_fr_._rn_2020-09-26_._&utm_medium=2020-09-26_UDEMY_BASICS_09_26_2020_XPOLL_AllAll_T1_n&utm_content=udemy.17485945&data_h=CEcSc1xWTHw%3D&utm_term=CROSS_POLL_CAT_SUBCAT_2
+* https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
+* https://blog.alexdevero.com/es6-es7-es8-modern-javascript-pt6/
+* https://www.cronj.com/blog/javascript-es7-es8-new-features/
+* https://derickbailey.com/2017/06/06/3-features-of-es7-and-beyond-that-you-should-be-using-now/
+* https://www.freecodecamp.org/news/es5-to-esnext-heres-every-feature-added-to-javascript-since-2015-d0c255e13c6e/
+* Understanding the Event Loop, Callbacks, Promises, and Async/Await in JavaScript : https://www.taniarascia.com/asynchronous-javascript-event-loop-callbacks-promises-async-await/
 
 ## LEXIQUE
 
@@ -342,6 +356,143 @@ getUser(userId)
   }, function (error) {
     console.log(error); // en cas d'erreur
   });
+```
+
+## ES7
+
+### The exponentiation operator **
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation
+```js
+// Basic exponentiation
+2 ** 3   // 8
+3 ** 2   // 9
+3 ** 2.5 // 15.588457268119896
+10 ** -1 // 0.1
+NaN ** 2 // NaN
+
+myNumber = 2 ** 3;
+console.log(myNumber) // 8
+
+console.log(3 ** 4);
+// expected output: 81
+
+console.log(10 ** -2);
+// expected output: 0.01
+
+console.log(2 ** 3 ** 2);
+// expected output: 512
+
+console.log((2 ** 3) ** 2);
+// expected output: 64
+
+-2 ** 2; 
+// 4 in Bash, -4 in other languages. 
+// This is invalid in JavaScript, as the operation is ambiguous. 
+
+-(2 ** 2); 
+// -4 in JavaScript and the author's intention is unambiguous. 
+```
+
+### Array includes
+```js
+array.includes(myItem) // true or false
+```
+
+## ES8
+
+### Async / Await functions
+```js
+async MyAjaxGetCall(url) {
+  return ajax.get(url)
+}
+const response = await MyAjaxGetCall("/getUsers");
+console.log(response) // response is available without using promise.then
+```
+
+### Object.entries / Object.values (Array’s values / key equivalence for objects)
+
+### String padding
+* Remplacer le début/fin d'un String
+* https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/String/padStart
+* https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/String/padEnd
+* str.padStart(longueurCible [, chaîneComplémentaire])
+```js
+const str1 = '5';
+
+console.log(str1.padStart(2, '0'));
+// expected output: "05"
+
+const fullNumber = '2034399002125581';
+const last4Digits = fullNumber.slice(-4);
+const maskedNumber = last4Digits.padStart(fullNumber.length, '*');
+
+console.log(maskedNumber);
+// expected output: "************5581"
+
+'abc'.padStart(10);         // "        abc"
+'abc'.padStart(10, "toto"); // "totototabc"
+'abc'.padStart(6,"123465"); // "123abc"
+'abc'.padStart(8, "0");     // "00000abc"
+'abc'.padStart(1);          // "abc"
+```
+
+### Trailing comma
+* https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Virgules_finales
+```js
+function test(a,b,c, ) // notice the comma after c
+```
+
+## ES9
+
+* Promise.finally
+* Object destructuring
+```js
+myNewObject = {a,b,c, …object};
+```
+
+## ES10
+
+* Array.flat
+```js
+[[1,2],3]).flat() // [1,2,3]
+```
+* Array.flatMap: equivalent of map().flat()
+* String.trimStart() & String.trimEnd(): Remove extra spaces in a string
+* Optional Catch binding: remove the need to add a param to the catch
+```js
+(Now you can do } catch {instead of } catch(e) {
+```
+* BigInt
+```js
+const theBiggestInt = 9007199254740991n
+
+const alsoHuge = BigInt(9007199254740991)
+// ↪ 9007199254740991n
+
+const hugeString = BigInt("9007199254740991")
+// ↪ 9007199254740991n
+
+const hugeHex = BigInt("0x1fffffffffffff")
+// ↪ 9007199254740991n
+
+const hugeBin = BigInt("0b11111111111111111111111111111111111111111111111111111")
+// ↪ 9007199254740991n
+```
+* Array.sort now retains order if keys are equal
+```js
+const array = [
+ {key: 2, value: 'd'},
+ {key: 1, value: 'a'},
+ {key: 1, value: 'b'},
+ {key: 1, value: 'c'},
+];array.sort(...)/*
+[
+ {key: 1, value: 'a'},
+ {key: 1, value: 'b'},
+ {key: 1, value: 'c'},
+ {key: 2, value: 'd'},
+]
+*/
 ```
 
 ## SERVICE WEB

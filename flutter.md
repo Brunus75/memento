@@ -4,13 +4,16 @@
 ## RESSOURCES
 
 **VEILLE**
+* https://twitter.com/FlutterDev
 * https://twitter.com/flutterwk
 * https://twitter.com/fluttertap
 * https://twitter.com/FlutterTip
 * https://twitter.com/flutterize
-* https://medium.com/@durannumit
 * https://twitter.com/biz84
+* https://twitter.com/remi_rousselet
+* https://medium.com/@durannumit
 * https://www.reddit.com/r/FlutterDev/top/?t=week
+* The top 45 must-follow Flutter experts on Twitter : https://blog.codemagic.io/top-flutter-developers-to-follow-on-twitter/
 
 **DART & FLUTTER**
 * Doc Dart : https://dart.dev/
@@ -36,6 +39,7 @@
 * Flutter 1.20 — What’s New In Flutter : https://medium.com/flutterdevs/flutter-1-20-whats-new-in-flutter-840d269f173e
 * Announcing Flutter 1.20 : https://medium.com/flutter/announcing-flutter-1-20-2aaf68c89c75
 * Google’s Flutter SDK can now make apps for Windows too : https://9to5google.com/2020/09/23/flutter-sdk-windows-alpha/
+* Announcing Flutter 1.22 : https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f
 
 **TO READ**
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
@@ -59,6 +63,10 @@
 * Announcing Flutter Windows Alpha : https://medium.com/flutter/announcing-flutter-windows-alpha-33982cd0f433
 * https://riverpod.dev/docs/getting_started
 * Using two or more different versions of Flutter on single machine : https://medium.com/@sarbagyastha/using-two-or-more-different-versions-of-flutter-in-single-machine-484293c2a7ff
+* https://github.com/flutter/flutter/issues/54776
+* Learning Flutter’s new Navigation and Routing system : https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
+* Internationalization in Flutter 1.22+ : https://pascalw.me/blog/2020/10/02/flutter-1.22-internationalization.html
+
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
@@ -74,6 +82,7 @@
 * #1 Fluter: Télécharger, Installer et Configurer Flutter SDK sur Windows : https://www.youtube.com/watch?v=P4Ua8cK_TeA&
 
 **DOCS**
+* A list of Free Flutter resources that will help people get started with Flutter : https://github.com/FlutterTutorial/FlutterResources
 * Tomek's Flutter Layout Cheat Sheet : https://medium.com/flutter-community/flutter-layout-cheat-sheet-5363348d037e
 * Flutter-Course-Resources : https://github.com/londonappbrewery/Flutter-Course-Resources
 * Débat Map vs. Switch : https://github.com/londonappbrewery/destini-challenge-completed/commit/69ed867992fc05f13a4fbef452173a956312993d
@@ -92,6 +101,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Size matters: Reducing Flutter App size best practices : https://medium.com/@suryadevsingh24032000/size-matters-reducing-flutter-app-size-best-practices-ca992207782
 * Introduction to Animation in Flutter : https://medium.com/flutterdevs/introduction-to-animation-in-flutter-954dbaadc0eb
 * How to implement autofill in your Flutter app : https://medium.com/swlh/how-to-implement-autofill-in-your-flutter-app-b43bddab1a97
+* Cheatsheet Flutter : https://pbs.twimg.com/media/EjEe3drU4AIsHo5?format=jpg&name=large
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -137,8 +147,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [CONTAINER](#container)
       * [CENTER](#center)
       * [CARD](#card)
-      * [IMAGE.NETWORK](#image.network)
-      * [IMAGE.ASSETS](#image.assets)
+      * [IMAGE.NETWORK](#imagenetwork)
+      * [IMAGE.ASSETS](#imageassets)
       * [TEXT](#text)
       * [COLUMN](#column)
       * [ROW](#row)
@@ -173,6 +183,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
       * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
       * [LISTVIEW ET LISTTILE](#LISTVIEW-ET-LISTTILE)
+      * [HORIZONTAL LISTVIEW INSIDE A VERTICAL SCROLLVIEW](#Horizontal-ListView-inside-a-Vertical-ScrollView)
       * [DISMISSIBLE](#DISMISSIBLE)
       * [CUSTOMTILE](#CUSTOMTILE)
       * [INKWELL](#INKWELL)
@@ -189,6 +200,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [FLEXIBLE](#flexible)
   * [WIDGETS ANIMATION](#widgets-animation)   
      * [HERO](#hero)
+  * [FORMES](#formes)   
+     * [CERCLE](#cercle)
 * [THEMES, COLORS](#themes)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [API](#api)   
@@ -440,6 +453,12 @@ Align(
   child: GridView(),
 )
 ```
+* Use underscores for unused function arguments
+```java
+MaterialPageRoute(
+  builder: (_) => DetailsPage(), // préférer (_) à (context)
+);
+```
 
 ### ASTUCES
 * infinity (100%)
@@ -584,27 +603,6 @@ Stack(
     if (condition)
     WidgetTwo(),
   ]
-),
-```
-* Cercle
-```java
-Container(
-  width: 24.0,
-  height: 24.0,
-  decoration: BoxDecoration(
-      color: Colors.grey,
-      shape: BoxShape.circle)
-),
-
-// or
-CircleAvatar(
-  child: Icon(
-    Icons.list,
-    size: 30.0,
-    color: Colors.lightBlueAccent,
-  ),
-  backgroundColor: Colors.white,
-  radius: 30.0,
 ),
 ```
 * Container de background
@@ -780,6 +778,13 @@ void didChangeDependencies() {
 body: Padding(
   padding: EdgeInset.all(16.0) + EdgeInsets.only(left: 2.0),
 )
+```
+* Error: The getter 'length' was called on null > https://stackoverflow.com/questions/56991966/error-the-getter-length-was-called-on-null
+```java
+itemCount: _songs?.length ?? 0
+// _songs peut être null (null safety)
+// si _songs est null, itemCount = 0
+// sinon itemCount = _songs.length
 ```
 
 
@@ -989,6 +994,7 @@ MAJ la version d'Android Studio
 * Renommer une variable dans tout le projet > Clic-droit > Refactor > Rename
 * Ouvrir le debug paint => Flutter inspector => Debug paint
 * If you do not remember how to call an action, press Ctrl+Maj+A and start typing the action name
+* Transformer un widget en une classe (stless) => Clic sur le Widget > Refactor > Extract Flutter Widget
 
 ### ERREURS
 * error: Future isn't a type android studio flutter > https://github.com/flutter/flutter/issues/24279
@@ -1423,8 +1429,9 @@ class _Home extends State<Home> {
 ```yaml
 # To add assets to your application, add an assets section, like this:
 assets:
-  - images/computer.jpg # Copy Path => Path from content root
-  - images/ # plus simple et à privilégier, récupère toutes les images
+# ne pas mettre d'INDENTATION !
+- images/computer.jpg # Copy Path => Path from content root
+- images/ # plus simple et à privilégier, récupère toutes les images
 ```
 en haut du fichier => pub get
 * main.dart
@@ -3124,6 +3131,47 @@ DropdownButton(
   ],
   onChanged: (val) { }
 )
+
+// personnaliser l'apparence d'un dropdownbutton
+// ici le dropdown est dans une Row
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Expanded(
+      // personnalisation
+      child: Container(
+        padding: EdgeInsets.only(left: 10.0, top: 4.0, bottom: 4.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[300]),
+          borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          color: Colors.grey[300],
+        ),
+        // suppresion de la ligne basse
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton(
+              value: elementDeMaListe,
+              isExpanded: true,
+              items: maListe.map<DropdownMenuItem<String>>(
+                  (String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value, overflow: TextOverflow.ellipsis),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  elementDeMaListe = value;
+                });
+              }),
+        ),
+      ),
+    ),
+    SizedBox(
+      width: 15.0,
+    ),
+    Text("Item2"),
+  ],
+),
 ```
 
 #### DROPDOWNBUTTONFORMFIELD
@@ -3264,6 +3312,13 @@ class _MyHomePageState extends State<MyHomePage> {
 #### LISTVIEW ET LISTTILE
 * Création d'une liste scrollable
 * Page scrollable qui dépasse le viewport = utiliser ListView
+* Vertical viewport was given unbounded height for ListView/GridView : https://stackoverflow.com/a/57335217 + https://stackoverflow.com/questions/50252569/vertical-viewport-was-given-unbounded-height
+```java
+ListView(
+  // Says to the `ListView` that it must wrap its
+  // height (if it's vertical) and width (if it's horizontal).
+  shrinkWrap: true,
+),
 ```java
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -3312,6 +3367,51 @@ class Activite {
 
   Activite(this.nom, this.icone);
 }
+```
+* LIST VIEW NON SCROLLABLE
+```java
+ListView.builder(
+	physics: NeverScrollableScrollPhysics(),
+)
+```
+* N'AFFICHER QU'UN NOMBRE PRECIS D'ELEMENTS
+```java
+ListView.builder(
+// n'affiche que les 3 premiers éléments de ma liste
+	itemCount: maListe.length < 4 ? maListe.length : 3,
+)
+```
+#### HORIZONTAL LISTVIEW INSIDE A VERTICAL SCROLLVIEW
+* https://stackoverflow.com/questions/54512171/horizontal-listview-inside-a-vertical-scrollview-in-flutter
+```java
+body: ListView(
+        children: [
+          Container(
+            child: Container(
+              child: Column(
+                children: [
+                  // ↓ règle le problème du unbounded height for ListView/GridView
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: selectedMenu.getEntrees.length,
+                        itemBuilder: (context, index) {
+                            return Card(
+                              child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text(selectedMenu.getEntrees[index].type)),
+                              );
+                        },
+                        scrollDirection: Axis.horizontal,
+                      ),
+                	)
+		            ]
+	            )
+            )
+          )
+        ]
+      )
 ```
 #### DISMISSIBLE
 * Supprimer une tile en la coulissant (swipe)
@@ -3586,6 +3686,13 @@ void main() {
 ```
 #### GRIDVIEW
 * Création d'une grille de contenu qui s'adapte à l'orientation de l'appareil
+* Vertical viewport was given unbounded height for ListView/GridView : https://stackoverflow.com/a/57335217 + https://stackoverflow.com/questions/50252569/vertical-viewport-was-given-unbounded-height
+```java
+ListView(
+  // Says to the `ListView` that it must wrap its
+  // height (if it's vertical) and width (if it's horizontal).
+  shrinkWrap: true,
+),
 ```java
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -3997,6 +4104,55 @@ Flexible(
   ),
 ),                
 ```
+### FORMES
+
+#### CERCLE
+* Cercle
+```java
+Container(
+  width: 24.0,
+  height: 24.0,
+  decoration: BoxDecoration(
+      color: Colors.grey,
+      shape: BoxShape.circle)
+),
+
+// or
+CircleAvatar(
+  child: Icon(
+    Icons.list,
+    size: 30.0,
+    color: Colors.lightBlueAccent,
+  ),
+  backgroundColor: Colors.white,
+  radius: 30.0,
+),
+```
+* CircleAvatar with border : https://github.com/flutter/flutter/issues/13566
+```java
+Container(
+  width: diameter,
+  height: diameter,
+  decoration: BoxDecoration(
+    // Circle shape
+    shape: BoxShape.circle,
+    color: backgroundColor,
+    // The border you want
+    border: Border.all(
+      width: 2.0,
+      color: Colors.white,
+    ),
+    // The shadow you want
+    shadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.2),
+        blurRadius: 5.0,
+      ),
+   ]
+  ),
+  child: contentInCircle,
+);
+```
 
 ## THEMES
 * https://flutter.dev/docs/cookbook/design/themes
@@ -4083,6 +4239,10 @@ Container(
 Color(0xFF000000)
 // Black 20%
 Color(0x33000000)
+```
+### COLOR SHADE AS CONSTANT
+```java
+const Color kTitleColor = Color(0xFF616161); // Colors.grey[700] (la valeur hexadécimale est donnée au survol)
 ```
 
 ## INTERNATIONALISATION

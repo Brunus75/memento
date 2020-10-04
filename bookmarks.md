@@ -219,6 +219,7 @@
 * Hacking Digital Style Guides for Accessibility: Type, Colour, Imagery : https://www.youtube.com/watch?v=tvpstrkDgeM
 * How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
 * Développeur d'application - PHP / Symfony : https://github.com/emicheldev/awesome-Openclassroom-D-veloppeur-d-application---PHP-Symfony/tree/master
+* Google lance une plateforme de formation pour les développeurs : https://www.blogdumoderateur.com/google-plateforme-formation-developpeurs
 
 
 ## :warning: VALIDATEURS
@@ -274,6 +275,8 @@
 * Comment apprendre un nouveau langage rapidement : https://www.jesuisundev.com/apprendre-un-nouveau-langage/
 * Une seule règle pour devenir un meilleur développeur [YouTube] : https://www.jesuisundev.com/une-seule-regle-pour-devenir-un-meilleur-developpeur/
 * What is the difference between a junior and a senior software developer? 15 things I wish I had known sooner : https://dev.to/codinglanguages/what-is-the-difference-between-a-junior-and-a-senior-software-developer-15-things-i-wish-i-had-known-sooner-4hpl
+* Redirections d'URL : les bonnes pratiques à respecter : https://www.codeur.com/blog/redirection-url-bonnes-pratiques
+* L'intelligence émotionnelle : la stratégie pour conclure vos ventes : https://www.codeur.com/blog/intelligence-emotionnelle-vente
 
 
 ## :keyboard: WINDOWS
@@ -341,6 +344,7 @@
 * 23 SEO Tips All Web Designers Should Know in 2020 : https://the-webdesigner.co/seo-for-web-designers/
 * A website to edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter, and more : https://metatags.io/
 * Bing Webmaster Tools lance un nouveau Testeur de robots.txt : https://www.arobasenet.com/2020/09/bing-testeur-robots-txt-6339.html
+* How to Efficiently Write the Perfect Meta Description : https://ahrefs.com/blog/meta-description/
 
 
 ## :bulb: ORGANISATION
@@ -963,8 +967,8 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Introduction to Data science by IBM : https://www.coursera.org/specializations/introduction-data-science
 * Deep learning offered by deeplearning.io : https://www.coursera.org/specializations/deep-learning
 * ThePrimeagen is great for Vim : https://www.youtube.com/c/ThePrimeagen/featured
-*  Traversy Media : https://www.youtube.com/c/TraversyMedia/videos
-
+* Traversy Media : https://www.youtube.com/c/TraversyMedia/videos
+* 22 YouTube Channels To Level Up Your Programming Skills : https://dev.to/codegiantio/22-youtube-channels-to-level-up-your-programming-skills-27bc
 
 ## :alembic: TESTS
 
@@ -1228,3 +1232,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://putaindecode.io/articles/garder-ses-depots-git-synchronises-sur-github-gitlab-bitbucket/
 * https://thenextweb.com/growth-quarters/2020/09/28/how-to-become-a-ux-designer-no-matter-what-you-studied-at-uni/
 * https://medium.com/tap-to-dismiss/color-within-constraints-d6f777a3b72d
+* https://dev.to/jessesbyers/someone-stole-my-dev-article-how-to-build-a-python-script-to-detect-stolen-content-54fg
+* https://dev.to/javinpaul/10-data-science-and-machine-learning-courses-for-programmers-looking-to-switch-career-57kd

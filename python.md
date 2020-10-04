@@ -844,6 +844,7 @@ from itertools import groupby
 ```
 
 ## LES LISTES
+* Tout sur les listes avec Python en une image ! : https://twitter.com/ThibaultHoudon/status/1310505684367220736
 ```py
 liste = []
 liste2 = [1, 2, 3, 4, 5]
@@ -965,6 +966,9 @@ print(employes.sort()) # None car ne renvoie rien
 print(employes) # ['Alex', 'Carlos', 'Martine', 'Max', 'Patrick']
 employes_tries = sorted(employes) # la fonction sorted renvoie la liste triée
 print(employes_tries) # ['Alex', 'Carlos', 'Martine', 'Max', 'Patrick']
+
+# la méthode reverse qui trie la liste par ordre alphabetique descendant
+employes.reverse() # ["Patrick", "Max", "Martine", ect.]
 
 # d'autres méthodes pour enlever un élément
 # la méthode pop(): enlever un élément par rapport à son index
@@ -2647,6 +2651,7 @@ ou copier-glisser le projet sur l''icône VS du bureau
 ```
 
 ## <a name="objet-part1"></a> L'ORIENTÉ OBJET (partie 1)
+* Le paramètre self en 1 minute : https://www.youtube.com/watch?v=pzxDxOD-gmw
 ```py
 # avec Python, tout est un objet
 # avantages : organiser notre code, éviter les répétitions

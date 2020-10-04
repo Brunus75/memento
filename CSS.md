@@ -2,6 +2,15 @@
 
 ## SOMMAIRE
 
+## RESSOURCES
+
+### TO READ
+* A Complete Guide to CSS Media Queries : https://css-tricks.com/a-complete-guide-to-css-media-queries
+* Working with JavaScript Media Queries : https://css-tricks.com/working-with-javascript-media-queries
+* Beyond Media Queries: Using Newer HTML & CSS Features for Responsive Designs : https://css-tricks.com/beyond-media-queries-using-newer-html-css-features-for-responsive-designs/
+
+
+
 ## CSS min(), max(), and clamp()
 
 * min() — accepts one or more possible values or calculations to choose from, and ensures that the value used in all situations will be the smallest of the possibilities. In effect, this provides a range of values for responsive designs, along with a maximum allowed value

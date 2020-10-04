@@ -18,6 +18,7 @@
 * Fluttering Dart : https://medium.com/tag/fluttering-dart/archive
 * Making Dart a Better Language for UI : https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c
 * Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/
+* Announcing Dart 2.10 : https://medium.com/dartlang/announcing-dart-2-10-350823952bd5
 
 **JSON**
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
@@ -338,6 +339,7 @@ assert(iMeantToDoThis.isNaN);
 * Generics : https://dart.dev/guides/language/language-tour#generics
 * Collections: https://dart.dev/guides/libraries/library-tour#collections
 * https://api.dart.dev/stable/2.9.3/dart-core/List/sort.html
+* Collection-if, collection-for and spreads help you write concise declarative code and can be combined in interesting ways : https://twitter.com/biz84/status/1310988962660573185
 ```java
 // initialiser une liste
 var maListe = []; // préférable
@@ -748,6 +750,7 @@ List setVal = listVal.toSet(); // List to Set
 * You can declare nullable variables anywhere in your code with the ? syntax
 * Sound null safety : https://dart.dev/null-safety
 * Dart Null Safety: The Ultimate Guide to Non-Nullable Types : https://codewithandrea.com/videos/2020-06-29-dart-null-safety-ultimate-guide-non-nullable-types/
+* https://stackoverflow.com/questions/56991966/error-the-getter-length-was-called-on-null
 ```java
 // Maintenant :
 void main() {
@@ -903,6 +906,13 @@ class ExampleState extends State {
 // This is ideal when creating variables whose initializer does some heavy work:
 late final taskResult = doHeavyComputation();
 
+// ex. avec Flutter
+// prévenir "Error: The getter 'length' was called on null"
+// https://stackoverflow.com/questions/56991966/error-the-getter-length-was-called-on-null
+itemCount: _songs?.length ?? 0
+// _songs peut être null
+// si _songs est null, itemCount = 0
+// sinon itemCount = _songs.length
 ```
 
 ## LES CONDITIONS
