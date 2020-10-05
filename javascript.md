@@ -5,6 +5,7 @@
 
 * [RESSOURCES](#ressources)
 * [LEXIQUE](#lexique)
+* [CHEATSHEET](#cheatsheet)
 * [NOUVEAUTES](#nouveautes)
 * [Installer un module avec NPM](#npm)
 * [ES6 (2015)](#es6)
@@ -38,6 +39,8 @@
 * Private Class Fields and Methods in JavaScript Classes : https://blog.alexdevero.com/javascript-private-class-fields-methods
 * Optional Chaining in JavaScript and How It Works : https://blog.alexdevero.com/optional-chaining-javascript
 * JavaScript, ES6, ES7, ES10 where are we? : https://medium.com/engineered-publicis-sapient/javascript-es6-es7-es10-where-are-we-8ac044dfd964
+* Loop Over querySelectorAll Matches : https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
+* JavaScript Cheat Sheet : https://websitesetup.org/javascript-cheat-sheet/
 
 ### TO READ
 * ES6, ES7 & ES8, TIME to update your JavaScript / ECMAScript! : https://www.udemy.com/course/es6-es7-and-es8-its-time-to-update-your-javascript/?deal_code=EXPLORENOW0920&utm_source=email-Adhoc&utm_campaign=2020-09-26_._cn_UDEMY_BASICS_09_26_2020_._en_XPOLL_._us_AllAlltl_T1_._tg_n_.__._la_fr_._rn_2020-09-26_._&utm_medium=2020-09-26_UDEMY_BASICS_09_26_2020_XPOLL_AllAll_T1_n&utm_content=udemy.17485945&data_h=CEcSc1xWTHw%3D&utm_term=CROSS_POLL_CAT_SUBCAT_2
@@ -60,6 +63,10 @@ C'est une représentation du HTML en orienté objet ; chaque élément du HTML e
 * **Linter** : programme qui va analyser notre code et détecter les erreurs de syntaxe, les variables non utilisées, les variables qui n'existent pas, la mauvaise organisation du code, le non-respect des bonnes pratiques d'écriture de code... (ex. : JSLint, ESLint.)
 * **NPM** : un gestionnaire de paquets (package manager). C'est un programme qui vous permet d'installer très facilement des modules pour le JavaScript
 * **Module** : bout de code écrit par quelqu'un et qui résout une problématique commune à beaucoup de développeurs : comme un parser XML, un générateur d'uuid (des identifiants uniques), un router, un framework de rendu HTML, etc.
+
+## CHEATSHEET
+
+* JavaScript Cheat Sheet : https://websitesetup.org/javascript-cheat-sheet/
 
 
 ## NOUVEAUTES
@@ -306,6 +313,20 @@ blablalbalblalballb
 balblablalabla
 b
 ablablablabbl`;
+```
+
+### for...of loop
+* https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Instructions/for...of
+```js
+const array1 = ['a', 'b', 'c'];
+
+for (const element of array1) {
+  console.log(element);
+}
+
+// expected output: "a"
+// expected output: "b"
+// expected output: "c"
 ```
 
 ### Tous les changements: http://es6-features.org/#Constants

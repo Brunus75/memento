@@ -220,6 +220,7 @@
 * How to Test Your Web Apps : https://mediatemple.net/blog/web-development-tech/how-to-test-web-apps
 * Développeur d'application - PHP / Symfony : https://github.com/emicheldev/awesome-Openclassroom-D-veloppeur-d-application---PHP-Symfony/tree/master
 * Google lance une plateforme de formation pour les développeurs : https://www.blogdumoderateur.com/google-plateforme-formation-developpeurs
+* Full Stack Developer's Roadmap 🗺 : https://dev.to/ender_minyard/full-stack-developer-s-roadmap-2k12
 
 
 ## :warning: VALIDATEURS
@@ -277,6 +278,8 @@
 * What is the difference between a junior and a senior software developer? 15 things I wish I had known sooner : https://dev.to/codinglanguages/what-is-the-difference-between-a-junior-and-a-senior-software-developer-15-things-i-wish-i-had-known-sooner-4hpl
 * Redirections d'URL : les bonnes pratiques à respecter : https://www.codeur.com/blog/redirection-url-bonnes-pratiques
 * L'intelligence émotionnelle : la stratégie pour conclure vos ventes : https://www.codeur.com/blog/intelligence-emotionnelle-vente
+* Les 10 cours LinkedIn Learning les plus populaires de l’année : https://www.linkedin.com/pulse/les-10-cours-linkedin-learning-plus-populaires-de-lann%25C3%25A9e-longuet
+* Google annonce le crawl d'HTTP/2... mais qu'est-ce que c'est ? : https://www.codeur.com/blog/http2-definition
 
 
 ## :keyboard: WINDOWS
@@ -391,6 +394,7 @@
 * GitHub CLI 1.0 is now available : https://github.blog/2020-09-17-github-cli-1-0-is-now-available/
 * https://blog.axosoft.com/gitkraken-git-tips-7
 * Documenting your projects on GitHub : https://guides.github.com/features/wikis/
+* What GIT GUI client do you use? : https://dev.to/madza/what-git-gui-client-do-you-use-3h9h
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -1101,6 +1105,7 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * https://www.code-couleur.com/signification/anthracite.html
 * https://aainterior.com.ua/
 * http://mudvex.com/
+* https://www.indicius.com/
 
 
 ## :monocle_face: TENDANCES

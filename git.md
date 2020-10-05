@@ -29,6 +29,11 @@
 * https://www.atlassian.com/fr/git/tutorials/advanced-overview
 * World's Easiest Guide to Git Reset : https://dev.to/nickbulljs/world-s-easiest-guide-to-git-reset-47mi
 * Git: Cheat Sheet (advanced) : https://dev.to/maxpou/git-cheat-sheet-advanced-3a17
+* A Visual Git Reference : https://marklodato.github.io/visual-git-guide/index-en.html
+
+### TO READ
+
+* How to resolve merge conflicts with git : https://dev.to/the_real_stacie/how-to-handle-merge-conflicts-with-git-1ked
 
 ## SOMMAIRE
 

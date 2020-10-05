@@ -157,6 +157,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [FLOATING ACTION BUTTON](#floating-action-button)
       * [FLAT BUTTON](#flat-button)
       * [RAISED BUTTON](#raised-button)
+      * [OUTLINE BUTTON](#outline-button)
    * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)   
       * [AJOUT D'UN BODY EXTERNE](#ajout-d-un-body-externe)
       * [SNACKBAR](#snackbar)
@@ -205,6 +206,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [THEMES, COLORS](#themes)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [API](#api)   
+   * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
+   * [Appel API avec les widgets interactifs](#Appel-API-avec-les-widgets-interactifs)   
    * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)   
    * [FORM ET FUTURE BUILDER](#FORM-ET-FUTURE-BUILDER)   
    * [FORM FUTURE BUILDER avec condition](#FORM-FUTURE-BUILDER-avec-condition)   
@@ -314,6 +317,7 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 * context = localisation du widget dans l'architecture de l'application. Permet à Flutter de savoir où l'on est et où l'on veut aller
 * slivers = parties d'une zone scrollable
 * Hooks = objet qui gère le cycle de vie d'un Widget et qui permet le partage de code entre Widgets, évitant toute duplication
+
 ### CONSEILS
 * La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
@@ -786,7 +790,25 @@ itemCount: _songs?.length ?? 0
 // si _songs est null, itemCount = 0
 // sinon itemCount = _songs.length
 ```
-
+* Utiliser Spacer pour remplir l'espace disponible d'un espace vide: https://stackoverflow.com/a/59527732
+```java
+Column(
+children: <Widget>[
+    Text('Title',
+        style: TextStyle(fontWeight: FontWeight.bold)
+    ),
+    Text('Datetime',
+        style: TextStyle(color: Colors.grey)
+    ),
+    Spacer(),
+],
+```
+* Aligner un widget facilement :
+```java
+Align(
+	alignment: Alignment.topCenter,
+)
+```
 
 ### STRUCTURE
 * Structure générique :
@@ -1868,6 +1890,31 @@ class _Home extends State<Home> {
 
 }
 ```
+#### OUTLINE BUTTON
+* OutlineButton
+```java
+OutlineButton(
+// personnalisation de la bordure
+  borderSide: BorderSide(
+    color: Colors.grey[300],
+    width: 2.0,
+    style: BorderStyle.solid,
+  ),
+  child: Text(
+    'Mon texte',
+    textScaleFactor: 1.2,
+  ),
+  textColor: Colors.grey[600],
+  highlightedBorderColor: Colors.grey[300], // couleur de la bordure à la touche
+  shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30.0))),
+  padding: EdgeInsets.only(
+      left: 20.0, top: 5.0, right: 20.0, bottom: 5.0),
+  onPressed: () => Navigator.pop(context),
+),
+
+```
+
 ### POP-UP ET NAVIGATOR
 
 #### AJOUT D UN BODY EXTERNE
@@ -2182,6 +2229,19 @@ void callAlert({int quizzId}) {
     );
   }
 }
+```
+* appeler le showDialog au lancement de la page
+```java
+void InitState() {
+  super.initState();
+  SchedulerBinding.instance.addPostFrameCallback((_) => callDialog();
+  // addPostFrameCallback: Schedule a callback for the end of this frame
+}
+```
+* Difference between AlertDialog & SimpleDialog : https://medium.com/flutteropen/flutter-widgets-17-simpledialog-1cf5bfd83f5f
+```
+The main difference between AlertDialog & SimpleDialog is that the AlertDialog has more parameters, 
+which are the titleTextStyle, content, contentTextStyle, and actions, than the SimpleDialog
 ```
 #### SIMPLEDIALOG
 * Un modal qui renseigne sur plusieurs choix
@@ -3130,6 +3190,11 @@ DropdownButton(
       ),
   ],
   onChanged: (val) { }
+)
+
+// ajouter du style au texte
+DropdownButton(
+  style: TextStyle(fontSize: 14.0),
 )
 
 // personnaliser l'apparence d'un dropdownbutton
@@ -4293,6 +4358,82 @@ String newDate = df.format(today);
 
 * Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
 * HTTP Status Codes : https://www.restapitutorial.com/httpstatuscodes.html
+
+### Simulate an asynchronous web service
+* https://stackoverflow.com/questions/18449846/how-can-i-sleep-a-dart-program
+```java
+import 'dart:io';
+
+sleep(const Duration(seconds:1)); // sync code
+
+// async code
+Future sleep1() {
+  return Future.delayed(Duration(seconds: 1), () => "Retour 1");
+}
+
+Future sleep2() {
+  return Future.delayed(Duration(seconds: 2), () => "Retour 2");
+}
+```
+* exemple, avec l'appel d'un menu
+```java
+class _MenuScreenState extends State<MenuScreen> {
+Future<Menu> futureSelectedMenu;
+
+  @override
+  void initState() {
+    futureSelectedMenu = fetchMenu(); // appel simulé
+  }
+
+  // simule un appel API
+  Future<Menu> fetchMenu() async {
+    return Future.delayed(Duration(seconds: 3), () {
+      return Menu(title: "Mon Menu");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+		FutureBuilder<Menu>(
+      future: futureSelectedMenu,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Text('${snapshot.data.title}'); // Mon Menu
+            // ne pas oublier le return !
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          // By default, show a loading spinner.
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: kPrimaryColor,
+            ),
+          );
+        }
+    ),
+  }
+}
+```
+
+### Appel API avec les widgets interactifs
+* idée = modifier la propriété responsable de l'affichage dans un setState()
+```java
+// datetime picker
+if (choice != null) {
+  setState(() {
+    selectedDate = choice;
+    futureSelectedMenu = fetchMenu(); // appel API
+  });
+}
+
+// dropdown button
+onChanged: (value) {
+  setState(() {
+    selectedProfile = value;
+    futureSelectedMenu = fetchMenu(); // appel API
+  });
+});
+```
 
 ### Deserialize a list of objects from json
 * https://stackoverflow.com/a/58132148
