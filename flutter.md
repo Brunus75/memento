@@ -137,7 +137,6 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [ANDROID STUDIO](#android-studio)   
    * [RACCOURCIS](#raccourcis)
    * [ERREURS](#erreurs)
-* [PACKAGES](#packages)
 * [MAIN.DART](#main-dart)
 * [WIDGETS](#widgets)   
    * [WIDGETS DE BASE (1)](#widgets-de-base)   
@@ -205,6 +204,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
      * [CERCLE](#cercle)
 * [THEMES, COLORS](#themes)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
+* [PACKAGES](#packages)   
+   * [FONCTIONNEMENT](#fonctionnement)   
+   * [SHARED PREFERENCES](#shared-preferences)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [Appel API avec les widgets interactifs](#Appel-API-avec-les-widgets-interactifs)   
@@ -319,6 +321,9 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 * Hooks = objet qui gère le cycle de vie d'un Widget et qui permet le partage de code entre Widgets, évitant toute duplication
 
 ### CONSEILS
+* renommer le dossier d'un projet flutter :   
+   1. renommer
+   2. importer de nouveau dans AS
 * La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
 ```java
@@ -1023,33 +1028,6 @@ MAJ la version d'Android Studio
 ```
 Android Studio File>Invalidate Caches / Restart
 ```
-
-## PACKAGES
-* https://flutter.dev/docs/development/packages-and-plugins/using-packages
-* Cheatsheet :
-```yaml
-dependencies:
-  url_launcher: ^5.4.0    # Good, any 5.4.x version where x >= 0 works.
-  image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
-  url_launcher: '>=5.4.0 <6.0.0' # range versions
-  plugin: # dernière version stable
-```
-* Imports
-```java
-import 'package:intl/intl.dart'; // ALL
-import 'package:http/http.dart' as http; // ALIAS for the package => http.get(apiUrl)
-import 'dart:io' show Platform; // ONLY
-import 'dart:io' hide Platform; // ALL, EXCEPT
-```
-* Formater une date avec intl
-```java
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
-
-final df = DateFormat('EEEE d MMMM', 'fr');
-String formattedDate = df.format(dateToFormat);
-```
-
 
 ## MAIN DART
 ```java
@@ -4352,6 +4330,118 @@ class MyApp extends StatelessWidget {
 DateTime today = DateTime.now();
 final df = DateFormat('EEEE d MMMM', 'fr');
 String newDate = df.format(today);
+```
+
+## PACKAGES
+
+### FONCTIONNEMENT
+* https://flutter.dev/docs/development/packages-and-plugins/using-packages
+* Cheatsheet :
+```yaml
+dependencies:
+  url_launcher: ^5.4.0    # Good, any 5.4.x version where x >= 0 works.
+  image_picker: '5.4.3'   # Not so good, only version 5.4.3 works.
+  url_launcher: '>=5.4.0 <6.0.0' # range versions
+  plugin: # dernière version stable
+```
+* Imports
+```java
+import 'package:intl/intl.dart'; // ALL
+import 'package:http/http.dart' as http; // ALIAS for the package => http.get(apiUrl)
+import 'dart:io' show Platform; // ONLY
+import 'dart:io' hide Platform; // ALL, EXCEPT
+```
+* Formater une date avec intl
+```java
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
+final df = DateFormat('EEEE d MMMM', 'fr');
+String formattedDate = df.format(dateToFormat);
+```
+### SHARED PREFERENCES
+* ajout des shared preferences dans toute l'application : https://dev.to/simonpham/using-sharedpreferences-in-flutter-effortlessly-3e29
+```java
+// utils/shared_prefs.dart ou services/shared_prefs.dart
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mon_app/constants.dart';
+
+class SharedPrefs {
+  static SharedPreferences _sharedPrefs;
+
+  init() async {
+    if (_sharedPrefs == null) {
+      _sharedPrefs = await SharedPreferences.getInstance();
+    }
+  }
+
+  String get username => _sharedPrefs.getString(keyUsername) ?? "";
+
+  set username(String value) {
+    _sharedPrefs.setString(keyUsername, value);
+  }
+
+  bool get isUserConnected => _sharedPrefs.getBool(kUserConnection) ?? false;
+
+  isConnected() {
+    _sharedPrefs.setBool(kUserConnection, true);
+  }
+}
+
+final sharedPrefs = SharedPrefs(); // créé une seule instance de classe (singleton)
+
+// constants.dart
+// mots-clés utilisés dans les SharedPreferences
+const String keyUsername = "key_username";
+const String kUserConnection = "user_connected";
+
+// main.dart
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // initialise, via une instance de notre classe, les SharedPreferences avant de lancer l'application
+  await sharedPrefs.init();
+  runApp(
+    MyApp(),
+  );
+}
+
+// classe 1
+import 'package:sivu_mobile/services/shared_prefs.dart';
+
+class MyApp extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Text("Hi ${sharedPrefs.username}"),
+      ),
+    );
+  }
+}
+
+// classe 2
+import 'package:sivu_mobile/services/shared_prefs.dart';
+
+class MyApp extends StatefulWidget {
+
+@override
+  void initState() {
+    super.initState();
+    // appel du dialog selon les SharedPreferences
+    // si l'utilisateur se connecte pour la première fois
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!sharedPrefs.isUserConnected) callWelcomeMessage();
+    });
+  }
+}
+
+// interaction
+build {
+	onPressed: () {
+    sharedPrefs.isConnected();
+  },
+}
 ```
 
 ## API

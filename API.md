@@ -4,9 +4,21 @@
 * [RESSOURCES](#ressources)
 * [GLOSSAIRE](#glossaire)
 * [REST](#rest)
+* [MOCKOON](#mockoon)
 
 ## RESSOURCES
+
+### DOCS
 * Introduction to APIs : https://blog.alexdevero.com/introduction-to-apis
+---
+* TO READ :   
+   * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
+### TOOLS
+* https://mockoon.com/
+* https://medium.com/@alicealdaine/top-10-api-testing-tools-rest-soap-services-5395cb03cfa9
+* https://swagger.io/
+
 
 ## GLOSSAIRE
 * **API** : interface qui permet de communiquer avec un service distant depuis notre appli
@@ -73,3 +85,31 @@ DELETE	/device-management/devices/{id} : Delete device by "id"
 }
 ```
 * La liste complète : https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
+
+
+## MOCKOON
+
+* https://mockoon.com/
+* Simulateur d'API
+* Facile à utiliser
+* Ergonomique
+* Léger
+
+### RAJOUTER DES PARAMETRES A LA REQUETE
+* https://github.com/mockoon/mockoon/wiki/%E2%9D%94-Use-query-params
+```js
+GET /menu
+
+body
+{
+  "param1": "{{queryParam 'date'}}",
+  "param2": "{{queryParam 'type'}}"
+}
+
+requête : http://localhost:3001/menu?date=2019-05-14&type=vegetarien
+```
+
+### APPEL MOCKOON DEPUIS FLUTTER
+```js
+http.get("http://10.0.2.2:3001/menu"); // http.get("http://10.0.2.2:port/url");
+```

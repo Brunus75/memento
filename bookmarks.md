@@ -875,6 +875,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 30+ Best Web Safe Fonts (HTML) For Your Next Design in 2020 : https://kinsta.com/blog/web-safe-fonts
 * A free SVG background generator for your websites, blogs, and app : https://bgjar.com/
 * This is good UX writing : https://uxdesign.cc/this-is-good-ux-writing-10c4b956a6c3
+* Some New Icon Sets : https://css-tricks.com/some-new-icon-sets/
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)

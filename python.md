@@ -154,6 +154,7 @@
 * ~ fastcore: An Underrated Python Library : https://fastpages.fast.ai/fastcore/
 * ~ How to Publish Your First Python App on Heroku : https://medium.com/@henson.casper/how-to-publish-your-first-python-app-on-heroku-6af91c5bb138
 * When you automate something in python, you'd obviously have to run the script forever. Where can we run the script? : https://www.reddit.com/r/learnpython/comments/ivn7d9/when_you_automate_something_in_python_youd/
+* ~ Python 3.9: Cool New Features for You to Try : https://realpython.com/python39-new-features/
 
 
 ## INSTALLATION
