@@ -55,7 +55,6 @@
 * https://medium.com/flutter-community/flutter-deep-dive-part-4-renderflex-children-have-non-zero-flex-77734ca0b5c
 * Flutter: State Management using an MVC+S Architecture : https://blog.gskinner.com/archives/2020/09/flutter-state-management-with-mvcs.html
 * Multiple Themes in Flutter | Dark and Light Theme Flutter Stacked : https://www.filledstacks.com/post/multiple-themes-in-flutter-dark-and-light-theme-flutter-stacked/
-* Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
 * https://medium.com/flutterpub/flutter-7-bottom-navigation-with-floating-button-9190648372fd
 * https://codewithandrea.com/articles/2018-09-13-bottom-bar-navigation-with-fab/
 * https://www.raywenderlich.com/6373413-state-management-with-provider
@@ -66,6 +65,9 @@
 * https://github.com/flutter/flutter/issues/54776
 * Learning Flutter’s new Navigation and Routing system : https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
 * Internationalization in Flutter 1.22+ : https://pascalw.me/blog/2020/10/02/flutter-1.22-internationalization.html
+* Make 2048 With Flutter : https://www.youtube.com/watch?v=QEqLobOif3Y&feature=emb_logo
+* Day and Night Mood Animation - Flutter Animation - Speed Code : https://www.youtube.com/watch?v=uS_SoJWzRXY&feature=emb_logo
+* Navigation done right: a case for hierarchical routing with Flutter : https://medium.com/flutter-community/navigation-done-right-a-case-for-hierarchical-routing-with-flutter-ca0aac1275ad
 
 
 **TO UNDERSTAND**
@@ -102,6 +104,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Introduction to Animation in Flutter : https://medium.com/flutterdevs/introduction-to-animation-in-flutter-954dbaadc0eb
 * How to implement autofill in your Flutter app : https://medium.com/swlh/how-to-implement-autofill-in-your-flutter-app-b43bddab1a97
 * Cheatsheet Flutter : https://pbs.twimg.com/media/EjEe3drU4AIsHo5?format=jpg&name=large
+* Learning Flutter’s new Navigation and Routing system : https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
+* Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
+* Flutter File Structure for Big Projects : https://www.youtube.com/watch?v=Mt41FpSS-Vo&feature=emb_logo
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -164,6 +169,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [SIMPLEDIALOG](#simpledialog)
       * [NAVIGUER VERS UN SECOND SCAFFOLD](#naviguer-vers-un-second-scaffold)
       * [PASSER DES ARGS AVEC PUSHNAMED](#passer-des-args-avec-pushnamed)
+      * [NAVIGUER AVEC DES ROUTES](#naviguer-avec-des-routes)
       * [AUTRES POSSIBLITÉS DE NAVIGATOR](#navigators)
       * [WILLPOPSCOPE](#willpopscope)
       * [ALERTDIALOG IN WILLPOPSCOPE](#ALERTDIALOG-IN-WILLPOPSCOPE)
@@ -207,10 +213,14 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [PACKAGES](#packages)   
    * [FONCTIONNEMENT](#fonctionnement)   
    * [SHARED PREFERENCES](#shared-preferences)
+   * [WEBVIEW](#webview)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
+   * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
    * [Appel API avec les widgets interactifs](#Appel-API-avec-les-widgets-interactifs)   
-   * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)   
+   * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)
+   * [Transformer du JSON en List<String> et List<Object>](#Transformer-du-JSON-en-List<String>-et-List<Object>)
+   * [LIST IN FUTURE BUILDER](#list-in-future-builder)   
    * [FORM ET FUTURE BUILDER](#FORM-ET-FUTURE-BUILDER)   
    * [FORM FUTURE BUILDER avec condition](#FORM-FUTURE-BUILDER-avec-condition)   
    * [FUTURE DROPDOWN](#future-dropdown)
@@ -314,11 +324,26 @@ class _MyHomePageState extends State<MyHomePage> { // l'état de la classe
 }
 ```
 * Material Design = langage visuel développé par Google qui reprend les principes d'un design de qualité, responsive et multi-plateforme
-* MaterialApp : Widget englobant des fonctionnalités requises pour les applications implémentant le material design
+* MaterialApp : Widget englobant des fonctionnalités requises pour les applications implémentant le Material Design
+```
+The Material design language was created for any platform, not just Android. 
+When you write a Material app in Flutter, it has the Material look and feel on all devices, even iOS.
+```
+* CupertinoApp : Widget pour que l'application ressemble à une application IOS
+```
+If you want your app to look like a standard iOS-styled app, then you would use the Cupertino library
+```
 * Scaffold = template (équivalent du head + body en html)
 * context = localisation du widget dans l'architecture de l'application. Permet à Flutter de savoir où l'on est et où l'on veut aller
 * slivers = parties d'une zone scrollable
 * Hooks = objet qui gère le cycle de vie d'un Widget et qui permet le partage de code entre Widgets, évitant toute duplication
+* Factory = https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
+```
+According to Dart documentation, we use the factory keyword when implementing a constructor 
+that doesn’t always create a new instance of its class.
+```
+* Navigator : a widget that manages a stack of Route objects
+* Route : an object managed by a Navigator that represents a screen, typically implemented by classes like MaterialPageRoute
 
 ### CONSEILS
 * renommer le dossier d'un projet flutter :   
@@ -470,6 +495,41 @@ MaterialPageRoute(
 ```
 
 ### ASTUCES
+* IF dans un Widget
+```java
+Stack(
+  alignment: Alignment.center,
+  children: <Widget>[
+    WidgetOne(),
+    if (condition)
+    WidgetTwo(),
+  ]
+),
+```
+* IF dans un Widget, pour plusieurs éléments
+```java
+Column(
+  children: [
+    if (book != null) ...[
+      Text(book.title, style: Theme.of(context).textTheme.headline6),
+      Text(book.author, style: Theme.of(context).textTheme.subtitle1),
+    ],
+  ],
+),
+```
+* FOR dans un Widget
+```java
+ListView(
+  children: [
+    for (var book in books)
+      ListTile(
+        title: Text(book.title),
+        subtitle: Text(book.author),
+        onTap: () => onTapped(book),
+      )
+  ],
+),
+```
 * infinity (100%)
 ```java
 Container(
@@ -602,17 +662,6 @@ SizedBox(
 	width: MediaQuery.of(context).size.width * 0.6,
 	child: RaisedButton(...)
 )
-```
-* IF dans un Widget
-```java
-Stack(
-  alignment: Alignment.center,
-  children: <Widget>[
-    WidgetOne(),
-    if (condition)
-    WidgetTwo(),
-  ]
-),
 ```
 * Container de background
 ```java
@@ -888,6 +937,10 @@ flutter clean // clear Build Cache
 "pas d'améliorations" = repair pub cache by running 'flutter pub cache repair'
 "pas mieux" = relancer Android Studio
 "pas mieux" = supprimer le "package"
+
+"package défectueux, round 2" :
+1. "Relancer l'appli"
+2. "flutter clean + flutter run"
 
 flutter upgrade // MAJ de version
 // MAJ sur une version précise
@@ -2383,7 +2436,7 @@ class _BodyState extends State<Body> {
     ));
   }
 ```
-### PASSER DES ARGS AVEC PUSHNAMED
+#### PASSER DES ARGS AVEC PUSHNAMED
 ```java
 // un seul argument
 Navigator.pushNamed(
@@ -2399,10 +2452,40 @@ mon_objet = ModalRoute.of(context).settings.arguments;
 
 // avec plusieurs arguments
 // fichier expediteur
-Navigator.pushNamed(context, urlPageDestinataire, arguments: {'article': article});
+Navigator.pushNamed(context, urlPageDestinataire, 
+  arguments: {'journal': journal, 'article': article});
 // fichier receveur
-final Map arguments = ModalRoute.of(context).settings.arguments as Map;
-mon_article = arguments['article'];
+class _ArticleScreenState extends State<ArticleScreen> {
+  Journal journal;
+  Article article;
+
+  @override
+  void didChangeDependencies() {
+    // called when a dependency of this State object changes (ex. : Theme.of, ModalRoute.of, ect.)
+    // car à ce moment, ModalRoute a en effet changé
+    super.didChangeDependencies();
+    final Map arguments = ModalRoute.of(context).settings.arguments as Map;
+    journal = arguments['journal'];
+    article = arguments['article'];
+  }
+}
+```
+#### NAVIGUER AVEC DES ROUTES
+* https://flutter.dev/docs/cookbook/navigation/named-routes
+```java
+// constants.dart
+const String kRouteHome = "/home";
+const String kRoutePage2 = "/page2";
+
+// main.dart
+MaterialApp(
+  initialRoute: kRouteHome,
+  routes: {
+    kRouteHome: (context) => HomeScreen(),
+    kRoutePage2: (context) => Page2(),
+  },
+  debugShowCheckedModeBanner: false,
+);
 ```
 #### NAVIGATORS
 * revenir en arrière (si posible)
@@ -2675,6 +2758,7 @@ void submitForm() {
 ```
 
 #### TEXTFIELD
+* Tip: Use 'LengthLimitingTextInputFormatter(n)' instead of 'maxLength' property to hide the restricting input numbers label below TextField : https://twitter.com/dhruvashastri12/status/1314572917737500672
 ```java
 class _MyHomePageState extends State<MyHomePage> {
 
@@ -2703,6 +2787,8 @@ class _MyHomePageState extends State<MyHomePage> {
               // expand a textField in Flutter looks like a textarea
               maxLines: null, // or 20, for limit
               keyboardType: TextInputType.multiline,
+              // ↓ plutôt que maxLength
+              inputFormatters: LengthLimitingTextInputFormatter(10),
               onChanged: (String value) {
                 setState(() {
                   // ↓ changement à la volée
@@ -3155,7 +3241,7 @@ dependencies:
   flutter_localizations: # ++
     sdk: flutter
 ```
-### DROPDOWNBUTTON
+#### DROPDOWNBUTTON
 * Dropdown overflow : https://stackoverflow.com/a/61896777
 ```java
 // éviter le overflow d'un dropdownbutton
@@ -3215,6 +3301,46 @@ Row(
     Text("Item2"),
   ],
 ),
+```
+
+##### DROPDOWNBUTTON WITH MAP
+* https://stackoverflow.com/questions/52030797/making-a-dropdown-menu-in-flutter-with-a-map
+```java
+Map<String, String> myMap = {
+"code1": "value1",
+"code2": "value2"
+}
+
+String selectedValue = "value1";
+
+DropdownButton(
+  value: selectedValue,
+  isExpanded: true,
+  style: TextStyle(fontSize: 14.0),
+  items: myMap
+      .map((String code, String value) {
+        return MapEntry(
+            code,
+            DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: kTitleColor),
+              ),
+            ));
+      })
+      .values
+      .toList(),
+  onChanged: (value) {
+    setState(() {
+      selectedValue = value;
+      var keyValue = myMap.keys.firstWhere(
+              (key) => myMap[key] == value,
+          orElse: () => null);
+    });
+  }
+);
 ```
 
 #### DROPDOWNBUTTONFORMFIELD
@@ -3784,6 +3910,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+```
+##### Center a GridView
+* https://stackoverflow.com/questions/49528520/flutter-layout-with-grid-at-center
+```java
+body: Center(
+  child: GridView.count(
+    shrinkWrap: true,
+    crossAxisCount: 4,
+    children: childrenWidgets,
+    childAspectRatio: r,
+  ),
+),
 ```
 #### LISTE OU GRILLE SELON ORIENTATION
 ```java
@@ -4444,6 +4582,32 @@ build {
 }
 ```
 
+### WEBVIEW
+* Fonctionnalité : afficher une page web directement dans l'appli
+* https://pub.dev/packages/webview_flutter
+* https://medium.com/flutter/the-power-of-webviews-in-flutter-a56234b57df2
+```java
+import 'package:webview_flutter/webview_flutter.dart';
+
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(),
+      ),
+      body: WebView(
+        initialUrl: "https://stackoverflow.com/",
+        javascriptMode: JavascriptMode.unrestricted,
+      ),
+    );
+  }
+```
+
 ## API
 
 * Fetching Data from the Internet : https://flutter.dev/docs/cookbook/networking/fetch-data
@@ -4505,6 +4669,11 @@ Future<Menu> futureSelectedMenu;
 }
 ```
 
+### APPEL API LOCALHOST DEPUIS FLUTTER
+```
+http.get("http://10.0.2.2:3001/menu"); // http.get("http://10.0.2.2:port/url");
+```
+
 ### Appel API avec les widgets interactifs
 * idée = modifier la propriété responsable de l'affichage dans un setState()
 ```java
@@ -4543,6 +4712,101 @@ class ApiArticle {
       throw Exception('Erreur lors du chargement des articles');
     }
   }
+}
+```
+
+### Transformer du JSON en List<String> et List<Object>
+* https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
+```java
+// models/journal.dart
+class Journal {
+  String title;
+  List<String> authors;
+  List<Article> articles;
+
+  Journal({this.title, this.authors, this.articles});
+
+  factory Journal.fromJson(Map<String, dynamic> json) {
+    var authorsFromJson = json['authors'];
+    List<String> authorsList = authorsFromJson.cast<String>(); // convertit en une liste de String
+
+    var articlesFromJson = json['articles'] as List;
+    List<Article> articlesList = articlesFromJson.map((article) => Article.fromJson(article)).toList();
+
+    return Journal(
+      title: json['title'],
+      type: authorsList,
+      articles: articlesList,
+    );
+  }
+}
+
+// models/article.dart
+class Article {
+  String title;
+  String author;
+  String content;
+
+  Dish({this.title, this.author, this.content});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      title: json['title'],
+      type: json['author'],
+      articles: json['content'],
+    );
+  }
+}
+
+// api-journal
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import 'package:mon_projet/models/journal.dart';
+
+class ApiJournal {
+
+  static Future<Journal> fetchJournal({params}) async {
+    final response = await http.get("urlAPI");
+    if (response.statusCode == 200) {
+      return Journal.fromJson(json.decode(response.body));
+    } else {
+      return Future.error('Erreur lors du chargement du journal');
+    }
+  }
+}
+```
+
+### LIST IN FUTURE BUILDER
+```java
+class _ArticlesState extends State<Articles> {
+
+  Future<List<Article>> articles;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    articles = ApiJournal.fetchArticles();
+  }
+
+    FutureBuilder<List<Article>>(
+      future: articles,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return rowArticle(article: snapshot.data[index]);
+              },
+          );
+        } else if (snapshot.hasError) {
+          return Text("${snapshot.error}");
+        }
+        // By default, show a loading spinner.
+        return CircularProgressIndicator();
+      },
+    ),
 }
 ```
 

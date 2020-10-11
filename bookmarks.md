@@ -88,7 +88,8 @@
 * design patterns and system architecture
 * networking and databases
 * API REST
-
+* POSTMAN
+* CSS GRID
 
 ## :gun: WEB TOOLS
 
@@ -179,39 +180,8 @@
 * 20 plateformes pour apprendre à coder gratuitement : https://www.journaldunet.com/solutions/dsi/1491765-ou-apprendre-a-coder-gratuitement-20-plateformes-presentees/
 * DevTut : https://devtut.github.io/
 * Roadmap to becoming a web developer in 2020 : https://github.com/kamranahmedse/developer-roadmap
-* CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
-* Combinaisons et groupes de sélecteurs | MDN : https://developer.mozilla.org/fr/docs/Apprendre/CSS/Introduction_%C3%A0_CSS/Combinators_and_multiple_selectors
-* CSS font-display et le chargement des polices web - Alsacreations : https://www.alsacreations.com/article/lire/1779-CSS-font-display-et-le-chargement-des-polices-web.html
-* < pre > : l'élément de texte préformaté - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/pre
-* Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
-* box-sizing - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/box-sizing
-* text-overflow - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/text-overflow
-* ::before (:before) - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/::before
-* < hr > : l'élément de rupture thématique (règle horizontale) - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/hr
-* inherit - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/inherit
-* transform - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/transform
-* Disable CSS transitions and animations… temporarily or permanently! – onezeronull.com : http://onezeronull.com/2016/10/06/disable-css-transitions-and-animations-temporarily-or-permanently/
-* When to use margin vs padding in CSS - Stack Overflow : https://stackoverflow.com/questions/2189452/when-to-use-margin-vs-padding-in-css
 * Jump links and viewport positioning – Nicolas Gallagher : http://nicolasgallagher.com/jump-links-and-viewport-positioning/
-* html - Creating a line with circle in the middle - Stack Overflow : https://stackoverflow.com/questions/34969341/creating-a-line-with-circle-in-the-middle
-* Create Shapes Using Pure CSS : http://www.webtutorialsource.com/tutorial/shapes-using-pure-css/
-* 8 simple CSS3 transitions that will wow your users | Webdesigner Depot : https://www.webdesignerdepot.com/2014/05/8-simple-css3-transitions-that-will-wow-your-users/
-* css - How to write :hover condition for a:before and a:after? - Stack Overflow : https://stackoverflow.com/questions/5777210/how-to-write-hover-condition-for-abefore-and-aafter
-* html - CSS triangle :before element - Stack Overflow : https://stackoverflow.com/questions/20589780/css-triangle-before-element
-* CSS Flexbox Inspector: Examine Flexbox layouts - Firefox Developer Tools | MDN : https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector/How_to/Examine_Flexbox_layouts
-* CSS Tip: Fixed Headers and Section Anchors | Caktus Group : https://www.caktusgroup.com/blog/2017/10/23/css-tip-fixed-headers-and-section-anchors/
-* CSS hue-rotate() Function : https://www.quackit.com/css/functions/css_hue-rotate_function.cfm
-* filter - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/filter
-* css - How to make a image center in a div? - Stack Overflow : https://stackoverflow.com/questions/16818192/how-to-make-a-image-center-in-a-div
-* html - How to center a "position: absolute" element - Stack Overflow : https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
-* html - position:absolute in media query is overriding all other rules - Stack Overflow : https://stackoverflow.com/questions/34445409/positionabsolute-in-media-query-is-overriding-all-other-rules
-* Implementing a variable font with fallback web fonts – Zeichenschatz : https://www.zeichenschatz.net/typografie/implementing-a-variable-font-with-fallback-web-fonts.html
-* Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/
 * Google facilite les échanges entre les entreprises et leurs clients sur Google Maps - Blog du Modérateur : https://www.blogdumoderateur.com/google-maps-my-business
-* HTML CSS - Désactiver un lien href par CSS - INFORMATUX Développements PHP JQUERY Mobile Cross-platform Sécurité Web : https://informatux.com/news/article/7/desactiver-un-lien-href-par-css
-* SVG Path : https://www.w3schools.com/graphics/svg_path.asp
-* The CSS Working Group At TPAC: What’s New In CSS? — Smashing Magazine : https://www.smashingmagazine.com/2018/10/tpac-css-working-group-new
-* CSS Frameworks Or CSS Grid: What Should I Use For My Project? — Smashing Magazine : https://www.smashingmagazine.com/2018/11/css-frameworks-css-grid
 * How Much Should You Get Paid To Build Websites In 2019? — Smashing Magazine : https://www.smashingmagazine.com/2019/01/costs-building-websites-2019
 * Improve Animated GIF Performance With HTML5 Video — Smashing Magazine : https://www.smashingmagazine.com/2018/11/gif-to-video
 * Designing Experiences To Improve Mental Health — Smashing Magazine : https://www.smashingmagazine.com/2018/10/designing-experiences-improving-mental-health/
@@ -280,6 +250,7 @@
 * L'intelligence émotionnelle : la stratégie pour conclure vos ventes : https://www.codeur.com/blog/intelligence-emotionnelle-vente
 * Les 10 cours LinkedIn Learning les plus populaires de l’année : https://www.linkedin.com/pulse/les-10-cours-linkedin-learning-plus-populaires-de-lann%25C3%25A9e-longuet
 * Google annonce le crawl d'HTTP/2... mais qu'est-ce que c'est ? : https://www.codeur.com/blog/http2-definition
+* How the Web Works (For Backend Devs) : https://dev.to/anonyda/the-backend-dev-s-web-109e
 
 
 ## :keyboard: WINDOWS
@@ -348,6 +319,7 @@
 * A website to edit and experiment with your content then preview how your webpage will look on Google, Facebook, Twitter, and more : https://metatags.io/
 * Bing Webmaster Tools lance un nouveau Testeur de robots.txt : https://www.arobasenet.com/2020/09/bing-testeur-robots-txt-6339.html
 * How to Efficiently Write the Perfect Meta Description : https://ahrefs.com/blog/meta-description/
+* Comment bien optimiser les images pour le SEO : https://fr.semrush.com/blog/referencer-les-images-pour-le-seo/
 
 
 ## :bulb: ORGANISATION
@@ -876,6 +848,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A free SVG background generator for your websites, blogs, and app : https://bgjar.com/
 * This is good UX writing : https://uxdesign.cc/this-is-good-ux-writing-10c4b956a6c3
 * Some New Icon Sets : https://css-tricks.com/some-new-icon-sets/
+* More than 1,200 high-quality icons, and an interface for customizing them : https://github.com/bytedance/IconPark
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)

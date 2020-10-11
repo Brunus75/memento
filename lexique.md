@@ -195,3 +195,5 @@ https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-lin
 * Compilation anticipée (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
 
 * Compilation à la volée : compilation lors de l'exécution d'un programme
+
+* **Référence** : adresse en mémoire d'une variable

@@ -201,11 +201,14 @@ git checkout [commitSha] index.html # revient à l'état du fichier à ce moment
 # le fichier est directement placé en staging
 
 # MERGE
-git rebase develop # git rebase = se mettre au même niveau que la branche principale 
-# en créant une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
+git rebase develop # git rebase = prendre la branche principale comme base et la prolonger
+# rebase = prolonger ex. git rebase develop = je prolonge la branche develop avec ma branche
+# crée une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
 # git rebase [base] (OK pour les branches privées/locales (ex. feature), 
-# à éviter pour les branches publiques/publiées (ex. master, develop))
-# ex. sur branche feature = git rebase develop
+# à éviter pour les branches publiques/publiées (ex. master, develop) car rebase crée de nouveaux commits
+# ex. sur branche feature = git rebase develop 
+# => place ma branche feature au bout de la branche develop = develop -> feature
+# pour que la branche develop reviennent en bout de branche = git checkout develop, git rebase feature
 git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
 # ex. sur branche master = git merge feature5, puis git branch -d feature5
 git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
@@ -252,7 +255,9 @@ git add + git commit + git push du travail en cours
 git checkout develop # se placer sur la branche principale
 git pull # récupérer les changements de la branche principale
 git checkout ma_branche # se placer sur la branche feature
-git rebase develop # se mettre au même niveau que la branche ppale en créant une seule ligne d'historique
+# il faut MAJ la branche develop car il y a eu des changements
+git rebase develop # MAJ de la branche principale (notre passé, notre base), 
+# prolongée par notre branche (notre présent)
 git push -f # push en force
 ```
 

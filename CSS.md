@@ -4,10 +4,40 @@
 
 ## RESSOURCES
 
+### DOC
+* CSS Selectors Reference : https://www.w3schools.com/cssref/css_selectors.asp
+* Combinaisons et groupes de sélecteurs | MDN : https://developer.mozilla.org/fr/docs/Apprendre/CSS/Introduction_%C3%A0_CSS/Combinators_and_multiple_selectors
+* CSS font-display et le chargement des polices web - Alsacreations : https://www.alsacreations.com/article/lire/1779-CSS-font-display-et-le-chargement-des-polices-web.html
+* box-sizing - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/box-sizing
+* text-overflow - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/text-overflow
+* ::before (:before) - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/::before
+* inherit - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/inherit
+* transform - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/transform
+* Disable CSS transitions and animations… temporarily or permanently! – onezeronull.com : http://onezeronull.com/2016/10/06/disable-css-transitions-and-animations-temporarily-or-permanently/
+* When to use margin vs padding in CSS - Stack Overflow : https://stackoverflow.com/questions/2189452/when-to-use-margin-vs-padding-in-css
+* Create Shapes Using Pure CSS : http://www.webtutorialsource.com/tutorial/shapes-using-pure-css/
+* 8 simple CSS3 transitions that will wow your users | Webdesigner Depot : https://www.webdesignerdepot.com/2014/05/8-simple-css3-transitions-that-will-wow-your-users/
+* css - How to write :hover condition for a:before and a:after? - Stack Overflow : https://stackoverflow.com/questions/5777210/how-to-write-hover-condition-for-abefore-and-aafter
+* CSS Flexbox Inspector: Examine Flexbox layouts - Firefox Developer Tools | MDN : https://developer.mozilla.org/en-US/docs/Tools/Page_Inspector/How_to/Examine_Flexbox_layouts
+* CSS Tip: Fixed Headers and Section Anchors | Caktus Group : https://www.caktusgroup.com/blog/2017/10/23/css-tip-fixed-headers-and-section-anchors/
+* CSS hue-rotate() Function : https://www.quackit.com/css/functions/css_hue-rotate_function.cfm
+* filter - CSS : Feuilles de style en cascade | MDN : https://developer.mozilla.org/fr/docs/Web/CSS/filter
+* css - How to make a image center in a div? - Stack Overflow : https://stackoverflow.com/questions/16818192/how-to-make-a-image-center-in-a-div
+* Implementing a variable font with fallback web fonts – Zeichenschatz : https://www.zeichenschatz.net/typografie/implementing-a-variable-font-with-fallback-web-fonts.html
+* Pourquoi j'utilise l'unité Rem et non l'unité Pixel : https://blog.lesieur.name/pourquoi-j-utilise-l-unite-rem-et-non-l-unite-pixel/
+* HTML CSS - Désactiver un lien href par CSS - INFORMATUX Développements PHP JQUERY Mobile Cross-platform Sécurité Web : https://informatux.com/news/article/7/desactiver-un-lien-href-par-css
+* SVG Path : https://www.w3schools.com/graphics/svg_path.asp
+* The CSS Working Group At TPAC: What’s New In CSS? — Smashing Magazine : https://www.smashingmagazine.com/2018/10/tpac-css-working-group-new
+* CSS Frameworks Or CSS Grid: What Should I Use For My Project? — Smashing Magazine : https://www.smashingmagazine.com/2018/11/css-frameworks-css-grid
+* Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
+### NEW
+* "CSS font-size-adjust property provides the developers with honest management of the font size by allowing them to modify the font size of a part when the primarily selected font-type is not available" : https://www.lambdatest.com/blog/css-font-size-adjust/
+
 ### TO READ
 * A Complete Guide to CSS Media Queries : https://css-tricks.com/a-complete-guide-to-css-media-queries
 * Working with JavaScript Media Queries : https://css-tricks.com/working-with-javascript-media-queries
 * Beyond Media Queries: Using Newer HTML & CSS Features for Responsive Designs : https://css-tricks.com/beyond-media-queries-using-newer-html-css-features-for-responsive-designs/
+* 3 things about CSS variables you might not know : https://patrickbrosset.com/articles/2020-09-21-3-things-about-css-variables-you-might-not-know/
 
 
 

@@ -102,6 +102,7 @@
 * 5 Pairs of Magic Methods in Python That You Should Know : https://medium.com/better-programming/5-pairs-of-magic-methods-in-python-you-should-know-f98f0e5356d6
 * One bash command to start the day : https://dev.to/dmahely/one-bash-command-to-start-the-day-2fni
 * Writing More Idiomatic and Pythonic Code : https://towardsdatascience.com/writing-more-idiomatic-and-pythonic-code-c22e900eaf83
+* Python Refactorings - Part 4 : https://sourcery.ai/blog/explaining-refactorings-4/
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -203,6 +204,7 @@
 * GitBash
 * Cmder
 * DB Browser
+* Sourcery (refactoring de code)
 
 
 ## SPECIFICITES PYTHON
@@ -371,6 +373,21 @@ class Person:
 class Person:
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
+```
+* Utiliser ```in``` à la place de ```or```
+```py
+if payment.currency == 'USD' or payment.currency == 'EUR':
+# devient
+if payment.currency in ['USD', 'EUR']:
+```
+* Simplify ```if``` expression by using ```or```
+```py
+if input_currency:
+    currency = input_currency
+else:
+    currency = DEFAULT_CURRENCY
+# devient
+currency = input_currency or DEFAULT_CURRENCY
 ```
 
 
@@ -1514,6 +1531,10 @@ while essais < nombre_essais:
     essais += 1
 
 print(f"Vous avez perdu. Le nombre mystère était {nombre_mystere}")
+
+# connaître l'index avec enumerate
+for i, currency in enumerate(currencies):
+    print(i, currency)
 ```
 
 ## LES FICHIERS 

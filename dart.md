@@ -479,6 +479,9 @@ nums.sort();
 print(nums);  // [-11, 2, 13]
 
 numbers.sort((num1, num2) => num1 - num2); // => [1, 2, 3, 4, 5]
+
+// CAST()
+maListe.cast<String>(); // transforme les éléments de ma liste en des entités String
 ```
 ### MAPS
 * Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/

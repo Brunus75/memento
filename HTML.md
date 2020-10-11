@@ -3,6 +3,12 @@
 ## RESSOURCES
 
 * A Complete HTML5 Canvas Cheat Sheet – PDF Free Download : http://www.coding-dude.com/wp/html5/mastering-html5-canvas-with-this-free-cheat-sheet
+* < pre > : l'élément de texte préformaté - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/pre
+* < hr > : l'élément de rupture thématique (règle horizontale) - HTML (HyperText Markup Language) | MDN : https://developer.mozilla.org/fr/docs/Web/HTML/Element/hr
+* html - Creating a line with circle in the middle - Stack Overflow : https://stackoverflow.com/questions/34969341/creating-a-line-with-circle-in-the-middle
+* html - CSS triangle :before element - Stack Overflow : https://stackoverflow.com/questions/20589780/css-triangle-before-element
+* html - How to center a "position: absolute" element - Stack Overflow : https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
+* html - position:absolute in media query is overriding all other rules - Stack Overflow : https://stackoverflow.com/questions/34445409/positionabsolute-in-media-query-is-overriding-all-other-rules
 
 ## CONTRAINTES 
 

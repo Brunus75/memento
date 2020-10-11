@@ -107,6 +107,15 @@ body
 }
 
 requête : http://localhost:3001/menu?date=2019-05-14&type=vegetarien
+Rules : Query String | date | 2019-05-14 // paramètre obligatoire
+AND
+Rules : Query String | type | vegetarien // paramètre optionnel
+OR
+Rules : Query String | type | vegan // paramètre optionnel
+
+mettre une route par défaut si les paramètres ne correspondent pas
+400 => renvoie une erreur
+200 => renvoie un message
 ```
 
 ### APPEL MOCKOON DEPUIS FLUTTER

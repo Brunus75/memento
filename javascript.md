@@ -41,10 +41,11 @@
 * JavaScript, ES6, ES7, ES10 where are we? : https://medium.com/engineered-publicis-sapient/javascript-es6-es7-es10-where-are-we-8ac044dfd964
 * Loop Over querySelectorAll Matches : https://css-tricks.com/snippets/javascript/loop-queryselectorall-matches/
 * JavaScript Cheat Sheet : https://websitesetup.org/javascript-cheat-sheet/
+* What WeakSet in JavaScript is and How It Works : https://blog.alexdevero.com/weakset-in-javascript
+*  Features I Wish I’d Known About ES6 & ES7 : https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
 
 ### TO READ
 * ES6, ES7 & ES8, TIME to update your JavaScript / ECMAScript! : https://www.udemy.com/course/es6-es7-and-es8-its-time-to-update-your-javascript/?deal_code=EXPLORENOW0920&utm_source=email-Adhoc&utm_campaign=2020-09-26_._cn_UDEMY_BASICS_09_26_2020_._en_XPOLL_._us_AllAlltl_T1_._tg_n_.__._la_fr_._rn_2020-09-26_._&utm_medium=2020-09-26_UDEMY_BASICS_09_26_2020_XPOLL_AllAll_T1_n&utm_content=udemy.17485945&data_h=CEcSc1xWTHw%3D&utm_term=CROSS_POLL_CAT_SUBCAT_2
-* https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
 * https://blog.alexdevero.com/es6-es7-es8-modern-javascript-pt6/
 * https://www.cronj.com/blog/javascript-es7-es8-new-features/
 * https://derickbailey.com/2017/06/06/3-features-of-es7-and-beyond-that-you-should-be-using-now/
@@ -63,6 +64,7 @@ C'est une représentation du HTML en orienté objet ; chaque élément du HTML e
 * **Linter** : programme qui va analyser notre code et détecter les erreurs de syntaxe, les variables non utilisées, les variables qui n'existent pas, la mauvaise organisation du code, le non-respect des bonnes pratiques d'écriture de code... (ex. : JSLint, ESLint.)
 * **NPM** : un gestionnaire de paquets (package manager). C'est un programme qui vous permet d'installer très facilement des modules pour le JavaScript
 * **Module** : bout de code écrit par quelqu'un et qui résout une problématique commune à beaucoup de développeurs : comme un parser XML, un générateur d'uuid (des identifiants uniques), un router, un framework de rendu HTML, etc.
+* **WeakSets** : Set qui ne peut contenir que des objets uniques et qui n'est pas itérable et qui n'a pas de propriété size
 
 ## CHEATSHEET
 
@@ -162,7 +164,8 @@ class Motorbike extends Vehicle {
 ```
 
 ### le mot-clé let
-permet de déclarer une variable locale, dans le contexte (scope) où elle a été assignée.
+* permet de déclarer une variable locale, dans le contexte (scope) où elle a été assignée.
+* block-scoped (a block is anything between { } )
 ```js
     var x = 1;
      
@@ -175,26 +178,27 @@ permet de déclarer une variable locale, dans le contexte (scope) où elle a e
     console.log(v); // v n'est pas définie, car v a été déclaré avec 'let' et non 'var'.
 
 En général, garder un contexte global propre est vivement conseillé, 
-et c'est pourquoi ce mot clé let est vraiment le bienvenu !
+et c''est pourquoi ce mot clé let est vraiment le bienvenu !
 let a été pensé pour remplacer var
 ```
 
 ### Le nouveau mot-clé const
-permet de déclarer des constantes
+* permet de déclarer des constantes
+* block-scoped (a block is anything between { } )
 ```js
 const PI = 3.141592 ; 
-Une déclaration de constante ne peut se faire qu'une fois, une fois définie, 
+Une déclaration de constante ne peut se faire qu''une fois, une fois définie, 
 vous ne pouvez plus changer sa valeur.
-Attention, le comportement est un peu différent pour une constante de tableau ou d'objet. 
-Vous ne pouvez pas modifier la référence vers le tableau ou l'objet, 
-mais vous pouvez continuer à modifier les valeurs à l'intérieur tableau, 
-ou les propriétés de l'objet.
+Attention, le comportement est un peu différent pour une constante de tableau ou d''objet. 
+Vous ne pouvez pas modifier la référence vers le tableau ou l''objet, 
+mais vous pouvez continuer à modifier les valeurs à l''intérieur tableau, 
+ou les propriétés de l''objet.
 ``` 
 
 ### Les fonctions fléchées
 ```js
 ne définissent pas un nouveau contexte comme les fonctions traditionnelles
-structure d'une fonction fléchée : (paramètre) => { corps de la fonction } 
+structure d''une fonction fléchée : (paramètre) => { corps de la fonction } 
 La fonction suivante:
 
     bouton.onclick = function() {
@@ -203,6 +207,14 @@ La fonction suivante:
 
 Correspond donc à la fonction fléchée suivante:
 bouton.onclick = () => { envoyerEmail(this.email); }
+
+// exemples
+const sumTwoNumbers = (num1, num2) => { return num1 + num2; }
+// ↓ pas de return car instruction tient sur une ligne
+const sumTwoNumbers = (num1, num2) => num1 + num2;
+// ↓ In case we have only have one parameter we can remove the parentheses
+const multiplyBy10 = num => num * 10;
+
 
 Une meilleure utilisation du mot-clé this 
 // Cas n°1 : Confusion sur 'this'
@@ -236,6 +248,9 @@ bouton.onclick = () => { envoyerEmail(this.email); }
 // this fait référence à l'entité englobante, au contexte englobant 
 // ici l'objet Person
 
+// in arrow function ```this``` represents the definition context 
+// while in regular function ```this``` represents the execution context
+
 // Exemple d'utilisation des fonctions fléchées avec des Promesses
 getUser(userId)
   .then(user => getFriendsList(user))
@@ -263,14 +278,29 @@ elements.map(element => element.length); // [8, 6, 7, 9]
 ```
 
 ### Les paramètres de fonctions par défaut
-En JavaScript ES6, on peut définir facilement des paramètres de fonctions avec une valeur par défaut.
+* En JavaScript ES6, on peut définir facilement des paramètres de fonctions avec une valeur par défaut.
 ```js
-Imaginons une fonction qui multiplie deux nombres passés en paramètres, 
-mais le deuxième paramètre est facultatif, et il vaut 1 par défaut: 
+// Imaginons une fonction qui multiplie deux nombres passés en paramètres, 
+// mais le deuxième paramètre est facultatif, et il vaut 1 par défaut: 
 
     function multiplier(a, b = 1) {
       return a * b;
     }
+```
+* (! Note) Keep in mind to keep all default parameters to the right otherwise you won’t get the proper result.
+```js
+// Don't do this 
+function add(a = 4, b) {
+    return a + b
+}
+
+add(1) // result = NaN
+
+// the right way 
+function add(a, b = 4) {
+    return a + b
+}
+add(1) // result = 5
 ```
 
 ### Les collections 'Set' et 'Map'
@@ -329,6 +359,70 @@ for (const element of array1) {
 // expected output: "c"
 ```
 
+###  Destruction assignment
+* https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
+```js
+let colors = ['one', 'two', 'three']
+
+let [red, blue, yellow] = colors
+
+console.log(red);      // one
+console.log(blue);     // two 
+console.log(yellow);   // three
+
+// swaping values
+let a = 5;
+let b = 10;
+
+[a, b] = [b, a]
+
+console.log(a);   // a = 10
+console.log(b);   // b = 5
+
+
+// object destruction:
+const user = {
+    id: 1,
+    name: "Ali",
+    age: "30"
+}
+
+// lets extract the user name only
+const { name } = user
+
+console.log(name);  // Ali
+
+
+// Using destruction and default values
+const user = {
+    id: 1,
+    name: "Ali",
+}
+
+const { name, age = 55 } = user
+
+console.log(age);  // 55
+```
+### Generators
+* https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
+```js
+function* numberGenerator() {
+    yield 1; // sorte de return
+    yield 2;
+    return 3; // return final
+}
+
+let generator = numberGenerator();
+
+let one = generator.next();
+let two = generator.next();
+let last = generator.next();
+
+console.log(one);    // { value: 1, done: false }
+console.log(two);    // { value: 2, done: false }
+console.log(last);   // { value: 3, done: true }
+```
+
 ### Tous les changements: http://es6-features.org/#Constants
 
 ### Les promesses
@@ -384,6 +478,16 @@ getUser(userId)
 ### The exponentiation operator **
 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Exponentiation
 ```js
+// avant :
+let result = Math.pow(2, 3)
+console.log(result)  // 8
+
+// maintenant :
+let a = 2 ** 3
+let b = 3 ** 3
+console.log(a === Math.pow(2, 3)) // true
+console.log(b === Math.pow(3, 3)) // true
+
 // Basic exponentiation
 2 ** 3   // 8
 3 ** 2   // 9
@@ -415,8 +519,28 @@ console.log((2 ** 3) ** 2);
 ```
 
 ### Array includes
+* https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
 ```js
 array.includes(myItem) // true or false
+
+// exemple
+let colors = ['red', 'white', 'black', 'blue']
+
+// using indexOf 
+console.log(colors.indexOf('red'));     // 0
+console.log(colors.indexOf('purple'));  // -1
+
+if (colors.indexOf('purple') === -1) {
+    console.log("Not found");
+}
+
+// using includes 
+console.log(colors.includes('red'));      // true
+console.log(colors.includes('purple'));  // false
+
+if (!colors.includes('purple')) {
+    console.log("Not found");
+}
 ```
 
 ## ES8
