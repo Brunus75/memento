@@ -761,6 +761,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Design Resources : https://designresourc.es
 * Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 * The 50 + Best FREE resources for learning design & grow your career (so far) : https://medium.muz.li/the-50-best-free-resources-for-learning-design-grow-your-career-so-far-da310fe7aad2
+* 10 Excellent Free Online Graphic Design Courses : https://dribbble.com/stories/2020/10/08/free-graphic-design-courses-online?utm_campaign=2020-10-13&utm_medium=email&utm_source=courtside-20201013
 * 7 Practical Tips for Cheating at Design – Refactoring UI – Medium : https://medium.com/refactoring-ui/7-practical-tips-for-cheating-at-design-40c736799886
 * https://abduzeedo.com/web-design-inspiration-landing-pages
 *  40 Free HTML landing page templates : https://dev.to/davidepacilio/40-free-html-landing-page-templates-3gfp
@@ -1213,3 +1214,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://medium.com/tap-to-dismiss/color-within-constraints-d6f777a3b72d
 * https://dev.to/jessesbyers/someone-stole-my-dev-article-how-to-build-a-python-script-to-detect-stolen-content-54fg
 * https://dev.to/javinpaul/10-data-science-and-machine-learning-courses-for-programmers-looking-to-switch-career-57kd
+* Order and control: ideal online experience for an autistic person : https://uxdesign.cc/order-and-control-ideal-online-experience-for-an-autistic-person-e3e039f52945
+* Introduction to Bash for Beginners : https://livecodestream.dev/post/2020-10-10-introduction-to-bash-for-beginners

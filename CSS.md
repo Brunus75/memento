@@ -32,6 +32,7 @@
 * Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
 ### NEW
 * "CSS font-size-adjust property provides the developers with honest management of the font size by allowing them to modify the font size of a part when the primarily selected font-type is not available" : https://www.lambdatest.com/blog/css-font-size-adjust/
+* "the intent of :focus-visible is to allow authors to provide clearly identifiable focus styles which are visible when a user is likely to need to understand where the focus is, and not visible in other cases." : https://matthiasott.com/notes/focus-visible-is-here
 
 ### TO READ
 * A Complete Guide to CSS Media Queries : https://css-tricks.com/a-complete-guide-to-css-media-queries

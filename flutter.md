@@ -225,7 +225,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [FORM FUTURE BUILDER avec condition](#FORM-FUTURE-BUILDER-avec-condition)   
    * [FUTURE DROPDOWN](#future-dropdown)
    * [AFFICHER UNE DONNEE API VIA UNE ROUTE](#AFFICHER-UNE-DONNEE-API-VIA-UNE-ROUTE)
-   * [MAP BUILDER FUTURE](#MAP-BUILDER-FUTURE)
+   * [FUTURE DROPDOWN MAP](#FUTURE-DROPDOWN-MAP)
    * [REQUETE PUT AVEC BODY](#REQUETE-PUT-AVEC-BODY)
    * [STREAM BUILDER](#stream-builder)
 * [PERSONNALISATION](#personnalisation)
@@ -2080,6 +2080,7 @@ class _BodyState extends State<Body> {
 #### ALERTDIALOG
 * Modale d'alerte
 * Renvoie une Future (promesse) => programmation asynchrone
+* A SimpleDialog is designed to show options in a list (as opposed to an AlertDialog, which is meant to notify the user of something)
 ```java
 import 'package:flutter/material.dart';
 
@@ -2272,11 +2273,15 @@ void InitState() {
 * Difference between AlertDialog & SimpleDialog : https://medium.com/flutteropen/flutter-widgets-17-simpledialog-1cf5bfd83f5f
 ```
 The main difference between AlertDialog & SimpleDialog is that the AlertDialog has more parameters, 
-which are the titleTextStyle, content, contentTextStyle, and actions, than the SimpleDialog
+which are the titleTextStyle, content, contentTextStyle, and actions, than the SimpleDialog.
+
+A SimpleDialog is designed to show options in a list 
+(as opposed to an AlertDialog, which is meant to notify the user of something)
 ```
 #### SIMPLEDIALOG
 * Un modal qui renseigne sur plusieurs choix
 * Renvoie une Future (promesse) => programmation asynchrone
+* A SimpleDialog is designed to show options in a list (as opposed to an AlertDialog, which is meant to notify the user of something)
 ```java
 import 'package:flutter/material.dart';
 
@@ -2363,6 +2368,49 @@ Future<void> _askedToLead() async {
   }
 }
 ```
+* ListView in a SimpleDialog
+* https://stackoverflow.com/a/56355962
+```java
+// Wraping the ListView in a Container and giving it a width: double.maxFinite, 
+// solves the problem with iOS/Android having trouble with ListView inside a dialog:
+showDialog(
+   context: context,
+   builder: (BuildContext context) {
+      return AlertDialog(
+         content: Container(
+            width: double.maxFinite,
+            child: ListView(
+               children: <Widget>[]
+            ),
+         ),
+      );
+   }
+);
+
+// In the case of a ListView inside a Column that is inside an AlertDialog:
+showDialog(
+   context: context,
+   builder: (BuildContext context) {
+      return AlertDialog(
+         content: Container(
+            width: double.maxFinite,
+            child: Column(
+               mainAxisSize: MainAxisSize.min,
+               children: <Widget>[
+                  Expanded(
+                     child: ListView(
+                        shrinkWrap: true,
+                        children: <Widget>[]
+                     )
+                  )
+               ]
+            ),
+         ),
+      );
+   }
+);
+```
+
 #### NAVIGUER VERS UN SECOND SCAFFOLD
 * https://flutter.dev/docs/cookbook#navigation
 * https://api.flutter.dev/flutter/widgets/Navigator-class.html
@@ -4982,7 +5030,7 @@ FutureBuilder<Author>(
   },
 )
 ```
-### MAP BUILDER FUTURE
+### FUTURE DROPDOWN MAP
 ```java
 import 'package:http/http.dart' as http;
 import 'package:my_app/src/data/author.dart';
@@ -5010,7 +5058,7 @@ class ApiAuthor {
 ```java
   String _selectedAuthorName;
   String _selectedAuthorId;
-
+  Future<List<Author>> _futureListAuthors;
   Map<String, String> _authorList;
 
   @override
@@ -5076,6 +5124,124 @@ Widget authorDropDownButton() {
         value == null ? 'Veuillez renseigner un auteur' : null,
   );
 }
+
+// AVEC INITIAL VALUE
+// author.dart
+class Author {
+  String code;
+  String nom;
+
+  Author({this.code, this.nom});
+
+  factory Author.fromJson(Map<String, dynamic> json) {
+    return Author(
+      code: json['code'],
+      nom: json['nom']
+    );
+  }
+}
+
+// api-author.dart
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+import 'package:sivu_mobile/models/author.dart';
+
+class ApiAuthor {
+  static Future<List<Author>> fetchAuthors() async {
+    final response = await http.get("http://10.0.2.2:3001/authors");
+    if (response.statusCode == 200) {
+      var listMapAuthors = json.decode(response.body) as List;
+      List<Author> listObjectAuthors = listMapAuthors
+          .map((authors) => Author.fromJson(authors))
+          .toList();
+      return listObjectAuthors;
+    } else {
+      return Future.error('Erreur lors du chargement des auteurs');
+    }
+  }
+}
+
+
+// author_screen.dart
+class _AuthorsScreenState extends State<AuthorsScreen> {
+  String selectedCodeAuthor = "p_dick";
+  String selectedAuthor;
+  Future<List<Author>> listAuthors;
+  Map<String, String> mapAuthors;
+
+@override
+  Widget build(BuildContext context) {
+	return Scaffold(
+		body: Container(
+          		child: DropdownButtonHideUnderline(
+            			child: dropDownAuthorsMenu(),
+          		),
+        	)
+	);
+}
+
+Widget dropDownAuthorsMenu() {
+    if (mapAuthors == null) {
+      mapAuthors = Map<String, String>(); // initialise la map
+      return FutureBuilder<List<Author>>(
+        future: listAuthors,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return DropdownMenuItem(
+                child: Text(
+              'Erreur lors du chargement des données : ${snapshot.error}',
+              overflow: TextOverflow.ellipsis,
+            ));
+          } else if (snapshot.hasData) {
+            for (int i = 0; i < snapshot.data.length; i++) {
+              if (snapshot.data[i].nom != null) {
+                mapAuthors.putIfAbsent(
+                    snapshot.data[i].code, () => snapshot.data[i].nom);
+              }
+            }
+            // ↓ le profil affiché dans le menu déroulant
+            selectedAuthor = mapAuthors[selectedCodeAuthor];
+            return dropDownAuthorsButton();
+            // ↓ on affiche du texte vide le temps du chargement des données
+          } else
+            return DropdownMenuItem(child: Text('Chargement des auteurs...'));
+        },
+      );
+    } // si les données sont déjà chargées, on les affiche
+    return dropDownAuthorsButton();
+  }
+
+  Widget dropDownAuthorsButton() {
+    return DropdownButton(
+        value: selectedType,
+        isExpanded: true,
+        style: TextStyle(fontSize: 14.0),
+        items: mapAuthors
+            .map((String code, String nom) {
+              return MapEntry(
+                  code,
+                  DropdownMenuItem<String>(
+                    value: nom,
+                    child: Text(
+                      nom,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: kTitleColor),
+                    ),
+                  ));
+            })
+            .values
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            selectedAuthor = value;
+            selectedCodeAuthor = mapAuthors.keys.firstWhere(
+                (key) => mapAuthors[key] == value,
+                orElse: () => null);
+          });
+        });
+  }
 ```
 ### REQUETE PUT AVEC BODY
 ```java

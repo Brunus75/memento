@@ -43,6 +43,7 @@
 * JavaScript Cheat Sheet : https://websitesetup.org/javascript-cheat-sheet/
 * What WeakSet in JavaScript is and How It Works : https://blog.alexdevero.com/weakset-in-javascript
 *  Features I Wish I’d Known About ES6 & ES7 : https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
+* Utiliser les différents tests d'égalité : https://developer.mozilla.org/fr/docs/Web/JavaScript/Les_diff%C3%A9rents_tests_d_%C3%A9galit%C3%A9
 
 ### TO READ
 * ES6, ES7 & ES8, TIME to update your JavaScript / ECMAScript! : https://www.udemy.com/course/es6-es7-and-es8-its-time-to-update-your-javascript/?deal_code=EXPLORENOW0920&utm_source=email-Adhoc&utm_campaign=2020-09-26_._cn_UDEMY_BASICS_09_26_2020_._en_XPOLL_._us_AllAlltl_T1_._tg_n_.__._la_fr_._rn_2020-09-26_._&utm_medium=2020-09-26_UDEMY_BASICS_09_26_2020_XPOLL_AllAll_T1_n&utm_content=udemy.17485945&data_h=CEcSc1xWTHw%3D&utm_term=CROSS_POLL_CAT_SUBCAT_2

@@ -69,7 +69,7 @@
 
 ## GLOSSAIRE
 
-* HEAD = référence (pointeur) de la branche courante, le parent du prochain commit
+* HEAD = commit sur lequel nous travaillons = référence (pointeur) de la branche courante, le parent du prochain commit
 * Origin = le dépôt distant, là où a été crée le repo (ex. GitHub)
 * Remote = le dépôt local (machine de l'utilisateur)
 * Fork = miroir d'un projet
