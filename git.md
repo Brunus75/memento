@@ -87,6 +87,7 @@
 * https://scotch.io/bar-talk/git-cheat-sheet
 * https://education.github.com/git-cheat-sheet-education.pdf
 * Git cherry-pick : https://www.atlassian.com/fr/git/tutorials/cherry-pick
+* Git Log Cheatsheet : https://elijahmanor.com/blog/git-log
 ---
 * Vim cheatsheet : https://devhints.io/vim
 * Git Flow cheatsheet : https://danielkummer.github.io/git-flow-cheatsheet/
@@ -139,6 +140,7 @@ git log # historique de l'activité + ID des commits
 git log --oneline
 git log -n 2 # deux lignes d'historique seulement
 git log -p readme.md # historique de readme.md
+git log --oneline --decorate --graph # "pretty" log
 git show # afficher des informations sur tout fichier git
 git diff # énumère les changements depuis le dernier commit
 

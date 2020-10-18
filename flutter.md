@@ -5,12 +5,14 @@
 
 **VEILLE**
 * https://twitter.com/FlutterDev
+* https://twitter.com/FlutterComm
 * https://twitter.com/flutterwk
 * https://twitter.com/fluttertap
 * https://twitter.com/FlutterTip
 * https://twitter.com/flutterize
 * https://twitter.com/biz84
 * https://twitter.com/remi_rousselet
+* https://twitter.com/csells
 * https://medium.com/@durannumit
 * https://www.reddit.com/r/FlutterDev/top/?t=week
 * The top 45 must-follow Flutter experts on Twitter : https://blog.codemagic.io/top-flutter-developers-to-follow-on-twitter/
@@ -68,11 +70,15 @@
 * Make 2048 With Flutter : https://www.youtube.com/watch?v=QEqLobOif3Y&feature=emb_logo
 * Day and Night Mood Animation - Flutter Animation - Speed Code : https://www.youtube.com/watch?v=uS_SoJWzRXY&feature=emb_logo
 * Navigation done right: a case for hierarchical routing with Flutter : https://medium.com/flutter-community/navigation-done-right-a-case-for-hierarchical-routing-with-flutter-ca0aac1275ad
+* dismissible_actions_example : https://github.com/JohannesMilke/dismissible_actions_example
+* Use different versions of Flutter SDK at once in one laptop using FVM : https://medium.com/jeeapex/use-different-versions-of-flutter-sdk-at-once-in-one-laptop-using-fvm-edefa184a7d3
+* Using Different Versions of Flutter Simultaneously with FVM : https://developermemos.com/posts/different-versions-flutter-fvm
 
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
 * When to use private variable
+* Run multiple Flutter versions in the same project concurrently
 
 **ROADMAP**
 * https://github.com/DroidsOnRoids/flutter-roadmap
@@ -107,6 +113,14 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Learning Flutter’s new Navigation and Routing system : https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
 * Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
 * Flutter File Structure for Big Projects : https://www.youtube.com/watch?v=Mt41FpSS-Vo&feature=emb_logo
+* Flutter Deep Dive : https://github.com/refactord/flutter-deep-dive
+
+**TESTING**
+* Flutter Testing For Beginners - The Ultimate Guide : https://www.reddit.com/r/FlutterDev/comments/j947hw/flutter_testing_for_beginners_the_ultimate_guide/
+* https://flutter.dev/docs/cookbook#testing
+* Flutter Automated Testing. Step-by-Step Guide : https://www.mobindustry.net/flutter-automated-testing-step-by-step-guide
+* https://medium.com/flutterpub/writing-and-running-widget-tests-from-android-studio-d63b9fea21c5
+
 
 **ANDROID STUDIO**
 * Android Studio 4.0 s'accompagne d'une interface pour l'édition de mouvement, propose la validation de la mise en page : https://android.developpez.com/actu/304550/Android-Studio-4-0-s-accompagne-d-une-interface-pour-l-edition-de-mouvement-propose-la-validation-de-la-mise-en-page-et-apporte-la-prise-en-charge-de-Clangd-pour-le-developpement-Cplusplus/
@@ -132,6 +146,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [RESSOURCES](#ressources)
 * [FLUTTER](#flutter)   
    * [GLOSSAIRE](#glossaire)
+   * [GUIDELINES](#GUIDELINES)
    * [CONSEILS](#conseils)
    * [ASTUCES](#astuces)
    * [STRUCTURE](#structure)
@@ -178,7 +193,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [FORM](#form)
       * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
       * [TEXTFIELD](#TEXTFIELD)
-      * [CHECKBOX](#CHECKBOX)
+      * [CHECKBOX](#CHECKBOX)   
+         * [CHECKBOXLISTTILE](#CHECKBOXLISTTILE)
       * [RADIO](#RADIO)
       * [SWITCH](#SWITCH)
       * [SLIDER](#SLIDER)
@@ -214,6 +230,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [FONCTIONNEMENT](#fonctionnement)   
    * [SHARED PREFERENCES](#shared-preferences)
    * [WEBVIEW](#webview)
+   * [AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW](#AFFICHER-UN-PDF-VIA-UNE-URL-AVEC-PDFVIEW)
+   * [OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER](#OUVRIR-UN-PDF-VIA-UNE-URL-AVEC-ADVANCE_PDF_VIEWER)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -344,6 +362,208 @@ that doesn’t always create a new instance of its class.
 ```
 * Navigator : a widget that manages a stack of Route objects
 * Route : an object managed by a Navigator that represents a screen, typically implemented by classes like MaterialPageRoute
+
+### GUIDELINES
+* https://medium.com/flutter-community/flutter-best-practices-and-tips-7c2782c9ebb5
+* Classes, enums, typedefs, and extensions name should in UpperCamelCase.
+```java
+class MainScreen { ... }
+enum MainItem { .. }
+typedef Predicate<T> = bool Function(T value);
+extension MyList<T> on List<T> { ... }
+```
+* Variables, constants, parameters, and named parameters should be in lowerCamelCase
+```java
+var item;
+const bookPrice = 3.14;
+final urlScheme = RegExp('^([a-z]+):');
+void sum(int bookPrice) {
+  // ...
+}
+```
+* Use relative imports for files in lib
+```java
+// Don't
+import 'package:demo/src/utils/dialog_utils.dart';
+
+// Do
+import '../../../utils/dialog_utils.dart';
+```
+* Always specify the type of member when it’s value type is known. Avoid using var when possible.
+```java
+//Don't
+var item = 10;
+final car = Car();
+const timeOut = 2000;
+
+//Do
+int item = 10;
+final Car bar = Car();
+String name = 'john';
+const int timeOut = 20;
+```
+* Avoid using ``as`` instead, use ``is`` operator
+```java
+// Usually, The as cast operator throws an exception if the cast is not possible. 
+// To avoid an exception being thrown, one can use is.
+
+//Don't
+(item as Animal).name = 'Lion';
+
+//Do
+if (item is Animal)
+  item.name = 'Lion';
+```
+* Use ``if`` condition instead of conditional expression
+```java
+//Don't
+Widget getText(BuildContext context) {
+  return Row(
+    children: [
+      Text("Hello"),
+      Platform.isAndroid ? Text("Android") : null,
+      Platform.isAndroid ? Text("Android") : SizeBox(),
+      Platform.isAndroid ? Text("Android") : Container(),
+    ]
+  );
+}
+
+//Do
+Widget getText(BuildContext context) {
+  return Row(
+      children: 
+      [
+        Text("Hello"), 
+        if (Platform.isAndroid) Text("Android")
+      ]
+  );
+}
+```
+* Use ?? and ?. operators
+```java
+// Prefer using ?? (if null) and ?. (null aware) operators instead of null checks 
+//in conditional expressions.
+//Don't
+v = a == null ? b : a;
+
+//Do
+v = a ?? b;
+
+//Don't
+v = a == null ? null : a.b;
+
+//Do
+v = a?.b;
+```
+* Use spread collections
+```java
+//Don't
+var y = [4,5,6];
+var x = [1,2];
+x.addAll(y);
+
+//Do
+var y = [4,5,6];
+var x = [1,2,...y];
+```
+* Use Cascades Operator
+```java
+// If we wont to perform a sequence of operation on the same object then 
+// we should use the Cascades(..) operator.
+// Don't
+var path = Path();
+path.lineTo(0, size.height);
+path.lineTo(size.width, size.height);
+path.lineTo(size.width, 0);
+path.close();  
+
+// Do
+var path = Path()
+..lineTo(0, size.height)
+..lineTo(size.width, size.height)
+..lineTo(size.width, 0)
+..close();
+```
+* Use raw string (discutable)
+```java
+// A raw string can be used to avoid escaping only backslashes and dollars.
+//Don't
+var s = 'This is demo string \\ and \$';
+
+//Do
+var s = r'This is demo string \ and $';
+```
+* Don’t explicitly initialize variables null
+```java
+// in Dart, the variable is automatically initialized to null when its value is not specified, 
+// so is adding null is redundant and unneeded.
+
+//Don't
+int _item = null;
+
+//Do
+int _item;
+```
+* Use expression function bodies
+```java
+// For functions that contain just one expression, you can use an expression function. 
+// The => (arrow) notation is used for expression function.
+//Don't
+get width {
+  return right - left;
+}
+Widget getProgressBar() {
+  return CircularProgressIndicator(
+    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+  );
+}
+
+//Do
+get width => right - left;
+Widget getProgressBar() => CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+    );
+```
+* Avoid print() calls, prefer ``debugPrint()``
+```
+print() and debugPrint() both are used for logging in the console. 
+If you are use print()and output is too much at once, then Android sometimes discards some log lines. To avoid this, use debugPrint()
+```
+* Split widget into different Widgets.
+```java
+// When setState() is called on a State, all descendent widgets will rebuild. 
+// Therefore, Split widget into small widgets so the setState() call to the part
+// of the subtree whose UI actually needs to change.
+Scaffold(
+  appBar: CustomAppBar(title: "Verify Code"), // Sub Widget
+  body: Container(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TimerView( // Sub Widget
+            key: _timerKey,
+            resendClick: () {})
+      ],
+    ),
+  ),
+)
+```
+* Use ListView.builder for a long list = Default ListView constructor builds the whole list at once. ListView.builder creates a lazy list and when the user is scrolling down the list, Flutter builds widgets on-demand.
+* Use ``const`` in Widgets
+```java
+// The widget which will not change when setState call we should define it as constant. 
+// It will prevent widget to rebuild so it improves performance.
+Container(
+      padding: const EdgeInsets.only(top: 10),
+      color: Colors.black,
+      child: const Center(
+        child: const Text(
+          "No Data found",
+          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
+        ),
+      ),
+    );
+```
 
 ### CONSEILS
 * renommer le dossier d'un projet flutter :   
@@ -862,6 +1082,33 @@ children: <Widget>[
 Align(
 	alignment: Alignment.topCenter,
 )
+```
+* Donner une taille à un Widget (ex. du DrawerHeader)
+* https://stackoverflow.com/questions/51768740/is-there-a-way-to-set-height-to-a-drawer-header
+```java
+// 1) wrap this with a Container widget.
+Container(
+  height: 10.0,
+  child: DrawerHeader(
+    child: Text('Categories', style: TextStyle(color: Colors.white)),
+      decoration: BoxDecoration(
+      color: Colors.black
+    ),
+    margin: EdgeInsets.all(0.0),
+    padding: EdgeInsets.all(0.0)
+  ),
+);
+
+// 2) use SizedBox widget for resize height DrawerHeader
+SizedBox(
+   height: 120.0, 
+   child : DrawerHeader(
+      child : Text('Categories', style: TextStyle(color: Colors.white)),
+      decoration: BoxDecoration(color: Colors.black),
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero
+   ),
+);
 ```
 
 ### STRUCTURE
@@ -1854,6 +2101,10 @@ class _Home extends State<Home> {
               onPressed: pressButton,
               child: Text("Appuyez-moi !"),
               color: Colors.cyanAccent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              padding: EdgeInsets.only(
+                left: 20.0, top: 10.0, right: 20.0, bottom: 10.0),
             )
                 ],
               ),
@@ -2555,6 +2806,12 @@ Navigator.popAndPushNamed(context, UrlSecondePage, arguments: objetArgument);
 // même objectif : se diriger vers une route et supprimer la route appelante du stack
 Navigator.of(context).pushReplacementNamed('/screen4'); // will execute the enter animation
 Navigator.popAndPushNamed(context, '/screen4'); // will execute the exit animation
+
+// le cas du Drawer
+Navigator.popAndPushNamed(context, kRoutePreferences); // supprime le Drawer du stack
+// retour en arrière sur la page appelante
+Navigator.of(context).pushReplacementNamed(kRoutePreferences); // supprime le Drawer + la page appelante du stack
+// retour en arrière sur la page avant la page appelante
 ```
 * se diriger vers une route et supprimer un certain nombre de routes derrière elle
 * https://stackoverflow.com/a/52689158
@@ -2694,6 +2951,96 @@ Widget build(BuildContext context) {
       ),
     ),
     endDrawer: // drawer à droite
+```
+* autre exemple
+```java
+// fichier appelant
+Scaffold(
+  endDrawer: MenuDrawer(),
+)
+
+// menu_drawer.dart
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:mon_projet/constants.dart';
+
+class MenuDrawer extends StatelessWidget {
+  const MenuDrawer({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          SizedBox(
+            height: 210.0,
+            child: DrawerHeader(
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.asset("assets/images/mon_image.png", height: 100.0,),
+                    SizedBox(height: 20.0,),
+                    Text('Mon appli', style: TextStyle(color: Colors.white), textScaleFactor: 1.6,),
+                  ],
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 15.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.house),
+                  title: Text('Accueil', textScaleFactor: 1.3),
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        kRouteHome, (Route<dynamic> route) => false);
+                  },
+                ),
+                Divider(
+                  height: 2.0,
+                  thickness: 1.0,
+                  color: kLightGreen,
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.logOut),
+                  title: Text('Quitter', textScaleFactor: 1.3),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(
+                  height: 2.0,
+                  thickness: 1.0,
+                  color: kLightGreen,
+                ),
+                ListTile(
+                  leading: Icon(FontAwesomeIcons.contact),
+                  title: Text('Contact', textScaleFactor: 1.3),
+                  onTap: () {
+                    // supprime le drawer du stack
+                    // et empêche un retour en arrière sur le drawer
+                    Navigator.popAndPushNamed(context, UrlContact, arguments: objetArgument);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 ```
 
 ### WIDGETS INTERACTIFS
@@ -2992,6 +3339,51 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+##### CHECKBOXLISTTILE
+* ListTile + Chechbox = une Row checkbox
+* https://stackoverflow.com/questions/55265313/remove-space-top-and-bottom-listtile-flutter
+```java
+  Map messagesPreferences = {
+    'choix1': true,
+    'choix2': true,
+  };
+
+// dans le build
+...messagesPreferencesList()
+
+List<Widget> messagesPreferencesList() {
+  List<Widget> myList = [];
+  // avec checkboxListTile
+  messagesPreferences.forEach((key, value) {
+    CheckboxListTile checkboxListTile = CheckboxListTile(
+        value: value, // true
+        dense: true, // annule le spacing vertical
+        controlAffinity: ListTileControlAffinity.leading, // place le checkbox au début
+        title: Text(key), // choix1
+        onChanged: (bool answer) { // true or false
+          setState(() {
+            messagesPreferences[key] = answer; // choix1 = answer
+          });
+        });
+    // équivalent en Row
+    Row row = Row(
+      children: [
+        Checkbox(
+            value: value,
+            onChanged: (bool answer) {
+              setState(() {
+                messagesPreferences[key] = answer;
+              });
+            }),
+        Text(key),
+      ],
+    );
+    myList.add(checkboxListTile); // ajoute chaque checkboxListTile à la liste renvoyée
+  });
+  return myList;
+}
+```
+
 #### RADIO
 * https://api.flutter.dev/flutter/material/Radio-class.html
 * Exemple : ListTile = https://api.flutter.dev/flutter/material/ListTile-class.html
@@ -4592,7 +4984,7 @@ Future<void> main() async {
 }
 
 // classe 1
-import 'package:sivu_mobile/services/shared_prefs.dart';
+import 'package:mon_projet/services/shared_prefs.dart';
 
 class MyApp extends StatelessWidget {
 
@@ -4607,7 +4999,7 @@ class MyApp extends StatelessWidget {
 }
 
 // classe 2
-import 'package:sivu_mobile/services/shared_prefs.dart';
+import 'package:mon_projet/services/shared_prefs.dart';
 
 class MyApp extends StatefulWidget {
 
@@ -4654,6 +5046,195 @@ import 'package:webview_flutter/webview_flutter.dart';
       ),
     );
   }
+```
+
+### AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW
+* https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
+* https://www.reddit.com/r/FlutterDev/comments/bu14p4/flutter_pdf_viewer_tutorial_android_ios_from_url/
+* Problème de page blanche avec IOS
+* pubspec.yaml
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  flutter_pdfview: ^1.0.3+5
+  path_provider: any
+```
+* fichier receveur
+```java
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
+import 'package:mon_projet/models/book.dart';
+import '../constants.dart';
+
+class BookPDF extends StatefulWidget {
+  @override
+  _BookPDFState createState() => _BookPDFState();
+}
+
+class _BookPDFState extends State<BookPDF> {
+  Book book;
+  String urlPDFPath;
+  int _totalPages = 0;
+  int _currentPage = 0;
+  bool pdfReady = false;
+  bool loaded = false;
+  bool exists = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    book = ModalRoute.of(context).settings.arguments;
+    getFileFromUrl(book.url).then((file) => {
+      setState(() {
+        if (file != null) {
+          urlPDFPath = file.path;
+          loaded = true;
+          exists = true;
+        } else {
+          exists = false;
+        }
+      })
+    });
+  }
+
+  Future<File> getFileFromUrl(String url) async {
+    try {
+      var data = await http.get(url);
+      var bytes = data.bodyBytes;
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/mypdfonline.pdf");
+      File urlFile = await file.writeAsBytes(bytes);
+      return urlFile;
+    } catch (e) {
+      throw Exception("Erreur lors de l'ouverture du fichier");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:
+        Text(book.title, style: TextStyle(color: Colors.white)),
+      ),
+      body: loaded ? PDFView(
+        filePath: urlPDFPath,
+        enableSwipe: true,
+        swipeHorizontal: true,
+        autoSpacing: false,
+        pageFling: false,
+        onError: (error) {
+          print(error.toString());
+        },
+        onRender: (_pages) {
+          setState(() {
+            _totalPages = _pages;
+            pdfReady = true;
+          });
+        },
+      ) : Center(
+        child: CircularProgressIndicator(
+          backgroundColor: kPrimaryColor,
+        ),
+      ),
+    );
+  }
+}
+```
+### OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER
+* https://pub.dev/packages/advance_pdf_viewer
+* Aucune permission Android/IOS, car l'appli utilise le dossier du cache pour charger le pdf
+* Très simple d'utilisation
+* Marche avec IOS
+* Ajoute des indicateurs pour le défilement des pages
+```java
+import 'package:flutter/material.dart';
+
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart'; // ++
+
+import 'package:mon_projet/models/book.dart';
+import '../constants.dart';
+
+class BookPDF extends StatefulWidget {
+  @override
+  _BookPDFState createState() => _BookPDFState();
+}
+
+class _BookPDFState extends State<BookPDF> {
+  Book book;
+  PDFDocument document;
+  bool isDocumentLoaded = false;
+  bool errorOnLoading = false;
+  String errorMessage = "";
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    book = ModalRoute.of(context).settings.arguments;
+    loadPDFDocument(url: book.url);
+  }
+
+  loadPDFDocument({String url}) async {
+    try {
+      document = await PDFDocument.fromURL(url);
+    } on Exception catch (e) {
+      setState(() {
+        errorOnLoading = true;
+        errorMessage = e.toString();
+      });
+    } finally {
+      setState(() {
+        isDocumentLoaded = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(book.description,
+              style: TextStyle(color: Colors.white)),
+        ),
+        body: displayBody());
+  }
+
+  Widget displayBody() {
+    if (isDocumentLoaded) {
+      if (errorOnLoading) {
+        return Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Erreur lors du chargement du pdf"),
+            Text(
+              errorMessage,
+              style: TextStyle(color: Colors.red),
+            )
+          ],
+        ));
+      }
+      return PDFViewer(
+        document: document,
+        showPicker: false,
+      );
+    }
+    return Center(
+      child: CircularProgressIndicator(
+        backgroundColor: kPrimaryColor,
+      ),
+    );
+  }
+}
 ```
 
 ## API
@@ -5146,7 +5727,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'package:sivu_mobile/models/author.dart';
+import 'package:mon_projet/models/author.dart';
 
 class ApiAuthor {
   static Future<List<Author>> fetchAuthors() async {

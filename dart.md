@@ -2532,6 +2532,7 @@ numberBetweenOneAndSix = Random().nextInt(6) + 1;
 * When you need the result of a completed Future, you have two options :   
    * Use async and await.
    * Use the Future API, as described in the library tour : https://dart.dev/guides/libraries/library-tour#future
+* https://twitter.com/remi_rousselet/status/1316019586764959744/photo/1
 ```java
 // ---------- bases ----------
 
@@ -2659,6 +2660,18 @@ await flushThenExit(exitCode);
 Future main() async {
   checkVersion();
   print('In main: version is ${await lookUpVersion()}');
+}
+
+// Future.microtask = Future peu gourmande en calcul (Future prioritaire)
+// All microtasks are executed before any other Futures/Timers.
+// This means that you will want to schedule a microtask when you want 
+// to complete a small computation asynchronously as soon as possible.
+void main() {
+  Future(() => print('future 1'));
+  Future(() => print('future 2'));
+  // Microtasks will be executed before futures.
+  Future.microtask(() => print('microtask 1'));
+  Future.microtask(() => print('microtask 2'));
 }
 ```
 ### DECLARE ASYNC FUNCTIONS

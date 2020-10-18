@@ -9,6 +9,7 @@
 * html - CSS triangle :before element - Stack Overflow : https://stackoverflow.com/questions/20589780/css-triangle-before-element
 * html - How to center a "position: absolute" element - Stack Overflow : https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
 * html - position:absolute in media query is overriding all other rules - Stack Overflow : https://stackoverflow.com/questions/34445409/positionabsolute-in-media-query-is-overriding-all-other-rules
+* HTML Cheat Sheet : https://websitesetup.org/html5-cheat-sheet/
 
 ## CONTRAINTES 
 

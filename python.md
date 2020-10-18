@@ -4,7 +4,7 @@
 ## SOMMAIRE
 
 * [INSTALLATION](#installation)
-* [FORMATTING](#formatting)
+* [AUTO FORMATTING](#auto-formatting)
 * [RACCOURCIS VS CODE](#raccourcis-code)
 * [EXTENSIONS VS CODE](#extensions-code)
 * [OUTILS](#outils)
@@ -46,6 +46,7 @@
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.1 : en API)](#projet-cine-pyside-1)
 * [PROJET CINE CLUB avec PYSIDE et JSON (part.2 : avec l'interface graphique Pyside)](#projet-cine-pyside-2)
 * [PYTHON AVANCÉ](#python-avancé)   
+   * [UNPACKING](#unpacking)   
    * [OBJETS MUABLES & IMMUABLES](#muables-immuables)
    * [LES FONCTIONS ANONYMES](#fonctions-anonymes)
    * [LA FONCTION ENUMERATE](#la-fonction-enumerate)
@@ -103,6 +104,8 @@
 * One bash command to start the day : https://dev.to/dmahely/one-bash-command-to-start-the-day-2fni
 * Writing More Idiomatic and Pythonic Code : https://towardsdatascience.com/writing-more-idiomatic-and-pythonic-code-c22e900eaf83
 * Python Refactorings - Part 4 : https://sourcery.ai/blog/explaining-refactorings-4/
+* Interesting Python Tricks that you should know : https://dev.to/kalebu/interesting-python-tricks-that-you-should-know-41bi
+* Automating Zoom : https://sunilaleti.hashnode.dev/automating-zoom
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -178,7 +181,7 @@
 * lancer une version précise de python : py -3.7
 * exit() pour en sortir
 
-## FORMATTING
+## AUTO FORMATTING
 * Auto formatters for Python : https://www.kevinpeters.net/auto-formatters-for-python
 * Editing Python in Visual Studio Code : https://code.visualstudio.com/docs/python/editing#_formatting
 
@@ -679,6 +682,32 @@ nombre_mystere = 7
 nombre_utilisateur = input("Quel est le nombre mystère ? ")
 resultat = int(nombre_utilisateur) == nombre_mystere
 print(resultat)
+
+# chain comparison operators
+In [16]: x = 10
+In [17]: if x >= 5 and x <= 20:
+    ...:     print("x is within range")
+    ...: else:
+    ...:     print("x is outside range")
+    ...: 
+is within range
+
+# can be simplified by chaining the operators :
+In [18]: if 5 <= x <= 20:
+    ...:     print("is within range")
+    ...: else:
+    ...:     print("x is outside range")
+    ...: 
+is within range
+
+# you can chain using any kind of comparison operator.
+>>> x = 10
+>>> 20 == x > 1
+False
+>>> 25 > x <= 15
+True
+>>> x < 20 < x*10 < 1000
+True
 ```
 
 ## <a name="structures-cond"></a> LES STRUCTURES CONDITIONNELLES
@@ -938,8 +967,9 @@ print(liste[1:-2:2]) # part du 2°, s'arrête 2 éléments avant la fin
 # ['Utilisateur2', 'Utilisateur4']
 print(liste[::-1]) # inverse l'ordre des éléments
 # ['Utilisateur6', 'Utilisateur5', ect.]
+
 # checker un palindrome
-# phrase = 'deleveled'
+phrase = 'deleveled'
 isPalindrome = phrase == phrase[::-1]
 # print(isPalindrome) >> true
 
@@ -1100,6 +1130,58 @@ True
 # and  "least efficient" to "most efficient". 
 # The len(set()) solution is idiomatic,  but constructing 
 # a set is less efficient memory and speed-wise.
+
+# Unpacking a Python List
+# Instead of or reassigning each variable to index in a list, 
+# you do this at once by unpacking them as shown in the code below.
+>>> names = ['Melisa', 'Lisa', 'Peace']
+>>> niece, friend, crush = names
+>>> print('{} {} {}'.format(niece, friend, crush))
+Melisa Lisa Peace
+
+# unpack iterables with multiple items
+>>> a, *b, c = range(1, 10)
+>>> a
+1
+>>> c
+10
+>>> b
+[2, 3, 4, 5, 6, 7, 8, 9]
+
+# Iterating over two python list
+# Iterate over two lists at once without using nested for a loop as shown below
+>>> books = ['mabala', 'money heist', 'GOT']
+>>> pages = [200, 300, 600]
+>>> for book, page in zip(books, pages):
+...     print("{}--->{}".format(book, page))
+... 
+mabala--->200
+money heist--->300
+GOT--->600
+
+# unpacking a single iterable
+>>> lst = [1]
+>>> [a] = lst
+>>> a
+1
+
+# Flat A List
+# Flattening a list can be done in several ways. The simplest one is using list comprehension.
+>>> l = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+>>> flattened = [elem for sublist in l for elem in sublist]
+>>> flattened
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+# If you're more inclined to functional programming, you can use a reducer.
+>>> from functools import reduce
+>>> reduce(lambda x,y: x+y,l)
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+# use the sum function
+>>> sum(l, [])
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+# This works because the sum function iterates through each element in the list 
+# and concatenates them with the default value you pass as the second argument
+sum(l, []) ==> [] + [1, 2, 3] + [4, 5, 6] + [7, 8, 9]
+# Even though this trick is brilliant, it’s by no means readable. Also, it has a terrible performance.
 ```
 
 ## LES SETS
@@ -1535,6 +1617,24 @@ print(f"Vous avez perdu. Le nombre mystère était {nombre_mystere}")
 # connaître l'index avec enumerate
 for i, currency in enumerate(currencies):
     print(i, currency)
+
+# utiliser else dans une boucle
+for a in range(10):
+    if a == 12:
+        break
+    a += 1
+else: # if not found
+    print("a was never found")
+
+# avec while
+a = 0
+
+while a < 10:
+    if a == 12:
+        break
+    a += 1
+else:
+    print("a was never found")
 ```
 
 ## LES FICHIERS 
@@ -2024,6 +2124,15 @@ prenoms_final = [prenom.strip(",. ") for prenom in prenoms]
 
 with open("/Users/thibh/Documents/prenoms_final.txt", "w") as f:
     f.write("\n".join(sorted(prenoms_final)))
+
+#  Merging two dictionaries 
+# Use update( ) to combine two sets of dictionaries
+>>> a = {"name":"Python", "creator":"Guido"}
+>>> b = {"age": 30, "gender" : None}
+>>> a.update(b)
+>>> print(a)
+{'gender': None, 'age': 30, 'name': 'Python', 'creator': 'Guido'}
+
 ```
 
 ## LES FONCTIONS
@@ -4715,6 +4824,33 @@ app.exec_() # lance l'appli
 
 ## PYTHON AVANCÉ
 
+### UNPACKING
+```py
+# Unpacking a Python List
+# Instead of or reassigning each variable to index in a list, 
+# you do this at once by unpacking them as shown in the code below.
+>>> names = ['Melisa', 'Lisa', 'Peace']
+>>> niece, friend, crush = names
+>>> print('{} {} {}'.format(niece, friend, crush))
+Melisa Lisa Peace
+
+# unpack iterables with multiple items
+>>> a, *b, c = range(1, 10)
+>>> a
+1
+>>> c
+10
+>>> b
+[2, 3, 4, 5, 6, 7, 8, 9]
+
+
+# unpacking a single iterable
+>>> lst = [1]
+>>> [a] = lst
+>>> a
+1
+```
+
 ### <a name="muables-immuables"></a> OBJETS MUABLES & IMMUABLES
 ```py
 # Rappel : 2 catégories d'objets :
@@ -5257,6 +5393,17 @@ liste_02 = ['un', 'deux', 'trois']
 
 combinaison = list(zip(liste_01, liste_02))
 print(combinaison)
+
+# Iterating over two python list
+# Iterate over two lists at once without using nested for a loop as shown below
+>>> books = ['mabala', 'money heist', 'GOT']
+>>> pages = [200, 300, 600]
+>>> for book, page in zip(books, pages):
+...     print("{}--->{}".format(book, page))
+... 
+mabala--->200
+money heist--->300
+GOT--->600
 ```
 
 ### <a name="introspection"></a> L'INTROSPECTION

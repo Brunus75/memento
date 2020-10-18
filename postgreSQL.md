@@ -1,5 +1,9 @@
 # MEMENTO POSTGRESQL
 
+## RESSOURCES
+
+* SQL Cheat Sheet : https://websitesetup.org/sql-cheat-sheet/
+
 ## INSTALLATION
 
 * PostgreSQL = Postgres (prononcé postgrèce)

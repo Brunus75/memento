@@ -190,10 +190,18 @@ https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-lin
 
 * :ambulance: **Garbage collector** (ramasse-miettes) : sous-système informatique qui libère la mémoire inutilisée
 
-* Différence Librairie et Framework : une libraire, c'est du code qu'on appelle (on a le contrôle de l'implémentation), alors qu'avec un framework, c'est le code qui vous appelle (l'implémentation doit suivre des règles imposées)
+* :books: Différence **Librairie** et **Framework** : une libraire, c'est du code qu'on appelle (on a le contrôle de l'implémentation), alors qu'avec un framework, c'est le code qui vous appelle (l'implémentation doit suivre des règles imposées)
 
-* Compilation anticipée (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
+* :outbox_tray: Compilation anticipée (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
 
-* Compilation à la volée : compilation lors de l'exécution d'un programme
+* :inbox_tray: Compilation à la volée : compilation lors de l'exécution d'un programme
 
-* **Référence** : adresse en mémoire d'une variable
+* :office: **Référence** : adresse en mémoire d'une variable
+
+* :closed_lock_with_key: **SSL** : Secure Sockets Layer = un moyen (protocole) qui permet d'établir une connexion sécurisée (cryptée) entre deux ordinateurs (très utilisé pour établir une connexion entre un serveur Web qui héberge un site et un utilisateur Internet, qui se connecte ou utilise ce site)
+
+* :scroll: L'utilisation de ce protocole requiert la génération d'un **Certificat SSL** = une "signature" qui permet d'établir ce lien sécurisé et unique. Garantissant aussi bien l'identité du serveur vers lequel la connexion se fait que la protection des données qui circulent entre le serveur et l'équipement qui s'y connecte via Internet.
+
+* :test_tube: **test unitaire** = vérifie le fonctionnement d'une fonction, une méthode, une classe
+
+* :alembic: **test d'intégration** = vérifie le fonctionnement de l'application ou une large partie de l'application

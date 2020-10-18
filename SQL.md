@@ -3,6 +3,9 @@
 ## RESSOURCES
 
 * Cours et tutoriels sur le langage SQL > https://sql.sh/
+* SQL Cheat Sheet : https://websitesetup.org/sql-cheat-sheet/
+* MySQL Cheat Sheet : https://websitesetup.org/mysql-cheat-sheet/
+
 
 ## AVERTISSEMENT
 

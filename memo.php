@@ -2,6 +2,7 @@
 
 ## SOMMAIRE
 
+RESSOURCES
 GENERAL
 CONSIDERATIONS
 I) Créer une variable
@@ -39,6 +40,10 @@ VI) Utilisez la documentation PHP
 VII) Protégez un dossier avec un .htaccess
 VIII) Mémento des expressions régulières
 MISE A JOUR WAMP
+
+◘ RESSOURCES :
+
+• PHP Cheat Sheet : https://websitesetup.org/php-cheat-sheet/
 
 ◘ GENERAL :
 

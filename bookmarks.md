@@ -759,6 +759,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 ### DESIGN
 
 * Design Resources : https://designresourc.es
+* 60+ Most Useful Web Design Resources in One Place : https://wpklik.com/wordpress-tips/web-design-resources
 * Design Resources For Developers : https://github.com/bradtraversy/design-resources-for-developers
 * The 50 + Best FREE resources for learning design & grow your career (so far) : https://medium.muz.li/the-50-best-free-resources-for-learning-design-grow-your-career-so-far-da310fe7aad2
 * 10 Excellent Free Online Graphic Design Courses : https://dribbble.com/stories/2020/10/08/free-graphic-design-courses-online?utm_campaign=2020-10-13&utm_medium=email&utm_source=courtside-20201013
@@ -850,6 +851,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * This is good UX writing : https://uxdesign.cc/this-is-good-ux-writing-10c4b956a6c3
 * Some New Icon Sets : https://css-tricks.com/some-new-icon-sets/
 * More than 1,200 high-quality icons, and an interface for customizing them : https://github.com/bytedance/IconPark
+* Free Open SVG Icons, which are customizable : https://holasvg.com/icons/
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -980,6 +982,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Guide to Email Deliverability: Best Practices and Tools to Avoid Spam Folders : https://designmodo.com/email-deliverability/
 * Sender Score : comment surveiller la réputation de vos emails ? https://www.codeur.com/blog/surveiller-reputation-email-sender-score
 * Spam words : la liste des mots français interdits dans vos emailing : https://www.codeur.com/blog/spam-words-liste-francais-mots-interdits-emailing/
+* 9 outils essentiels pour identifier les problèmes de délivrabilité de vos emails : https://www.codeur.com/blog/outils-test-problemes-delivrabilite-emails
 
 
 ## :beginner: HEBERGEURS
