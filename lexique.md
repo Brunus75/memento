@@ -192,9 +192,9 @@ https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-lin
 
 * :books: Différence **Librairie** et **Framework** : une libraire, c'est du code qu'on appelle (on a le contrôle de l'implémentation), alors qu'avec un framework, c'est le code qui vous appelle (l'implémentation doit suivre des règles imposées)
 
-* :outbox_tray: Compilation anticipée (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
+* :outbox_tray: **Compilation anticipée** (compilation AOT *ahead-of-time*) : compilation avant l'exécution d'un programme
 
-* :inbox_tray: Compilation à la volée : compilation lors de l'exécution d'un programme
+* :inbox_tray: **Compilation à la volée** : compilation lors de l'exécution d'un programme
 
 * :office: **Référence** : adresse en mémoire d'une variable
 

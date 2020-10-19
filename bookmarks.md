@@ -1219,3 +1219,4 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/javinpaul/10-data-science-and-machine-learning-courses-for-programmers-looking-to-switch-career-57kd
 * Order and control: ideal online experience for an autistic person : https://uxdesign.cc/order-and-control-ideal-online-experience-for-an-autistic-person-e3e039f52945
 * Introduction to Bash for Beginners : https://livecodestream.dev/post/2020-10-10-introduction-to-bash-for-beginners
+* https://thenextweb.com/neural/2020/10/19/learn-python-machine-learning-with-these-essential-books-and-online-courses-syndication/
