@@ -74,10 +74,12 @@
 * Use different versions of Flutter SDK at once in one laptop using FVM : https://medium.com/jeeapex/use-different-versions-of-flutter-sdk-at-once-in-one-laptop-using-fvm-edefa184a7d3
 * Using Different Versions of Flutter Simultaneously with FVM : https://developermemos.com/posts/different-versions-flutter-fvm
 ---
+* Push notifications with Firebase messaging - Flutter : https://www.youtube.com/watch?v=wjJN1C9UxpY
+* Push notifications with Firebase messaging II - Flutter : https://www.youtube.com/watch?v=4_2LlswlS2Q
+* https://www.youtube.com/watch?v=PrnxksGQ210
 * https://firebase.flutter.dev/docs/messaging/overview/
 * https://www.raywenderlich.com/9227276-firebase-cloud-messaging-for-android-sending-push-notifications
 * https://www.djamware.com/post/5e4b26e26cdeb308204b427f/flutter-tutorial-firebase-cloud-messaging-fcm-push-notification
-* https://www.raywenderlich.com/9227276-firebase-cloud-messaging-for-android-sending-push-notifications
 * https://brandonlehr.com/flutter/Firebase/Push-Notifications/Android/iOS/2019/10/23/flutter-firebase-messaging
 * https://fireship.io/lessons/flutter-push-notifications-fcm-guide/
 
@@ -200,6 +202,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [FORM](#form)
       * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
       * [TEXTFIELD](#TEXTFIELD)
+      * [TEXTFORMFIELD](#TEXTFORMFIELD)
       * [CHECKBOX](#CHECKBOX)   
          * [CHECKBOXLISTTILE](#CHECKBOXLISTTILE)
       * [RADIO](#RADIO)
@@ -253,6 +256,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [FUTURE DROPDOWN MAP](#FUTURE-DROPDOWN-MAP)
    * [REQUETE PUT AVEC BODY](#REQUETE-PUT-AVEC-BODY)
    * [STREAM BUILDER](#stream-builder)
+* [FIREBASE](#firebase)
 * [PERSONNALISATION](#personnalisation)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
@@ -1690,6 +1694,8 @@ class _Home extends State<Home> {
             child: Card( // ++
               elevation: 5.0,
               color: Colors.teal,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
               child: Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: 250.0,
@@ -3290,6 +3296,26 @@ SingleChildScrollView(
   ),
 ),
 ```
+#### TEXTFORMFIELD
+```java
+TextFormField(
+  style: TextStyle(fontSize: 18.0),
+  decoration: InputDecoration(
+    border: OutlineInputBorder(),
+    labelText: 'Mot de passe',
+    prefixIcon: Icon(
+      Icons.lock,
+      color: Colors.grey[700],
+    ),
+  ),
+  validator: (value) => value.length < 7
+      ? 'Le mot de passe doit contenir au moins 8 caractères.'
+      : null,
+  onSaved: (value) => password = value,
+  obscureText: true, // cache la saisie utilisateur
+),
+```
+
 #### CHECKBOX
 ```java
 class _MyHomePageState extends State<MyHomePage> {
@@ -3996,6 +4022,18 @@ ListView.builder(
 // n'affiche que les 3 premiers éléments de ma liste
 	itemCount: maListe.length < 4 ? maListe.length : 3,
 )
+```
+* ListTile avec elevation
+```java
+Card(
+  child: ListTile(
+  leading: Icon(
+    FontAwesomeIcons.mapMarkerAlt,
+    color: kMainColor,
+  ),
+  title: Text(kLabelAddress),
+  onTap: () {},
+))
 ```
 #### HORIZONTAL LISTVIEW INSIDE A VERTICAL SCROLLVIEW
 * https://stackoverflow.com/questions/54512171/horizontal-listview-inside-a-vertical-scrollview-in-flutter
@@ -5866,6 +5904,29 @@ class Api {
 * The async snapshot represents the most recent interaction with the Stream
 * AsyncSnapshot Class Documentation : https://docs.flutter.io/flutter/widgets/AsyncSnapshot-class.html
 
+## FIREBASE
+* Installation : cours Bootcamp Flutter de Angela Yu
+### TROUBLESHOOTING
+* https://github.com/FirebaseExtended/flutterfire/issues/1904#issuecomment-604301777
+```java
+// Application.java
+import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin; // ++
+
+// Instead of this method in application.java
+    @Override
+    public void registerWith(PluginRegistry registry) {
+        GeneratedPluginRegistrant.registerWith(registry);
+    }
+
+// Put this method :
+    @Override
+    public void registerWith(PluginRegistry registry) {
+        FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
+    }
+```
+* File > Project Structure > Project SDK > Android API [version proposée] // ex Android API 30
+### FIREBASE MESSAGING
+* https://pub.dev/packages/firebase_messaging
 
 ## PERSONNALISATION
 

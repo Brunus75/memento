@@ -810,6 +810,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * A visual generator to build organic-looking shapes with the help of the CSS3 border-radius property : https://9elements.github.io/fancy-border-radius/
 * An AI palette generator trained with the Tailwindcss colors : https://tailwind.ink/
 * Design inclusif : 3 bonnes pratiques à respecter : https://www.codeur.com/blog/design-inclusif-bonnes-pratiques
+* 70 000 ressources gratuites, offertes par Adobe : photos, vidéos, illustrations, mockups… : https://www.blogdumoderateur.com/70000-ressources-gratuites-adobe + https://stock.adobe.com/fr/free
 
 ### UX/UI
 
@@ -852,6 +853,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Some New Icon Sets : https://css-tricks.com/some-new-icon-sets/
 * More than 1,200 high-quality icons, and an interface for customizing them : https://github.com/bytedance/IconPark
 * Free Open SVG Icons, which are customizable : https://holasvg.com/icons/
+* 10 Usability Mistakes Most Designers Make on Checkboxes : https://uxmovement.com/forms/10-usability-mistakes-most-designers-make-on-checkboxes
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -983,7 +985,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Sender Score : comment surveiller la réputation de vos emails ? https://www.codeur.com/blog/surveiller-reputation-email-sender-score
 * Spam words : la liste des mots français interdits dans vos emailing : https://www.codeur.com/blog/spam-words-liste-francais-mots-interdits-emailing/
 * 9 outils essentiels pour identifier les problèmes de délivrabilité de vos emails : https://www.codeur.com/blog/outils-test-problemes-delivrabilite-emails
-
+* Neverbounce | Vérifiez des emails en masse et nettoyez vos listes de contacts : https://www.blogdumoderateur.com/tools/neverbounce
 
 ## :beginner: HEBERGEURS
 
@@ -997,6 +999,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://www.shutterstock.com/blog/free-icons
 * https://pixabay.com/
 * https://www.pexels.com/
+* 70 000 ressources gratuites, offertes par Adobe : photos, vidéos, illustrations, mockups… : https://www.blogdumoderateur.com/70000-ressources-gratuites-adobe + https://stock.adobe.com/fr/free
 
 
 ## :iphone: :computer: :desktop_computer: MOCKUP
@@ -1010,6 +1013,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * https://zehfernandes.github.io/screeener/
 * Previewed, un outil de création de mockups d'applications mobiles et web : https://www.blogdumoderateur.com/tools/previewed
 * A website to generate mockup previews on various devices : https://previewed.app/
+* 70 000 ressources gratuites, offertes par Adobe : photos, vidéos, illustrations, mockups… : https://www.blogdumoderateur.com/70000-ressources-gratuites-adobe + https://stock.adobe.com/fr/free
 
 ## :heavy_heart_exclamation: SITES WEB
 

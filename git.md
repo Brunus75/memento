@@ -30,6 +30,7 @@
 * World's Easiest Guide to Git Reset : https://dev.to/nickbulljs/world-s-easiest-guide-to-git-reset-47mi
 * Git: Cheat Sheet (advanced) : https://dev.to/maxpou/git-cheat-sheet-advanced-3a17
 * A Visual Git Reference : https://marklodato.github.io/visual-git-guide/index-en.html
+* LF will be replaced by CRLF in git - What is that and is it important? : https://stackoverflow.com/questions/5834014/lf-will-be-replaced-by-crlf-in-git-what-is-that-and-is-it-important
 
 ### TO READ
 

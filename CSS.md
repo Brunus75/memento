@@ -32,6 +32,11 @@
 * Animated CSS burgers (HTML/CSS + React) : https://march08.github.io/animated-burgers
 ### NEW
 * "CSS font-size-adjust property provides the developers with honest management of the font size by allowing them to modify the font size of a part when the primarily selected font-type is not available" : https://www.lambdatest.com/blog/css-font-size-adjust/
+```css
+“What if we could apply focus styles only when the keyboard is used to focus something, not the mouse?”
+/* remove the outline from all elements that are focused with a mouse: */
+:focus:not(:focus-visible) { outline: none }
+```
 * "the intent of :focus-visible is to allow authors to provide clearly identifiable focus styles which are visible when a user is likely to need to understand where the focus is, and not visible in other cases." : https://matthiasott.com/notes/focus-visible-is-here
 * Complete CSS Cheat Sheet : https://websitesetup.org/css3-cheat-sheet/
 * 10 CSS3 Properties You Need to Be Familiar With : https://code.tutsplus.com/tutorials/10-css3-properties-you-need-to-be-familiar-with--net-16417
@@ -42,7 +47,9 @@
 * Beyond Media Queries: Using Newer HTML & CSS Features for Responsive Designs : https://css-tricks.com/beyond-media-queries-using-newer-html-css-features-for-responsive-designs/
 * 3 things about CSS variables you might not know : https://patrickbrosset.com/articles/2020-09-21-3-things-about-css-variables-you-might-not-know/
 
-
+## CSS GRID
+* https://grid.layoutit.com/
+* https://cssgrid-generator.netlify.app/
 
 ## CSS min(), max(), and clamp()
 

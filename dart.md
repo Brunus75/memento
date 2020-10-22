@@ -2477,7 +2477,7 @@ String text = "2019-04-01 07:00:00,2019-04-01 07:15:00";
 import 'package:intl/intl.dart';
 
 DateTime startDate = DateTime.parse(text.split(",")[0]); // 2019-04-01 07:00:00
-final myFormat = DateFormat("HH:mm", 'fr');
+final myFormat = DateFormat("HH:mm", 'fr'); // DateFormat('dd/MM/yyyy HH:mm');
 String _formattedDate = myFormat.format(startDate);
 print('$_formattedDate'); // 07:00
 
