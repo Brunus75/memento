@@ -251,6 +251,7 @@
 * Les 10 cours LinkedIn Learning les plus populaires de l’année : https://www.linkedin.com/pulse/les-10-cours-linkedin-learning-plus-populaires-de-lann%25C3%25A9e-longuet
 * Google annonce le crawl d'HTTP/2... mais qu'est-ce que c'est ? : https://www.codeur.com/blog/http2-definition
 * How the Web Works (For Backend Devs) : https://dev.to/anonyda/the-backend-dev-s-web-109e
+* 5 Techniques I Use To Manage Stress As A Software Engineer : https://dev.to/nickbulljs/5-techniques-i-use-to-manage-stress-as-a-software-engineer-2o2n
 
 
 ## :keyboard: WINDOWS
@@ -320,6 +321,7 @@
 * Bing Webmaster Tools lance un nouveau Testeur de robots.txt : https://www.arobasenet.com/2020/09/bing-testeur-robots-txt-6339.html
 * How to Efficiently Write the Perfect Meta Description : https://ahrefs.com/blog/meta-description/
 * Comment bien optimiser les images pour le SEO : https://fr.semrush.com/blog/referencer-les-images-pour-le-seo/
+* FAQ : les balises H1-H6 et le SEO en 16 questions/réponses : https://www.abondance.com/20201021-43978-faq-les-balises-h1-h6-et-le-seo-en-16-questions-reponses.html
 
 
 ## :bulb: ORGANISATION
@@ -558,6 +560,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 
 ### HTML
 
+* SVG Favicon Maker  : https://formito.com/tools/favicon
 * The ultimate favicon generator : https://favicon.io/favicon-generator
 * Upload & Convert | Favicon.io : https://favicon.io/favicon-converter/
 * A Complete Guide to Data Attributes | CSS-Tricks : https://css-tricks.com/a-complete-guide-to-data-attributes/
@@ -752,9 +755,11 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * The 20 Best B2B Landing Page Examples of 2020 : https://unbounce.com/landing-page-examples/best-b2b-landing-page-examples
 * 203+ Web Design Resources You’d Actually Want to Use (& Bookmark) : https://the-webdesigner.co/web-design-development-resources
 * UI Inspiration: 22 Mobile Design Concepts with Interface Illustrations : https://icons8.com/articles/mobile-design-with-interface-illustrations
-* 24 examples of creative illustration use in mobile design : https://dribbble.com/stories/2020/07/10/illustration-in-mobile-design
 * A website for animation resources and inspiration from around the web. : https://theanimatedweb.com/
 * A cool website for finding design inspiration and examples : https://lookup.design/
+#### MOBILE
+* 24 examples of creative illustration use in mobile design : https://dribbble.com/stories/2020/07/10/illustration-in-mobile-design
+* Plus de 1000 interfaces utilisateur sur mobile, classées par feature, pour inspirer les designers : https://uxarchive.com/
 
 ### DESIGN
 

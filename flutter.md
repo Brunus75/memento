@@ -82,6 +82,7 @@
 * https://www.djamware.com/post/5e4b26e26cdeb308204b427f/flutter-tutorial-firebase-cloud-messaging-fcm-push-notification
 * https://brandonlehr.com/flutter/Firebase/Push-Notifications/Android/iOS/2019/10/23/flutter-firebase-messaging
 * https://fireship.io/lessons/flutter-push-notifications-fcm-guide/
+* Flutter Forms Validation — the Ultimate Guide : https://medium.com/flutter-community/flutter-forms-validation-the-ultimate-guide-1b469169ca6e
 
 
 **TO UNDERSTAND**
@@ -123,6 +124,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
 * Flutter File Structure for Big Projects : https://www.youtube.com/watch?v=Mt41FpSS-Vo&feature=emb_logo
 * Flutter Deep Dive : https://github.com/refactord/flutter-deep-dive
+* How to secure API keys? : https://www.reddit.com/r/FlutterDev/comments/jhdwq8/how_to_secure_api_keys/
+* Building a Movie App in 10 Minutes with Flutter : https://www.youtube.com/watch?v=soTEOI_rIIQ&feature=emb_logo
 
 **TESTING**
 * Flutter Testing For Beginners - The Ultimate Guide : https://www.reddit.com/r/FlutterDev/comments/j947hw/flutter_testing_for_beginners_the_ultimate_guide/
@@ -242,12 +245,13 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WEBVIEW](#webview)
    * [AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW](#AFFICHER-UN-PDF-VIA-UNE-URL-AVEC-PDFVIEW)
    * [OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER](#OUVRIR-UN-PDF-VIA-UNE-URL-AVEC-ADVANCE_PDF_VIEWER)
+   * [SPLASHSCREEN](#splashscreen)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
-   * [Appel API avec les widgets interactifs](#Appel-API-avec-les-widgets-interactifs)   
+   * [Appel API avec les widgets interactifs](#Appel-API-avec-les-widgets-interactifs)
    * [Deserialize a list of objects from json](#Deserialize-a-list-of-objects-from-json)
-   * [Transformer du JSON en List<String> et List<Object>](#Transformer-du-JSON-en-List<String>-et-List<Object>)
+   * [Transformer du JSON en List de String et List d'Object](#Transformer-du-JSON-en-List<String>-et-List<Object>)
    * [LIST IN FUTURE BUILDER](#list-in-future-builder)   
    * [FORM ET FUTURE BUILDER](#FORM-ET-FUTURE-BUILDER)   
    * [FORM FUTURE BUILDER avec condition](#FORM-FUTURE-BUILDER-avec-condition)   
@@ -851,7 +855,7 @@ myWidget(@required this.property)
 * Lier un widget à un callback   
    * Exemple : afficher dans le header de l'appli des informations qui attendent la réponse d'une API
 ```java
-// ici la variable numberTour est liée au retour d'une API
+// ici la variable numberArticles est liée au retour d'une API
 // le processus permet d'effectuer un setState dans un builder
 
 // si retour non vide de l'API
@@ -859,9 +863,9 @@ if (snapshot.hasData) {
 
   WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
     // alors le state de l'appli est changé
-    // et tous les widgets qui contiennent la variable numberTour
+    // et tous les widgets qui contiennent la variable numberArticles
     // seront changés en conséquence
-   numberTour = snapshot.data.length;
+   numberArticles = snapshot.data.length;
   }));
 
 }
@@ -2542,6 +2546,7 @@ which are the titleTextStyle, content, contentTextStyle, and actions, than the S
 A SimpleDialog is designed to show options in a list 
 (as opposed to an AlertDialog, which is meant to notify the user of something)
 ```
+* Flutter: Alert Dialog vs Dialog in your Flutter Application : https://medium.com/flutter-community/flutter-alert-dialog-vs-dialog-in-your-flutter-application-11be20a2af
 #### SIMPLEDIALOG
 * Un modal qui renseigne sur plusieurs choix
 * Renvoie une Future (promesse) => programmation asynchrone
@@ -5281,6 +5286,46 @@ class _BookPDFState extends State<BookPDF> {
   }
 }
 ```
+### SPLASHSCREEN
+* https://stackoverflow.com/a/59709679
+* https://pub.dev/packages/splashscreen
+```java
+// main.dart
+MaterialApp(
+      home: SplashScreen(),
+      routes: {},
+);
+
+// splashscreen.dart
+import 'package:flutter/material.dart';
+
+import 'package:splashscreen/splashscreen.dart';
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 3,
+      navigateAfterSeconds: HomeScreen(),
+      image: Image.asset(
+        "assets/images/image.png",
+      ),
+      photoSize: 60.0,
+      backgroundColor: kPrimaryColor,
+      loaderColor: Colors.white,
+      loadingText: Text(
+        "Chargement...",
+        style: TextStyle(color: Colors.white, fontSize: 24.0),
+      ),
+    );
+  }
+}
+```
 
 ## API
 
@@ -5511,7 +5556,7 @@ FutureBuilder<Article>(
 bool isCool; // propriété de classe
 
 FutureBuilder<Article>(
-  future: futureTask,
+  future: futureArticle,
   builder: (context, snapshot) {
     if (snapshot.hasData) {
 
@@ -5876,7 +5921,7 @@ import 'package:http/http.dart' as http;
 class Api {
 
   //static pour éviter de créer un nouvel objet Api()
-  static Future updateTask({int articleId, String articleTitle, int articleLines}) async {
+  static Future updateArticle({int articleId, String articleTitle, int articleLines}) async {
 
     Map<String, String> headers = {"Content-type": "application/json; charset=UTF-8"};
 
@@ -5907,6 +5952,11 @@ class Api {
 ## FIREBASE
 * Installation : cours Bootcamp Flutter de Angela Yu
 ### TROUBLESHOOTING
+* File > Project Structure > Project SDK > Android API [version proposée] // ex Android API 30
+
+### FIREBASE MESSAGING
+* https://pub.dev/packages/firebase_messaging
+#### TROUBLESHOOTING
 * https://github.com/FirebaseExtended/flutterfire/issues/1904#issuecomment-604301777
 ```java
 // Application.java
@@ -5924,9 +5974,167 @@ import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin; // ++
         FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
     }
 ```
-* File > Project Structure > Project SDK > Android API [version proposée] // ex Android API 30
-### FIREBASE MESSAGING
-* https://pub.dev/packages/firebase_messaging
+* exemple 1
+```java
+// pubspec.yaml
+firebase_messaging: <version>
+
+// services/
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+class PushNotificationsManager {
+
+  PushNotificationsManager._();
+
+  factory PushNotificationsManager() => _instance;
+
+  static final PushNotificationsManager _instance = PushNotificationsManager._();
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  bool _initialized = false;
+
+  Future<void> init() async {
+    if (!_initialized) {
+      // For iOS request permission first.
+      _firebaseMessaging.requestNotificationPermissions();
+      // Notifications configurations
+      _firebaseMessaging.configure(
+        // l'utilisateur est sur l'application
+        // il ne reçoit pas de notification
+        // ↓ la propriété onMessage est appelée
+        onMessage: (Map<String, dynamic> message) async {
+          print("onMessage: $message");
+          // {notification: {title: test3, body: test3}, data: {click_action: FLUTTER_NOTIFICATION_CLICK}}
+          //TODO: sauvegarder le message
+        },
+        // l'application est inactive
+        // ↓ lance l'application suite à un clic sur la notification
+        onLaunch: (Map<String, dynamic> message) async {
+          print("onLaunch: $message");
+          //TODO: redirection vers la page des messages
+          // {notification: {}}
+        },
+        // l'application est active, mais en arrière-plan
+        // ↓ affiche l'application suite à un clic sur la notification
+        onResume: (Map<String, dynamic> message) async {
+          print("onResume: $message");
+          //TODO: redirection vers la page des messages
+          // {notification: {}
+        },
+      );
+
+      // For testing purposes print the Firebase Messaging token
+      String token = await _firebaseMessaging.getToken();
+      print("FirebaseMessaging token: $token");
+
+      _initialized = true;
+    }
+  }
+}
+```
+* exemple2, avec SplashScreen
+```java
+// main.dart
+MaterialApp(
+      home: SplashScreen(),
+      routes: {},
+);
+
+// splashscreen.dart
+import 'package:flutter/material.dart';
+
+import 'package:splashscreen/splashscreen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+/// Point d'entrée, routeur de l'application
+/// Initialise la configuration Firebase
+/// Affiche le SplashScreen puis redirige l'utilisateur vers :
+///	- home_screen : si l'utilisateur se connecte sans appuyer sur une notification
+///	- message_screen : si l'utilisateur se connecte en appuyant sur une notification
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  bool notification = false;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseConfiguration();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 3,
+      navigateAfterSeconds: notification ? MessageScreen() : HomeScreen(),
+      image: Image.asset(
+        "assets/images/image.png",
+      ),
+      photoSize: 60.0,
+      backgroundColor: kPrimaryColor,
+      loaderColor: Colors.white,
+      loadingText: Text(
+        "Chargement...",
+        style: TextStyle(color: Colors.white, fontSize: 24.0),
+      ),
+    );
+  }
+
+  void firebaseConfiguration() {
+    // For iOS request permission first.
+    _firebaseMessaging.requestNotificationPermissions();
+    _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+      print("iOS Settings registered: $settings");
+    });
+    // Notifications configurations
+    _firebaseMessaging.configure(
+      // l'application est inactive
+      // ↓ lance l'application suite à un clic sur la notification
+      onLaunch: (Map<String, dynamic> message) async {
+        notification = true;
+        print("onLaunch: $message");
+        // {notification: {}}
+      },
+      // l'application est active, mais en arrière-plan
+      // ↓ affiche l'application suite à un clic sur la notification
+      onResume: (Map<String, dynamic> message) async {
+        notification = true;
+        print("onResume: $message");
+        // {notification: {}
+      },
+    );
+    // Fires when a new FCM token is generated
+    _firebaseMessaging.onTokenRefresh.listen((String token) async {
+      debugPrint("Mon token : $token");
+      handleToken(token);
+    });
+  }
+
+  /// Récupération du Token Firebase + stockage dans User du LS (ou création user Temporaire)
+  void handleToken(String token) {
+    User user = sharedPrefs.getUserProfile();
+    if (user.firebaseId != null) {
+      // token stocké dans le profil utilisateur
+      if (user.firebaseId != token) {
+        // token différent, on doit mettre à jour le compte stocké
+        user.firebaseId = token;
+        sharedPrefs.setUserProfile(user);
+      } else {
+        debugPrint("token = user.firebaseId, rien à changer !");
+      }
+    } else {
+      // pas de token stocké dans le profil de l'utilisateur
+      // création d'un profil utilisateur
+      user.firebaseId = token;
+      sharedPrefs.setUserProfile(user);
+    }
+  }
+}
+```
 
 ## PERSONNALISATION
 

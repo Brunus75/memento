@@ -40,6 +40,7 @@
 * "the intent of :focus-visible is to allow authors to provide clearly identifiable focus styles which are visible when a user is likely to need to understand where the focus is, and not visible in other cases." : https://matthiasott.com/notes/focus-visible-is-here
 * Complete CSS Cheat Sheet : https://websitesetup.org/css3-cheat-sheet/
 * 10 CSS3 Properties You Need to Be Familiar With : https://code.tutsplus.com/tutorials/10-css3-properties-you-need-to-be-familiar-with--net-16417
+* CSS Spider - The Fastest and Easiest Way to Check, Copy and Edit CSS  : https://cssspider.fresalabs.com/home
 
 ### TO READ
 * A Complete Guide to CSS Media Queries : https://css-tricks.com/a-complete-guide-to-css-media-queries
