@@ -483,6 +483,32 @@ numbers.sort((num1, num2) => num1 - num2); // => [1, 2, 3, 4, 5]
 // CAST()
 maListe.cast<String>(); // transforme les éléments de ma liste en des entités String
 ```
+* SORT LIST (OF OBJECTS) BY DATE
+* https://stackoverflow.com/questions/57000166/how-to-sort-order-a-list-by-date-in-dart-flutter
+* https://api.dart.dev/stable/2.4.0/dart-core/String/compareTo.html
+```java
+List<Article> articles;
+article.date; // DateTime, marche aussi pour un String
+
+articles.sort((article1, article2) => article1.date.compareTo(article2.date)); // renvoie <void>
+return articles; // articles triés par ordre antéchronologique
+
+articles.sort((article1, article2) => article2.date.compareTo(article1.date)); // renvoie <void>
+return articles; // articles triés par ordre chronologique
+```
+* WHERE = SORT LIST WITH A CONDITION
+```java
+List<Message> messages;
+message.seen; // true or false
+List<Message> messagesNotSeen = messages.where((message) => !message.seen).toList();
+// renvoie tous les éléments qui remplissent la condition
+```
+* LISTE AVEC INDEX VALUE
+* https://stackoverflow.com/a/54899730
+```java
+List _sample = ['a','b','c'];
+_sample.asMap().forEach((index, value) => f);
+```
 ### MAPS
 * Dart/Flutter Map, HashMap Tutorial with Examples : https://bezkoder.com/dart-map/
 * https://dart.dev/guides/language/language-tour#maps

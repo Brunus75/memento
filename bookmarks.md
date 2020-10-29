@@ -252,6 +252,7 @@
 * Google annonce le crawl d'HTTP/2... mais qu'est-ce que c'est ? : https://www.codeur.com/blog/http2-definition
 * How the Web Works (For Backend Devs) : https://dev.to/anonyda/the-backend-dev-s-web-109e
 * 5 Techniques I Use To Manage Stress As A Software Engineer : https://dev.to/nickbulljs/5-techniques-i-use-to-manage-stress-as-a-software-engineer-2o2n
+* Top 3 des livres indispensables pour développeurs : https://www.jesuisundev.com/livre-developpeur
 
 
 ## :keyboard: WINDOWS
@@ -636,6 +637,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Custom bullets with CSS ::marker : https://web.dev/css-marker-pseudo-element
 * Box-Shadow Generator : https://brumm.af/shadows
 * A nice generator for CSS grid layouts : https://grid.layoutit.com/
+* Gradient Color Generator : https://hexcolor.co/gradient-generator
 
 
 ### BOOTSTRAP
@@ -1181,7 +1183,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/wceolin/mistakes-i-made-in-code-reviews-and-what-i-do-now-kk6
 * https://dev.to/madza/21-awesome-dev-portfolios-for-your-inspiration-85n
 * https://dev.to/afonsopacifer/how-you-can-stay-motivated-to-work-on-personal-projects-565a
-* https://dev.to/scroung720/learning-how-to-learn-diffused-mode-focused-mode-1-433b
 * https://dev.to/niharrs/6-awesome-ways-to-present-your-code-3jj2
 * https://dev.to/theme_selection/vs-codes-every-developers-should-use-in-2020-2fa3
 * https://dev.to/tretuna/visual-code-extensions-not-just-the-top-10-4gnk
@@ -1207,7 +1208,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://dev.to/vtrpldn/write-fewer-media-queries-with-the-clamp-css-function-2cl7
 * https://dev.to/arepp23/28-free-resources-for-web-developers-49a3
 * https://dev.to/theme_selection/best-free-color-palette-generator-ready-to-use-or-generate-your-own-3hoo
-* https://dev.to/bartzalewski/learn-git-good-practices-3jp3
 * https://dev.to/dephraiim/git-commands-introduction-36gh
 * https://dev.to/dephraiim/git-commands-you-probably-didn-t-know-3bcm
 * https://dev.to/alwarg/fun-with-javascript-tricks-jmk

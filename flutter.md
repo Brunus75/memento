@@ -73,15 +73,6 @@
 * dismissible_actions_example : https://github.com/JohannesMilke/dismissible_actions_example
 * Use different versions of Flutter SDK at once in one laptop using FVM : https://medium.com/jeeapex/use-different-versions-of-flutter-sdk-at-once-in-one-laptop-using-fvm-edefa184a7d3
 * Using Different Versions of Flutter Simultaneously with FVM : https://developermemos.com/posts/different-versions-flutter-fvm
----
-* Push notifications with Firebase messaging - Flutter : https://www.youtube.com/watch?v=wjJN1C9UxpY
-* Push notifications with Firebase messaging II - Flutter : https://www.youtube.com/watch?v=4_2LlswlS2Q
-* https://www.youtube.com/watch?v=PrnxksGQ210
-* https://firebase.flutter.dev/docs/messaging/overview/
-* https://www.raywenderlich.com/9227276-firebase-cloud-messaging-for-android-sending-push-notifications
-* https://www.djamware.com/post/5e4b26e26cdeb308204b427f/flutter-tutorial-firebase-cloud-messaging-fcm-push-notification
-* https://brandonlehr.com/flutter/Firebase/Push-Notifications/Android/iOS/2019/10/23/flutter-firebase-messaging
-* https://fireship.io/lessons/flutter-push-notifications-fcm-guide/
 * Flutter Forms Validation — the Ultimate Guide : https://medium.com/flutter-community/flutter-forms-validation-the-ultimate-guide-1b469169ca6e
 
 
@@ -201,6 +192,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [WILLPOPSCOPE](#willpopscope)
       * [ALERTDIALOG IN WILLPOPSCOPE](#ALERTDIALOG-IN-WILLPOPSCOPE)
       * [DRAWER](#drawer)
+      * [SNACKBAR](#snackbar)
    * [WIDGETS INTERACTIFS (3)](#widgets-interactifs)   
       * [FORM](#form)
       * [VALIDATION FORMULAIRE A LA VOLEE](#validation-formulaire-a-la-volee)
@@ -3060,6 +3052,36 @@ class MenuDrawer extends StatelessWidget {
   }
 }
 ```
+#### SNACKBAR
+* https://stackoverflow.com/a/49932085
+```java
+class MainPageState extends State<MainPage> {                                                BuildContext scaffoldContext; // context pour le SnackBar
+
+@override  
+Widget build(BuildContext context) {
+return Scaffold(
+    backgroundColor: Colors.grey,         
+    appBar: AppBar(                   
+      title: const Text(APP_TITLE),                                 
+    ),                               
+    body: Builder(builder: (BuildContext context) { // Builder pour créer le context        
+      scaffoldContext = context; // context pour le SnackBar
+      return Center(
+        child: Text('Hello World', style: TextStyle(fontSize: 32.0)),
+      );
+    })
+  );
+}
+
+// une fois la fonction appelée, le snackBar s'affichera
+void showSnackBar(String message) {
+  final snackBar = SnackBar(content: Text(message),
+  backgroundColor: Colors.red);
+  // Find the Scaffold in the Widget tree and use it to show a SnackBar!
+  Scaffold.of(scaffoldContext).showSnackBar(snackBar);
+  }
+}
+```
 
 ### WIDGETS INTERACTIFS
 
@@ -4989,6 +5011,7 @@ String formattedDate = df.format(dateToFormat);
 ```
 ### SHARED PREFERENCES
 * ajout des shared preferences dans toute l'application : https://dev.to/simonpham/using-sharedpreferences-in-flutter-effortlessly-3e29
+* https://medium.com/flutterdevs/using-sharedpreferences-in-flutter-251755f07127
 ```java
 // utils/shared_prefs.dart ou services/shared_prefs.dart
 import 'package:shared_preferences/shared_preferences.dart';
@@ -5956,6 +5979,17 @@ class Api {
 
 ### FIREBASE MESSAGING
 * https://pub.dev/packages/firebase_messaging
+#### DOC
+---
+* Push notifications with Firebase messaging - Flutter : https://www.youtube.com/watch?v=wjJN1C9UxpY
+* Push notifications with Firebase messaging II - Flutter : https://www.youtube.com/watch?v=4_2LlswlS2Q
+---
+* https://www.youtube.com/watch?v=PrnxksGQ210
+* https://firebase.flutter.dev/docs/messaging/overview/
+* https://www.raywenderlich.com/9227276-firebase-cloud-messaging-for-android-sending-push-notifications
+* https://www.djamware.com/post/5e4b26e26cdeb308204b427f/flutter-tutorial-firebase-cloud-messaging-fcm-push-notification
+* https://brandonlehr.com/flutter/Firebase/Push-Notifications/Android/iOS/2019/10/23/flutter-firebase-messaging
+* https://fireship.io/lessons/flutter-push-notifications-fcm-guide/
 #### TROUBLESHOOTING
 * https://github.com/FirebaseExtended/flutterfire/issues/1904#issuecomment-604301777
 ```java
@@ -5974,6 +6008,7 @@ import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin; // ++
         FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
     }
 ```
+#### EXEMPLES
 * exemple 1
 ```java
 // pubspec.yaml
