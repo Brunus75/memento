@@ -10,6 +10,7 @@
 * https://twitter.com/fluttertap
 * https://twitter.com/FlutterTip
 * https://twitter.com/flutterize
+* https://twitter.com/JohannesMilke
 * https://twitter.com/biz84
 * https://twitter.com/remi_rousselet
 * https://twitter.com/csells
@@ -42,6 +43,7 @@
 * Announcing Flutter 1.20 : https://medium.com/flutter/announcing-flutter-1-20-2aaf68c89c75
 * Google’s Flutter SDK can now make apps for Windows too : https://9to5google.com/2020/09/23/flutter-sdk-windows-alpha/
 * Announcing Flutter 1.22 : https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f
+* Guides for migrating code across a breaking change : https://flutter.dev/docs/release/breaking-changes
 
 **TO READ**
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
@@ -74,6 +76,8 @@
 * Use different versions of Flutter SDK at once in one laptop using FVM : https://medium.com/jeeapex/use-different-versions-of-flutter-sdk-at-once-in-one-laptop-using-fvm-edefa184a7d3
 * Using Different Versions of Flutter Simultaneously with FVM : https://developermemos.com/posts/different-versions-flutter-fvm
 * Flutter Forms Validation — the Ultimate Guide : https://medium.com/flutter-community/flutter-forms-validation-the-ultimate-guide-1b469169ca6e
+* Complete Movie App — Language Management (8) : https://medium.com/flutter-community/complete-movie-app-language-management-8-1c3b8613156d
+* Flutter Custom Paint - Made Easy with Flutter Shape Maker 🎯 : https://retroportalstudio.medium.com/auto-generate-flutter-custom-paint-code-flutter-shape-maker-be51e41daf89
 
 
 **TO UNDERSTAND**
@@ -113,10 +117,10 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * Cheatsheet Flutter : https://pbs.twimg.com/media/EjEe3drU4AIsHo5?format=jpg&name=large
 * Learning Flutter’s new Navigation and Routing system : https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade
 * Parsing complex JSON in Flutter : https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
-* Flutter File Structure for Big Projects : https://www.youtube.com/watch?v=Mt41FpSS-Vo&feature=emb_logo
 * Flutter Deep Dive : https://github.com/refactord/flutter-deep-dive
 * How to secure API keys? : https://www.reddit.com/r/FlutterDev/comments/jhdwq8/how_to_secure_api_keys/
 * Building a Movie App in 10 Minutes with Flutter : https://www.youtube.com/watch?v=soTEOI_rIIQ&feature=emb_logo
+* Flutter Debugging 101 : https://www.youtube.com/watch?reload=9&v=Z0_bCYlgZlw&ab_channel=BleylDev
 
 **TESTING**
 * Flutter Testing For Beginners - The Ultimate Guide : https://www.reddit.com/r/FlutterDev/comments/j947hw/flutter_testing_for_beginners_the_ultimate_guide/
@@ -229,7 +233,10 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
      * [HERO](#hero)
   * [FORMES](#formes)   
      * [CERCLE](#cercle)
-* [THEMES, COLORS](#themes)
+* [THEMES, COLORS](#themes)   
+   * [CHEATSHEET TRANSPARENCY HEXADECIMAL](#CHEATSHEET-TRANSPARENCY-HEXADECIMAL)
+   * [COLOR SHADE AS CONSTANT](#[COLOR-SHADE-AS-CONSTANT)
+   * [FLUTTER COLOR GENERATOR](#FLUTTER-COLOR-GENERATOR)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [PACKAGES](#packages)   
    * [FONCTIONNEMENT](#fonctionnement)   
@@ -253,7 +260,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [REQUETE PUT AVEC BODY](#REQUETE-PUT-AVEC-BODY)
    * [STREAM BUILDER](#stream-builder)
 * [FIREBASE](#firebase)
-* [PERSONNALISATION](#personnalisation)
+* [PERSONNALISATION](#personnalisation)   
+   * [ICONE DE L'APPLI](#ICONE-DE-L'APPLI)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
@@ -296,6 +304,7 @@ Scaffold (structure)
 ```
 * A chaque fois que setState() est appelé, la méthode build() du widget est appelée et entraîne la reconstruction du widget tout en gardant le « state »
 * The majority of widgets in Flutter are simply combinations of other simpler widgets. For example, the Container.padding property causes the container to build a Padding widget and the Container.decoration property causes the container to build a DecoratedBox widget.
+* Rendering - Flutter Deep Dive : https://www.youtube.com/watch?v=3k70-1T_LPM&feature=emb_logo
 
 ### GLOSSAIRE
 * State = ensemble des valeurs de toutes les variables qui créent l'interface de l'appli
@@ -1119,6 +1128,8 @@ SizedBox(
 ```
 
 ### STRUCTURE
+* Flutter File Structure for Big Projects : https://www.youtube.com/watch?v=Mt41FpSS-Vo&feature=emb_logo
+* Flutter Folder Structure and Packages : https://www.youtube.com/watch?v=yJRpuTP156o&feature=emb_logo
 * Structure générique :
 ```py
 project_name/
@@ -1176,8 +1187,23 @@ lib/
 		service-utils.dart
 	widgets/ # composants autonomes et répétés
 ```
+* Structure gros projet (par feature, ou par "module")
+```py
+lib/
+	settings/
+    settings_controller.dart
+    settings_page.dart
+    settings_repository.dart
+    settings_service.dart
+  authentication/
+    authentication_controller.dart
+    authentication_page.dart
+    authentication_repository.dart
+    authentication_service.dart
+```
 
 ### COMMANDES
+* https://github.com/flutter/flutter/issues/65175
 ```java
 flutter --version
 
@@ -1196,12 +1222,20 @@ flutter clean // clear Build Cache
 1. "Relancer l'appli"
 2. "flutter clean + flutter run"
 
+// updates assets (images, etc.)
+flutter clean
+flutter packages get
+flutter run
+
 flutter upgrade // MAJ de version
 // MAJ sur une version précise
 flutter version // liste les versions
 flutter version v1.9.1+hotfix.3 //remplace la version actuelle par la version v1.9.1+hotfix.3
 // REVENIR A LA VERSION PRECEDENTE (si installée)
 flutter downgrade
+
+// retour sur une version précise
+flutter downgrade flutter_version_name // flutter downgrade v1.17.0
 ```
 ### LIFECYCLE
 * https://stackoverflow.com/questions/56395081/unhandled-exception-inheritfromwidgetofexacttype-localizationsscope-or-inheri
@@ -4937,6 +4971,8 @@ Color(0x33000000)
 ```java
 const Color kTitleColor = Color(0xFF616161); // Colors.grey[700] (la valeur hexadécimale est donnée au survol)
 ```
+### FLUTTER COLOR GENERATOR
+* This simple tool can be used to generate main color and its shades for Flutter : https://tltemplates.com/tool/color/flutter-color
 
 ## INTERNATIONALISATION
 * idée = créer des dates en français
@@ -4986,6 +5022,7 @@ String newDate = df.format(today);
 
 ### FONCTIONNEMENT
 * https://flutter.dev/docs/development/packages-and-plugins/using-packages
+* Deep Dive Into The Pubspec.yaml File : https://medium.com/flutter-community/deep-dive-into-the-pubspec-yaml-file-fb56ac8683b9
 * Cheatsheet :
 ```yaml
 dependencies:

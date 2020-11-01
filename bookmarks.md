@@ -253,6 +253,7 @@
 * How the Web Works (For Backend Devs) : https://dev.to/anonyda/the-backend-dev-s-web-109e
 * 5 Techniques I Use To Manage Stress As A Software Engineer : https://dev.to/nickbulljs/5-techniques-i-use-to-manage-stress-as-a-software-engineer-2o2n
 * Top 3 des livres indispensables pour développeurs : https://www.jesuisundev.com/livre-developpeur
+* Un enregistreur d'écran et de webcam gratuit : https://www.blogdumoderateur.com/tools/vimeo-record
 
 
 ## :keyboard: WINDOWS
@@ -1229,3 +1230,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Order and control: ideal online experience for an autistic person : https://uxdesign.cc/order-and-control-ideal-online-experience-for-an-autistic-person-e3e039f52945
 * Introduction to Bash for Beginners : https://livecodestream.dev/post/2020-10-10-introduction-to-bash-for-beginners
 * https://thenextweb.com/neural/2020/10/19/learn-python-machine-learning-with-these-essential-books-and-online-courses-syndication/
+* https://ishadeed.com/article/responsive-design-height/
+* Super Practical (Non-technical) Guide to Color Theory and Perfect Color Palettes in UI Design : https://designerup.co/blog/practical-guide-to-perfect-ui-color-palettes
+*  A quick guide to building a Docker container for your Python application  : https://dev.to/shellyalmo/a-quick-guide-to-building-a-docker-container-for-your-python-application-383e
