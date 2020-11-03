@@ -95,6 +95,8 @@
    * [LAZY LOADING](#lazy-loading)
    * [DART CORE LIBRARY](#DART-CORE-LIBRARY)   
       * [DATETIME](#DATETIME)
+      * [CONVERT](#convert)   
+         * [Gérer les caractères non UTF-8](#Gérer-les-caractères-non-UTF-8)
    * [CREATE LIBRARY](#create-library)
    * [SOME LIBRARIES](#some-libraries)   
       * [MATH LIBRARY](#math-library)
@@ -2527,6 +2529,39 @@ String taskMinutes = taskDuration.inHours > 0
 print('${taskHours}$taskMinutes');
 // 30min pour le premier exemple
 // 1h05 pour le second
+```
+#### CONVERT
+##### Gérer les caractères non UTF-8
+```java
+// classe fonction
+// functions.dart
+import 'dart:convert' show utf8;
+
+class Functions {
+  /// convertit un String en un String UTF-8
+  static String utf8convert(String text) {
+    List<int> bytes = text.toString().codeUnits;
+    return utf8.decode(bytes);
+  }
+}
+
+// utilisation
+// article.dart
+import '../utilities/functions.dart';
+
+class Article {
+  String title;
+  String content;
+
+  Convive({this.title, this.content});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      code: json['title'],
+      nom: Functions.utf8convert(json['content']), // ++
+    );
+  }
+}
 ```
 ### CREATE LIBRARY
 * Create Library Packages : https://dart.dev/guides/libraries/create-library-packages

@@ -95,6 +95,7 @@
 * #1 Fluter: Télécharger, Installer et Configurer Flutter SDK sur Windows : https://www.youtube.com/watch?v=P4Ua8cK_TeA&
 
 **DOCS**
+* 100 awesome Flutter tips : https://github.com/erluxman/awesomefluttertips
 * A list of Free Flutter resources that will help people get started with Flutter : https://github.com/FlutterTutorial/FlutterResources
 * Tomek's Flutter Layout Cheat Sheet : https://medium.com/flutter-community/flutter-layout-cheat-sheet-5363348d037e
 * Flutter-Course-Resources : https://github.com/londonappbrewery/Flutter-Course-Resources
@@ -244,7 +245,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [WEBVIEW](#webview)
    * [AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW](#AFFICHER-UN-PDF-VIA-UNE-URL-AVEC-PDFVIEW)
    * [OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER](#OUVRIR-UN-PDF-VIA-UNE-URL-AVEC-ADVANCE_PDF_VIEWER)
-   * [SPLASHSCREEN](#splashscreen)
+   * [SPLASHSCREEN](#splashscreen)  
+   * [BADGES](#badges)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -905,6 +907,7 @@ Stack(
   children: <Widget>[
   // container d'arrière plan, décoratif
   // part du bas pour remplir l'écran
+  // se place en premier
   Positioned(
     left: 0,
     right: 0,
@@ -914,6 +917,7 @@ Stack(
       color: kConfigBackgroundColor,
     ),
   ),
+   ListView(),
 )
 ```
 * Quelle est la plateforme de l'appli (Android ou IOS)
@@ -1125,6 +1129,38 @@ SizedBox(
       padding: EdgeInsets.zero
    ),
 );
+```
+* Gérer les caractères non UTF-8
+```java
+// classe fonction
+// functions.dart
+import 'dart:convert' show utf8;
+
+class Functions {
+  /// convertit un String en un String UTF-8
+  static String utf8convert(String text) {
+    List<int> bytes = text.toString().codeUnits;
+    return utf8.decode(bytes);
+  }
+}
+
+// utilisation
+// article.dart
+import '../utilities/functions.dart';
+
+class Article {
+  String title;
+  String content;
+
+  Convive({this.title, this.content});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      code: json['title'],
+      nom: Functions.utf8convert(json['content']), // ++
+    );
+  }
+}
 ```
 
 ### STRUCTURE
@@ -4657,6 +4693,7 @@ Stack(
   children: <Widget>[
   // container d'arrière plan, décoratif
   // part du bas pour remplir l'écran
+  // se place en premier
   Positioned(
     left: 0,
     right: 0,
@@ -4666,6 +4703,7 @@ Stack(
       color: kConfigBackgroundColor,
     ),
   ),
+   ListView(),
 )
 ```
 #### POSITIONED
@@ -5385,6 +5423,59 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+```
+### BADGES
+* Ajouter un badge de notification à un Widget
+* https://pub.dev/packages/badges
+```java
+// Basic usage
+Badge(
+  badgeContent: Text('3'),
+  child: Icon(Icons.settings),
+)
+
+// Badge + FutureBuilder
+User user;
+Future<int> counter; // nombre de notifications
+
+@override
+void initState() {
+  super.initState();
+  getUserCounter();
+}
+
+void getUserCounter() async {
+  user = sharedPrefs.getUserProfile();
+  counter = ApiNotification.fetchNumberOfNotifications(user: user);
+}
+
+FutureBuilder<int>(
+  future: counter,
+  builder: (context, snapshot) {
+    // si le user a des notifications
+    if (snapshot.hasData) {
+      return Badge(
+        badgeContent: Text(
+          snapshot.data.toString(),
+          style: TextStyle(color: Colors.white),
+        ),
+        showBadge: (snapshot.data != 0), // affiche le badge seulement s'il y a au moins 1 notification
+        child: Icon(
+          FontAwesomeIcons.solidBell,
+          color: Colors.green,
+        ),
+      );
+    // si la requête retourne une erreur
+    } else if (snapshot.hasError) {
+      print("${snapshot.error}");
+    }
+    // par défaut, on affiche l'icône sans les notifications
+    return Icon(
+      FontAwesomeIcons.solidBell,
+      color: Colors.green,
+    );
+  }
+),
 ```
 
 ## API

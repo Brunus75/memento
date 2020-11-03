@@ -254,7 +254,7 @@
 * 5 Techniques I Use To Manage Stress As A Software Engineer : https://dev.to/nickbulljs/5-techniques-i-use-to-manage-stress-as-a-software-engineer-2o2n
 * Top 3 des livres indispensables pour développeurs : https://www.jesuisundev.com/livre-developpeur
 * Un enregistreur d'écran et de webcam gratuit : https://www.blogdumoderateur.com/tools/vimeo-record
-
+* What I Wish I Knew as a Junior Dev – Lessons Learned After 11 Years of Coding : https://www.freecodecamp.org/news/lessons-learned-after-11-years-coding/
 
 ## :keyboard: WINDOWS
 
@@ -504,6 +504,7 @@
 
 ## :white_check_mark: FRONT-END
 
+* Front-end Resources : https://github.com/developer-resources/frontend-development
 * Front-end Developer Handbook 2019 - Learn the entire JavaScript, CSS and HTML development practice! : https://frontendmasters.com/books/front-end-handbook/2019/#4.10
 * Front-End Challenges : https://css-tricks.com/front-end-challenges/
 * 25 Bootstrap Tables : https://freefrontend.com/bootstrap-tables/
@@ -862,6 +863,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * More than 1,200 high-quality icons, and an interface for customizing them : https://github.com/bytedance/IconPark
 * Free Open SVG Icons, which are customizable : https://holasvg.com/icons/
 * 10 Usability Mistakes Most Designers Make on Checkboxes : https://uxmovement.com/forms/10-usability-mistakes-most-designers-make-on-checkboxes
+* SVG Path Editor Online : https://yqnn.github.io/svg-path-editor/
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -1233,3 +1235,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * https://ishadeed.com/article/responsive-design-height/
 * Super Practical (Non-technical) Guide to Color Theory and Perfect Color Palettes in UI Design : https://designerup.co/blog/practical-guide-to-perfect-ui-color-palettes
 *  A quick guide to building a Docker container for your Python application  : https://dev.to/shellyalmo/a-quick-guide-to-building-a-docker-container-for-your-python-application-383e
+*  In Defense of Tables and Floats in Modern Day Development : https://css-tricks.com/in-defense-of-tables-and-floats-in-modern-day-development/
+* Everyday Systems That Help Me : https://www.taniarascia.com/everyday-systems/

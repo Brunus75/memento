@@ -79,6 +79,7 @@
 ## CHEATSHEET
 
 * https://github.github.com/training-kit/downloads/fr/github-git-cheat-sheet/
+* http://www.ndpsoftware.com/git-cheatsheet.html#loc=local_repo;
 ---
 * Bases : https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf
 * Bases : https://github.github.com/training-kit/downloads/github-git-cheat-sheet.pdf
