@@ -172,6 +172,7 @@
 * Randomly Generated Characters for Your Apps & Games : https://bigheads.io/
 * A fast image resizer and compressor, identical to exports of Figma and Sketch apps : https://sizemyimage.com/
 * Check browser compatibility without leaving your tab : https://checkbrowsers.support/
+* Select a technology, get an idea, and build it : https://antoniotrajanovski.github.io/what-should-i-build/
 
 
 ## :pushpin: WEB DOCS
@@ -1237,3 +1238,6 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 *  A quick guide to building a Docker container for your Python application  : https://dev.to/shellyalmo/a-quick-guide-to-building-a-docker-container-for-your-python-application-383e
 *  In Defense of Tables and Floats in Modern Day Development : https://css-tricks.com/in-defense-of-tables-and-floats-in-modern-day-development/
 * Everyday Systems That Help Me : https://www.taniarascia.com/everyday-systems/
+* A UI Design challenge generator, to become a better UI designer at your own Pace : https://uicoach.io/app
+* A detailed guide on CSS Grid : https://jst.hashnode.dev/css-grid-tutorial
+* 25 striking logo color schemes to inspire your branding : https://dribbble.com/stories/2020/11/04/logo-color-schemes

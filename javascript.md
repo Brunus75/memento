@@ -13,6 +13,7 @@
 * [ES8 (2017)](#es8)
 * [ES9 (2018)](#es9)
 * [ES10 (2019)](#es10)
+* [ES 2021](#es2021)
 * [SERVICE WEB](#service-web)
 * [Récupérez des données d'un service web](#get-data-web)
 * [Validez les données saisies par vos utilisateurs](#validate-data-user)
@@ -44,6 +45,7 @@
 * What WeakSet in JavaScript is and How It Works : https://blog.alexdevero.com/weakset-in-javascript
 *  Features I Wish I’d Known About ES6 & ES7 : https://dev.to/pixelplex/features-i-wish-i-d-known-about-es6-es7-42ff
 * Utiliser les différents tests d'égalité : https://developer.mozilla.org/fr/docs/Web/JavaScript/Les_diff%C3%A9rents_tests_d_%C3%A9galit%C3%A9
+* What Garbage Collection in JavaScript Is and How It Works : https://blog.alexdevero.com/garbage-collection-in-javascript
 
 ### TO READ
 * ES6, ES7 & ES8, TIME to update your JavaScript / ECMAScript! : https://www.udemy.com/course/es6-es7-and-es8-its-time-to-update-your-javascript/?deal_code=EXPLORENOW0920&utm_source=email-Adhoc&utm_campaign=2020-09-26_._cn_UDEMY_BASICS_09_26_2020_._en_XPOLL_._us_AllAlltl_T1_._tg_n_.__._la_fr_._rn_2020-09-26_._&utm_medium=2020-09-26_UDEMY_BASICS_09_26_2020_XPOLL_AllAll_T1_n&utm_content=udemy.17485945&data_h=CEcSc1xWTHw%3D&utm_term=CROSS_POLL_CAT_SUBCAT_2
@@ -639,6 +641,126 @@ const array = [
  {key: 2, value: 'd'},
 ]
 */
+```
+
+## ES2021
+* What new in ES2021 (aka ES12)? : https://sambat-tech.netlify.app/what-new-in-es12/
+* String replaceAll() Method
+```js
+// in the previous version
+let string = 'The dog is eating dogfood.';
+let newString = string.replace('dog','cat');
+console.log(newString); 
+// output: The cat is eating dogfood.
+
+// To replace all the word dog with cat, we need to use regular expression.
+let string = 'The dog is eating dogfood.';
+let newString = string.replace(/dog/g,'cat');
+console.log(newString); 
+// output: The cat is eating catfood.
+
+// New approach
+
+// with the new update, we can use method replaceAll()
+let string = 'The dog is eating dogfood.';
+let newString = string.replaceAll('dog','cat');
+console.log(newString); 
+// output: The cat is eating catfood.
+```
+* Private Methods
+```js
+class Car {
+  // Private method
+  #carColor() {
+    console.log("The car is white.");
+  }
+  // Public method
+  showCarColor() {
+    this.#carColor();
+  }
+}
+const carObj = new Car();
+carObj.showCarColor(); // "The car is white.";
+carObj.carColor(); // TypeError: carObj.carColor is not a function
+```
+* Private Accessors
+```js
+class Car {
+  // Public accessor
+  get name() { return 'Honda' }
+  set name(value) {}
+  // Private accessor
+  get #color() { return 'red' }
+  set #color(value) {}
+}
+
+// We can access the Accessors as belows:
+
+const carObj = new Car();
+console.log(carObj.name); // "Honda"
+console.log(carObj.color); // undefined
+```
+* Logical Operators and Assignment Expressions
+```js
+let a = 1;
+let b = 2;
+a ||= b;
+// equivalent to a = a || b
+console.log(a); // output: 1
+
+let c = 2;
+let d = 5;
+c &&= d;
+// equivalent to c = c && d
+console.log(c); // output: 5
+
+let e;
+let f = 2;
+e ??= f;
+// equivalent to e = e ?? f
+console.log(e) // output: 2
+```
+* Promise.any() and AggregateError
+```js
+// Promise.any() resolves if any of the supplied promises is resolved
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("A"), Math.floor(Math.random() * 1000));
+});
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("B"), Math.floor(Math.random() * 1000));
+});
+const p3 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("C"), Math.floor(Math.random() * 1000));
+});
+
+
+(async function() {
+  const result = await Promise.any([p1, p2, p3]);
+  console.log(result); // Prints "A", "B" or "C"
+})();
+
+// What if none of the promises resolve? 
+// In that case Promise.any() throws an AggregateError exception. We need to catch it and handle it.
+
+const p = new Promise((resolve, reject) => reject());
+try {
+  (async function() {
+    const result = await Promise.any([p]);
+    console.log(result);
+  })();
+} catch(error) {
+  console.log(error.errors);
+}
+```
+* Numeric Separators
+```js
+1_000_000_000           // Ah, so a billion
+101_475_938.38          // And this is hundreds of millions
+let fee = 123_00;       // $123 (12300 cents, apparently)
+let fee = 12_300;       // $12,300 (woah, that fee!)
+let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
+let amount = 123_4500;  // 123.45 (4-fixed financial)
+let amount = 1_234_500; // 1,234,500
 ```
 
 ## SERVICE WEB

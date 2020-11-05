@@ -205,3 +205,5 @@ https://www.it-swarm.dev/fr/programming-languages/quest-ce-que-lagnosticisme-lin
 * :test_tube: **test unitaire** = vérifie le fonctionnement d'une fonction, une méthode, une classe
 
 * :alembic: **test d'intégration** = vérifie le fonctionnement de l'application ou une large partie de l'application
+
+* :office_worker: **référence** = nom qui fait référence à un objet stocké en mémoire, comme un nom fait référence à une personne (une variable est la référence d'un objet en mémoire)

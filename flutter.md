@@ -78,6 +78,7 @@
 * Flutter Forms Validation — the Ultimate Guide : https://medium.com/flutter-community/flutter-forms-validation-the-ultimate-guide-1b469169ca6e
 * Complete Movie App — Language Management (8) : https://medium.com/flutter-community/complete-movie-app-language-management-8-1c3b8613156d
 * Flutter Custom Paint - Made Easy with Flutter Shape Maker 🎯 : https://retroportalstudio.medium.com/auto-generate-flutter-custom-paint-code-flutter-shape-maker-be51e41daf89
+* Dart Beginners Course - Tutorial #07: Data Processing in Dart : https://www.youtube.com/watch?v=mBHsuyL_-NI
 
 
 **TO UNDERSTAND**
@@ -263,7 +264,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [STREAM BUILDER](#stream-builder)
 * [FIREBASE](#firebase)
 * [PERSONNALISATION](#personnalisation)   
-   * [ICONE DE L'APPLI](#ICONE-DE-L'APPLI)
+   * [ICONE DE L'APPLI](#icone-de-lappli)
 * [EX. D'APPLI (1) : CODAMUSIC](#codamusic)
 * [EX. D'APPLI (2) : JEU DE QUIZZ](#coda-jeu-de-quizz)
 * [EX. D'APPLI (3) : CALCUL DE CALORIES](#coda-calcul-calories)
@@ -1307,6 +1308,129 @@ Widget build(BuildContext contex) {
 // 4)
 void deactivate() {
   // called when the stateful widget gets destroyed
+}
+```
+* SystemChannels.lifecycle
+* Listen to lifecycle events to trigger a function, a call, ect.
+* Flutter: Update Widgets On Resume? : https://stackoverflow.com/questions/49869873/flutter-update-widgets-on-resume
+```java
+// exemple simple
+void InitState() {
+  super.initState();
+  configureAppLifecycleStates();
+}
+
+// fonction qui gère les cycles de vie
+void configureAppLifecycleStates() {
+  SystemChannels.lifecycle.setMessageHandler((String msg) {
+    print('SystemChannels> $msg'); // SystemChannels> AppLifecycleState.paused
+    switch (msg) {
+      case "AppLifecycleState.paused": // appli mise en pause
+        break;
+      case "AppLifecycleState.inactive": // appli inactive
+        break;
+      case "AppLifecycleState.detached": // appli terminée
+        break;
+      case "AppLifecycleState.resumed": // appli relancée
+        // ici, on écrit nos instructions
+        // par exemple, de checker si les notifications de l'utilisateur ont évoluées
+        checkUserNotifications();
+        break;
+      default:
+    }
+    return;
+  });
+}
+
+// Update Widgets On Resume?
+import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+
+class LifecycleEventHandler extends WidgetsBindingObserver {
+  final AsyncCallback resumeCallBack;
+  final AsyncCallback suspendingCallBack;
+
+  LifecycleEventHandler({
+    this.resumeCallBack,
+    this.suspendingCallBack,
+  });
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (resumeCallBack != null) {
+          await resumeCallBack();
+        }
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        if (suspendingCallBack != null) {
+          await suspendingCallBack();
+        }
+        break;
+    }
+  }
+}
+
+class AppWidgetState extends State<AppWidget> {
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(
+      LifecycleEventHandler(resumeCallBack: () async => setState(() {
+        // do something
+      }))
+    );
+  }
+  ...
+}
+
+// or
+import 'package:flutter/material.dart';
+
+abstract class LifecycleWatcherState<T extends StatefulWidget> extends State<T>
+    with WidgetsBindingObserver {
+  @override
+  Widget build(BuildContext context) {
+    return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        onResumed();
+        break;
+      case AppLifecycleState.inactive:
+        onPaused();
+        break;
+      case AppLifecycleState.paused:
+        onInactive();
+        break;
+      case AppLifecycleState.detached:
+        onDetached();
+        break;
+    }
+  }
+
+  void onResumed();
+  void onPaused();
+  void onInactive();
+  void onDetached();
 }
 ```
 

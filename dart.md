@@ -376,6 +376,9 @@ print(maListe); // [Paul, Jacques, Georges, Pierre]
 // sur l'index :
 maListe.removeAt(0);
 print(maListe); // [Jacques, Georges, Pierre]
+// sur une instruction
+// supprimer un item ou objet d'une liste
+maListe.removeWhere((element) => element.url == null); // renvoie void
 
 // vider une liste
 maListe.clear();
@@ -493,10 +496,10 @@ List<Article> articles;
 article.date; // DateTime, marche aussi pour un String
 
 articles.sort((article1, article2) => article1.date.compareTo(article2.date)); // renvoie <void>
-return articles; // articles triés par ordre antéchronologique
+return articles; // articles triés par ordre chronologique
 
 articles.sort((article1, article2) => article2.date.compareTo(article1.date)); // renvoie <void>
-return articles; // articles triés par ordre chronologique
+return articles; // articles triés par ordre antéchronologique
 ```
 * WHERE = SORT LIST WITH A CONDITION
 ```java
