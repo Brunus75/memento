@@ -54,6 +54,7 @@
 * https://derickbailey.com/2017/06/06/3-features-of-es7-and-beyond-that-you-should-be-using-now/
 * https://www.freecodecamp.org/news/es5-to-esnext-heres-every-feature-added-to-javascript-since-2015-d0c255e13c6e/
 * Understanding the Event Loop, Callbacks, Promises, and Async/Await in JavaScript : https://www.taniarascia.com/asynchronous-javascript-event-loop-callbacks-promises-async-await/
+* You might not need jQuery : http://web-old.archive.org/web/20201102192847/http://youmightnotneedjquery.com/
 
 ## LEXIQUE
 

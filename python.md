@@ -107,6 +107,7 @@
 * Python Refactorings - Part 4 : https://sourcery.ai/blog/explaining-refactorings-4/
 * Interesting Python Tricks that you should know : https://dev.to/kalebu/interesting-python-tricks-that-you-should-know-41bi
 * Automating Zoom : https://sunilaleti.hashnode.dev/automating-zoom
+### TO READ
 * ~ https://realpython.com/python3-object-oriented-programming/ 
 * ~ https://realpython.com/primer-on-python-decorators/
 * ~ https://realpython.com/tutorials/django/
@@ -160,6 +161,8 @@
 * ~ How to Publish Your First Python App on Heroku : https://medium.com/@henson.casper/how-to-publish-your-first-python-app-on-heroku-6af91c5bb138
 * When you automate something in python, you'd obviously have to run the script forever. Where can we run the script? : https://www.reddit.com/r/learnpython/comments/ivn7d9/when_you_automate_something_in_python_youd/
 * ~ Python 3.9: Cool New Features for You to Try : https://realpython.com/python39-new-features/
+* ~ How to create a webscraping twitter bot in Python : https://pythonprogramming.org/how-to-create-a-webscraping-twitter-bot-in-python/
+* 25 Best GitHub Repos for Python Developers : https://dev.to/sewinter/25-best-github-repos-for-python-developers-5419
 
 
 ## INSTALLATION

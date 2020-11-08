@@ -11,8 +11,9 @@
 ### DOCS
 * Introduction to APIs : https://blog.alexdevero.com/introduction-to-apis
 ---
-* TO READ :   
-   * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+#### TO READ :   
+* https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+* REST API Guide : https://dev.to/drminnaar/rest-api-guide-14n2
 
 ### TOOLS
 * https://mockoon.com/

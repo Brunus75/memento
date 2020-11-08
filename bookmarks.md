@@ -90,6 +90,8 @@
 * API REST
 * POSTMAN
 * CSS GRID
+* Internet réseau (vidéo)
+* VPN (vidéo)
 
 ## :gun: WEB TOOLS
 
@@ -173,6 +175,7 @@
 * A fast image resizer and compressor, identical to exports of Figma and Sketch apps : https://sizemyimage.com/
 * Check browser compatibility without leaving your tab : https://checkbrowsers.support/
 * Select a technology, get an idea, and build it : https://antoniotrajanovski.github.io/what-should-i-build/
+* 6 outils pour partager votre code en ligne : https://www.codeur.com/blog/outils-partage-code-en-ligne
 
 
 ## :pushpin: WEB DOCS
@@ -325,6 +328,7 @@
 * How to Efficiently Write the Perfect Meta Description : https://ahrefs.com/blog/meta-description/
 * Comment bien optimiser les images pour le SEO : https://fr.semrush.com/blog/referencer-les-images-pour-le-seo/
 * FAQ : les balises H1-H6 et le SEO en 16 questions/réponses : https://www.abondance.com/20201021-43978-faq-les-balises-h1-h6-et-le-seo-en-16-questions-reponses.html
+* SEO : 7 points à vérifier pour un site Mobile First bien indexé : https://www.codeur.com/blog/index-google-mobile-first-changements-site
 
 
 ## :bulb: ORGANISATION
@@ -372,6 +376,7 @@
 * https://blog.axosoft.com/gitkraken-git-tips-7
 * Documenting your projects on GitHub : https://guides.github.com/features/wikis/
 * What GIT GUI client do you use? : https://dev.to/madza/what-git-gui-client-do-you-use-3h9h
+* What is cherry picking in Git? https://www.gitkraken.com/learn/git/cherry-pick
 
 
 ## :nazar_amulet: VISUAL STUDIO CODE
@@ -438,6 +443,7 @@
 * ✨ PHP 7.4 apporte de vraies nouveautés ! : https://mailchi.mp/0f562ba336fb/mes-fonctionnalits-prfres-de-php-74
 * La notion de callables en PHP : https://mailchi.mp/048d5dd43005/mes-fonctionnalits-prfres-de-php-6534334
 * environnement virtuel en PHP : vagrant > https://scotch.io/tutorials/how-to-create-a-vagrant-base-box-from-an-existing-one
+* Why PHP 8 will be awesome : https://dev.to/jmau111/why-php-8-will-be-awesome-2lif
 
 
 ### SYMFONY
@@ -865,6 +871,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * Free Open SVG Icons, which are customizable : https://holasvg.com/icons/
 * 10 Usability Mistakes Most Designers Make on Checkboxes : https://uxmovement.com/forms/10-usability-mistakes-most-designers-make-on-checkboxes
 * SVG Path Editor Online : https://yqnn.github.io/svg-path-editor/
+* Websites For Free Icon Sets : https://wweb.dev/resources/free-icon-sets
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -1241,3 +1248,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * A UI Design challenge generator, to become a better UI designer at your own Pace : https://uicoach.io/app
 * A detailed guide on CSS Grid : https://jst.hashnode.dev/css-grid-tutorial
 * 25 striking logo color schemes to inspire your branding : https://dribbble.com/stories/2020/11/04/logo-color-schemes
+* How I prepared for interviews : https://dev.to/mkinoshita12/how-to-i-prepared-myself-for-interviews-4g3g
+* Complete Introduction to the 30 Most Essential Data Structures & Algorithms : https://dev.to/iuliagroza/complete-introduction-to-the-30-most-essential-data-structures-algorithms-43kd

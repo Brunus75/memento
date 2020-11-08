@@ -44,6 +44,7 @@
 * Google’s Flutter SDK can now make apps for Windows too : https://9to5google.com/2020/09/23/flutter-sdk-windows-alpha/
 * Announcing Flutter 1.22 : https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f
 * Guides for migrating code across a breaking change : https://flutter.dev/docs/release/breaking-changes
+* A curated list of awesome packages on pub.dev. : https://github.com/polilluminato/awesome-pubdev
 
 **TO READ**
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
@@ -79,6 +80,11 @@
 * Complete Movie App — Language Management (8) : https://medium.com/flutter-community/complete-movie-app-language-management-8-1c3b8613156d
 * Flutter Custom Paint - Made Easy with Flutter Shape Maker 🎯 : https://retroportalstudio.medium.com/auto-generate-flutter-custom-paint-code-flutter-shape-maker-be51e41daf89
 * Dart Beginners Course - Tutorial #07: Data Processing in Dart : https://www.youtube.com/watch?v=mBHsuyL_-NI
+* M4 | State | Stateful Widget, GetX, BLoC, Provider, Redux | The Complete (FREE) Flutter Course : https://www.youtube.com/watch?v=lvs14YLGd6I
+* Learn How To Implement Pagination with Flutter : https://www.reddit.com/r/FlutterDev/comments/jm53xt/learn_how_to_implement_pagination_with_flutter/
+* Migrating to the New Material Buttons and their Themes : A guide to migrating existing apps to the new Flutter button classes and their themes : https://docs.google.com/document/d/1yohSuYrvyya5V1hB6j9pJskavCdVq9sVeTqSoEPsWH0/edit
+* Bottom navigation which state is saved when clicks in item in the list and switches between bottom tabs. : https://medium.com/flutter-community/bottom-navigation-which-state-is-saved-when-clicks-in-item-in-the-list-and-switches-between-bottom-bcf8ba3bc4a
+* Demonstrate how to implement shared state using the same patterns across 5 different libraries : https://poetryincode.dev/flutter-state-5-ways
 
 
 **TO UNDERSTAND**
@@ -178,6 +184,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [IMAGE.NETWORK](#imagenetwork)
       * [IMAGE.ASSETS](#imageassets)
       * [TEXT](#text)
+      * [RICH TEXT](#rich-text)
       * [COLUMN](#column)
       * [ROW](#row)
       * [ICON](#icon)
@@ -215,6 +222,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [URL_LAUNCHER](#url_laucher)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
       * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
+      * [SLIVERAPPBAR](#SliverAppBar)
       * [LISTVIEW ET LISTTILE](#LISTVIEW-ET-LISTTILE)
       * [HORIZONTAL LISTVIEW INSIDE A VERTICAL SCROLLVIEW](#Horizontal-ListView-inside-a-Vertical-ScrollView)
       * [DISMISSIBLE](#DISMISSIBLE)
@@ -231,6 +239,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [VISIBILTY](#VISIBILTY)
       * [EXPANDED](#EXPANDED)
       * [FLEXIBLE](#flexible)
+      * [TRANSFORM](#transform)
   * [WIDGETS ANIMATION](#widgets-animation)   
      * [HERO](#hero)
   * [FORMES](#formes)   
@@ -248,6 +257,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER](#OUVRIR-UN-PDF-VIA-UNE-URL-AVEC-ADVANCE_PDF_VIEWER)
    * [SPLASHSCREEN](#splashscreen)  
    * [BADGES](#badges)
+   * [flutter_app_badger](#flutter_app_badger)
+   * [TIME.DART](#time-dart)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -1086,6 +1097,7 @@ itemCount: _songs?.length ?? 0
 // sinon itemCount = _songs.length
 ```
 * Utiliser Spacer pour remplir l'espace disponible d'un espace vide: https://stackoverflow.com/a/59527732
+* https://github.com/erluxman/awesomefluttertips#tip-7--spacer-widget
 ```java
 Column(
 children: <Widget>[
@@ -2000,6 +2012,63 @@ class _Home extends State<Home> {
     );
   }
 
+}
+```
+#### RICH TEXT
+* If you want to have a single text with different style within it
+* use RichText() with TextSpan()
+```java
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: MyWidget(),
+        ),
+      ),
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+          style: TextStyle(
+            fontSize: 30,
+          ),
+          children: [
+            TextSpan(
+              text: 'The RichText widget displays text that uses multiple different styles.',
+              style: TextStyle(
+                color: Colors.green,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+            TextSpan(
+              text: 'The Text ',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            TextSpan(
+              text: 'to display is described using a tree of TextSpan objects, each of which has an associated style that is used for that subtree. ',
+              style: TextStyle(
+                color: Colors.green,
+              ),
+            )
+          ]),
+    );
+  }
 }
 ```
 #### COLUMN
@@ -4172,6 +4241,57 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+#### SLIVERAPPBAR
+* AppBar malléable
+* https://api.flutter.dev/flutter/material/SliverAppBar-class.html#snippet-container
+* https://github.com/erluxman/awesomefluttertips#tip-17--sliverappbar--collapsable-appbar--parallaxheader
+```java
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(body: SliverAppBarDemo()),
+    );
+  }
+}
+
+class SliverAppBarDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          title: Text(
+            "SilverAppBar title",
+          ),
+          snap: true,
+          floating: true,
+          pinned: true,
+          stretch: true,
+          //Max height of background Image
+          expandedHeight: 160.0,
+          flexibleSpace: FlexibleSpaceBar(
+            collapseMode: CollapseMode.pin,
+            background: Image.network(
+              "https://cdn.pixabay.com/photo/2017/09/14/22/42/milky-way-2750627__340.jpg",
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        // SliverList(
+        SliverFillRemaining(
+          child: Center(child: Text("Body")),
+        ),
+      ],
+    );
+  }
+}
+```
 #### LISTVIEW ET LISTTILE
 * Création d'une liste scrollable
 * Page scrollable qui dépasse le viewport = utiliser ListView
@@ -4255,6 +4375,63 @@ Card(
   title: Text(kLabelAddress),
   onTap: () {},
 ))
+```
+* ListView.separated() to put divider line
+* https://github.com/erluxman/awesomefluttertips#tip-8--listviewseparated
+```java
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: MyWidget(),
+        ),
+      ),
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: 25,
+      // ↓ divider
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        thickness: 1,
+        color: Colors.blue,
+        indent: 32,
+        endIndent: 8,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+               
+                Text(
+                  'Title Number $index',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                Text('Details of the item')
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 ```
 #### HORIZONTAL LISTVIEW INSIDE A VERTICAL SCROLLVIEW
 * https://stackoverflow.com/questions/54512171/horizontal-listview-inside-a-vertical-scrollview-in-flutter
@@ -4930,6 +5107,7 @@ Visibility(
 * https://api.flutter.dev/flutter/widgets/Expanded-class.html
 * doit forcément se trouver dans un Widget Row, Column ou Flex (pour pouvoir déterminer l'axe)
 * peut importe le type des enfants
+* Flexible vs Expanded : https://github.com/erluxman/awesomefluttertips#tip-15--flexible-vs-expanded
 ```java
 Row(
 	// prendra l'espace disponible de la Row
@@ -4942,6 +5120,7 @@ Row(
 #### FLEXIBLE
 * Permettre à son enfant d'avoir de la place et de s'adapter s'il manque de place
 * Sorte de max-width, max-height
+* Flexible vs Expanded : https://github.com/erluxman/awesomefluttertips#tip-15--flexible-vs-expanded
 ```java
 children: <Widget>[
   // ↓ si 200px n'est pas disponible, alors le widget s'adapte
@@ -4956,6 +5135,11 @@ children: <Widget>[
   ),
   // ...
 ```
+#### TRANSFORM
+* Rotation, Skew, Scale, etc.
+* https://www.coderzheaven.com/2019/01/26/rotate-scale-skew-or-translate-widgets-in-flutter-using-transform/
+* https://medium.com/flutter-community/a-deep-dive-into-transform-widgets-in-flutter-4dc32cd575a9
+* https://api.flutter.dev/flutter/widgets/Transform-class.html
 
 ### WIDGETS ANIMATION
 
@@ -5600,6 +5784,50 @@ FutureBuilder<int>(
     );
   }
 ),
+```
+### flutter_app_badger
+* Ajouter un badge de notifications à l'application
+* Ne marche pas sur tous les appareils Android
+* https://pub.dev/packages/flutter_app_badger
+```java
+Future<int> counter = ApiMessages.fetchUnseenMessages();
+checkBadge(counter: counter);
+
+void checkBadge({int counter}) {
+  counter > 0 ? _addBadge(counter: counter) : _removeBadge;
+}
+
+// MAJ le nombre de notifications
+void _addBadge({int counter}) {
+    FlutterAppBadger.updateBadgeCount(counter);
+  }
+
+// supprime le badge de notifications
+void _removeBadge() {
+  FlutterAppBadger.removeBadge();
+}
+```
+### TIME.DART
+* https://github.com/jogboms/time.dart
+```java
+//Before
+var 3dayLater = DateTime.now().add(Duration(days: 3)).day;
+
+//After
+var 3dayLater = 3.days.fromNow.day;
+
+//Before
+var duration = Duration(minutes: 10) +Duration(seconds: 15) 
+  - Duration(minutes: 3) + Duration(hours: 2;
+
+//After
+var duration = 10.minutes + 15.seconds - 3.minutes + 2.hours;
+
+//Before
+await  Future.delayed(Duration(seconds: 2))
+
+//After
+await 2.seconds.delay
 ```
 
 ## API

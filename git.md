@@ -42,6 +42,9 @@
 * [Bonnes pratiques](#bonnes-pratiques)
 * [GLOSSAIRE](#glossaire)
 * [CHEATSHEET](#cheatsheet)
+* [GERER LES CONFLITS](#-GERER-LES-CONFLITS)   
+   * [CRLF](#crlf)
+   * [REBASE](#rebase)
 * [Les commandes de base de la console](#commandes-base)
 * [TELECHARGER GIT](#telecharger-git)
 * [EDITEUR DE TEXTE](#editeur-de-texte)
@@ -168,6 +171,7 @@ git reset HEAD fichier.dart # supprimer un fichier de la pile de staging
 
 # STASH
 git stash # enregistrer les changements qui ne doivent pas être commit immédiatement
+# ex. une modification urgente doit être faite => mise en brouillon de l'avancement avec git stash
 git stash save nomDuStash # enregistre de façon nominative
 git stash list # liste les stash
 git stash -p # stasher uniquement un ou plusieurs fichiers modifiés
@@ -244,6 +248,7 @@ git diff [source_branche] [target_branch] # voir les changements entre 2 branche
 
 # TAG
 git tag [mon_tag] [commitSha] # git tag v1.0.0 1b2e1d63ff
+git push origin [mon_tag] # le pousser sur le dépôt distant
 
 # LANCER L'INTERFACE GRAPHIQUE
 gitk
@@ -265,6 +270,31 @@ git rebase develop # MAJ de la branche principale (notre passé, notre base),
 # prolongée par notre branche (notre présent)
 git push -f # push en force
 ```
+
+## GERER LES CONFLITS
+
+### CRLF
+* fatal: CRLF would be replaced by LF
+```shell
+git config --global core.autocrlf false # désactive l'auto-génération des retours à la ligne Windows et supprime l'interdiction
+git config --global core.safecrlf false # si l'instruction ci-dessus ne marche pas
+// ou warn, pour avoir simplement l'avertissement
+```
+### REBASE
+* https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/resolving-a-merge-conflict-using-the-command-line
+* ouvrir le fichier de conflit avec Editeur (ex. Android Studio)
+* décider ce qu'il doit rester en supprimant aussi les indicateurs
+```
+If you have questions, please
+<<<<<<< HEAD
+open an issue
+=======
+ask your question in IRC.
+>>>>>>> branch-a
+```
+* git add .
+* git commit -m "Resolved merge conflict by incorporating both suggestions."
+* git rebase --continue
 
 ## <a name="commandes-base"></a> Les commandes de base de la console
 ```shell
