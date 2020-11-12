@@ -6,6 +6,11 @@
 * [RESSOURCES](#ressources)
 * [LEXIQUE](#lexique)
 * [CHEATSHEET](#cheatsheet)
+* [VARIABLES](#variables)   
+   * [TROUVER LE TYPE](#trouver-le-type)
+* [OPERATEURS](#operateurs)
+* [OBJET](#objet)   
+   * [GETTERS AND SETTERS](#GETTERS-AND-SETTERS)
 * [NOUVEAUTES](#nouveautes)
 * [Installer un module avec NPM](#npm)
 * [ES6 (2015)](#es6)
@@ -74,6 +79,95 @@ C'est une représentation du HTML en orienté objet ; chaque élément du HTML e
 
 * JavaScript Cheat Sheet : https://websitesetup.org/javascript-cheat-sheet/
 
+## VARIABLES
+### TROUVER LE TYPE
+```js
+if (typeof newName !== 'string')
+```
+
+## OPERATEURS
+* Operator Lookup | Enter a JavaScript operator to learn more about it: https://joshwcomeau.com/operator-lookup/
+
+## OBJET
+
+### GETTERS AND SETTERS
+* https://blog.alexdevero.com/property-getters-and-setters
+```js
+const car = {
+  // Add properties, prefixed with '_'
+  _manufacturer: 'BWM',
+  _model: 'i8',
+  _year: '2020',
+
+  // Create getter method for "_manufacturer"
+  get manufacturer() {
+    return this._manufacturer
+  },
+
+  // Create setter method for "_manufacturer"
+  set manufacturer(newManufacturer) {
+    if (typeof newManufacturer === 'string' && newManufacturer.length > 0) {
+      this._manufacturer = newManufacturer
+    }
+  },
+
+  // Create getter method for "_model"
+  get model() {
+    return this._model
+  },
+
+  // Create setter method for "_model"
+  set model(newModel) {
+    if (typeof newModel === 'string' && newModel.length > 0) {
+      this._model = newModel
+    }
+  },
+
+  // Create getter method for "_year"
+  get year() {
+    return this._year
+  },
+
+  // Create setter method for "_year"
+  set year(newYear) {
+    if (typeof newYear === 'string' && newYear.length > 0) {
+      this._year = newYear
+    }
+  }
+}
+
+// Get current manufacturer
+// Execute getter methods
+console.log(car.manufacturer)
+// Output:
+// 'BWM'
+
+// Get current model
+console.log(car.model)
+// Output:
+// 'i8'
+
+// Get current year
+console.log(car.year)
+// Output:
+// '2020'
+
+// Change some values
+// Execute setter methods
+car.manufacturer = 'Tesla'
+car.model = 'Model S'
+
+// Get new manufacturer
+// Execute getter methods
+console.log(car.manufacturer)
+// Output:
+// 'Tesla'
+
+// Get new model
+console.log(car.model)
+// Output:
+// 'Model S'
+```
 
 ## NOUVEAUTES
 

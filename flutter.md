@@ -190,7 +190,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [ICON](#icon)
       * [ICON BUTTON](#icon-button)
       * [FLOATING ACTION BUTTON](#floating-action-button)
-      * [FLAT BUTTON](#flat-button)
+      * [OLD : FLAT BUTTON](#flat-button)
+      * [NEW : TEXTBUTTON](#text-button)
       * [RAISED BUTTON](#raised-button)
       * [OUTLINE BUTTON](#outline-button)
    * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)   
@@ -219,7 +220,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [DATE TIME PICKERS](#DATE-TIME-PICKERS)
       * [DROPDOWNBUTTON](#DROPDOWNBUTTON)
       * [DROPDOWNBUTTONFORMFIELD](#DROPDOWNBUTTONFORMFIELD)
-      * [URL_LAUNCHER](#url_laucher)
+      * [DROPDOWNBUTTON WITH MAP](#DROPDOWNBUTTON-WITH-MAP)
+      * [DROPDOWN VIDE](#DROPDOWN-VIDE)
    * [WIDGETS SCROLLABLES (4)](#widgets-scrollables)   
       * [SINGLECHILDSCROLLVIEW](#SINGLECHILDSCROLLVIEW)
       * [SLIVERAPPBAR](#SliverAppBar)
@@ -246,13 +248,17 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
      * [CERCLE](#cercle)
 * [THEMES, COLORS](#themes)   
    * [CHEATSHEET TRANSPARENCY HEXADECIMAL](#CHEATSHEET-TRANSPARENCY-HEXADECIMAL)
+   * [COLOR OPACITY](#COLOR-OPACITY)
    * [COLOR SHADE AS CONSTANT](#[COLOR-SHADE-AS-CONSTANT)
    * [FLUTTER COLOR GENERATOR](#FLUTTER-COLOR-GENERATOR)
+* [GESTION DES ERREURS](#gestion-des-erreurs)   
+   * [ERREUR RESEAU](#erreur-reseau)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [PACKAGES](#packages)   
    * [FONCTIONNEMENT](#fonctionnement)   
    * [SHARED PREFERENCES](#shared-preferences)
    * [WEBVIEW](#webview)
+   * [URL_LAUNCHER](#url_launcher)
    * [AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW](#AFFICHER-UN-PDF-VIA-UNE-URL-AVEC-PDFVIEW)
    * [OUVRIR UN PDF VIA UNE URL AVEC ADVANCE_PDF_VIEWER](#OUVRIR-UN-PDF-VIA-UNE-URL-AVEC-ADVANCE_PDF_VIEWER)
    * [SPLASHSCREEN](#splashscreen)  
@@ -287,6 +293,9 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * [EX D'APPLI (9) : API, DropdownButton, Cupertino Widgets, Maps, Platform](#bootcamp-bitcoin-api)
 * [EX D'APPLI (10) : Animations, Firebase, Stream](#bootcamp-flash-chat)
 * [EX D'APPLI (10) : State Management, BottomSheet, Callbacks, Provider](#bootcamp-todoey)
+* [MAC](#mac)   
+   * [GIT CREDENTIALS](#GIT-CREDENTIALS)
+   * [RACCOURCIS](#RACCOURCIS)
 
 
 
@@ -599,6 +608,21 @@ Container(
 * renommer le dossier d'un projet flutter :   
    1. renommer
    2. importer de nouveau dans AS
+* renommer le nom de package d'un projet flutter : https://stackoverflow.com/questions/51534616/how-to-change-package-name-in-flutter   
+   * solution : https://stackoverflow.com/a/58729067
+    1. Go to build.gradle in app module and rename applicationId "com.company.name"
+    2. Go to Manifest.xml in app/src/main and rename package="com.company.name" and android:label="App Name"
+    3. Go to Manifest.xml in app/src/debug and rename package="com.company.name"
+    4. Go to Manifest.xml in app/src/profile and rename package="com.company.name"
+    5. Go to app/src/main/kotlin/com/something/something/MainActivity.kt and rename package="com.company.name"
+    6. Go to app/src/main/kotlin/ and rename each directory so that the structure looks like app/src/main/kotlin/com/company/name/
+    7. Go to pubspec.yaml in your project and change name: something to name: name, example :- if package name is com.abc.xyz the name: xyz
+    8. Go to each dart file in lib folder and rename the imports to the modified name.
+    9. Open XCode and open the runner file and click on Runner in project explorer.
+    10. Go to General -> double click on Bundle Identifier -> rename it to com.company.name
+    11. Go to Info.plist click on Bundle name -> rename it to your App Name.
+    12. close everything -> go to your flutter project and run this command in terminal flutter clean
+
 * La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
 ```java
@@ -1165,7 +1189,7 @@ class Article {
   String title;
   String content;
 
-  Convive({this.title, this.content});
+  Article({this.title, this.content});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
@@ -1174,6 +1198,16 @@ class Article {
     );
   }
 }
+```
+* WORD-WRAP pour CONTAINER : donner un width
+```java
+Container(
+  child: Text(
+    "Octobre 2020",
+    style: TextStyle(color: kStrongGreen, fontWeight: FontWeight.w400),
+  ),
+  width: MediaQuery.of(context).size.width * 0.3, // au-dessus de ce width, le texte sera tronqué
+),
 ```
 
 ### STRUCTURE
@@ -1287,6 +1321,7 @@ flutter downgrade
 flutter downgrade flutter_version_name // flutter downgrade v1.17.0
 ```
 ### LIFECYCLE
+#### App Lifecycle
 * https://stackoverflow.com/questions/56395081/unhandled-exception-inheritfromwidgetofexacttype-localizationsscope-or-inheri
 * StateLess Widget
 ```java
@@ -1322,7 +1357,7 @@ void deactivate() {
   // called when the stateful widget gets destroyed
 }
 ```
-* SystemChannels.lifecycle
+#### SystemChannels.lifecycle
 * Listen to lifecycle events to trigger a function, a call, ect.
 * Flutter: Update Widgets On Resume? : https://stackoverflow.com/questions/49869873/flutter-update-widgets-on-resume
 ```java
@@ -2359,6 +2394,7 @@ class _Home extends State<Home> {
 ```
 #### FLAT BUTTON
 * Bouton plat, sans relief
+* (!) Déprécié depuis la version 1.22
 ```java
 class _Home extends State<Home> {
   bool changedToWhite = false; // ++
@@ -2395,6 +2431,68 @@ class _Home extends State<Home> {
 
 }
 ```
+#### TEXTBUTTON
+* Le nouveau FlatButton
+* Bouton plat, sans relief
+* https://www.woolha.com/tutorials/flutter-using-textbutton-widget-examples
+```java
+// Basic Usage
+TextButton(
+  child: Text('Woolha.com'),
+  onPressed: () {
+    print('Pressed');
+  }
+)
+
+TextButton.icon(
+  label: Text('Woolha.com'),
+  icon: Icon(Icons.web),
+  onPressed: () {
+    print('Pressed');
+  }
+)
+
+// Setting Button Style
+MaterialApp(
+  theme: ThemeData(
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.purple,
+      ),
+    ),
+  )
+)
+
+// defining a style for a specific button
+TextButton(
+  child: Text('Woolha.com'),
+  style: TextButton.styleFrom(
+    primary: Colors.white, // ButtonStyle's foregroundColor (used for Text and Icon widgets inside the button) and overlayColor (used to indicate that the button is focused, hovered, or pressed)
+    backgroundColor: Colors.teal,
+    shadowColor: Colors.black[200],
+    elevation: 5,
+    onSurface: Colors.grey, // ButtonStyle's foregroundColor when the button is disabled
+    side: BorderSide(color: Colors.red, width: 5), // border, but it's recommended to use OutlinedButton if you want to have a button with border
+    shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+    padding: padding,
+    minimumSize: "minimum size of the button",
+    visualDensity: "how compact the button's layout will be",
+    also enabledMouseCursor, disabledMouseCursor, tapTargetSize, animationDuration, enableFeedback
+  ),
+  textStyle: TextStyle(
+    color: Colors.black, // may not affect the text color
+    fontSize: 40,
+    fontStyle: FontStyle.italic
+  ),
+  onPressed: () {
+    print('Pressed');
+  },
+  onLongPress: () {
+    print('Long press');
+  },
+)
+```
+
 #### RAISED BUTTON
 * Bouton avec effet de profondeur
 ```java
@@ -4106,6 +4204,41 @@ DropdownButton(
 );
 ```
 
+##### DROPDOWN VIDE
+* coupable = la map appelée n'est pas nulle, mais vide {}
+* solution = map = null;
+* en détails :
+```java
+Widget dropDownMenu() {
+  if (mapArticles == null || mapArticles.length < 1) {
+    // prévient l'affichage ↑ d'un menu déroulant nul
+    mapArticles = Map<String, String>();
+    return FutureBuilder<List<Article>>(
+      future: listeArticles,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return DropdownMenuItem(
+              child: Text(
+            'Erreur lors du chargement des données : ${snapshot.error}',
+            overflow: TextOverflow.ellipsis,
+          ));
+        } else if (snapshot.hasData) {
+          for (int i = 0; i < snapshot.data.length; i++) {
+            if (snapshot.data[i].nom != null) {
+              mapArticles.putIfAbsent(
+                  snapshot.data[i].code, () => snapshot.data[i].nom);
+            }
+          }
+          return dropDownButton();
+        } else
+          return DropdownMenuItem(child: Text('Chargement des profils...'));
+      },
+    );
+  } // si les données sont déjà chargées, on les affiche
+  return dropDownProfilesButton();
+}
+```
+
 #### DROPDOWNBUTTONFORMFIELD
 * DropdownButton with validation
 * https://stackoverflow.com/questions/52926335/how-validate-dropdown-in-flutter
@@ -4200,9 +4333,6 @@ DropdownButtonFormField(
   validator: (value) => value == null ? 'Message d\'erreur' : null,
 );
 ```
-#### URL_LAUNCHER
-* Diriger l'utilisateur vers un lien (Youtube), ouvir un message SMS, taper un numéro de téléphone, ect.
-* https://pub.dev/packages/url_launcher
 
 
 ### WIDGETS SCROLLABLES
@@ -5135,6 +5265,34 @@ children: <Widget>[
   ),
   // ...
 ```
+#### WRAP
+* Equivalent de FlexBox
+* Wrap pour Column, Row
+* https://api.flutter.dev/flutter/widgets/Wrap-class.html
+```java
+Wrap(
+  spacing: 8.0, // gap between adjacent chips
+  runSpacing: 4.0, // gap between lines
+  children: <Widget>[
+    Chip(
+      avatar: CircleAvatar(backgroundColor: Colors.blue.shade900, child: Text('AH')),
+      label: Text('Hamilton'),
+    ),
+    Chip(
+      avatar: CircleAvatar(backgroundColor: Colors.blue.shade900, child: Text('ML')),
+      label: Text('Lafayette'),
+    ),
+    Chip(
+      avatar: CircleAvatar(backgroundColor: Colors.blue.shade900, child: Text('HM')),
+      label: Text('Mulligan'),
+    ),
+    Chip(
+      avatar: CircleAvatar(backgroundColor: Colors.blue.shade900, child: Text('JL')),
+      label: Text('Laurens'),
+    ),
+  ],
+)
+```
 #### TRANSFORM
 * Rotation, Skew, Scale, etc.
 * https://www.coderzheaven.com/2019/01/26/rotate-scale-skew-or-translate-widgets-in-flutter-using-transform/
@@ -5313,12 +5471,73 @@ Color(0xFF000000)
 // Black 20%
 Color(0x33000000)
 ```
+### COLOR OPACITY
+* https://stackoverflow.com/questions/55294676/how-to-put-opacity-for-container-in-flutter
+```java
+// solution du dessus
+// ou :
+Colors.white.withOpacity(0.7);
+const Color(0xFF0E3311).withOpacity(0.5);
+```
 ### COLOR SHADE AS CONSTANT
 ```java
 const Color kTitleColor = Color(0xFF616161); // Colors.grey[700] (la valeur hexadécimale est donnée au survol)
 ```
 ### FLUTTER COLOR GENERATOR
 * This simple tool can be used to generate main color and its shades for Flutter : https://tltemplates.com/tool/color/flutter-color
+
+## GESTION DES ERREURS
+
+### ERREUR RESEAU
+* Réseau injoignable
+* https://stackoverflow.com/a/49648870
+```java
+// ex. page de messages de l'utilisateur, récupérées par appel API
+
+void getUserMessages() {
+  // appel API pour récupérer les messages
+}
+
+// FutureBuilder
+else if (snapshot.hasError) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text("${snapshot.error}"
+              .contains('Network is unreachable')
+          ? "Réseau injoignable, pensez à l'activer s'il est éteint"
+          : "${snapshot.error}"),
+      SizedBox(
+        height: 50.0,
+      ),
+      Center(
+        child: TextButton(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(
+                        Colors.orange)),
+            onPressed: () {
+              setState(() {
+                getUserMessages();
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0),
+              child: Text(
+                "Retenter",
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            )),
+      ),
+    ],
+  );
+}
+```
+
 
 ## INTERNATIONALISATION
 * idée = créer des dates en français
@@ -5477,6 +5696,61 @@ build {
   },
 }
 ```
+* Enregistrer un Objet en SharedPreferences
+* https://stackoverflow.com/a/62197836
+```java
+// article.dart
+class Article {
+  String titre;
+  String auteur;
+  String contenu;
+  bool enLigne;
+
+  Article({this.titre, this.auteur, this.contenu, this.enLigne});
+
+  // transforme en JSON en Objet Article
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      titre: json['titre'],
+      auteur: json['auteur'],
+      contenu: json['contenu'],
+      enLigne: json['enLigne'],
+    );
+  }
+
+  // Converts object to a JSON string, lors de l'appel de jsonEncode()
+  Map<String, dynamic> toJson() => {
+    'titre': titre,
+    'auteur': auteur,
+    'contenu': contenu,
+    'enLigne': enLigne,
+  };
+}
+
+// sharedprefs
+Article getArticle() {
+  Article article = Article();
+  String articleJson = _sharedPrefs.getString("article");
+  if (articleJson != null) {
+    article = Article.fromJson(json.decode(articleJson));
+  }
+  return article;
+}
+
+setArticle(Article article) {
+  _sharedPrefs.setString("article", jsonEncode(article));
+}
+
+// utilisation
+// set
+void getArticle() async {
+  article = await ApiArticle.getArticle();
+  sharedPrefs.setArticle(article);
+}
+
+// get
+Article article = sharedPrefs.getArticle();
+```
 
 ### WEBVIEW
 * Fonctionnalité : afficher une page web directement dans l'appli
@@ -5503,6 +5777,10 @@ import 'package:webview_flutter/webview_flutter.dart';
     );
   }
 ```
+
+#### URL_LAUNCHER
+* Diriger l'utilisateur vers un lien (Youtube), ouvir un message SMS, taper un numéro de téléphone, ect.
+* https://pub.dev/packages/url_launcher
 
 ### AFFICHER UN PDF VIA UNE URL AVEC PDFVIEW
 * https://stackoverflow.com/questions/62476108/how-to-load-and-present-a-pdf-file-from-the-web-in-flutter
@@ -5716,6 +5994,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
+      routeName: "/", // obligatoire depuis version 1.3
       seconds: 3,
       navigateAfterSeconds: HomeScreen(),
       image: Image.asset(
@@ -5805,6 +6084,62 @@ void _addBadge({int counter}) {
 // supprime le badge de notifications
 void _removeBadge() {
   FlutterAppBadger.removeBadge();
+}
+```
+```java
+class _AppState extends State<App> {
+int notifCounter;
+
+  @override
+  void initState() {
+    super.initState();
+    checkUserNotifications();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreen(
+      seconds: 3,
+      navigateAfterSeconds: notification ? MessageScreen() : HomeScreen(),
+    );
+  }
+
+  void checkUserNotifications() async {
+    bool badgeSupported = await FlutterAppBadger.isAppBadgeSupported();
+    print("BadgeSupported :" + badgeSupported.toString());
+    if (!badgeSupported && user != null && user.id != null) {
+      notifCounter = await ApiNotification.fetchNotifications(user: user);
+      updateAppBadgeWithValue(counter: notifCounter);
+    }
+  }
+
+  void updateAppBadgeWithValue({int counter}) {
+    if (counter == null || counter == 0) {
+      FlutterAppBadger.removeBadge();
+    } else {
+      print("updateBadgeNumber : ${counter.toString()}");
+      FlutterAppBadger.updateBadgeCount(counter);
+    }
+  }
+
+  void configureAppLifecycleStates() {
+    SystemChannels.lifecycle.setMessageHandler((String msg) {
+      print('SystemChannels> $msg');
+      switch (msg) {
+        case "AppLifecycleState.paused":
+          break;
+        case "AppLifecycleState.inactive":
+          break;
+        case "AppLifecycleState.detached":
+          break;
+        case "AppLifecycleState.resumed":
+          checkUserNotifications();
+          break;
+        default:
+      }
+      return;
+    });
+  }
 }
 ```
 ### TIME.DART
@@ -11866,3 +12201,14 @@ class TaskData extends ChangeNotifier {
   }
 }
 ```
+
+## MAC
+### GIT CREDENTIALS
+```shell
+git config --global user.name "votre nom"
+git config --global user.email "votre_email@imc-fr.com"
+# OU
+git config --global --edit # (editeur VIM)
+```
+### RACCOURCIS
+* [ => Option-Majuscule-parenthèse

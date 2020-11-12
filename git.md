@@ -32,6 +32,7 @@
 * A Visual Git Reference : https://marklodato.github.io/visual-git-guide/index-en.html
 * LF will be replaced by CRLF in git - What is that and is it important? : https://stackoverflow.com/questions/5834014/lf-will-be-replaced-by-crlf-in-git-what-is-that-and-is-it-important
 * https://dev.to/bartzalewski/learn-git-good-practices-3jp3
+* Changing a commit message : https://docs.github.com/en/free-pro-team@latest/github/committing-changes-to-your-project/changing-a-commit-message
 
 ### TO READ
 
@@ -45,6 +46,7 @@
 * [GERER LES CONFLITS](#-GERER-LES-CONFLITS)   
    * [CRLF](#crlf)
    * [REBASE](#rebase)
+   * [ACK/NAK](#ACK-NAK)
 * [Les commandes de base de la console](#commandes-base)
 * [TELECHARGER GIT](#telecharger-git)
 * [EDITEUR DE TEXTE](#editeur-de-texte)
@@ -94,10 +96,22 @@
 * https://education.github.com/git-cheat-sheet-education.pdf
 * Git cherry-pick : https://www.atlassian.com/fr/git/tutorials/cherry-pick
 * Git Log Cheatsheet : https://elijahmanor.com/blog/git-log
----
-* Vim cheatsheet : https://devhints.io/vim
 * Git Flow cheatsheet : https://danielkummer.github.io/git-flow-cheatsheet/
 
+### VIM
+* Vim cheatsheet : https://devhints.io/vim
+```shell
+i # passer en mode insertion
+:w # sauvegarder
+:q # quitter
+:wq # sauvegarder et quitter
+
+## MODE INTERACTIF
+* mode interactif, taper "i"
+* en sortir, taper "esc"
+* puis ":wq!" pour sauvegarder et sortir de la fenêtre interactive
+```
+### GIT
 ```shell
 # CONSEILS
 * commit avant pull ou modif sur branche principale
@@ -112,12 +126,6 @@ mkdir nouveauDossier # créer un dossier
 cd nouveauDossier/ # entrer dans le repertoire
 ls # lister les fichiers
 touch fichierCréé
-
-# VIM
-i # passer en mode insertion
-:w # sauvegarder
-:q # quitter
-:wq # sauvegarder et quitter
 
 # CONFIG
 git config --global user.name "[nom]" # le nom associé aux commit
@@ -149,6 +157,8 @@ git log -p readme.md # historique de readme.md
 git log --oneline --decorate --graph # "pretty" log
 git show # afficher des informations sur tout fichier git
 git diff # énumère les changements depuis le dernier commit
+git describe [commit ou branche(HEAD)] # donne : <tag>_<numCommitsWithTag>_g<hashOfCommit>
+# v1_2_gC6
 
 # RECUPERER LES CHANGEMENTS DU DEPOT
 git fetch [nom-de-depot] # récupère tout l’historique/métadonnées du dépôt nommé
@@ -189,17 +199,28 @@ git stash branch brancheCrééeAPartirDunStash
 git commit -m "mon message de commit" # commit
 git commit -a -m "mon message de commit" # stage all files + commit
 git commit --amend # envoie les nouvelles modification sur le commit précédent
-# workflow = git add ., git commit --amend -m "A better message"
+# workflow = 
+# git add .
+# git commit --amend -m "A better message"
+# si déjà présent sur le dépôt distant, git push -f ma_branche
 git push # pousser le commit sur la branche d'origin
 git push -f # push en force
 git push -u origin develop # dépose la branche sur le dépôt distant,
 # en spécifiant le dépôt comme la référence en amont (premier commit)
 git push origin brancheADeposerSurDepotDistant
 
+# SE DEPLACER DANS LES COMMITS
+git checkout ma_branche^ # revient un commit en arrière
+git checkout HEAD^ # same
+git checkout HEAD^^ # deux commits en arrière
+git checkout HEAD~4 # revient 4 commits en arrière
+
 # ANNULATION
 git revert [commitSha] # supprime les changements du commit sélectionné
 # en créant un nouveau commit de suppression qui annule les derniers changements
+# ex. git revert HEAD supprime les changements du dernier commit
 git reset [commitSha] # annule tous les commits après [commitSha], en conservant les modifications localement
+# ex. git reset HEAD~1 annule les changements du dernier commit
 git reset --hard [commitSha] # supprime tout l’historique et les modifications effectuées après le commit spécifié
 git reset --hard HEAD # réinitialiser l’index et le répertoire de travail à l’état du dernier commit
 git reset HEAD^ --soft # revient un cran en arrière, avec les changements en staging
@@ -210,7 +231,7 @@ git checkout [commitSha] index.html # revient à l'état du fichier à ce moment
 # le fichier est directement placé en staging
 
 # MERGE
-git rebase develop # git rebase = prendre la branche principale comme base et la prolonger
+git rebase [nom-branche-base] # git rebase = prendre une branche comme base et la prolonger
 # rebase = prolonger ex. git rebase develop = je prolonge la branche develop avec ma branche
 # crée une seule ligne d'historique (comme si les autres branches n'avaient jamais existé)
 # git rebase [base] (OK pour les branches privées/locales (ex. feature), 
@@ -218,6 +239,14 @@ git rebase develop # git rebase = prendre la branche principale comme base et la
 # ex. sur branche feature = git rebase develop 
 # => place ma branche feature au bout de la branche develop = develop -> feature
 # pour que la branche develop reviennent en bout de branche = git checkout develop, git rebase feature
+git rebase -i [nom-commit-base ou nom-branche-base] # git rebase interactif qui permet de modifier les commits qui prolongent la base
+# git rebase -i HEAD~n command display a list of the last n commits in your default text editor
+# ex. git rebase -i HEAD~4 va donner la possibilité de ré-arranger tous les commits qui prolongent HEAD~4
+# ex.2 = sur la branche dev, je veux enlever des commits avant de merger avec la branche master
+# git rebase master -i # je supprime les commits superflus créés dans ma branche
+git rebase [nom-branche-base] [nom-branche-prolonge]
+# ex. sur la branche feature*, "git rebase master" = "git rebase master feature" (même instruction)
+# "git rebase master feature" = "git checkout feature" + "git rebase master"
 git merge [nom-de-branche] # combine dans la branche courante l’historique de la branche spécifiée
 # ex. sur branche master = git merge feature5, puis git branch -d feature5
 git merge [nom-de-depot]/[branche] # fusionne la branche du dépôt dans la branche locale courante
@@ -231,6 +260,7 @@ git merge --squash # merge en "écrasant" ses commits en un seul
 # Le contenu des commits de hotfix-001 est aggrégé dans le commit effectué sur la branche master
 git cherry-pick [commitSha] # sélectionne un commit d'une branche 
 # et l'applique au début de notre branche actuelle
+git cherry-pick [commitSha1] [commitSha2] # prolonge la branche par c1 puis c2
 
 # BRANCHE
 git checkout [nom-de-branche] # bascule sur la branche spécifiée
@@ -248,6 +278,7 @@ git diff [source_branche] [target_branch] # voir les changements entre 2 branche
 
 # TAG
 git tag [mon_tag] [commitSha] # git tag v1.0.0 1b2e1d63ff
+# sans commitSha, le tag pointera sur le HEAD
 git push origin [mon_tag] # le pousser sur le dépôt distant
 
 # LANCER L'INTERFACE GRAPHIQUE
@@ -295,6 +326,13 @@ ask your question in IRC.
 * git add .
 * git commit -m "Resolved merge conflict by incorporating both suggestions."
 * git rebase --continue
+
+### ACK NAK
+```
+fatal: git fetch-pack: expected ACK/NAK, got 'error: Internal server error'
+fatal: the remote end hung up unexpectedly
+```
+* solution : git clone du projet
 
 ## <a name="commandes-base"></a> Les commandes de base de la console
 ```shell

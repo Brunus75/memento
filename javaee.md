@@ -1518,3 +1518,36 @@ public class AddWorkServlet extends HttpServlet {
 * Toutes les requêtes transitent vers les méthodes d'UN SEUL ET MÊME OBJET
 * Les propriétés de classe sont donc à éviter, car elles ne sont pas personnalisées, mais générales
 * Tout ce qui est à effectuer dans une Servlet doit donc s'effectuer dans les METHODES (scope local) de la Servlet, pour éviter toute confusion/mélange de variables
+```java
+/**
+ * Servlet implementation class AddWorkServlet
+ */
+public class AddWorkServlet extends HttpServlet {
+
+	Work newWork; // mauvaise pratique = variable d'instance
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		newWork = new Work(request.getParameter("title")); // mauvaise pratique = utilise variable d'instance
+		
+		Work newWork = new Work(request.getParameter("title")); // bonne pratique = variable locale
+	}
+
+}
+```
+
+### Session HTTP : suivi de l'utilisateur
+
+* dans la méthode de Servlet :
+```java
+request.getSession(); // demande au serveur de démarrer le suivi de la session utilisateur
+// stocké dans un objet de type HttpSession
+// HttpSession session = request.getSession();
+String numeroDeSession = request.getSession().getId();
+// ajouter un attribut à la session
+String identifiantLivre = request.getParameter("id");
+session.setAttribute("idLivre", identifiantLivre)
+// pour le récupérer plus tard, sur une autre page
+String identifiantLivre = (String)session.getAttribute("idLivre"); // transtypage String car par défaut tout est objet
+```
+* le numéro de session sera retourné dans l'entête de la réponse, nommée "Cookie"
+* Il est associé à la clé "Set-Cookie"

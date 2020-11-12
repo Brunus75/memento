@@ -92,6 +92,7 @@
 * CSS GRID
 * Internet réseau (vidéo)
 * VPN (vidéo)
+* Eclipse
 
 ## :gun: WEB TOOLS
 
@@ -176,6 +177,8 @@
 * Check browser compatibility without leaving your tab : https://checkbrowsers.support/
 * Select a technology, get an idea, and build it : https://antoniotrajanovski.github.io/what-should-i-build/
 * 6 outils pour partager votre code en ligne : https://www.codeur.com/blog/outils-partage-code-en-ligne
+* Coding Fonts : https://coding-fonts.css-tricks.com/fonts/anonymous-pro/
+* Type a Website and Find Its Fonts : https://fontofweb.com/
 
 
 ## :pushpin: WEB DOCS
@@ -259,6 +262,9 @@
 * Top 3 des livres indispensables pour développeurs : https://www.jesuisundev.com/livre-developpeur
 * Un enregistreur d'écran et de webcam gratuit : https://www.blogdumoderateur.com/tools/vimeo-record
 * What I Wish I Knew as a Junior Dev – Lessons Learned After 11 Years of Coding : https://www.freecodecamp.org/news/lessons-learned-after-11-years-coding/
+* L’argent chez les développeur(euse)s : https://www.jesuisundev.com/argent-developpeur/
+* Attention Is My Most Valuable Asset for Productivity as a Software Developer : https://zwbetz.com/attention-is-my-most-valuable-asset-for-productivity-as-a-software-developer
+* Les certificats sur Mac : http://inet-system.com/les-certificats-sur-mac/
 
 ## :keyboard: WINDOWS
 
@@ -329,6 +335,7 @@
 * Comment bien optimiser les images pour le SEO : https://fr.semrush.com/blog/referencer-les-images-pour-le-seo/
 * FAQ : les balises H1-H6 et le SEO en 16 questions/réponses : https://www.abondance.com/20201021-43978-faq-les-balises-h1-h6-et-le-seo-en-16-questions-reponses.html
 * SEO : 7 points à vérifier pour un site Mobile First bien indexé : https://www.codeur.com/blog/index-google-mobile-first-changements-site
+* SEO : comment se préparer à la mise à jour Google Page Experience : https://www.blogdumoderateur.com/seo-google-page-experience
 
 
 ## :bulb: ORGANISATION
@@ -444,6 +451,7 @@
 * La notion de callables en PHP : https://mailchi.mp/048d5dd43005/mes-fonctionnalits-prfres-de-php-6534334
 * environnement virtuel en PHP : vagrant > https://scotch.io/tutorials/how-to-create-a-vagrant-base-box-from-an-existing-one
 * Why PHP 8 will be awesome : https://dev.to/jmau111/why-php-8-will-be-awesome-2lif
+* What's new in PHP 8 : https://stitcher.io/blog/new-in-php-8
 
 
 ### SYMFONY
@@ -570,7 +578,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 
 ### HTML
 
-* SVG Favicon Maker  : https://formito.com/tools/favicon
+* SVG Favicon Maker (with Emoji)  : https://formito.com/tools/favicon
 * The ultimate favicon generator : https://favicon.io/favicon-generator
 * Upload & Convert | Favicon.io : https://favicon.io/favicon-converter/
 * A Complete Guide to Data Attributes | CSS-Tricks : https://css-tricks.com/a-complete-guide-to-data-attributes/
@@ -872,6 +880,7 @@ https://www.lafermeduweb.net/veille/optimisez-le-poids-de-vos-google-fonts-en-de
 * 10 Usability Mistakes Most Designers Make on Checkboxes : https://uxmovement.com/forms/10-usability-mistakes-most-designers-make-on-checkboxes
 * SVG Path Editor Online : https://yqnn.github.io/svg-path-editor/
 * Websites For Free Icon Sets : https://wweb.dev/resources/free-icon-sets
+* SVG versions of logos, which are under 1KB each : https://github.com/edent/SuperTinyIcons
 
 ### CONSEILS
 * SI couleur primaire criarde, rendre ladite couleur omniprésente (ex. > https://dribbble.com/shots/6853694-Food-App-Profile)
@@ -1032,6 +1041,7 @@ WP White Security Tip: If you already have an .htaccess file in the root of your
 * Previewed, un outil de création de mockups d'applications mobiles et web : https://www.blogdumoderateur.com/tools/previewed
 * A website to generate mockup previews on various devices : https://previewed.app/
 * 70 000 ressources gratuites, offertes par Adobe : photos, vidéos, illustrations, mockups… : https://www.blogdumoderateur.com/70000-ressources-gratuites-adobe + https://stock.adobe.com/fr/free
+* Get high-resolution device mockups with the screenshot of your website or mobile application, for free : https://deviceshots.com/ 
 
 ## :heavy_heart_exclamation: SITES WEB
 
@@ -1250,3 +1260,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * 25 striking logo color schemes to inspire your branding : https://dribbble.com/stories/2020/11/04/logo-color-schemes
 * How I prepared for interviews : https://dev.to/mkinoshita12/how-to-i-prepared-myself-for-interviews-4g3g
 * Complete Introduction to the 30 Most Essential Data Structures & Algorithms : https://dev.to/iuliagroza/complete-introduction-to-the-30-most-essential-data-structures-algorithms-43kd
+* PHP 8: What’s New? (JIT Compiler, Attributes, and Other Features) : https://torquemag.io/2020/11/php-8/
+* Comparing Various Ways to Hide Things in CSS : https://css-tricks.com/comparing-various-ways-to-hide-things-in-css/

@@ -15,3 +15,7 @@ haute qualité > exporter > format +, un peu plus bas, cocher aligner sur les pl
 
 ## SAVE
 * Enregister en PNG, JPEG, ect. > Exporter
+
+# PHOTOPEA
+
+* Photshop online, free : https://www.photopea.com/
