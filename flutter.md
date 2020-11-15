@@ -16,6 +16,7 @@
 * https://twitter.com/csells
 * https://medium.com/@durannumit
 * https://www.reddit.com/r/FlutterDev/top/?t=week
+* https://www.woolha.com/
 * The top 45 must-follow Flutter experts on Twitter : https://blog.codemagic.io/top-flutter-developers-to-follow-on-twitter/
 
 **DART & FLUTTER**
@@ -45,8 +46,11 @@
 * Announcing Flutter 1.22 : https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f
 * Guides for migrating code across a breaking change : https://flutter.dev/docs/release/breaking-changes
 * A curated list of awesome packages on pub.dev. : https://github.com/polilluminato/awesome-pubdev
+* Performance best practices : https://flutter.dev/docs/perf/rendering/best-practices
 
 **TO READ**
+* Understanding constraints : https://flutter.dev/docs/development/ui/layout/constraints
+* Creating responsive apps : https://flutter.dev/docs/development/ui/layout/responsive
 * ~ A Guide to Using Futures in Flutter for Beginners : https://medium.com/flutter-community/a-guide-to-using-futures-in-flutter-for-beginners-ebeddfbfb967
 * ~ Flutter: Push, Pop, Push : https://medium.com/flutter-community/flutter-push-pop-push-1bb718b13c31
 * ~ Flutter State Management at Google I/O 2019 : https://youtu.be/d_m5csmrf7I
@@ -85,12 +89,21 @@
 * Migrating to the New Material Buttons and their Themes : A guide to migrating existing apps to the new Flutter button classes and their themes : https://docs.google.com/document/d/1yohSuYrvyya5V1hB6j9pJskavCdVq9sVeTqSoEPsWH0/edit
 * Bottom navigation which state is saved when clicks in item in the list and switches between bottom tabs. : https://medium.com/flutter-community/bottom-navigation-which-state-is-saved-when-clicks-in-item-in-the-list-and-switches-between-bottom-bcf8ba3bc4a
 * Demonstrate how to implement shared state using the same patterns across 5 different libraries : https://poetryincode.dev/flutter-state-5-ways
+* https://yaz.in/assets/flutter/Flutter%20Cheat%20Sheet.pdf
+Flutter Riverpod State Management Explained : https://www.refactord.com/guides/riverpod-state-management-explained
+* How text editing works internally in Flutter : https://medium.com/flutter-community/how-text-editing-works-internally-in-flutter-45cde5df54b4
+* Flutter Widgets (Grid View) The Whole Picture : https://medium.com/flutter-community/flutter-widgets-grid-view-the-whole-picture-34d2dd6dff9f
+* Flutter Push Notification on document create Firestore : https://medium.com/flutter-community/flutter-push-notification-on-document-create-firestore-9c1c12497cd4
+* New ad formats for Flutter : https://medium.com/flutter/new-ads-beta-inline-banner-and-native-support-for-the-flutter-mobile-ads-plugin-e48a7e9a0e64
+* Learn Flutter Hooks and Maximize Your Code Reuse : https://www.youtube.com/watch?v=A1DUBgIsCv8
+* 6 Lessons learned from launching a Flutter + Firebase App : https://www.antaa.app/post/6-lessons-learned-from-launching-an-app-made-with-flutter-firebase
 
 
 **TO UNDERSTAND**
 * FutureBuilder performance issue
 * When to use private variable
 * Run multiple Flutter versions in the same project concurrently
+* Flutter pixels, logical pixels, device pixels
 
 **ROADMAP**
 * https://github.com/DroidsOnRoids/flutter-roadmap
@@ -129,6 +142,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 * How to secure API keys? : https://www.reddit.com/r/FlutterDev/comments/jhdwq8/how_to_secure_api_keys/
 * Building a Movie App in 10 Minutes with Flutter : https://www.youtube.com/watch?v=soTEOI_rIIQ&feature=emb_logo
 * Flutter Debugging 101 : https://www.youtube.com/watch?reload=9&v=Z0_bCYlgZlw&ab_channel=BleylDev
+* 5 Flutter Web Tips + Firebase Deploy : https://www.reddit.com/r/FlutterDev/comments/ju26z9/5_flutter_web_tips_firebase_deploy/
 
 **TESTING**
 * Flutter Testing For Beginners - The Ultimate Guide : https://www.reddit.com/r/FlutterDev/comments/j947hw/flutter_testing_for_beginners_the_ultimate_guide/
@@ -153,6 +167,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
 
 **JSON**
 * Instantly parse JSON in any language : https://app.quicktype.io/#l=dart, exemple : https://app.quicktype.io/?share=4Ik8Upww0mN33e2CBVmq
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-81--use-quicktypeio-to-generate-serializerdeserializer-for-dart
 * Json to Dart Converter : https://javiercbk.github.io/json_to_dart/
 
 
@@ -191,9 +206,11 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [ICON BUTTON](#icon-button)
       * [FLOATING ACTION BUTTON](#floating-action-button)
       * [OLD : FLAT BUTTON](#flat-button)
-      * [NEW : TEXTBUTTON](#text-button)
-      * [RAISED BUTTON](#raised-button)
-      * [OUTLINE BUTTON](#outline-button)
+      * [NEW : TEXTBUTTON](#textbutton)
+      * [OLD: RAISED BUTTON](#raised-button)
+      * [NEW : ELEVATEDBUTTON](#elevatedbutton)
+      * [OLD : OUTLINE BUTTON](#outline-button)
+      * [NEW : OUTLINEDBUTTON](#outlinedbutton)
    * [POP-UP ET NAVIGATOR (2)](#pop-up-et-navigator)   
       * [AJOUT D'UN BODY EXTERNE](#ajout-d-un-body-externe)
       * [SNACKBAR](#snackbar)
@@ -230,10 +247,12 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [DISMISSIBLE](#DISMISSIBLE)
       * [CUSTOMTILE](#CUSTOMTILE)
       * [INKWELL](#INKWELL)
+      * [GESTUREDECTECTOR](#gesturedetector)
       * [VERIFIER ORIENTATION DEVICE](#VERIFIER-ORIENTATION-DEVICE)
       * [CHOISIR ORIENTATION DEVICE](#CHOISIR-ORIENTATION-DEVICE)
       * [GRIDVIEW](#GRIDVIEW)
       * [LISTE OU GRILLE SELON ORIENTATION](#LISTE-OU-GRILLE-SELON-ORIENTATION)
+      * [INTERACTIVEVIEWER](#interactiveviewer)
    * [WIDGETS LAYOUT](#widgets-layout)   
       * [STACK](#STACK)
       * [POSITIONED](#POSITIONED)
@@ -241,6 +260,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
       * [VISIBILTY](#VISIBILTY)
       * [EXPANDED](#EXPANDED)
       * [FLEXIBLE](#flexible)
+      * [WRAP](#wrap)
       * [TRANSFORM](#transform)
   * [WIDGETS ANIMATION](#widgets-animation)   
      * [HERO](#hero)
@@ -251,6 +271,8 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [COLOR OPACITY](#COLOR-OPACITY)
    * [COLOR SHADE AS CONSTANT](#[COLOR-SHADE-AS-CONSTANT)
    * [FLUTTER COLOR GENERATOR](#FLUTTER-COLOR-GENERATOR)
+* [RESPONSIVE]
+   * [RESPONSIVE TEXT](#responsive-text)
 * [GESTION DES ERREURS](#gestion-des-erreurs)   
    * [ERREUR RESEAU](#erreur-reseau)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
@@ -264,7 +286,13 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [SPLASHSCREEN](#splashscreen)  
    * [BADGES](#badges)
    * [flutter_app_badger](#flutter_app_badger)
-   * [TIME.DART](#time-dart)
+   * [TIME.DART](#timedart)
+   * [Widgets smooshy like Jelly or Dough](#dough)
+   * [Read Network State with connectivity](#connectivity)
+   * [Utilities with SUPERCHARGED](#SUPERCHARGED)
+   * [Make link on Text clickable using flutter_linkify](#flutter_linkify)
+   * [Show various loading/progress with flutter_spinkit](#flutter_spinkit)
+   * [Easy Setting screens with settings_ui](#settings_ui)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -621,7 +649,13 @@ Container(
     9. Open XCode and open the runner file and click on Runner in project explorer.
     10. Go to General -> double click on Bundle Identifier -> rename it to com.company.name
     11. Go to Info.plist click on Bundle name -> rename it to your App Name.
-    12. close everything -> go to your flutter project and run this command in terminal flutter clean
+    12. Change App name in Google-services.json if Firebase is used
+    ```json
+    "android_client_info": {
+      "package_name": "com.domain.app"
+    }
+    ```
+    13. close everything -> go to your flutter project and run this command in terminal flutter clean
 
 * La factorisation est obligatoire, au risque d'avoir un code spaghetti
 * Toujours finir les éléments d'un objet, même le dernier, par une virgule
@@ -769,6 +803,22 @@ MaterialPageRoute(
 ```
 
 ### ASTUCES
+* Remplir l'espace restant d'une ListView avec un Container de couleur :   
+   1. La couleur du container = couleur du Scaffold (plus simple, plus performant)
+   2. Pour donner un effet de style aux autres containers (ex. une bordure top), leur ajouter un Positioned, ce qui donnera l'impression que les autres containers sont en arrière-plan, alors qu'ils recouvrent la couleur de fond du Scaffold
+   ```java
+   // placer le widget 2 comme footer du Stack
+  Stack( // un des autres containers
+    Positioned(
+      left: 0,
+      right: 0,
+      // permet la position en bas
+      bottom: 0,
+      child: Widget2(),
+    ),
+    Widget1(),
+  )
+   ```
 * IF dans un Widget
 ```java
 Stack(
@@ -1319,6 +1369,16 @@ flutter downgrade
 
 // retour sur une version précise
 flutter downgrade flutter_version_name // flutter downgrade v1.17.0
+
+
+// If running "flutter run" on iOS takes so long and fails without any clear messages, 
+// run the following to get better insight:
+$ cd ios
+$ pod install --verbose
+// It's usually due to some problems with dependencies while flutter runs pod install.
+
+pub outdated // gives you the overview of your dependencies and possible upgrades in Resolvable column
+flutter pub outdated // if pub outdated can't find Flutter SDK
 ```
 ### LIFECYCLE
 #### App Lifecycle
@@ -2046,9 +2106,28 @@ class _Home extends State<Home> {
       ),
     );
   }
-
 }
 ```
+* DefaultTextStyle Widget : https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-95--defaulttextstyle-widget
+* We can apply TextStyle to all the widgets in the hirarchy by wrapping it with DefaultTextStyle
+```java
+DefaultTextStyle(
+  child: Column(
+    children: <Widget>[
+      Text(
+        "DefaultTextStyle With Green text color",
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 20, color: Colors.black),
+      ),
+      Text("Title"), //Green color, size 30
+      Text("SubTitle", style: TextStyle(fontSize: 25)), //Green color, size 25
+      Text("Heading", style: TextStyle(fontSize: 20)), //Green color, size 20
+    ],
+  ),
+  style: TextStyle(fontSize: 30, color: Colors.green),
+);
+```
+
 #### RICH TEXT
 * If you want to have a single text with different style within it
 * use RichText() with TextSpan()
@@ -2275,6 +2354,7 @@ class _Home extends State<Home> {
 }
 ```
 #### ICON
+* Flutter 1.22 add 4 variations of icons: filled, outlined, rounded and sharp
 ```java
 class _Home extends State<Home> {@override
   Widget build(BuildContext context) {
@@ -2392,6 +2472,16 @@ class _Home extends State<Home> {
   }
 }
 ```
+* Create Emoji FloatingActionButton : https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-88--create-emoji-floatingactionbutton
+```java
+FloatingActionButton(
+  backgroundColor: Colors.white,
+  child: Text(
+    "🚀",
+    textAlign: TextAlign.center,
+    style: TextStyle(fontSize: 30),),
+)
+```
 #### FLAT BUTTON
 * Bouton plat, sans relief
 * (!) Déprécié depuis la version 1.22
@@ -2491,10 +2581,30 @@ TextButton(
     print('Long press');
   },
 )
+
+// to change the hover color, you have to pass a resolveWith method from MaterialStateProperty object
+// in the overlayColor parameters, and return colours according to the MaterialState:
+TextButton(
+  style: ButtonStyle(
+    overlayColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.focused))
+          return Colors.red;
+        if (states.contains(MaterialState.hovered))
+            return Colors.green;
+        if (states.contains(MaterialState.pressed))
+            return Colors.blue;
+        return null; // Defer to the widget's default.
+    }),
+  ),
+  onPressed: () { },
+  child: Text('TextButton with custom overlay colors'),
+) 
 ```
 
 #### RAISED BUTTON
 * Bouton avec effet de profondeur
+* (!) Déprécié depuis la version 1.22
 ```java
 class _Home extends State<Home> {
   bool changedToWhite = false; // ++
@@ -2542,8 +2652,71 @@ class _Home extends State<Home> {
 
 }
 ```
+#### ELEVATEDBUTTON
+* New RaisedButton since Flutter 1.22
+* the elevation increases when it's being pressed by the user
+* https://www.woolha.com/tutorials/flutter-using-elevatedbutton-widget-examples
+```java
+// Basic Usage
+ElevatedButton(
+  child: Text('Woolha.com'),
+  onPressed: () {
+    print('Pressed');
+  },
+)
+
+ElevatedButton.icon(
+  label: Text('Woolha.com'),
+  icon: Icon(Icons.web),
+  onPressed: () {
+    print('Pressed');
+  },
+)
+
+// Setting Button Style
+MaterialApp(
+  theme: ThemeData(
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.purple,
+      ),
+    ),
+  ),
+);
+
+// defining a style for a specific button
+ElevatedButton(
+  child: Text('Woolha.com'),
+  style: ElevatedButton.styleFrom(
+    primary: Colors.teal, // setting the background color
+    onPrimary: Colors.white, // setting the color used for Text and Icon widgets inside the button
+    shadowColor: Colors.black[200],
+    elevation: 5, // An elevation increase of 2 will be applied if the state is hovered or focused,
+    // while pressing the button increases the elevation by 6
+    onSurface: Colors.grey, // ButtonStyle's foregroundColor when the button is disabled
+    side: BorderSide(color: Colors.red, width: 5), // border
+    shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+    padding: padding,
+    minimumSize: "minimum size of the button",
+    visualDensity: "how compact the button's layout will be",
+    also enabledMouseCursor, disabledMouseCursor, tapTargetSize, animationDuration, enableFeedback
+  ),
+  textStyle: TextStyle(
+    color: Colors.black, // may not affect the text color
+    fontSize: 40,
+    fontStyle: FontStyle.italic
+  ),
+  onPressed: () {
+    print('Pressed');
+  },
+  onLongPress: () {
+    print('Long press');
+  },
+)
+```
 #### OUTLINE BUTTON
 * OutlineButton
+* (!) Déprécié depuis la version 1.22
 ```java
 OutlineButton(
 // personnalisation de la bordure
@@ -2565,6 +2738,64 @@ OutlineButton(
   onPressed: () => Navigator.pop(context),
 ),
 
+```
+#### OUTLINEDBUTTON
+* New Outline Button since Flutter 1.22
+* https://www.woolha.com/tutorials/flutter-using-outlinedbutton-widget-examples
+```java
+// Basic Usage
+OutlinedButton(
+  child: Text('Woolha.com'),
+  onPressed: () {
+    print('Pressed');
+  },
+)
+
+OutlinedButton.icon(
+  label: Text('Woolha.com'),
+  icon: Icon(Icons.web),
+  onPressed: () {
+    print('Pressed');
+  },
+)
+
+// Setting Button Style
+MaterialApp(
+  theme: ThemeData(
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(primary: Colors.purple),
+    ),
+  ),
+);
+
+// defining a style for a specific button
+OutlinedButton(
+  child: Text('Woolha.com'),
+  style: OutlinedButton.styleFrom(
+    primary: Colors.white, // ButtonStyle's foregroundColor (used for Text and Icon widgets inside the button) and overlayColor (used to indicate that the button is focused, hovered, or pressed)
+    backgroundColor: Colors.teal,
+    shadowColor: Colors.black[200],
+    elevation: 5,
+    onSurface: Colors.grey, // ButtonStyle's foregroundColor when the button is disabled
+    side: BorderSide(color: Colors.red, width: 5), // border
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+    padding: padding,
+    minimumSize: "minimum size of the button",
+    visualDensity: "how compact the button's layout will be",
+    also enabledMouseCursor, disabledMouseCursor, tapTargetSize, animationDuration, enableFeedback
+  ),
+  textStyle: TextStyle(
+    color: Colors.black, // may not affect the text color
+    fontSize: 40,
+    fontStyle: FontStyle.italic
+  ),
+  onPressed: () {
+    print('Pressed');
+  },
+  onLongPress: () {
+    print('Long press');
+  },
+)
 ```
 
 ### POP-UP ET NAVIGATOR
@@ -4840,6 +5071,35 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+#### GESTUREDETECTOR
+* Use Gesture Detector to detect gestures like tap, double Tap, press, LongPress, pan, drag, zoom etc.
+* https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-38--gesturedetector-widget
+```java
+GestureDetector(
+    onTap: //Tapped
+    onDoubleTap: //"Double Tapped
+    onLongPress: //Long Press
+    onLongPressEnd: //Long Press ends
+    onPanStart: // Pan Started
+    onPanUpdate: //"Pan" + paninfo.delta
+    onPanEnd: //Pan Ended
+    onHorizontalDragStart: //"Drag" + draginfo
+    child: Padding(
+        padding: const EdgeInsets.all(48.0),
+        child: InkWell(
+        child: Card(
+            child: Center(
+                child: Text(
+                currentGesture.toUpperCase(),
+                style: TextStyle(fontSize: 20, 
+                    fontWeight: FontWeight.w700),
+                ),
+            ),
+        ),
+        ),
+    ),
+);
+```
 #### VERIFIER ORIENTATION DEVICE
 ```java
 class _MyHomePageState extends State<MyHomePage> {
@@ -5067,6 +5327,58 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 ```
+#### INTERACTIVEVIEWER
+* Is your widget just too big to be viewed on a tiny phone screen? 
+* Wrap your humongous widget with InteractiveViewer to zoom, squeeze, customize, limit, pan, and more
+* InteractiveViewer is a widget that allows pan and zoom interactions with its child
+* https://www.youtube.com/watch?v=zrn7V3bMJvg
+* https://www.woolha.com/tutorials/flutter-using-interactiveviewer-widget-examples
+```java
+// basic usage
+InteractiveViewer( // enables the user to perform pan and scale on the image
+  child: Image.network(imageUrl), // The image is resized to fit the size constraint by default
+)
+
+// example
+static const String imageUrl = 'https://www.wallpapers13.com/wp-content/uploads/2016/01/Beautiful-lake-mountain-forest-desktop-wallpapers.jpg';
+
+static Matrix4 matrix4 = Matrix4(
+    2, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
+);
+
+TransformationController controller = TransformationController(matrix4);
+
+InteractiveViewer(
+  scaleEnabled: true, // by default
+  minScale: 0.5
+  maxScale: 10,
+  child: Image.network(imageUrl),
+  panEnabled: true, // by default (faire coulisser)
+  alignPanAxis: true, // disable diagonal panning
+  onInteractionStart: (ScaleStartDetails scaleStartDetails) {
+    print('Interaction Start - Focal point: ${scaleStartDetails.focalPoint}'
+        ', Local focal point: ${scaleStartDetails.localFocalPoint}'
+    );
+  },
+  onInteractionEnd: (ScaleEndDetails scaleEndDetails) {
+    print('Interaction End - Velocity: ${scaleEndDetails.velocity}');
+  },
+  onInteractionUpdate: (ScaleUpdateDetails scaleUpdateDetails) {
+    print('Interaction Update - Focal point: ${scaleUpdateDetails.focalPoint}'
+        ', Local focal point: ${scaleUpdateDetails.localFocalPoint}'
+        ', Scale: ${scaleUpdateDetails.scale}'
+        ', Horizontal scale: ${scaleUpdateDetails.horizontalScale}'
+        ', Vertical scale: ${scaleUpdateDetails.verticalScale}'
+        ', Rotation: ${scaleUpdateDetails.rotation}'
+    );
+    transformationController: controller,
+    constrained: true, // Whether the size constraints are applied to the child.. Defaults to true
+    boundaryMargin: true, // A margin for the visible boundaries of the child. Defaults to EdgeInsets.zero
+)
+```
 
 ### WIDGETS LAYOUT
 
@@ -5269,8 +5581,11 @@ children: <Widget>[
 * Equivalent de FlexBox
 * Wrap pour Column, Row
 * https://api.flutter.dev/flutter/widgets/Wrap-class.html
+* https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-29--wrap-widget
 ```java
 Wrap(
+  direction: Axis.vertical/Axis.horizontal,
+  runAlignment: WrapAlignment.start,
   spacing: 8.0, // gap between adjacent chips
   runSpacing: 4.0, // gap between lines
   children: <Widget>[
@@ -5486,13 +5801,68 @@ const Color kTitleColor = Color(0xFF616161); // Colors.grey[700] (la valeur hexa
 ### FLUTTER COLOR GENERATOR
 * This simple tool can be used to generate main color and its shades for Flutter : https://tltemplates.com/tool/color/flutter-color
 
+## RESPONSIVE
+* https://www.raywenderlich.com/4324124-responsive-design-for-flutter-getting-started
+### RESPONSIVE TEXT
+* Auto-Resizing Text Based on Parent Widget Size : FittedBox
+* allow the widget to scale according to the size of the parent widget
+* BoxFit enum : https://api.flutter.dev/flutter/painting/BoxFit-class.html
+```java
+FittedBox(
+  fit: BoxFit.contain, // make it scale as big as it can without going out of the widget box
+  child: Text(
+    initials,
+    style: TextStyle(color: textColor, fontSize: 14),
+  ),
+);
+
+// Text will be resized based on width of AppBar
+AppBar(
+  centerTitle: true,
+  title: FittedBox(fit:BoxFit.fitWidth, 
+  child: Text('Hey this is my long text appbar title')
+  ),
+),
+
+// Using BoxFit.scaleDown and fixing the FontSize you can adjust the maximum size of the font.
+// If the content is small, it occupies the minimum width with the specified font size. 
+// At the same time, if the content is large, it resizes to the smallest font size.
+
+FittedBox(
+  fit: BoxFit.scaleDown,
+  child: 
+    Text(
+      "Text here",
+      style: TextStyle(fontSize: 18),
+    ),
+)
+
+```
+* using the auto_size_text package: https://stackoverflow.com/a/52447163
+```java
+Container(
+  child: ConstrainedBox(
+    constraints: BoxConstraints(
+      minWidth: 300.0,
+      maxWidth: 300.0,
+      minHeight: 30.0,
+      maxHeight: 100.0,
+    ),
+    child: AutoSizeText(
+      "yourText",
+      style: TextStyle(fontSize: 30.0),
+    ),
+  ),
+);
+```
+
 ## GESTION DES ERREURS
 
 ### ERREUR RESEAU
 * Réseau injoignable
 * https://stackoverflow.com/a/49648870
 ```java
-// ex. page de messages de l'utilisateur, récupérées par appel API
+// ex. page de messages de l'utilisateur, récupérés par appel API
 
 void getUserMessages() {
   // appel API pour récupérer les messages
@@ -6163,6 +6533,125 @@ await  Future.delayed(Duration(seconds: 2))
 
 //After
 await 2.seconds.delay
+```
+### DOUGH
+* Want to make Flutter widgets smooshy like Jelly or Dough? Use the package dough
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-91--dough-package
+```yaml
+dependencies:
+  dough: ^version
+```
+```java
+PressableDough(
+  child: FloatingActionButton(
+    onPressed: () {},
+    child: Text("🧠",style: TextStyle(fontSize: 40)),
+  ),
+)
+```
+### CONNECTIVITY
+* connectivity package makes it easy to read network state of device
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-93--read-network-state-with-connectivity-package
+```java
+class State ...{
+  @override
+  initState() {
+    super.initState();
+    subscription = Connectivity()
+      .onConnectivityChanged
+      .listen((ConnectivityResult result) {
+          if (result == ConnectivityResult.mobile) //mobile connected.
+          else if (result == ConnectivityResult.wifi) //Wifi Connected.  
+          else if(result == ConnectivityResult.none) //No network
+    });
+  }
+
+  @override
+  dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+}
+```
+### SUPERCHARGED
+* supercharged brings awesome utility features from other languages to dart
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#94-tip--%EF%B8%8F-supercharged%EF%B8%8F
+* https://pub.dev/packages/supercharged
+```java
+"#ff00ff".toColor();
+"red".toColor();
+"flutter is cool".allBefore(" is"); // "flutter"
+12.between(0, 30); // true
+[1, 2, 3].elementAtOrNull(4); // Don't throw, return null
+[1, 2, 3].elementAtOrElse(4, () => 0); //Don't throw, return default value
+//Create Pages from list
+["a", "b", "c"].chunked(2, fill: () => ""); // [ ["a", "b"], ["c", ""] ]
+
+var duration = 5.minutes + 30.seconds;
+duration += 0.5.hours
+
+100.0.tweenTo(200.0); // Tween(begin: 100.0, end: 200.0)
+Colors.red.tweenTo(Colors.blue); // ColorTween(...)
+
+//Easy for loop
+["dog", "cat"].forEachIndexed((index, value) {
+    print("$i : $value") // 1 : dog, 2 : cat
+});
+```
+### FLUTTER_LINKIFY
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-97--make-link-on-text-clickable-using-flutter_linkify
+* https://pub.dev/packages/flutter_linkify#-installing-tab-
+```java
+Linkify(
+  text: "My  twitter https://twitter.com/erluxman",
+  onOpen: (LinkableElement url) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(content: Text("${url.text} clicked")),
+    );
+  },
+)
+```
+### FLUTTER_SPINKIT
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-98--package-flutter_spinkit
+1. Type SpinKit and press Ctrl+SPACE to see all possible indicators.
+2. Give color (@required), size(optional) and duration(optional) to SpinKit* widgets
+```yaml
+flutter_spinkit: ^4.1.2+1
+```
+```java
+SpinKitCircle(size: 90, color: Colors.cyan),
+SpinKitChasingDots(size: 190, color: Colors.blue),
+SpinKitCubeGrid(size: 90, color: Colors.blue),
+SpinKitDualRing(size: 90, color: Colors.blue,),
+SpinKitFadingCube(size: 90, color: Colors.red),
+SpinKitFadingFour(size: 90, color: Colors.green)
+```
+### SETTINGS_UI
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-100--easy-setting-screens-with-settings_ui
+```yaml
+dependencies:
+  settings_ui: ^version
+```
+```java
+SettingsList( // Whole setting Page
+  sections: [
+    SettingsSection( // Set of similar settings items
+      title: 'Common',
+      tiles: [
+        SettingsTile( // Single Setting item
+          title: 'Language',
+          subtitle: 'English',
+          leading: Icon(Icons.language),
+        ),
+        SettingsTile( // Single Setting item
+          title: 'Environment',
+          subtitle: 'Production',
+          leading: Icon(Icons.cloud_queue),
+        ),
+      ],
+    ),
+  ],
+)
 ```
 
 ## API
@@ -6991,7 +7480,20 @@ class _MyAppState extends State<MyApp> {
 ### ICONE DE L'APPLI
 * Aller sur appicon.co, sélectionner Iphone et Android
 * https://www.udemy.com/course/flutter-bootcamp-with-dart/learn/lecture/14482060#bookmarks
-
+* Launcher Icon with ease : https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-90--launcher-icon-with-ease
+```yaml
+# 1
+dev_dependencies:
+  flutter_launcher_icons: ^0.7.5
+# 2 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/ic_launcher.png" # use your image path
+```
+```shell
+flutter pub run flutter_launcher_icons:main
+```
 
 ## CODAMUSIC
 * Objectif = créer une application de musique qui affiche les chansons à l'écoute
@@ -12212,3 +12714,32 @@ git config --global --edit # (editeur VIM)
 ```
 ### RACCOURCIS
 * [ => Option-Majuscule-parenthèse
+
+
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-32--dart-extension
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-36--implicit-interface-of-class
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-41--path-provider-path_provider-package-common-file-locations-in-ios-and-android
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-42--flutter-shapeborder
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-45--tear-off-vs-lambda-vs-function-call
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip--49--circular-imagewidget
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip--50--use-a-is-a-instead-of-a-is-a
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-53--final-vs-const
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-55--get-the-easy-navigation-library
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-58--easy-flutter-installation
+https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-60--using-svg
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-63--cached_network_image
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-65--setup-linter
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-66--assertbooleanmessageiffalse
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-67--show-build-status-badget-on-readme
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-69--factory-constructors
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-71--mediaquery
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-72--decimal-points
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip-74--enum-values
+https://github.com/erluxman/awesomefluttertips/blob/master/page4.md#tip--79--just-import-every-folders-inside-assets-rather-than-every-files
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-23--listwheelscrollview
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-24--rectangular-fab-with-notched-bottom-appbar
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-25--google-fonts-in-flutter
+https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-26--hero-animation-shared-element-transition
+https://github.com/erluxman/awesomefluttertips#tip-14--fractionallysizedbox
+https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip--86--provider
+https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip--84--use-alice-plugin-to-inspect-network-requests-like-chuck

@@ -421,6 +421,29 @@ var list3;
 var list4 = [0, ...?list3]; // pas d'erreurs
 print(list4); // [0]
 
+
+
+// Concisely add collection into collection with Spread(...) operator
+var numbers = [1, 2, 3];
+var names = ["Smith", "Laxman"];
+List<int> nullList;
+List<int> getLostNumbers() => null;
+
+//This is long way
+print("\n\n\nLong Way");
+var list = List();
+list.addAll(numbers);
+list.addAll(names);
+//Hassale to add nullList
+list.addAll(nullList??[]);
+list.addAll(getLostNumbers()??[]);
+list.forEach(print);
+
+print("\n\n\nShort Way");
+//This is short way with easy null safe insertion
+var list1 = [...numbers, ...names, ...?nullList, ...?getLostNumbers()];                        
+list1.forEach(print);
+
 // collection if [Dart 2.3]
 // to create a list with three or four items in it:
 var promoActive = true;
@@ -1589,6 +1612,16 @@ class Voiture {
   Voiture.origin() {
     marque = "X";
     annees = 0;
+  }
+  // exemple plus parlant :
+  class Color {
+    Color({this.r, this.b, this.g});
+    int r = 0, g = 0, b = 0;
+
+    Color.cyan() {
+      g = 128;
+      b = 128;
+    }
   }
   
   // méthode
@@ -3020,4 +3053,13 @@ String capitalize(String string) {
 String truncateString(String text) {
   return text.length < 30 ? text : '${text.substring(0, 30)}[...]';
 }
+```
+* Run any task in a periodic interval with Timer.periodic()
+```java
+Timer.periodic(const Duration(seconds: 1), (Timer time) {
+    setState(() {
+        // Your code that runs periodically
+        secondsPast += 1;
+    });
+});
 ```

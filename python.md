@@ -163,6 +163,8 @@
 * ~ Python 3.9: Cool New Features for You to Try : https://realpython.com/python39-new-features/
 * ~ How to create a webscraping twitter bot in Python : https://pythonprogramming.org/how-to-create-a-webscraping-twitter-bot-in-python/
 * 25 Best GitHub Repos for Python Developers : https://dev.to/sewinter/25-best-github-repos-for-python-developers-5419
+* Web Scraping with Python : https://blog.sunilaleti.dev/webscraping
+* Concise guide to efficient Python tooling (VS Code) : https://keramitas.io/2020/11/09/concise-guide-to-efficient-python-tooling.html
 
 
 ## INSTALLATION

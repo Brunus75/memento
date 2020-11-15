@@ -1116,7 +1116,8 @@ https://minds-up.fr/contacts-agence-communication-site-internet/
 * https://aainterior.com.ua/
 * http://mudvex.com/
 * https://www.indicius.com/
-
+* https://kinhr.com/
+* https://fr.sendinblue.com/
 
 ## :monocle_face: TENDANCES
 
@@ -1262,3 +1263,5 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Complete Introduction to the 30 Most Essential Data Structures & Algorithms : https://dev.to/iuliagroza/complete-introduction-to-the-30-most-essential-data-structures-algorithms-43kd
 * PHP 8: What’s New? (JIT Compiler, Attributes, and Other Features) : https://torquemag.io/2020/11/php-8/
 * Comparing Various Ways to Hide Things in CSS : https://css-tricks.com/comparing-various-ways-to-hide-things-in-css/
+* https://www.webdesignerdepot.com/2020/11/10-reasons-your-wordpress-site-will-get-hacked-and-how-to-stop-it
+* Effective Skeleton Screens : https://timkadlec.com/remembers/2020-11-02-skeleton-screens/
