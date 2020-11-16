@@ -1969,6 +1969,32 @@ class Impostor implements Person {
 // specifying that a class implements multiple interfaces:
 class Point implements Comparable, Location {...}
 ```
+* autres exemples : https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-36--implicit-interface-of-class
+```java
+class A {
+     //Optional @override for 'extends' &&  must for 'implements'. 
+     var name;
+     //Optional @override for 'extends' &&  must for 'implements'.     
+     void normalMethod() => print("B -> Normal Method");
+ }
+
+ abstract class B {
+     //must @override in both 'extends' and 'implements'.
+     void abstractMethod();
+ }
+
+ //Non abstract 
+ class C extends A {} // ✅
+ class C implements A {} //❌ Must override name & normalMethod()   
+ class C extends B {} //❌ Needs to override `abstractMethod()`
+ class C implements B {} //❌ Needs to override `abstractMethod()`
+
+ //Abstract Child
+ abstract class C extends A {}  // ✅
+ abstract class C implements A {} // ✅
+ abstract class C implements B {} // ✅ 
+ abstract class C extends B {} // ✅ 
+```
 
 ### CLASSES ABSTRAITES
 * Ne peuvent être instancialisées
@@ -2025,7 +2051,39 @@ import 'string_apis.dart';
 ...
 print('42'.padLeft(5)); // Use a String method.
 print('42'.parseInt()); // Use an extension method.
+```
+* also : https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-32--dart-extension
+* We can extend functionality to existing class/API/Library without inheriting it to a child class.
+* Extensions can have method, getter and setter.
+* Here we add function to DateTime class without subclassing it.
+* Define extension like this :
+```java
+extension DateExtensions on DateTime {
+    
+  printYYYYMMdd(String seperator) {
+      var dateString = "${this.year}$seperator${getTwoDigit(this.month)}$seperator${getTwoDigit(this.day)}";
+      print(dateString);
+  }
+  
+  String getTwoDigit(int number){
+      return (number < 10)? "0$number" :number.toString();
+  }
+  
+  DateTime get  nextYear => this.add(Duration(days:365));
+  
+  DateTime previousYear() => this.subtract(Duration(days:365));
+}
 
+// Then Just Call those extensions
+void main() {
+    var now = DateTime.now();
+    var nextYear = now.nextYear;
+    var lastYear = now.previousYear();
+
+    now.printYYYYMMdd("-");
+    nextYear.printYYYYMMdd("/");
+    previousYear.printYYYYMMdd(".");
+}
 ```
 ### MIXINS
 * But = ajouter des fonctionnalités à une classe

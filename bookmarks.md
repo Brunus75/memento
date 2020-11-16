@@ -265,6 +265,7 @@
 * L’argent chez les développeur(euse)s : https://www.jesuisundev.com/argent-developpeur/
 * Attention Is My Most Valuable Asset for Productivity as a Software Developer : https://zwbetz.com/attention-is-my-most-valuable-asset-for-productivity-as-a-software-developer
 * Les certificats sur Mac : http://inet-system.com/les-certificats-sur-mac/
+* Building My First PC : https://www.taniarascia.com/building-my-first-pc/
 
 ## :keyboard: WINDOWS
 

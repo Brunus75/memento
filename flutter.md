@@ -266,6 +266,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
      * [HERO](#hero)
   * [FORMES](#formes)   
      * [CERCLE](#cercle)
+     * [SHAPEBORDER](#shapeborder)
 * [THEMES, COLORS](#themes)   
    * [CHEATSHEET TRANSPARENCY HEXADECIMAL](#CHEATSHEET-TRANSPARENCY-HEXADECIMAL)
    * [COLOR OPACITY](#COLOR-OPACITY)
@@ -293,6 +294,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [Make link on Text clickable using flutter_linkify](#flutter_linkify)
    * [Show various loading/progress with flutter_spinkit](#flutter_spinkit)
    * [Easy Setting screens with settings_ui](#settings_ui)
+   * [Path Provider (common file locations in iOS and Android)](#path_provider)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -818,17 +820,59 @@ MaterialPageRoute(
     ),
     Widget1(),
   )
-   ```
-* IF dans un Widget
-```java
-Stack(
-  alignment: Alignment.center,
-  children: <Widget>[
-    WidgetOne(),
-    if (condition)
-    WidgetTwo(),
-  ]
-),
+
+  // en détails :
+  Scaffold(
+    backgroundColor: kScaffoldColor // background-color renseigné dans les constantes
+    body: Builder(builder: (BuildContext context) {
+      return ListView(children: [
+        // container "header" qui donne l'impression d'être en arrière-plan
+        Stack(
+          children: [
+            Container1(),
+            // bottom du container avec bords arrondis
+            // donne l'impression que le container1 est en arrière-plan
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: kScaffoldColor, // même couleur que le background-color du Scaffold
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0))),
+                height: 35.0,
+              ),
+            ),
+          ],
+        ),
+        Container2( // aura le background-color du Scaffold
+        // que ce soit un Container, une Column, une ListView, etc.
+          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(),
+              SizedBox(),
+              FutureBuilder(),
+            ],
+          ),
+        ),
+      ]);
+    }),
+  );
+    ```
+  * IF dans un Widget
+  ```java
+  Stack(
+    alignment: Alignment.center,
+    children: <Widget>[
+      WidgetOne(),
+      if (condition)
+      WidgetTwo(),
+    ]
+  ),
 ```
 * IF dans un Widget, pour plusieurs éléments
 ```java
@@ -2126,6 +2170,11 @@ DefaultTextStyle(
   ),
   style: TextStyle(fontSize: 30, color: Colors.green),
 );
+```
+##### SELECTABLETEXT
+* https://api.flutter.dev/flutter/material/SelectableText-class.html
+```java
+SelectableText("Data", textScaleFactor: 1.1, textAlign: TextAlign.center, toolbarOptions: ToolbarOptions(copy: true, selectAll: true),),
 ```
 
 #### RICH TEXT
@@ -5699,6 +5748,32 @@ Container(
   child: contentInCircle,
 );
 ```
+#### SHAPEBORDER
+* https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-42--flutter-shapeborder
+* use ShapeBorder to give outline to widgets or Clip them on it's shape
+1. 
+```java
+// Use ShapeBorder to give a Widget outline.
+
+  Container(
+      decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: // Any shape border
+      ),
+  )
+```
+2. 
+```java
+// Use ShapeBorder to clip a Widget.
+
+  ClipPath(
+      clipper: ShapeBorderClipper(
+          shape: // Any shape border
+      ),
+      child: // Any Child to be clipped
+  )
+```
+
 
 ## THEMES
 * https://flutter.dev/docs/cookbook/design/themes
@@ -6652,6 +6727,22 @@ SettingsList( // Whole setting Page
     ),
   ],
 )
+```
+### PATH_PROVIDER
+* https://pub.dev/packages/path_provider#-readme-tab-
+* get the location of Various common directories like: Download, Cache, Documents, External Storage, External Cache etc
+```java
+//Gives download directory
+Directory tempDir = await getTemporaryDirectory();
+
+//Gives documents directory
+Directory docDir = await getApplicationDocumentsDirectory();
+
+//Gives external Storages
+List<Directory> externalStorages = await getExternalStorageDirectories();
+
+//Gives download directory
+Directory downloadDir = await getDownloadsDirectory();
 ```
 
 ## API
@@ -12715,11 +12806,6 @@ git config --global --edit # (editeur VIM)
 ### RACCOURCIS
 * [ => Option-Majuscule-parenthèse
 
-
-https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-32--dart-extension
-https://github.com/erluxman/awesomefluttertips/blob/master/page2.md#tip-36--implicit-interface-of-class
-https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-41--path-provider-path_provider-package-common-file-locations-in-ios-and-android
-https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-42--flutter-shapeborder
 https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip-45--tear-off-vs-lambda-vs-function-call
 https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip--49--circular-imagewidget
 https://github.com/erluxman/awesomefluttertips/blob/master/page3.md#tip--50--use-a-is-a-instead-of-a-is-a
