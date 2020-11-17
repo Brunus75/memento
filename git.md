@@ -326,6 +326,7 @@ ask your question in IRC.
 * git add .
 * git commit -m "Resolved merge conflict by incorporating both suggestions."
 * git rebase --continue
+* git push -f
 
 ### ACK NAK
 ```

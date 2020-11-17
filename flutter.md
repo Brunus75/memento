@@ -274,8 +274,10 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [FLUTTER COLOR GENERATOR](#FLUTTER-COLOR-GENERATOR)
 * [RESPONSIVE]
    * [RESPONSIVE TEXT](#responsive-text)
+   * [RESPONSIVE DRAWER HEADER](#responsive-drawer-header)
 * [GESTION DES ERREURS](#gestion-des-erreurs)   
    * [ERREUR RESEAU](#erreur-reseau)
+   * [ERREUR CERTIFICAT](#erreur-certificat)
 * [INTERNATIONALISATION](#INTERNATIONALISATION)
 * [PACKAGES](#packages)   
    * [FONCTIONNEMENT](#fonctionnement)   
@@ -295,6 +297,7 @@ list=PLjA66rpnHbWnTTzp3QYykoAHkCriViEDo
    * [Show various loading/progress with flutter_spinkit](#flutter_spinkit)
    * [Easy Setting screens with settings_ui](#settings_ui)
    * [Path Provider (common file locations in iOS and Android)](#path_provider)
+   * [Simuler l'affichage de l'application sur une gamme d'appareils](#device_preview)
 * [API](#api)   
    * [Simulate an asynchronous web service](#Simulate-an-asynchronous-web-service)
    * [APPEL API LOCALHOST DEPUIS FLUTTER](#APPEL-API-LOCALHOST-DEPUIS-FLUTTER)
@@ -806,73 +809,73 @@ MaterialPageRoute(
 
 ### ASTUCES
 * Remplir l'espace restant d'une ListView avec un Container de couleur :   
-   1. La couleur du container = couleur du Scaffold (plus simple, plus performant)
-   2. Pour donner un effet de style aux autres containers (ex. une bordure top), leur ajouter un Positioned, ce qui donnera l'impression que les autres containers sont en arrière-plan, alors qu'ils recouvrent la couleur de fond du Scaffold
-   ```java
-   // placer le widget 2 comme footer du Stack
-  Stack( // un des autres containers
-    Positioned(
-      left: 0,
-      right: 0,
-      // permet la position en bas
-      bottom: 0,
-      child: Widget2(),
-    ),
-    Widget1(),
-  )
+1. La couleur du container = couleur du Scaffold (plus simple, plus performant)
+2. Pour donner un effet de style aux autres containers (ex. une bordure top), leur ajouter un Positioned, ce qui donnera l'impression que les autres containers sont en arrière-plan, alors qu'ils recouvrent la couleur de fond du Scaffold
+```java
+// placer le widget 2 comme footer du Stack
+Stack( // un des autres containers
+  Positioned(
+    left: 0,
+    right: 0,
+    // permet la position en bas
+    bottom: 0,
+    child: Widget2(),
+  ),
+  Widget1(),
+)
 
-  // en détails :
-  Scaffold(
-    backgroundColor: kScaffoldColor // background-color renseigné dans les constantes
-    body: Builder(builder: (BuildContext context) {
-      return ListView(children: [
-        // container "header" qui donne l'impression d'être en arrière-plan
-        Stack(
-          children: [
-            Container1(),
-            // bottom du container avec bords arrondis
-            // donne l'impression que le container1 est en arrière-plan
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: kScaffoldColor, // même couleur que le background-color du Scaffold
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0))),
-                height: 35.0,
-              ),
+// en détails :
+Scaffold(
+  backgroundColor: kScaffoldColor // background-color renseigné dans les constantes
+  body: Builder(builder: (BuildContext context) {
+    return ListView(children: [
+      // container "header" qui donne l'impression d'être en arrière-plan
+      Stack(
+        children: [
+          Container1(),
+          // bottom du container avec bords arrondis
+          // donne l'impression que le container1 est en arrière-plan
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: kScaffoldColor, // même couleur que le background-color du Scaffold
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0))),
+              height: 35.0,
             ),
+          ),
+        ],
+      ),
+      Container2( // aura le background-color du Scaffold
+      // que ce soit un Container, une Column, une ListView, etc.
+        padding: EdgeInsets.only(left: 20.0, right: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(),
+            SizedBox(),
+            FutureBuilder(),
           ],
         ),
-        Container2( // aura le background-color du Scaffold
-        // que ce soit un Container, une Column, une ListView, etc.
-          padding: EdgeInsets.only(left: 20.0, right: 20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(),
-              SizedBox(),
-              FutureBuilder(),
-            ],
-          ),
-        ),
-      ]);
-    }),
-  );
-    ```
-  * IF dans un Widget
-  ```java
-  Stack(
-    alignment: Alignment.center,
-    children: <Widget>[
-      WidgetOne(),
-      if (condition)
-      WidgetTwo(),
-    ]
-  ),
+      ),
+    ]);
+  }),
+);
+```
+* IF dans un Widget
+```java
+Stack(
+  alignment: Alignment.center,
+  children: <Widget>[
+    WidgetOne(),
+    if (condition)
+    WidgetTwo(),
+  ]
+),
 ```
 * IF dans un Widget, pour plusieurs éléments
 ```java
@@ -1293,14 +1296,24 @@ class Article {
   }
 }
 ```
-* WORD-WRAP pour CONTAINER : donner un width
+* WORD-WRAP
 ```java
+// pour CONTAINER : donner un width
 Container(
   child: Text(
     "Octobre 2020",
     style: TextStyle(color: kStrongGreen, fontWeight: FontWeight.w400),
   ),
   width: MediaQuery.of(context).size.width * 0.3, // au-dessus de ce width, le texte sera tronqué
+),
+
+// dans une Row, entourer d'un Expanded
+Expanded(
+  child: Text(
+    "Je suis un texte très long qui sera potentiellement affiché sur 2 lignes max",
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+  ),
 ),
 ```
 
@@ -2152,8 +2165,9 @@ class _Home extends State<Home> {
   }
 }
 ```
-* DefaultTextStyle Widget : https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-95--defaulttextstyle-widget
-* We can apply TextStyle to all the widgets in the hirarchy by wrapping it with DefaultTextStyle
+##### DefaultTextStyle Widget
+* https://github.com/erluxman/awesomefluttertips/blob/master/page5.md#tip-95--defaulttextstyle-widget
+* We can apply TextStyle to all the widgets in the heirarchy by wrapping it with DefaultTextStyle
 ```java
 DefaultTextStyle(
   child: Column(
@@ -2171,6 +2185,27 @@ DefaultTextStyle(
   style: TextStyle(fontSize: 30, color: Colors.green),
 );
 ```
+##### WORD-WRAP
+```java
+// pour CONTAINER : donner un width
+Container(
+  child: Text(
+    "Octobre 2020",
+    style: TextStyle(color: kStrongGreen, fontWeight: FontWeight.w400),
+  ),
+  width: MediaQuery.of(context).size.width * 0.3, // au-dessus de ce width, le texte sera tronqué
+),
+
+// dans une Row, entourer d'un Expanded
+Expanded(
+  child: Text(
+    "Je suis un texte très long qui sera potentiellement affiché sur 2 lignes max",
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+  ),
+),
+```
+
 ##### SELECTABLETEXT
 * https://api.flutter.dev/flutter/material/SelectableText-class.html
 ```java
@@ -3692,6 +3727,46 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 }
+```
+##### RESPONSIVE DRAWER HEADER
+```java
+Drawer(
+  child: ListView(
+    padding: EdgeInsets.zero,
+    children: [
+      // Header
+      Container(
+        color: kDrawerColor, // pour donner une couleur au SafeArea
+        child: SafeArea( // permet un padding-top de sécurité
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.only(left: 30.0, top: 20.0, bottom: 20.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/images/mon_image.png",
+                    height: 100.0,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Mon titre',
+                    style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: kDrawerColor,
+            ),
+          ),
+        ),
+      ),
+      Body(),
+    ],
+  ),
+);
 ```
 #### SNACKBAR
 * https://stackoverflow.com/a/49932085
@@ -5930,6 +6005,46 @@ Container(
   ),
 );
 ```
+### RESPONSIVE DRAWER HEADER
+```java
+Drawer(
+  child: ListView(
+    padding: EdgeInsets.zero,
+    children: [
+      // Header
+      Container(
+        color: kDrawerColor, // pour donner une couleur au SafeArea
+        child: SafeArea( // permet un padding-top de sécurité
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.only(left: 30.0, top: 20.0, bottom: 20.0),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/images/mon_image.png",
+                    height: 100.0,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Text(
+                    'Mon titre',
+                    style: TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: kDrawerColor,
+            ),
+          ),
+        ),
+      ),
+      Body(),
+    ],
+  ),
+);
+```
 
 ## GESTION DES ERREURS
 
@@ -5982,6 +6097,29 @@ else if (snapshot.hasError) {
   );
 }
 ```
+### ERREUR CERTIFICAT
+#### ACCEPTER QUE CERTAINS CERTIFICATS
+* https://github.com/flutter/flutter/issues/19588#issuecomment-406779390
+* https://stackoverflow.com/a/59303283
+* ```flutter clean```
+```java
+// main.dart
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) {
+        final isValidHost = host == "myapp.integration.domain.com";
+return isValidHost;
+        };
+  }
+}
+void main() async {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(MyApp());
+}
+```
+* ```flutter clean```
 
 
 ## INTERNATIONALISATION
@@ -6743,6 +6881,31 @@ List<Directory> externalStorages = await getExternalStorageDirectories();
 
 //Gives download directory
 Directory downloadDir = await getDownloadsDirectory();
+```
+
+### DEVICE_PREVIEW
+* https://pub.dev/packages/device_preview
+* lancer un émulateur tablette pour plus de visibilité
+```java
+import 'package:device_preview/device_preview.dart';
+
+void main() => runApp(
+  DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => MyApp(), // Wrap your app
+  ),
+);
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      locale: DevicePreview.locale(context), // Add the locale here
+      builder: DevicePreview.appBuilder, // Add the builder here
+      home: HomePage(),
+    );
+  }
+}
 ```
 
 ## API

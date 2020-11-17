@@ -1266,3 +1266,17 @@ D’avis d’observateurs avertis, c’est le futur de la programmation système
 * Comparing Various Ways to Hide Things in CSS : https://css-tricks.com/comparing-various-ways-to-hide-things-in-css/
 * https://www.webdesignerdepot.com/2020/11/10-reasons-your-wordpress-site-will-get-hacked-and-how-to-stop-it
 * Effective Skeleton Screens : https://timkadlec.com/remembers/2020-11-02-skeleton-screens/
+---
+* https://miguendes.me/73-examples-to-help-you-master-pythons-f-strings
+* https://www.welcometothejungle.com/fr/articles/effet-zeigarnik-finir-travail
+* https://www.welcometothejungle.com/fr/articles/lettre-de-motivation-barabante
+* https://www.welcometothejungle.com/fr/articles/aikido-verbal-defendre-attaques-verbales
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators
+* https://design.org/the-power-of-happiness-being-safe-free-and-supported
+* https://github.com/denysdovhan/wtfjs/blob/master/README-fr-fr.md
+* Top 16 Dart Tips and Tricks Every Flutter Developer Should Know : https://www.youtube.com/watch?v=9OxxU4RlCkk
+* https://www.quora.com/What-are-logical-pixels
+* https://business.tutsplus.com/tutorials/how-to-wake-up-early--cms-33408
+* https://stackoverflow.com/questions/57792255/how-logical-pixels-translate-to-physical-pixels
+* https://www.codeur.com/blog/meilleure-methode-resoudre-bug
